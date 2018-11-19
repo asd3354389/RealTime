@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+					http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+					http://www.springframework.org/schema/mvc 
+					http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd 
+					http://www.springframework.org/schema/context 
+					http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+	default-autowire="byName">
+
+<!--    <context:component-scan base-package="com.foxlink.realtime.*" /> -->
+   <!-- 實時工時連線資訊 -->   
+   <!-- Oracle DB 連線資訊 -->
+	<bean id="OracleDataSource" class = "org.springframework.jdbc.datasource.DriverManagerDataSource">
+      	<property name = "driverClassName" value = "oracle.jdbc.driver.OracleDriver"/>
+      	<!-- <property name="url" value="jdbc:oracle:thin:@192.168.64.224:1521:rtodb" />
+		<property name="username" value="swipe" />
+		<property name="password" value="mis_realt" /> -->
+		<property name="url" value="jdbc:oracle:thin:@192.168.144.187:1521:scard" />
+		<property name="username" value="swipe" />
+		<property name="password" value="mis_swipe" />
+		<!-- <property name="url" value="jdbc:oracle:thin:@192.168.144.187:1521:scard" />
+		<property name="username" value="swipe" />
+		<property name="password" value="mis_swipe" /> -->
+    </bean>
+    
+	 <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="OracleDataSource"></property>
+    </bean>
+    
+	 <!-- 配置事务管理组件 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+       <property name="dataSource" ref="OracleDataSource"></property>
+    </bean>
+    
+   <bean id="dAO" class="com.foxlink.realtime.DAO.DAO" abstract="true">
+         <property name="jdbcTemplate" ref ="jdbcTemplate" />
+         <property name="transactionManager" ref ="transactionManager" />  
+   </bean>
+   
+    <bean id="accountDAO" class="com.foxlink.realtime.DAO.AccountDAO" parent="dAO">      
+   </bean>
+
+   <bean id = "accountService" class = "com.foxlink.realtime.service.AccountService">
+      <property name = "accountDAO" ref = "accountDAO" />    
+   </bean>    
+   
+   <bean id="assistantDAO" class="com.foxlink.realtime.DAO.AssistantDAO"  parent="dAO">
+   </bean>
+   
+   <bean id = "assistantService" class = "com.foxlink.realtime.service.AssistantService">
+      <property name = "assistantDAO" ref = "assistantDAO" />    
+   </bean>    
+   
+   <bean id="rawRecordDAO" class="com.foxlink.realtime.DAO.RawRecordDAO"  parent="dAO">
+   </bean>
+   
+   <bean id = "rawRecordService" class = "com.foxlink.realtime.service.RawRecordService">
+      <property name = "rawRecordDAO" ref = "rawRecordDAO" />    
+   </bean>    
+   
+   <bean id="workShopDAO" class="com.foxlink.realtime.DAO.WorkShopDAO"  parent="dAO">
+   </bean>
+   
+   <bean id = "workShopService" class = "com.foxlink.realtime.service.WorkShopService">
+      <property name = "workShopDAO" ref = "workShopDAO" />    
+   </bean> 
+   
+    <bean id="dGsubsidyDAO" class="com.foxlink.realtime.DAO.DGsubsidyDAO"  parent="dAO">
+   </bean>
+   
+   <bean id = "dGsubsidyService" class = "com.foxlink.realtime.service.DGsubsidyService">
+      <property name = "dGsubsidyDAO" ref = "dGsubsidyDAO" />    
+   </bean> 
+
+   
+   <bean id="classNoDAO" class="com.foxlink.realtime.DAO.ClassNoDAO" parent="dAO"/>
+   
+   <bean id = "classNOService" class = "com.foxlink.realtime.service.ClassNoService">
+      <property name = "classNoDAO" ref = "classNoDAO" />    
+   </bean>
+   
+   <bean id="EmpOTIdentifiedDAO" class="com.foxlink.realtime.DAO.EmpOTIdentifiedDAO" parent="dAO" />
+   
+   <bean id = "EmpOTIdentifiedService" class = "com.foxlink.realtime.service.OTIdentifiedService">
+      <property name = "EmpOTIdentifiedDAO" ref = "EmpOTIdentifiedDAO" />    
+   </bean>
+   
+   <bean id="EmpOTPendingDAO" class="com.foxlink.realtime.DAO.EmpOTPendingDAO" parent="dAO" />
+   
+   <bean id = "EmpOTPendingService" class = "com.foxlink.realtime.service.OTPendingService">
+      <property name = "EmpOTPendingDAO" ref = "EmpOTPendingDAO" />    
+   </bean>
+   
+   <bean id="OTDAO" class="com.foxlink.realtime.DAO.OTDAO" parent="dAO" />
+   
+   <bean id = "OTService" class = "com.foxlink.realtime.service.OTService">
+      <property name = "OTDAO" ref = "OTDAO" />    
+   </bean>
+
+	<!-- <bean id = "IdentifiedAbnOverTimeDAO" class = "com.foxlink.realtime.service.IdentifiedAbnOverTimeDAO"> 
+		<property name = "dataSource" ref = "OracleDataSource" /> </bean> -->
+
+	<bean id="checkOverTimeStatusDao" class="com.foxlink.realtime.DAO.CheckOverTimeStatusDao"
+		parent="dAO" />
+	<bean id="queryService" class="com.foxlink.realtime.service.QueryService">
+		<property name="checkOverTimeStatusDao" ref="checkOverTimeStatusDao"></property>
+	</bean>
+	<bean id="checkShiftDao" class="com.foxlink.realtime.DAO.CheckShiftDao"
+		parent="dAO" />
+	<bean id="queryShiftService" class="com.foxlink.realtime.service.QueryShiftService">
+		<property name="checkShiftDao" ref="checkShiftDao"></property>
+	</bean>
+	<bean id="checkSCDao" class="com.foxlink.realtime.DAO.CheckSCDao"
+		parent="dAO" />
+	<bean id="queryScService" class="com.foxlink.realtime.service.QueryScService">
+		<property name="checkSCDao" ref="checkSCDao"></property>
+	</bean>
+	<bean id="checkFCDao" class="com.foxlink.realtime.DAO.CheckFCDao"
+		parent="dAO" />
+	<bean id="queryFCService" class="com.foxlink.realtime.service.QueryFCService">
+		<property name="checkFCDao" ref="checkFCDao"></property>
+	</bean>
+	<bean id="getDepidDao" class="com.foxlink.realtime.DAO.GetDepidDao"
+		parent="dAO" />
+	<bean id="getDepidService" class="com.foxlink.realtime.service.GetDepidService">
+		<property name="getDepidDao" ref="getDepidDao"></property>
+	</bean>
+
+	<bean id="lmtDeptDAO" class="com.foxlink.realtime.DAO.LmtDeptDAO"
+		parent="dAO">
+	</bean>
+	<bean id="lmtDeptService" class="com.foxlink.realtime.service.LmtDeptService">
+		<property name="lmtDeptDAO" ref="lmtDeptDAO" />
+	</bean>
+	
+	<bean id="holidayDAO" class="com.foxlink.realtime.DAO.HolidayDao"
+		parent="dAO">
+	</bean>
+	<bean id="holidayService" class="com.foxlink.realtime.service.HolidayService">
+		<property name="holidayDAO" ref="holidayDAO" />
+	</bean>
+	
+	<bean id="jobTitleDAO" class="com.foxlink.realtime.DAO.JobTitleDAO"
+		parent="dAO">
+	</bean>
+	<bean id="jobTitleService" class="com.foxlink.realtime.service.JobTitleService">
+		<property name="jobTitleDAO" ref="jobTitleDAO" />
+	</bean>
+	
+	<bean id="lineMappingDAO" class="com.foxlink.realtime.DAO.LineMappingDAO"
+		parent="dAO">
+	</bean>
+	<bean id="lineMappingService" class="com.foxlink.realtime.service.LineMappingService">
+		<property name="lineMappingDAO" ref="lineMappingDAO" />
+	</bean>
+	
+	<bean id="signOverTimeDAO" class="com.foxlink.realtime.DAO.SignOverTimeDAO"
+		parent="dAO">
+	</bean>
+	<bean id="signOverTimeService" class="com.foxlink.realtime.service.SignOverTimeService">
+		<property name="signOverTimeDAO" ref="signOverTimeDAO" />
+	</bean>
+	
+	<bean id="OT15minDAO" class="com.foxlink.realtime.DAO.OT15minDAO"
+		parent="dAO">
+	</bean>
+	<bean id="OT15minService" class="com.foxlink.realtime.service.OT15minService">
+		<property name="OT15minDAO" ref="OT15minDAO" />
+	</bean>
+</beans>
