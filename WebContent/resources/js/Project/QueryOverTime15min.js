@@ -67,7 +67,8 @@ $(document)
 										}*/
 
 										var ssDate = $("#dpick1").val();
-										if (ssDate == "") {
+										var eeDate = $("#dpick2").val();
+										if (ssDate == "" || eeDate == "") {
 											alert("請選擇查詢日期")
 											return;
 										} /*else if (((ssDate && eeDate) != ""

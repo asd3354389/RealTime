@@ -68,14 +68,17 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 	public List<EmpOT15min> FindRecords(String userDataCostId, EmpOT15min t) {
 		// TODO Auto-generated method stub
 		List<EmpOT15min> empList = null;
-		String sql ="SELECT ce.id,ce.Name,ce.costid,ce.depid,ce.depname,cs.class_no,to_char(cs.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') SwipeCardTimeg,to_char(cs.SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') SwipeCardTimeo,c.class_start, "
-				+ "CASE WHEN (TO_DATE ( ?|| ' '|| SUBSTR (c.class_start, 1, 2)|| ':'|| SUBSTR (c.class_start, 3, 2)|| ':00','yyyy-mm-dd hh24:mi:ss')- 1 / 96- cs.swipecardtime)* 24* 3600 < 0 "
-				+ "THEN NULL ELSE(TO_DATE (?|| ' '|| SUBSTR (c.class_start, 1, 2)|| ':'|| SUBSTR (c.class_start, 3, 2)|| ':00', 'yyyy-mm-dd hh24:mi:ss') - 1 / 96 - cs.swipecardtime)* 24* 3600 END goWorkAdvance,c.overtime_start, "
-				+ "CASE WHEN (cs.swipecardtime2 - TO_DATE ( ?|| ' '|| SUBSTR (c.overtime_start, 1, 2)|| ':'|| SUBSTR (c.overtime_start, 3, 2)|| ':00','yyyy-mm-dd hh24:mi:ss') - 9 / 96)* 24 * 3600 < 0 "
-				+ "THEN NULL ELSE(cs.swipecardtime2- TO_DATE ( ?|| ' '|| SUBSTR (c.overtime_start, 1, 2)|| ':'|| SUBSTR (c.overtime_start, 3, 2)|| ':00','yyyy-mm-dd hh24:mi:ss')- 9 / 96) * 24 * 3600 END outWorkOvertime "
-				+ "FROM swipe.csr_swipecardtime cs, swipe.csr_employee ce, swipe.classno c WHERE  ce.id = cs.emp_id AND cs.class_no = c.class_no AND cs.swipe_date = ? AND "
-				+ "( (TO_DATE ( ?|| ' '|| SUBSTR (c.class_start, 1, 2)|| ':'|| SUBSTR (c.class_start, 3, 2)|| ':00','yyyy-mm-dd hh24:mi:ss') - 1 / 96- cs.swipecardtime)* 24* 3600 >= 1 OR "
-				+ "(cs.swipecardtime2  - TO_DATE ( ?|| ' '|| SUBSTR (c.overtime_start, 1, 2)|| ':'|| SUBSTR (c.overtime_start, 3, 2)|| ':00', 'yyyy-mm-dd hh24:mi:ss') - 9 / 96) * 24 * 3600 >= 1) AND cs.shift = 'D' ";
+		String sql ="SELECT ce.id, ce.Name, ce.costid, ce.depid, ce.depname, cs.class_no, to_char(cs.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') AS SwipeCardTimeg"
+				+ " , to_char(cs.SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') AS SwipeCardTimeo, c.class_start, CASE "
+				+ " WHEN (TO_DATE(cs.swipe_date || ' ' || SUBSTR(c.class_start, 1, 2) || ':' || SUBSTR(c.class_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 1 / 96 - cs.swipecardtime) * 24 * 3600 < 0 THEN NULL"
+				+ " ELSE (TO_DATE(cs.swipe_date || ' ' || SUBSTR(c.class_start, 1, 2) || ':' || SUBSTR(c.class_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 1 / 96 - cs.swipecardtime) * 24 * 3600"
+				+ " END AS goWorkAdvance, c.overtime_start, CASE WHEN (cs.swipecardtime2 - TO_DATE(cs.swipe_date || ' ' || SUBSTR(c.overtime_start, 1, 2) || ':' || SUBSTR(c.overtime_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 9 / 96) * 24 * 3600 < 0 THEN NULL"
+				+ " ELSE (cs.swipecardtime2 - TO_DATE(cs.swipe_date || ' ' || SUBSTR(c.overtime_start, 1, 2) || ':' || SUBSTR(c.overtime_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 9 / 96) * 24 * 3600"
+				+ " END AS outWorkOvertime FROM swipe.csr_swipecardtime cs, swipe.csr_employee ce, swipe.classno c"
+				+ " WHERE ce.id = cs.emp_id AND cs.class_no = c.class_no AND cs.swipe_date >= ? AND cs.swipe_date <= ?"
+				+ " AND ((TO_DATE(cs.swipe_date || ' ' || SUBSTR(c.class_start, 1, 2) || ':' || SUBSTR(c.class_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 1 / 96 - cs.swipecardtime) * 24 * 3600 >= 1"
+				+ " OR (cs.swipecardtime2 - TO_DATE(cs.swipe_date || ' ' || SUBSTR(c.overtime_start, 1, 2) || ':' || SUBSTR(c.overtime_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 9 / 96) * 24 * 3600 >= 1) AND cs.shift = 'D'"
+				+ "";
 		
 		try{
 			List<Object> queryList = new ArrayList<Object>();
@@ -133,19 +136,21 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 			}else{
 				sql += " and ce.costId in('')";
 			}
-			for(int i = 0;i<7;i++){
-				queryList.add(t.getTimeStart());
-			}
-			sql+=" union SELECT ce.id,ce.Name,ce.costid,ce.depid,ce.depname,cs.class_no,to_char(cs.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') SwipeCardTimeg,to_char(cs.SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') SwipeCardTimeo,c.class_start, "
-					+ "CASE WHEN (TO_DATE ( ?|| ' '|| SUBSTR (c.class_start, 1, 2)|| ':'|| SUBSTR (c.class_start, 3, 2)|| ':00', 'yyyy-mm-dd hh24:mi:ss') - 1 / 96 - cs.swipecardtime) * 24 * 3600 < 0 "
-					+ "THEN NULL ELSE(TO_DATE ( ?|| ' '|| SUBSTR (c.class_start, 1, 2)|| ':'|| SUBSTR (c.class_start, 3, 2)|| ':00','yyyy-mm-dd hh24:mi:ss')- 1 / 96 - cs.swipecardtime) * 24 * 3600 END goWorkAdvance,c.overtime_start, "
-					+ "CASE WHEN (cs.swipecardtime2 - TO_DATE ( TO_CHAR (TO_DATE (?, 'yyyy-mm-dd') + 1, 'yyyy-mm-dd') || ' ' || SUBSTR (c.overtime_start, 1, 2) || ':' || SUBSTR (c.overtime_start, 3, 2) || ':00', "
-					+ " 'yyyy-mm-dd hh24:mi:ss') - 9 / 96) * 24 * 3600 < 0 THEN NULL ELSE (cs.swipecardtime2 - TO_DATE ( TO_CHAR (TO_DATE (?, 'yyyy-mm-dd') + 1, 'yyyy-mm-dd') || ' ' || SUBSTR (c.overtime_start, 1, 2) "
-					+ " || ':' || SUBSTR (c.overtime_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 9 / 96) * 24 * 3600 END outWorkOvertime"
-					+ " FROM swipe.csr_swipecardtime cs, swipe.csr_employee ce, swipe.classno c WHERE ce.id = cs.emp_id AND cs.class_no = c.class_no AND cs.swipe_date = ? "
-					+ " AND ( (TO_DATE ( ? || ' ' || SUBSTR (c.class_start, 1, 2) || ':' || SUBSTR (c.class_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 1 / 96 - cs.swipecardtime) * 24 * 3600 >= 1 "
-					+ " OR (cs.swipecardtime2 - TO_DATE ( TO_CHAR (TO_DATE (?, 'yyyy-mm-dd') + 1, 'yyyy-mm-dd') || ' ' || SUBSTR (c.overtime_start, 1, 2) || ':' || SUBSTR (c.overtime_start, 3, 2) || ':00', "
-					+ " 'yyyy-mm-dd hh24:mi:ss') - 9 / 96) * 24 * 3600 >= 1) AND cs.shift = 'N' ";
+			
+			queryList.add(t.getTimeStart());
+			queryList.add(t.getTimeEnd());
+			
+			sql+=" union SELECT ce.id, ce.Name, ce.costid, ce.depid, ce.depname, cs.class_no, to_char(cs.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') AS SwipeCardTimeg"
+					+ " , to_char(cs.SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') AS SwipeCardTimeo, c.class_start, CASE "
+					+ " WHEN (TO_DATE(cs.swipe_date || ' ' || SUBSTR(c.class_start, 1, 2) || ':' || SUBSTR(c.class_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 1 / 96 - cs.swipecardtime) * 24 * 3600 < 0 THEN NULL"
+					+ " ELSE (TO_DATE(cs.swipe_date || ' ' || SUBSTR(c.class_start, 1, 2) || ':' || SUBSTR(c.class_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 1 / 96 - cs.swipecardtime) * 24 * 3600"
+					+ " END AS goWorkAdvance, c.overtime_start, CASE "
+					+ " WHEN (cs.swipecardtime2 - TO_DATE(TO_CHAR(TO_DATE(cs.swipe_date, 'yyyy-mm-dd') + 1, 'yyyy-mm-dd') || ' ' || SUBSTR(c.overtime_start, 1, 2) || ':' || SUBSTR(c.overtime_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 9 / 96) * 24 * 3600 < 0 THEN NULL"
+					+ " ELSE (cs.swipecardtime2 - TO_DATE(TO_CHAR(TO_DATE(cs.swipe_date, 'yyyy-mm-dd') + 1, 'yyyy-mm-dd') || ' ' || SUBSTR(c.overtime_start, 1, 2) || ':' || SUBSTR(c.overtime_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 9 / 96) * 24 * 3600"
+					+ " END AS outWorkOvertime FROM swipe.csr_swipecardtime cs, swipe.csr_employee ce, swipe.classno c WHERE ce.id = cs.emp_id AND cs.class_no = c.class_no"
+					+ " AND cs.swipe_date >= ? AND cs.swipe_date <= ?"
+					+ " AND ((TO_DATE(cs.swipe_date || ' ' || SUBSTR(c.class_start, 1, 2) || ':' || SUBSTR(c.class_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 1 / 96 - cs.swipecardtime) * 24 * 3600 >= 1"
+					+ " OR (cs.swipecardtime2 - TO_DATE(TO_CHAR(TO_DATE(cs.swipe_date, 'yyyy-mm-dd') + 1, 'yyyy-mm-dd') || ' ' || SUBSTR(c.overtime_start, 1, 2) || ':' || SUBSTR(c.overtime_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 9 / 96) * 24 * 3600 >= 1) AND cs.shift = 'N'";
 			
 			String strId1 = t.getId();
 			String strIdArray1[] = strId1.split(",");
@@ -203,9 +208,10 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 			}else{
 				sql += " and ce.costId in('')";
 			}
-			for(int i = 0;i<7;i++){
-				queryList.add(t.getTimeStart());
-			}
+			
+			queryList.add(t.getTimeStart());
+			queryList.add(t.getTimeEnd());
+			
 			sql+=" ORDER BY 1";
 			System.out.println(sql);
 			empList = jdbcTemplate.query(sql, queryList.toArray(),new EmpOT15minMapper());

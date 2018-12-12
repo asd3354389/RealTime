@@ -15,9 +15,6 @@
    <!-- Oracle DB 連線資訊 -->
 	<bean id="OracleDataSource" class = "org.springframework.jdbc.datasource.DriverManagerDataSource">
       	<property name = "driverClassName" value = "oracle.jdbc.driver.OracleDriver"/>
-      	<!-- <property name="url" value="jdbc:oracle:thin:@192.168.64.224:1521:rtodb" />
-		<property name="username" value="swipe" />
-		<property name="password" value="mis_realt" /> -->
 		<property name="url" value="jdbc:oracle:thin:@192.168.144.187:1521:scard" />
 		<property name="username" value="swipe" />
 		<property name="password" value="mis_swipe" />
