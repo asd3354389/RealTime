@@ -10,17 +10,15 @@
 					http://www.springframework.org/schema/context/spring-context-4.0.xsd"
 	default-autowire="byName">
 
+	<context:property-placeholder location="classpath:db.properties"/>
 <!--    <context:component-scan base-package="com.foxlink.realtime.*" /> -->
    <!-- 實時工時連線資訊 -->   
    <!-- Oracle DB 連線資訊 -->
 	<bean id="OracleDataSource" class = "org.springframework.jdbc.datasource.DriverManagerDataSource">
-      	<property name = "driverClassName" value = "oracle.jdbc.driver.OracleDriver"/>
-		<property name="url" value="jdbc:oracle:thin:@192.168.144.187:1521:scard" />
-		<property name="username" value="swipe" />
-		<property name="password" value="mis_swipe" />
-		<!-- <property name="url" value="jdbc:oracle:thin:@192.168.144.187:1521:scard" />
-		<property name="username" value="swipe" />
-		<property name="password" value="mis_swipe" /> -->
+      	<property name = "driverClassName" value = "${jdbc.driverClassName}"/>
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
     </bean>
     
 	 <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
