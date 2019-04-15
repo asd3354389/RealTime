@@ -60,6 +60,7 @@ $(document).ready(function(){
 							default:						
 								break;
 							}		
+							HTMLElement+='<td>'+result[i]["Bonus"]+'</td>';
 							switch(result[i]["NoteStates"]){
 							case 0:
 								HTMLElement+='<td>待產生加班單</td>';

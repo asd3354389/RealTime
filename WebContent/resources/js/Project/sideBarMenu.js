@@ -47,6 +47,14 @@
 				"menuname" : "線別維護",
 				"icon" : "icon-nav",
 				"url" : "LineMapping/ShowAllLineMapping"
+			},{
+				"menuname" : "隨綫人員維護",
+				"icon" : "icon-nav",
+				"url" : "FlinePerson/ShowFlinePersonMaintain"
+			},{
+				"menuname" : "離崗卡與員工綁定維護",
+				"icon" : "icon-nav",
+				"url" : "OTCardPerson/ShowOTCardbdPerson"
 			}]
 		}, {
 			"menuid" : "56",

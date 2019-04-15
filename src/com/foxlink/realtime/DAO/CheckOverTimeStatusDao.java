@@ -88,7 +88,7 @@ public class CheckOverTimeStatusDao extends DAO<QueryStatus> {
 		// id=?";
 		// String sql = "SELECT id,name,costid,depid,direct from
 		// notes_overtime_state where id=?";
-		String sql = "SELECT id,NAME,Depid,costID,Direct,overtimedate,Shift,WorkContent,overtimeHours,overtimeType,overtimeInterval,application_person,application_id, NOTESSTATES,Reason,BackTime,Workshopno from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from (SELECT id,NAME,Depid,costID,Direct,overtimedate,Shift,WorkContent,overtimeHours,overtimeType,overtimeInterval,application_person,application_id, NOTESSTATES,Reason,BackTime,Workshopno FROM SWIPE.notes_overtime_state WHERE 1=1 ";
+		String sql = "SELECT id,NAME,Depid,costID,Direct,overtimedate,Shift,WorkContent,overtimeHours,overtimeType,overtimeInterval,application_person,application_id, NOTESSTATES,Reason,BackTime,Workshopno,BONUS from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from (SELECT id,NAME,Depid,costID,Direct,overtimedate,Shift,WorkContent,overtimeHours,overtimeType,overtimeInterval,application_person,application_id, NOTESSTATES,Reason,BackTime,Workshopno,BONUS FROM SWIPE.notes_overtime_state WHERE 1=1 ";
 		List<QueryStatus> queryStatus = null;
 		try {
 			List<Object> queryList = new ArrayList<Object>();
@@ -157,7 +157,7 @@ public class CheckOverTimeStatusDao extends DAO<QueryStatus> {
 		// String sql = "SELECT id,name,costid,depid,direct from
 		// notes_overtime_state where id=?";
 		//String sql = "SELECT id,NAME,Depid,costID,Direct,overtimedate,Shift,WorkContent,overtimeHours,overtimeType,overtimeInterval,application_person,application_id, NOTESSTATES,Reason,BackTime,Workshopno from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from (SELECT id,NAME,Depid,costID,Direct,overTimeDate,Shift,WorkContent,overtimeHours,overtimeType,overtimeInterval,application_person,application_id, NOTESSTATES,Reason,BackTime,Workshopno FROM notes_overtime_state WHERE 1=1 ";
-		String sql = "SELECT id,NAME,Depid,costID,Direct,overtimedate,Shift,WorkContent,overtimeHours,overtimeType,overtimeInterval,application_person,application_id, NOTESSTATES ,Reason,BackTime,Workshopno  FROM SWIPE.notes_overtime_state WHERE 1=1 ";
+		String sql = "SELECT id,NAME,Depid,costID,Direct,overtimedate,Shift,WorkContent,overtimeHours,overtimeType,overtimeInterval,application_person,application_id, NOTESSTATES ,Reason,BackTime,Workshopno,BONUS  FROM SWIPE.notes_overtime_state WHERE 1=1 ";
 		List<QueryStatus> queryStatus = null;
 		try {
 			List<Object> queryList = new ArrayList<Object>();

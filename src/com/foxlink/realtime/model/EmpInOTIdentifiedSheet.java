@@ -11,7 +11,14 @@ public class EmpInOTIdentifiedSheet  {
 	private String OTHours;
 	private String NotesStates;
 	private String Reason;
+	private String Bonus;
 	
+	public String getBonus() {
+		return Bonus;
+	}
+	public void setBonus(String bonus) {
+		Bonus = bonus;
+	}
 	public String getEmpID() {
 		return EmpID;
 	}
@@ -73,6 +80,12 @@ public class EmpInOTIdentifiedSheet  {
 	}
 	public void setReason(String reason) {
 		Reason = reason;
+	}
+	@Override
+	public String toString() {
+		return "EmpInOTIdentifiedSheet [EmpID=" + EmpID + ", EmpName=" + EmpName + ", DeptID=" + DeptID + ", CostID="
+				+ CostID + ", Direct=" + Direct + ", OTDate=" + OTDate + ", OTInterval=" + OTInterval + ", OTHours="
+				+ OTHours + ", NotesStates=" + NotesStates + ", Reason=" + Reason + ", Bonus=" + Bonus + "]";
 	}
 
 	

@@ -13,6 +13,13 @@ public class QueryStatus {
 	private String rc_no;
 	private String PRIMARY_ITEM_NO;
 	private String OVERTIMEDATE;
+	private String bonus;
+	public String getBonus() {
+		return bonus;
+	}
+	public void setBonus(String bonus) {
+		this.bonus = bonus;
+	}
 	public String getOVERTIMEDATE() {
 		return OVERTIMEDATE;
 	}

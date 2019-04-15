@@ -56,7 +56,8 @@ $(document).ready(function(){
 		if(this.checked){
 			$('#OTPendingEmpTable tbody tr').each(function(){
 				var overTimehour = $(this).children().eq(9).text();
-				if(overTimehour=="0"){
+				var dghour = $(this).children().eq(11).text();
+				if(overTimehour=="0"&&dghour=="0"){
 					$(this).children().children().eq(0).prop('checked',false);
 					$(this).attr("style", "background-color: white"); 
 				}else{
@@ -80,8 +81,9 @@ $(document).ready(function(){
 			$('#OTPendingEmpTable tbody tr').each(function(){
 				var overTimehour = $(this).children().eq(9).text();
 				var directType = $(this).children().eq(6).text();
+				var dghour = $(this).children().eq(11).text();
 				if(directType=="I"){
-					if(overTimehour=="0"){
+					if(overTimehour=="0"&&dghour=="0"){
 						$(this).children().children().eq(0).prop('checked',false);
 						$(this).attr("style", "background-color: white"); 
 					}else{
@@ -116,6 +118,12 @@ $(document).ready(function(){
 		weekday[5]="星期五";
 		weekday[6]="星期六";
 		if(HolidayType == "N"){
+			var vdate = OverTimeDate.replace(/-/g, '/');
+			var monthDate = new Date(vdate);
+			var OTDate = ""+(monthDate.getMonth()+1)+monthDate.getDate();
+			if(OTDate=="38"){
+				alert("今天為婦女節，加班一在實時系統提報，若要提報加班三，請用聯絡單提報");
+			}
 			if(weekday[selectOverTimeDate.getDay()]=="星期日" || weekday[selectOverTimeDate.getDay()]=="星期六"){
 				if(OverTimeCal=="2"){
 					GetCalOverTimeFromServer(WorkshopNo,LineNo,RCNO,ClassNo,OverTimeDate,
@@ -128,7 +136,7 @@ $(document).ready(function(){
 			}
 			else{
 				if(OverTimeCal=="2"){
-					alert("報加班的日期為"+weekday[selectOverTimeDate.getDay()]+",正常班不允許選假日班時間類型，如果為調班，加班二的部分請用聯絡單作業！")
+					alert("報加班的日期為"+weekday[selectOverTimeDate.getDay()]+",正常班不允許選假日班時間類型，如果為調班，加班二的部分請用聯絡單作業！！！")
 					/*if (confirm("報加班的日期為"+weekday[selectOverTimeDate.getDay()]+",您確定報假日班嗎？")) {
 						GetCalOverTimeFromServer(WorkshopNo,LineNo,RCNO,ClassNo,OverTimeDate,
 							OverTimeCal,ItemNumber,IsAbnormal);
@@ -362,6 +370,7 @@ $(document).ready(function(){
 				'<td></td>'+
 				'<td>0</td>'+
 				'<td></td>'+
+				'<td>0</td>'+
 				'<td>未審核</td></tr>';				
 			}
 			else{
@@ -376,6 +385,7 @@ $(document).ready(function(){
 				'<td>'+EmpInfo.overTimeInterval+'</td>'+
 				'<td>'+EmpInfo.overTimeHours+'</td>'+
 				'<td>'+OverTimeTypeText+'</td>'+
+				'<td>'+EmpInfo.bonus+'</td>'+
 				'<td>未審核</td></tr>';
 				
 			}
@@ -479,7 +489,8 @@ $(document).ready(function(){
 					result[i]["OnDutyTime"],
 					result[i]["OffDutyTime"],
 					result[i]["OverTimeInterval"],
-					result[i]["OverTimeHour"]);
+					result[i]["OverTimeHour"],
+					result[i]["BONUS"]);
 			overTimeEmps.push(OTEmpInfo);
 		}
 	}
@@ -495,8 +506,9 @@ $(document).ready(function(){
 		$('#OTPendingEmpTable tbody .selectedEmp:checked').each(function(){
 			var xhr=$(this).parent().parent();		
 			 var overTimehour = $(xhr).children().eq(9).text();
-				if(overTimehour=="0"){
-					  alert("工時小於等於0，有誤，請重新選擇加班人員！");
+			 var dghour = $(xhr).children().eq(11).text();
+				if(overTimehour=="0"&&dghour=="0"){
+					  alert("工時和頂崗津貼小於等於0，有誤，請重新選擇加班人員！");
 				}
 				else{
 					selectedEmpIDs.push($(xhr).children().eq(2).text());

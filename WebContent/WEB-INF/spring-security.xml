@@ -25,6 +25,8 @@
 		<intercept-url pattern="/JobTitle/ShowAllJobTitle" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
 		<intercept-url pattern="/LineMapping/ShowAllLineMapping" access="hasAnyRole('ROLE_ADMIN','ROLE_LINEMAPPING')" />
 		<intercept-url pattern="/ShowCheckOverTime15min" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
+		<intercept-url pattern="/FlinePerson/ShowFlinePersonMaintain" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
+		<intercept-url pattern="/OTCardPerson/ShowOTCardbdPerson" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
 		<!-- access="hasRole('ROLE_USER','ROLE_ADMIN')"  -->
 
      <!--会话管理 -->   
@@ -46,7 +48,7 @@
 			 login-processing-url="/Login" 
 			username-parameter="username"
 			password-parameter="password" />
-		<logout logout-success-url="/Login?logout"  />
+		<logout logout-success-url="/Login?logout" invalidate-session="true" />
 		
 
 		<!-- enable csrf protection -->
