@@ -1,6 +1,6 @@
 package com.foxlink.realtime.model;
 
-public class Emp{	
+public class Employee {
 	private String EmpNo;
 	private String EmpName;
 	private String DeptNo;
@@ -12,33 +12,28 @@ public class Emp{
 	private int IsOnWork;
 	private String Job_Title;
 	private String Job_Name;
-
+	private String Line_Personnel;
 	
 	public String getEmpNo() {
 		return EmpNo;
 	}
-	public void setEmpNo(String eMPNO) {
-		EmpNo = eMPNO;
-	}
-	
 	public String getEmpName() {
 		return EmpName;
 	}
-	public void setEmpName(String nAME) {
-		EmpName = nAME;
+	public void setEmpName(String empName) {
+		EmpName = empName;
 	}
-	
 	public String getDeptNo() {
 		return DeptNo;
 	}
-	public void setDeptNo(String dEPTNO) {
-		DeptNo = dEPTNO;
+	public void setDeptNo(String deptNo) {
+		DeptNo = deptNo;
 	}
 	public String getDeptName() {
 		return DeptName;
 	}
-	public void setDeptName(String depName) {
-		DeptName = depName;
+	public void setDeptName(String deptName) {
+		DeptName = deptName;
 	}
 	public String getDirect() {
 		return Direct;
@@ -82,15 +77,22 @@ public class Emp{
 	public void setJob_Name(String job_Name) {
 		Job_Name = job_Name;
 	}
-	
-
+	public void setEmpNo(String empNo) {
+		EmpNo = empNo;
+	}
+	public String getLine_Personnel() {
+		return Line_Personnel;
+	}
+	public void setLine_Personnel(String line_Personnel) {
+		Line_Personnel = line_Personnel;
+	}
 	@Override
 	public String toString() {
-		return "Emp [EmpNo=" + EmpNo + ", EmpName=" + EmpName + ", DeptNo=" + DeptNo + ", DeptName=" + DeptName
+		return "Employee [EmpNo=" + EmpNo + ", EmpName=" + EmpName + ", DeptNo=" + DeptNo + ", DeptName=" + DeptName
 				+ ", Direct=" + Direct + ", CardID=" + CardID + ", CostID=" + CostID + ", Permission=" + Permission
-				+ ", IsOnWork=" + IsOnWork + ", Job_Title=" + Job_Title + ", Job_Name=" + Job_Name + "]";
+				+ ", IsOnWork=" + IsOnWork + ", Job_Title=" + Job_Title + ", Job_Name=" + Job_Name + ", Line_Personnel="
+				+ Line_Personnel + "]";
 	}
-	
 	
 	
 }
