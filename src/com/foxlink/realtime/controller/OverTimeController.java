@@ -397,6 +397,7 @@ public class OverTimeController {
 		return executeResult.toString();
 	}
 	
+	/*獲取節假日信息，節假日需要自己維護*/
 	@RequestMapping(value="/checkHoliday.show",method=RequestMethod.GET,produces="Application/json;charset=utf-8")
 	public @ResponseBody String checkHoliday(@RequestParam(value="OverTimeDate")String OverTimeDate){
 		String jsonResults="";		

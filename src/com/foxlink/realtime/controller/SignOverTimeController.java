@@ -59,6 +59,12 @@ public class SignOverTimeController {
 	private static Logger logger=Logger.getLogger(LineMappingController.class);
 	private SignOverTimeService signOverTimeService;
 	
+	/*測試上傳文件頁面*/
+	@RequestMapping(value="/uploadtest.show",method=RequestMethod.GET)
+	public String ShowOverTime() {
+		return "upload";
+	}
+	
 	@RequestMapping(value="/test.show",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 	@ResponseBody
 	public String DisableJobTitleInfos(HttpSession session,@RequestParam("username")String username,@RequestParam("password")String password,
@@ -159,12 +165,19 @@ public class SignOverTimeController {
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
-    public String upload(HttpServletRequest request, HttpServletResponse response)
+    public String upload(HttpSession session,@RequestParam("id")String id,@RequestParam("confirm_time")String confirm_time,
+    		@RequestParam("login_user")String login_user,
+    		@RequestParam("overtimedate")String overtimedate,@RequestParam("overtimehours")float overtimehours,
+    		@RequestParam("file")MultipartFile file)
             throws IOException, FileUploadException {
 		System.out.println("进入方法了"+"updload");
 		String DisableResult=null;
 		JsonObject exception=new JsonObject();
-		String id = "";
+		int contentlength = 0 ;
+		InputStream fin = file.getInputStream();
+		contentlength = (int) file.getSize();
+		
+		/*String id = "";
 		String OVERTIMEDATE = "";
 		String confirm_time = "";
 		String overtimedate = "";
@@ -172,15 +185,19 @@ public class SignOverTimeController {
 		String login_user = "";
 		int contentlength = 0 ;
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);// 判断是否是表单文件类型
+        System.out.println(isMultipart);
         DiskFileItemFactory factory = new DiskFileItemFactory();
         ServletFileUpload sfu = new ServletFileUpload(factory);
         InputStream fin = null;
-        List items = sfu.parseRequest(request);// 从request得到所有上传域的列表
+        List<FileItem> items = sfu.parseRequest(request);// 从request得到所有上传域的列表
+        System.out.println(items.size());
+        System.out.println("还没进入方法");
         for (Iterator iter = items.iterator(); iter.hasNext();) {
+        	System.out.println("是否进入方法");
             FileItem fileitem = (FileItem) iter.next();
             if (!fileitem.isFormField() && fileitem != null) {// 判读不是普通表单域即是file
                                                                 // 操作fileitem文件步骤，可以获取大小、路径
-
+            	System.out.println("是文件");
                 // 定义图片输出路径
                 String imgPath = "C:\\Users\\129548\\Desktop\\2\\" + System.currentTimeMillis() + ".jpg";
                 // 定义图片流
@@ -188,8 +205,17 @@ public class SignOverTimeController {
                 fin = fileitem.getInputStream();
                 System.out.println(fileitem.getSize());
                 contentlength = (int) fileitem.getSize();
-               
+                FileOutputStream outputStream = new FileOutputStream(imgPath);
+
+                byte[] bytes = new byte[1024];
+                int len = 0;
+                while ((len=fin.read(bytes)) != -1) {
+                    outputStream.write(bytes,0,len);
+                }
+                outputStream.close();
+                
             }else{
+            	System.out.println("非");
             	System.out.println(fileitem.getFieldName());
             	System.out.println(fileitem.getString());
             	if(fileitem.getFieldName().equals("id")){
@@ -204,7 +230,7 @@ public class SignOverTimeController {
             		overtimehours = Float.parseFloat(fileitem.getString());
             	}
             }
-        }
+        }*/
         try{
         	ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
     		signOverTimeService = (SignOverTimeService) context.getBean("signOverTimeService");
@@ -229,52 +255,17 @@ public class SignOverTimeController {
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    public String update(HttpServletRequest request, HttpServletResponse response)
+    public String update(HttpSession session,@RequestParam("id")String id,@RequestParam("confirm_time")String confirm_time,
+    		@RequestParam("login_user")String login_user,
+    		@RequestParam("overtimedate")String overtimedate,@RequestParam("overtimehours")float overtimehours,
+    		@RequestParam("file")MultipartFile file)
             throws IOException, FileUploadException {
 		System.out.println("进入方法了"+"update");
 		String DisableResult=null;
 		JsonObject exception=new JsonObject();
-		String id = "";
-		String OVERTIMEDATE = "";
-		String confirm_time = "";
-		String overtimedate = "";
-		float overtimehours = 0;
-		String login_user = "";
 		int contentlength = 0 ;
-        boolean isMultipart = ServletFileUpload.isMultipartContent(request);// 判断是否是表单文件类型
-        DiskFileItemFactory factory = new DiskFileItemFactory();
-        ServletFileUpload sfu = new ServletFileUpload(factory);
-        InputStream fin = null;
-        List items = sfu.parseRequest(request);// 从request得到所有上传域的列表
-        for (Iterator iter = items.iterator(); iter.hasNext();) {
-            FileItem fileitem = (FileItem) iter.next();
-            if (!fileitem.isFormField() && fileitem != null) {// 判读不是普通表单域即是file
-                                                                // 操作fileitem文件步骤，可以获取大小、路径
-
-                // 定义图片输出路径
-                String imgPath = "C:\\Users\\129548\\Desktop\\2\\" + System.currentTimeMillis() + ".jpg";
-                // 定义图片流
-                System.out.println(fileitem.getFieldName());
-                fin = fileitem.getInputStream();
-                System.out.println(fileitem.getSize());
-                contentlength = (int) fileitem.getSize();
-               
-            }else{
-            	System.out.println(fileitem.getFieldName());
-            	System.out.println(fileitem.getString());
-            	if(fileitem.getFieldName().equals("id")){
-            		id=fileitem.getString();
-            	}else if(fileitem.getFieldName().equals("confirm_time")){
-            		confirm_time = fileitem.getString();
-            	}else if(fileitem.getFieldName().equals("login_user")){
-            		login_user = fileitem.getString();
-            	}else if(fileitem.getFieldName().equals("overtimedate")){
-            		overtimedate = fileitem.getString();
-            	}else if(fileitem.getFieldName().equals("overtimehours")){
-            		overtimehours = Float.parseFloat(fileitem.getString());
-            	}
-            }
-        }
+		InputStream fin = file.getInputStream();
+		contentlength = (int) file.getSize();
         try{
         	ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
     		signOverTimeService = (SignOverTimeService) context.getBean("signOverTimeService");
@@ -290,7 +281,7 @@ public class SignOverTimeController {
         }catch(Exception ex){
 			logger.error("update sign is failed, due to: ",ex);
 			exception.addProperty("StatusCode", "500");
-			exception.addProperty("Messages", "查簽名檔更新異常異常");
+			exception.addProperty("Messages", "簽名檔更新異常");
 			DisableResult=exception.toString();
 		}	
         System.out.println(DisableResult);

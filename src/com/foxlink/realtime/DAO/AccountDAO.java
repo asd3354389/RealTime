@@ -182,7 +182,7 @@ public class AccountDAO extends DAO<User> {
 		int updateRow=-1,updateRole=-1;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
-		String sSQL="UPDATE SWIPE.USER_DATA SET Assistant_Id=?,CostId=?,Phone_Tel=?,Update_User=? WHERE UserName=?";
+		String sSQL="UPDATE SWIPE.USER_DATA SET Assistant_Id=?,CostId=?,Phone_Tel=?,Update_User=?,Departmentcode=? WHERE UserName=?";
 		try {
 			if(updateRecord!=null) {
 				String sSQLrole="UPDATE USER_Roles SET ROLE=?,Update_User=? WHERE UserName=?";
@@ -203,7 +203,8 @@ public class AccountDAO extends DAO<User> {
 						arg0.setString(2, updateRecord.getCOSTID());
 						arg0.setString(3, updateRecord.getPHONE_TEL());
 						arg0.setString(4, updateRecord.getUPDATE_USER());
-						arg0.setString(5, updateRecord.getUSERNAME());
+						arg0.setString(5, updateRecord.getDEPARTMENTCODE());
+						arg0.setString(6, updateRecord.getUSERNAME());
 					}	
 				});
 				transactionManager.commit(txStatus);

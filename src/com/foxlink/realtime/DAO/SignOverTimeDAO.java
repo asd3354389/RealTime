@@ -280,7 +280,9 @@ public class SignOverTimeDAO extends DAO<UserDate> {
 			transactionManager.rollback(txStatus);
 		}finally {
 			try {
-				fin.close();
+				if(fin != null){
+					fin.close();
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

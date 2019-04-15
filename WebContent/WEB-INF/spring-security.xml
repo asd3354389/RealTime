@@ -48,7 +48,7 @@
 			 login-processing-url="/Login" 
 			username-parameter="username"
 			password-parameter="password" />
-		<logout logout-success-url="/Login?logout"  />
+		<logout logout-success-url="/Login?logout" invalidate-session="true" />
 		
 
 		<!-- enable csrf protection -->

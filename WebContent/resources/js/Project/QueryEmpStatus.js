@@ -149,6 +149,9 @@ $(document)
 																		+ data[i].OVERTIMEINTERVAL
 																		+ '</td>'
 																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
+																		+ data[i].bonus
+																		+ '</td>'
+																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 																		+ data[i].APPLICATION_PERSON
 																		+ '</td>'
 																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
@@ -504,6 +507,8 @@ $(document)
 										+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 										+ queryResult[i].OVERTIMEINTERVAL
 										+ '</td>' + '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
+										+ queryResult[i].bonus
+										+ '</td>'+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 										+ queryResult[i].APPLICATION_PERSON
 										+ '</td>' + '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 										+ queryResult[i].APPLICATION_ID

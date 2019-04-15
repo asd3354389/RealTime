@@ -70,6 +70,9 @@ $(document).ready(function(){
 				}
 			});
 			
+			var depid=$(parentElement).find('td').eq(3).text();
+			$(parentElement).find('td').eq(3).html('<input type="text" class="changeCostId input-small" value="'+depid+'">');
+			
 			var costId=$(parentElement).find('td').eq(4).text();
 			$(parentElement).find('td').eq(4).html('<input type="text" class="changeCostId input-small" value="'+costId+'">');
 			
@@ -89,11 +92,12 @@ $(document).ready(function(){
 				var User=new Object(),errorMessage='';
 				User.USERNAME=$(parentElement).find('td').eq(0).text();
 				User.ASSISTANT_ID=$(parentElement).find('option:selected').eq(0).val();
-				User.COSTID=$(parentElement).find('td input:text').eq(0).val();
-				User.PHONE_TEL=$(parentElement).find('td input:text').eq(1).val();							
-				User.ROLE=$(parentElement).find('td input:text').eq(2).val();
+				User.DEPARTMENTCODE=$(parentElement).find('td input:text').eq(0).val();
+				User.COSTID=$(parentElement).find('td input:text').eq(1).val();
+				User.PHONE_TEL=$(parentElement).find('td input:text').eq(2).val();							
+				User.ROLE=$(parentElement).find('td input:text').eq(3).val();
 					
-				if(User["DEPARTMENTCODE"]==="null" || User["DEPARTMENTCODE"]=='')
+				if(User.DEPARTMENTCODE==="null" || User.DEPARTMENTCODE=='')
 					errorMessage+='部門代碼未填寫\n';
 				if(User.COSTID==="null" || User.COSTID=='')
 					errorMessage+='所報加班部門費用代碼未填寫\n';
@@ -131,6 +135,7 @@ $(document).ready(function(){
 									  alert(data.Message);
 									  $(parentElement).find('.editBtn,.deleteBtn').show();
 									  $(parentElement).find('td').eq(2).html(User.ASSISTANT_ID);
+									  $(parentElement).find('td').eq(3).html(User.DEPARTMENTCODE);
 									  $(parentElement).find('td').eq(4).html(User.COSTID);
 									  $(parentElement).find('td').eq(5).html(User.PHONE_TEL);
 									  $(parentElement).find('td').eq(6).html(User.ROLE);
@@ -157,6 +162,7 @@ $(document).ready(function(){
 				var parentElement=$(this).parent().parent();
 				$(parentElement).find('.editBtn,.deleteBtn').show();
 				$(parentElement).find('td').eq(2).html(assistantID);
+				$(parentElement).find('td').eq(3).html(depid);
 				$(parentElement).find('td').eq(4).html(costId);
 				$(parentElement).find('td').eq(5).html(phoneTel);
 				$(parentElement).find('td').eq(6).html(role);
