@@ -170,4 +170,18 @@
 	<bean id="OT15minService" class="com.foxlink.realtime.service.OT15minService">
 		<property name="OT15minDAO" ref="OT15minDAO" />
 	</bean>
+	
+	<bean id="fLinePersonMtDAO" class="com.foxlink.realtime.DAO.FLinePersonMtDAO"
+		parent="dAO">
+	</bean>
+	<bean id="fLinePersonMtService" class="com.foxlink.realtime.service.FLinePersonMtService">
+		<property name="fLinePersonMtDAO" ref="fLinePersonMtDAO" />
+	</bean> 
+	
+	<bean id="oTCardbdPersonDAO" class="com.foxlink.realtime.DAO.OTCardbdPersonDAO"
+		parent="dAO">
+	</bean>
+	<bean id="oTCardbdPersonService" class="com.foxlink.realtime.service.OTCardbdPersonService">
+		<property name="oTCardbdPersonDAO" ref="oTCardbdPersonDAO" />
+	</bean>
 </beans>
