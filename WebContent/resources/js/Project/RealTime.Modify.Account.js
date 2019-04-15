@@ -162,6 +162,7 @@ $(document).ready(function(){
 				var parentElement=$(this).parent().parent();
 				$(parentElement).find('.editBtn,.deleteBtn').show();
 				$(parentElement).find('td').eq(2).html(assistantID);
+				$(parentElement).find('td').eq(3).html(depid);
 				$(parentElement).find('td').eq(4).html(costId);
 				$(parentElement).find('td').eq(5).html(phoneTel);
 				$(parentElement).find('td').eq(6).html(role);
