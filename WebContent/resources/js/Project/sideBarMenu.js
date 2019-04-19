@@ -47,7 +47,12 @@
 				"menuname" : "線別維護",
 				"icon" : "icon-nav",
 				"url" : "LineMapping/ShowAllLineMapping"
-			},{
+			}]
+		},{
+			"menuid" : "55",
+			"icon" : "icon-sys",
+			"menuname" : "車間門禁管理",
+			"menus" : [ {
 				"menuname" : "隨綫人員維護",
 				"icon" : "icon-nav",
 				"url" : "FlinePerson/ShowFlinePersonMaintain"
@@ -55,8 +60,12 @@
 				"menuname" : "離崗卡與員工綁定維護",
 				"icon" : "icon-nav",
 				"url" : "OTCardPerson/ShowOTCardbdPerson"
+			},{
+				"menuname" : "進出車間卡機IP維護",
+				"icon" : "icon-nav",
+				"url" : "IOCardBdIP/ShowIOCardbdIP"
 			}]
-		}, {
+		},{
 			"menuid" : "56",
 			"icon" : "icon-sys",
 			"menuname" : "系統信息管理",
