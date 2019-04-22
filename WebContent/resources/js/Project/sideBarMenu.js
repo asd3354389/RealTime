@@ -55,7 +55,12 @@
 				"menuname" : "離崗卡與員工綁定維護",
 				"icon" : "icon-nav",
 				"url" : "OTCardPerson/ShowOTCardbdPerson"
-			}]
+			},{
+				"menuname" : "電腦Ip綁定部門代碼",
+				"icon" : "icon-nav",
+				"url" : "IpBinding/ShowIpBinding"
+			}
+			]
 		}, {
 			"menuid" : "56",
 			"icon" : "icon-sys",
