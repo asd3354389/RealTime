@@ -11,7 +11,7 @@ $(document).ready(function(){
               CLICKTAG = 1;  
               pElement.disabled=true;
               // 等待3s后重置按钮可用
-              setTimeout(function () { CLICKTAG = 0 ; pElement.disabled=false;}, 3000);  
+              setTimeout(function () { CLICKTAG = 0 ; pElement.disabled=false;}, 2000);  
           }
       }
 
@@ -23,7 +23,7 @@ $(document).ready(function(){
 	})
 	//更改綁定離崗卡
 	$('#changeOTWorkshop').click(function(){
-		
+		button_onclick($('#changeOTWorkshop')[0]);
 		var OTCardNo = $('#ChangeOTCard').val();
 		var WorkShop=$('#ChangeWorkShop option:selected').val();
 		var WorkShopb=$('#ChangeWorkShop').val();
@@ -61,7 +61,7 @@ $(document).ready(function(){
 	
 	$('#relieveBdOTCard').click(function(){
 		button_onclick($('#relieveBdOTCard')[0]);
-		console.log($('#relieveBdOTCard')[0]);
+//		console.log($('#relieveBdOTCard')[0]);
 		var Emp=[];
 		$("#Personbinding .spTable").find('input:checked').each(function (index, item) {
 		    var tdDom = $(item).parent().parent().children();
@@ -103,6 +103,7 @@ $(document).ready(function(){
 	
 	//離崗卡綁定工號
 	$('#changebdOT').click(function(){
+		button_onclick($('#changebdOT')[0])
 		var user={},errorMessage='';
 		user["Dmp_id"]=$('#inputUserName').val();
 		user["D_CardID"]=$('#inputOTCarid').val();
@@ -132,12 +133,13 @@ $(document).ready(function(){
 				data:JSON.stringify(user),
 				dataType:'json',
 				success:function(data){
-					$('#submitNewUser').prop("disabled",false);
+					
 					 if(data!=null && data!=''){
 						 if(data.StatusCode=="200"){
 							 $('#inputUserName').val('');
 							 $('#inputOTCarid').val('');
 							 alert(data.Message);
+//							 $('#changebdOT').prop("disabled",false);
 							 ShowAllPersonList();
 							/* alert(data.Message);			
 							 $('#inputUserName').val('');
@@ -154,11 +156,11 @@ $(document).ready(function(){
 							 alert(data.Message);
 						 }
 					 }else{
-						 alert('新增賬號基本資料失敗!');
+						 alert('綁定離崗卡失敗!');
 					 }
 				},
 				error:function(e){
-					alert('新增賬號基本資料發生錯誤');
+					alert('綁定離崗卡發生錯誤');
 				}
 			});
 		}
@@ -169,6 +171,11 @@ $(document).ready(function(){
 	    	}
 	    }	
 	})
+	
+	 $('#resetSubmit').click(function(){
+		    $('#inputUserName').val('');
+	    	$('#inputOTCarid').val('');
+	  });
 	
 	//判斷工號是否綁定
 	  function checkUserNameDuplicate(Dmp_id){
@@ -238,7 +245,7 @@ $(document).ready(function(){
 							ShowAllPersonListTable(rawData);
 						else{
 							/*$('.left').css('height','727px');*/
-							alert('暫無隨綫人員資料');
+							alert('暫無離崗卡與人員綁定資料');
 						}
 					}
 				}
@@ -258,8 +265,9 @@ $(document).ready(function(){
 					'<td>'+executeResult[i]["Dmp_id"]+'</td>'+
 					'<td>'+executeResult[i]["name"]+'</td>'+
 					'<td>'+executeResult[i]["D_CardID"]+'</td>'+
-					'<td>'+executeResult[i]["Default_WorkShop"]+'</td>'+
-					'<td>'+executeResult[i]["Enable"]+'</td>';
+					'<td>'+executeResult[i]["Default_WorkShop"]+'</td>'
+					var enabled =executeResult[i].Enable=="Y"?'已生效':'';		
+					tableContents+='<td>'+enabled+'</td>'
 				tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
 					$('#Personbinding tbody').append(tableContents);
@@ -408,6 +416,7 @@ $(document).ready(function(){
 	}
 	
 	function getToPerson(Emp){
+	
 		$.ajax({
 			type:'POST',
 			contentType: "application/json",
@@ -419,11 +428,13 @@ $(document).ready(function(){
 				alert(e);
 				},
 			success:function(data){
+				
 				 if(data!=null && data!=''){
 					  if(data.StatusCode=="200"){
 						  ShowAllPersonList();
 						  $('#ChangeOTCard').val("");
 						  alert(data.Message);
+//						  $('#changeOTWorkshop').prop("disabled",false);
 						 /* location.reload();*/
 						 
 					  }
@@ -438,6 +449,7 @@ $(document).ready(function(){
 	}
 	
 	function relieveOTCard(Emp){
+//		$('#relieveBdOTCard').prop("disabled",false);
 		$.ajax({
 			type:'POST',
 			contentType: "application/json",
@@ -449,8 +461,10 @@ $(document).ready(function(){
 				alert(e);
 				},
 			success:function(data){
+				
 				 if(data!=null && data!=''){
 					  if(data.StatusCode=="200"){
+						  
 						  ShowAllPersonList();
 						  alert(data.Message);
 						 /* location.reload();*/

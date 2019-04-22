@@ -20,7 +20,7 @@
 <link href="${bootstrapSelectCSS}" rel="stylesheet">
 
 <c:url value="/resources/assets/js/jquery-1.8.3.min.js" var="assetsJqueryJS" />
-<c:url value="/resources/js/Project/RealTime.Modify.OTCardbdPerson.js?version=${resourceVersion}" var="modifyOTCardbdPerson" /> 
+<c:url value="/resources/js/Project/RealTime.Modify.IOCardMachineIP.js?version=${resourceVersion}" var="modifyIOCardMaIP" /> 
 <c:url value="/resources/js/jquery/jquery-1.11.3.min.js" var="JqueryJS" />
 <c:url value="/resources/js/bootstrap/bootstrap.min.js" var="bootstrapJS" />
 <c:url value="/resources/js/bootstrap/bootstrap-select.min.js" var="bootstrapSelectJS" />
@@ -29,9 +29,9 @@
 <script src="${bootstrapJS}" type="text/javascript"></script>
 <script src="${bootstrapSelectJS}" type="text/javascript"></script>
 <script type="text/javascript" src='${AjaxCheckSessionJS}'></script>
-<script src="${modifyOTCardbdPerson}" type="text/javascript"></script>
+<script src="${modifyIOCardMaIP}" type="text/javascript"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>隨綫人員維護</title>
+<title>進出車間卡機IP維護</title>
 </head>
 <body style="position:relative;">
 		<div id="header" class="header-fixed">
@@ -48,54 +48,37 @@
 		<div class="panel-body" style="border: 1px solid #e1e3e6;">
 			<div align="right">
 				查詢條件：<select id="queryCritirea" class="input-small">
-					<option value="Id">工號</option>
-					<option value="Name">姓名</option>
-					<option value="Depid">部門代碼</option>
-					<option value="Costid">費用代碼</option>
+					<option value="IP">卡機IP</option>
 				</select> <input type="text" id="queryParam" name="queryParam"
 					class="input-sm"> <input type="button"
-					id="searchBdPersonListBtn" name="searchBdPersonListBtn"
+					id="searchIOCardMaIP" name="searchIOCardMaIP"
 					class="btn btn-sm btn-primary" value="Search">
-					 <a id="addNewBdOTCardBtn" role="button" href="#insertBdOTCard"
-					class="btn btn-primary btn-sm" data-toggle="modal">創建員工綁定離崗卡</a>
 			</div>
 			<div>
-					<h4>離崗卡與員工工號綁定列表：</h4>
+					<h4 style="position: relative;">進出車間卡機IP列表信息：</h4>
+					<a id="addNewIOCardMaIP" role="button" href="#insertIOCardMaIP"class="btn btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 500px;font-size: 14px;"><i class="glyphicon glyphicon-plus"></i>創建卡機IP與車間狀態I/O</a>
 			</div>
 			<div class="middle">
-				<div class="left" style="width:60%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
-					<table id="Personbinding" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
+				<div class="left" style="width:80%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+					<table id="IOCardMaIPTable" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
 						<thead>
 							<tr>
-								<th><input type="checkbox" id="AllCheck">選擇20條</th>
-								<th>工號</th>
-								<th>姓名</th>
-								<th>離崗卡號</th>
-								<th>默認使用車間</th>
+								<th>卡機IP</th>
+								<th>車間名稱</th>
+								<th>車間描述</th>
+								<th>卡機狀態</th>
 								<th>是否生效</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody class='spTable'>
 						</tbody>
 					</table>
-					<div id="PersonListPagination" align="right" style="height: 20;position:absolute; bottom: 20px;right: 0px;">
+					<div id="IOCardMaIPListPagination" align="right" style="height: 20;position:absolute; bottom: -20px;right: 0px;">
 					</div>
 				</div>
-				<h4 style="display: inline-block;margin-left: 70px;">解除或更改離崗卡綁定員工信息</h4>
-				<div class="right" style="width:35%;height:730px;float:right;padding:10px 10px;position: relative;border:2px solid #f3f5f6">
-					<div>
-						<label for="ChangeOTCard">離崗卡號</label>
-    					<input type="text" class="form-control" id="ChangeOTCard" placeholder="離崗卡號">
-    					<label for="ChangeWorkShop">默認使用車間</label>
-    					<select id="ChangeWorkShop" class="form-control"></select>
-					</div>
-					<div style="margin-top:10px">
-						<div><input type="button" id="changeOTWorkshop" class="btn btn-sm btn-primary" value="更改綁定離崗卡號和使用車間"></div>
-						<div style="margin-top:10px"><input type="button" id="relieveBdOTCard" class="btn btn-sm btn-primary" value="解除離崗卡與員工信息綁定"></div>
-					</div>
-				</div> 
 			</div>
-			<jsp:include page="InsertBdOTCard.jsp" />
+			<jsp:include page="InsertNewIOCardMaIP.jsp" />
 		</div>
 	</div>
 </div>	

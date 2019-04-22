@@ -61,7 +61,7 @@ public class OTCardbdPersonController {
 			logger.error(e);
 			JsonObject exception=new JsonObject();
 			exception.addProperty("StatusCode", "500");
-			exception.addProperty("ErrorMessage", "取得實時工時人員資料列表列表失敗，原因："+e.toString());
+			exception.addProperty("ErrorMessage", "取得離崗卡綁定工號資料列表列表失敗，原因："+e.toString());
 			JsonResult=exception.toString();
 		}
 		return JsonResult;
