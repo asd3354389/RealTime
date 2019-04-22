@@ -65,8 +65,6 @@
 				"menuname" : "電腦Ip綁定部門代碼",
 				"icon" : "icon-nav",
 				"url" : "IpBinding/ShowIpBinding"
-			}
-			]
 		}, {
 
 				"menuname" : "進出車間卡機IP維護",
