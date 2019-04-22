@@ -61,11 +61,18 @@
 				"icon" : "icon-nav",
 				"url" : "OTCardPerson/ShowOTCardbdPerson"
 			},{
+
+				"menuname" : "電腦Ip綁定部門代碼",
+				"icon" : "icon-nav",
+				"url" : "IpBinding/ShowIpBinding"
+		}, {
+
 				"menuname" : "進出車間卡機IP維護",
 				"icon" : "icon-nav",
 				"url" : "IOCardBdIP/ShowIOCardbdIP"
 			}]
 		},{
+
 			"menuid" : "56",
 			"icon" : "icon-sys",
 			"menuname" : "系統信息管理",

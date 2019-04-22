@@ -179,6 +179,13 @@
 	<bean id="oTCardbdPersonService" class="com.foxlink.realtime.service.OTCardbdPersonService">
 		<property name="oTCardbdPersonDAO" ref="oTCardbdPersonDAO" />
 	</bean>
+
+    <bean id="ipBindingDAO" class="com.foxlink.realtime.DAO.IpBindingDAO"
+		parent="dAO">
+	</bean>
+	<bean id="ipBindingService" class="com.foxlink.realtime.service.IpBindingService">
+		<property name="ipBindingDAO" ref="ipBindingDAO" />
+	</bean>
 	
 	<bean id="iOCardbdIPDAO" class="com.foxlink.realtime.DAO.IOCardbdIPDAO"
 		parent="dAO">
@@ -186,4 +193,5 @@
 	<bean id="iOCardbdIPService" class="com.foxlink.realtime.service.IOCardbdIPService">
 		<property name="iOCardbdIPDAO" ref="iOCardbdIPDAO" />
 	</bean>
+
 </beans>
