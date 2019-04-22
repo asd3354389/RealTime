@@ -216,8 +216,10 @@ $(document).ready(function(){
 					'<td>'+executeResult[i]["EmpNo"]+'</td>'+
 					'<td>'+executeResult[i]["EmpName"]+'</td>'+
 					'<td>'+executeResult[i]["DeptNo"]+'</td>'+
-					'<td>'+executeResult[i]["CostID"]+'</td>'+
-					'<td>'+executeResult[i]["Line_Personnel"]+'</td>';
+					'<td>'+executeResult[i]["CostID"]+'</td>'
+					var Line_Personnel =executeResult[i].Line_Personnel=="Y"?'隨綫':'';		
+				tableContents+='<td>'+Line_Personnel+'</td>'
+//					'<td>'+executeResult[i]["Line_Personnel"]+'</td>';
 				tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
 					$('#FLinePersonMtY tbody').append(tableContents);
@@ -242,8 +244,10 @@ $(document).ready(function(){
 					'<td>'+executeResult[i]["EmpNo"]+'</td>'+
 					'<td>'+executeResult[i]["EmpName"]+'</td>'+
 					'<td>'+executeResult[i]["DeptNo"]+'</td>'+
-					'<td>'+executeResult[i]["CostID"]+'</td>'+
-					'<td>'+executeResult[i]["Line_Personnel"]+'</td>';
+					'<td>'+executeResult[i]["CostID"]+'</td>'
+				var Line_Personnel =executeResult[i].Line_Personnel=="N"?'非隨綫':'';		
+				tableContents+='<td>'+Line_Personnel+'</td>'
+//					'<td>'+executeResult[i]["Line_Personnel"]+'</td>';
 				tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
 					$('#FLinePersonMtN tbody').append(tableContents);

@@ -268,7 +268,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 			});
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("更改隨綫狀態失敗，原因："+e);
+			logger.error("更改離崗卡與工號綁定狀態失敗，原因："+e);
 			e.printStackTrace();
 			result=1;
 		}
@@ -297,7 +297,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 			});
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("更改隨綫狀態失敗，原因："+e);
+			logger.error("解除離崗卡與工號綁定狀態失敗，原因："+e);
 			e.printStackTrace();
 			result=1;
 		}
@@ -334,7 +334,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 				transactionManager.commit(txStatus);
 			}			
 		catch(Exception ex) {
-			logger.error("提交量測數據失敗，原因："+ex);
+			logger.error("HT表插入狀態為N數據失敗，原因："+ex);
 			ex.printStackTrace();
 			result=1;
 			transactionManager.rollback(txStatus);
