@@ -193,5 +193,12 @@
 	<bean id="iOCardbdIPService" class="com.foxlink.realtime.service.IOCardbdIPService">
 		<property name="iOCardbdIPDAO" ref="iOCardbdIPDAO" />
 	</bean>
+	
+	<bean id="workshopNoRestDao" class="com.foxlink.realtime.DAO.WorkshopNoRestDao"
+		parent="dAO">
+	</bean>
+	<bean id="workshopNoRestService" class="com.foxlink.realtime.service.WorkshopNoRestService">
+		<property name="workshopNoRestDao" ref="workshopNoRestDao" />
+	</bean>
 
 </beans>
