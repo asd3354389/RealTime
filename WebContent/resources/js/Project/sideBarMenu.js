@@ -70,6 +70,11 @@
 				"menuname" : "進出車間卡機IP維護",
 				"icon" : "icon-nav",
 				"url" : "IOCardBdIP/ShowIOCardbdIP"
+			}, {
+
+				"menuname" : "維護車間休息時間段",
+				"icon" : "icon-nav",
+				"url" : "WorkShopNoRest/ShowWorkshopNoRestInfo"
 			}]
 		},{
 
