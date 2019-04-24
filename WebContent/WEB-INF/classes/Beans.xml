@@ -186,4 +186,11 @@
 	<bean id="iOCardbdIPService" class="com.foxlink.realtime.service.IOCardbdIPService">
 		<property name="iOCardbdIPDAO" ref="iOCardbdIPDAO" />
 	</bean>
+	
+	<bean id="iOWorkShopPowerDAO" class="com.foxlink.realtime.DAO.IOWorkShopPowerDAO"
+		parent="dAO">
+	</bean>
+	<bean id="iOWorkShopPowerService" class="com.foxlink.realtime.service.IOWorkShopPowerService">
+		<property name="iOWorkShopPowerDAO" ref="iOWorkShopPowerDAO" />
+	</bean>
 </beans>

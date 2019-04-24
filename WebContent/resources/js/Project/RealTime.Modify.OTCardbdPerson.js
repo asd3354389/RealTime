@@ -2,6 +2,7 @@ $(document).ready(function(){
 	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false;
 	var reg = new RegExp("^[0-9]{10}$");
 	ShowAllPersonList();
+//	ShowCostNo()
 	ShowWorkShop();
 	
 	
@@ -15,75 +16,16 @@ $(document).ready(function(){
           }
       }
 
-	//全選20條
-	$('#AllCheck').click(function(){
-		 var checkALL = document.getElementById("AllCheck");
-	      var items = $("#Personbinding .spTable").find('input');
-	      checkAllBox(checkALL,items); 
-	})
-	//更改綁定離崗卡
-	$('#changeOTWorkshop').click(function(){
-		button_onclick($('#changeOTWorkshop')[0]);
-		var OTCardNo = $('#ChangeOTCard').val();
-		var WorkShop=$('#ChangeWorkShop option:selected').val();
-		var WorkShopb=$('#ChangeWorkShop').val();
-		var Emp=[];
-		$("#Personbinding .spTable").find('input:checked').each(function (index, item) {
-		     $(this).each(function () {
-			      var empNo = $(this).val();
-			      //td里的内容
-			      var Empid = new Object();
-			      Empid.Dmp_id = empNo;
-			      Empid.D_CardID = OTCardNo;
-			      Empid.Default_WorkShop= WorkShop;
-			      Emp.push(Empid);     
-		     })
-		})
+      $('#CostNo').blur(function(){
+    	  var CostId = $("#CostNo").val();
+    	  if(CostId!=""){
+    		  $('#deptNo').empty();
+    		  ShowDepNo(CostId);
+    	  }else{
+    		  
+    	  }   	 
+      })
 		
-			if(OTCardNo!=null&&OTCardNo!=""){
-				if(reg.test(OTCardNo)){
-					if(WorkShopb!=null&&WorkShopb!=""){
-						if(Emp.length>0){
-							getToPerson(Emp)
-						}else{
-							alert('未選擇員工信息!');
-						}
-					}else{
-						alert('默認使用車間不能爲空!')
-					}
-				}else{
-					alert('離崗卡號不符合規格！必須是10位數')
-				}
-			}else{
-				alert('離崗卡號不能為空！')
-			}
-	})
-	
-	$('#relieveBdOTCard').click(function(){
-		button_onclick($('#relieveBdOTCard')[0]);
-//		console.log($('#relieveBdOTCard')[0]);
-		var Emp=[];
-		$("#Personbinding .spTable").find('input:checked').each(function (index, item) {
-		    var tdDom = $(item).parent().parent().children();
-		    var EmpNo = tdDom.eq(1).text();
-		    var OTCardNo = tdDom.eq(3).text();
-		    var Default_WorkShopNo = tdDom.eq(4).text();
-		    var Empid = new Object();
-		      Empid.Dmp_id = EmpNo;
-		      Empid.D_CardID = OTCardNo;
-		      Empid.Default_WorkShop= Default_WorkShopNo;
-		      Emp.push(Empid);     
-		   /* console.log(EmpNo,OTCardNo,Default_WorkShopNo);*/
-		})
-/*		console.log(Emp);*/
-		if(Emp.length>0){
-			relieveOTCard(Emp);
-		}else{
-			alert("未選擇解綁的員工信息！解綁失敗！");
-		}
-		
-	})
-	
 	$('#searchBdPersonListBtn').click(function(){
 		curPage = 1;
 		var queryCritirea=$('#queryCritirea option:selected').val();
@@ -105,15 +47,13 @@ $(document).ready(function(){
 	$('#changebdOT').click(function(){
 		button_onclick($('#changebdOT')[0])
 		var user={},errorMessage='';
-		user["Dmp_id"]=$('#inputUserName').val();
 		user["D_CardID"]=$('#inputOTCarid').val();
+		user["Deptid"]=$('#deptNo option:selected').val();
 		user["Default_WorkShop"]=$('#workShop option:selected').val();
 		console.log(user);
 		
-		if(user["Dmp_id"]==="null" || user["Dmp_id"]=='')
-			errorMessage+='工號未填寫\n';
-		
-		checkUserNameDuplicate(user["Dmp_id"]);
+		if(user["Deptid"]==="null" || user["Deptid"]=='')
+			errorMessage+='未選擇使用的綫組別號\n';		
 		
 		if(user["D_CardID"]=='' || user["D_CardID"]==null){
 			errorMessage+='離崗卡號必填 \n';
@@ -123,8 +63,7 @@ $(document).ready(function(){
 		}
 		if(user["Default_WorkShop"]==="null" || user["Default_WorkShop"]=='')
 			errorMessage+='未選擇使用的車間\n';
-		
-		if(errorMessage=='' && isUserNameValid){
+		if(errorMessage==''){
 			//新增綁定賬號
 			$.ajax({
 				type:'POST',
@@ -136,11 +75,13 @@ $(document).ready(function(){
 					
 					 if(data!=null && data!=''){
 						 if(data.StatusCode=="200"){
-							 $('#inputUserName').val('');
+							 $('#CostNo').val('');
 							 $('#inputOTCarid').val('');
+							 $('#deptNo').empty();
+							 ShowAllPersonList();
 							 alert(data.Message);
 //							 $('#changebdOT').prop("disabled",false);
-							 ShowAllPersonList();
+							
 							/* alert(data.Message);			
 							 $('#inputUserName').val('');
 							 $('#inputChineseName').val('');
@@ -173,7 +114,8 @@ $(document).ready(function(){
 	})
 	
 	 $('#resetSubmit').click(function(){
-		    $('#inputUserName').val('');
+		 	$('#CostNo').val('');
+		    $('#deptNo').empty();
 	    	$('#inputOTCarid').val('');
 	  });
 	
@@ -205,7 +147,36 @@ $(document).ready(function(){
 				});
 			}
 		}
-	
+	function ShowDepNo(CostId){
+		  
+		  $.ajax({
+	  			type:'POST',
+	  			url:'../OTCardPerson/ShowDeptNo',
+	  			data:{CostId:CostId},
+//	  			async:false,
+	  			success:function(data){
+	  				
+	  				var StatusCode = data.StatusCode;
+	  				var message = data.message;
+	  				var htmlAppender='';
+	  				 if(StatusCode=="200"){	
+	  					var obj=eval(message);
+	  					console.log(obj);
+	  						for(var i=0;i<obj.length;i++){
+	  								htmlAppender+='<option value="'+obj[i].depid+'">'+obj[i].depid+'</option>';
+	  							}
+	  							 $('#deptNo').append(htmlAppender);
+	  				}else{
+	  					alert("此費用代碼錯誤或無相應的綫組別號！請重新輸入");
+						  $("#CostNo").val("");
+//				    	  $('#inputOTCarid').val("")
+	  				}
+	  			},
+	  			error:function(e){
+	  				alert(e);
+	  			}
+	  		})
+	}
 	function checkAllBox(checkALL,items){
 		 if(checkALL.checked==true){
 	            //checked判断是否选中
@@ -223,7 +194,7 @@ $(document).ready(function(){
 	            }
 		 }
 	}
-	//顯示綁定離崗卡的工號
+	//顯示綁定離崗卡的綫組別
 	function ShowAllPersonList(){
 		$.ajax({
 			type:'POST',
@@ -245,7 +216,8 @@ $(document).ready(function(){
 							ShowAllPersonListTable(rawData);
 						else{
 							/*$('.left').css('height','727px');*/
-							alert('暫無離崗卡與人員綁定資料');
+							ShowAllPersonListTable(rawData);
+							setTimeout(function(){ alert('暫無離崗卡與綫體號綁定資料'); }, 100);					
 						}
 					}
 				}
@@ -261,23 +233,148 @@ $(document).ready(function(){
 		var pageSize=rawData.pageSize;
 		var executeResult=rawData["list"];
 		for(var i=0;i<executeResult.length;i++){
-			var	tableContents='<tr><td style="padding: 5px 0px;"><input type="checkbox" value='+executeResult[i]["Dmp_id"]+' style="width:100%; height:15px"></td>'+
-					'<td>'+executeResult[i]["Dmp_id"]+'</td>'+
-					'<td>'+executeResult[i]["name"]+'</td>'+
+			var	tableContents='<tr>'+
+					'<td>'+executeResult[i]["Deptid"]+'</td>'+
 					'<td>'+executeResult[i]["D_CardID"]+'</td>'+
 					'<td>'+executeResult[i]["Default_WorkShop"]+'</td>'
-					var enabled =executeResult[i].Enable=="Y"?'已生效':'';		
-					tableContents+='<td>'+enabled+'</td>'
-				tableContents+='</tr>';
+					var enabled =executeResult[i].Enabled=="Y"?'已生效':'';		
+					tableContents+='<td>'+enabled+'</td>'+
+					'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>';
+				   tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
 					$('#Personbinding tbody').append(tableContents);
 		}
 		refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize);
-	/*	console.log(currentPage);
-		console.log(totalRecord);
-		console.log(totalPage);
-		console.log(pageSize);*/
-		/*goPageY(currentPage,totalRecord,totalPage,pageSize);*/
+	
+		$(".editBtn").click(function(){
+			var parentElement = $(this).parent().parent();
+			var WorkShopNo=$(parentElement).find('td').eq(2).text();
+			$(parentElement).find('td').eq(2).html('<select class="changeWorkShopNo input-small"></select>');
+			
+			ShowWorkShopNo('changeWorkShopNo');
+			
+			$(parentElement).find('td .changeWorkShopNo option').each(function(){
+				if($(this).val()==WorkShopNo){
+					$(this).prop('selected',true);
+				}
+			});
+			
+			var o_CardNo=$(parentElement).find('td').eq(1).text();
+			$(parentElement).find('td').eq(1).html('<input type="text" class="changeOTCard input-small" maxlength="10" value="'+o_CardNo+'">');
+//			$(parentElement).find('td').eq(2).html('<textarea class="input-small changeWorkShop_Desc" id="message-text" value="'+WorkShop_Desc+'"></textarea>');
+			
+//			$(parentElement).children().find('.editBtn .deleteBtn').hide();
+			$(parentElement).find('td').eq(4).append('<a class="confirmBtn btn btn-xs btn-link" role="button">確認</a>'+
+	        		'<a class="cancelBtn btn btn-xs btn-link" role="button">取消</a>');
+			$(parentElement).find('.editBtn,.deleteBtn').hide();
+     
+			$('.confirmBtn').click(function(){
+				var parentElement=$(this).parent().parent();
+				var User=new Object(),errorMessage='';
+//				var Direction=$(parentElement).find('.changeStatus option:selected').eq(0).text();
+				User.Deptid=$(parentElement).find('td').eq(0).text();
+				User.D_CardID=$(parentElement).find('td input:text').eq(0).val();
+				User.Default_WorkShop=$(parentElement).find('option:selected').eq(0).val();
+				User.O_CardID = o_CardNo;
+				
+				
+				if(User.D_CardID==="null" || User.D_CardID=='')
+					errorMessage+='離崗卡未填寫\n';
+				if(!reg.test(User.Deptid))	
+					errorMessage+='離崗卡號不符合規格！必須是10位數\n';
+				if(User.Default_WorkShop==="null" || User.Default_WorkShop=='')
+					errorMessage+='默認使用車間未填寫\n';
+
+				
+				console.log(User);
+				if(errorMessage==''){	
+					$.ajax({
+						type:'POST',
+						contentType: "application/json",
+						url:'../OTCardPerson//UpdateBdOTCard',
+						data:JSON.stringify(User),
+						dataType:'json',
+						error:function(e){
+							alert(e);
+							},
+						success:function(data){
+							  if(data!=null && data!=''){
+								  if(data.StatusCode=="200"){
+									  alert(data.Message);
+									  $(parentElement).find('.editBtn,.deleteBtn').show();
+									  $(parentElement).find('td').eq(0).html(User.Deptid);
+									  $(parentElement).find('td').eq(1).html(User.D_CardID);
+									  $(parentElement).find('td').eq(2).html(User.Default_WorkShop);
+//									  $(parentElement).find('td').eq(6).html(User.ROLE);
+									  $(parentElement).find('.confirmBtn,.cancelBtn').remove();
+								  }
+								  else{
+									  alert(data.Message);
+								  }
+							  }else{
+								  alert('操作失敗！')
+							  }
+							}
+							});
+					}
+				  else{
+				    	if(errorMessage.length>0 ||errorMessage!='' ){
+					    alert(errorMessage);		
+						event.preventDefault(); //preventDefault() 方法阻止元素发生默认的行为（例如，当点击提交按钮时阻止对表单的提交）。
+					}
+				  }
+				});
+			
+			$('.cancelBtn').click(function(){
+				var parentElement=$(this).parent().parent();
+				$(parentElement).find('.editBtn,.deleteBtn').show();
+				$(parentElement).find('td').eq(1).html(o_CardNo);
+				$(parentElement).find('td').eq(2).html(WorkShopNo);
+				$(this).parent().find('.confirmBtn,.cancelBtn').remove();
+			})					
+		})
+		$('.deleteBtn').click(function(){
+			var parentElement=$(this).parent().parent();
+			var deleteDeptid=$(parentElement).find('td').eq(0).text();
+			var o_CardNo=$(parentElement).find('td').eq(1).text();
+			var WorkShopNo=$(parentElement).find('td').eq(2).text();
+			var user={};
+			user["D_CardID"]=o_CardNo;
+			user["Deptid"]=deleteDeptid;		
+			user["Default_WorkShop"]=WorkShopNo
+			var results=confirm("確定刪除綫號為 "+deleteDeptid+" 的離崗卡綁定 ?");
+			console.log(user);
+			if(results==true){
+				$.ajax({
+					type:'POST',
+					url:'../OTCardPerson/RelieveOTCard',
+					contentType: "application/json",
+					data:JSON.stringify(user),
+					dataType:'json',
+					error:function(e){
+						alert(e);
+					},
+					success:function(data){
+						 if(data!=null && data!=''){
+							 if(data.StatusCode=="200"){
+								 alert(data.Message);
+								 /*
+								var parentElement=$(this).parent().parent();
+								//刪除，所以將此列從畫面移除
+								parentElement.remove();
+								  */
+								 ShowAllPersonList();
+							 }
+							 else{
+								 alert(data.Message);
+							 }
+						 }else{
+							 alert('操作失敗!')
+						 }
+					}
+				});
+			}
+		});
 	}
 	
 
@@ -478,5 +575,31 @@ $(document).ready(function(){
 				  }
 				}
 		})
+	}
+	
+	function ShowWorkShopNo(selectClass){
+		$.ajax({
+			type:'GET',
+			url:'../Utils/WorkshopNo.show',
+			data:{},
+			async:false,
+			success:function(data){
+				var htmlAppender='';
+			 if(data!=null && data!=''){	
+				if(data.length>0 && data.StatusCode == null){
+					for(var i=0;i<data.length;i++){
+						htmlAppender+='<option value="'+data[i]+'">'+data[i]+'</option>';
+					}
+					 $('.'+selectClass).append(htmlAppender);
+				/*	 $('#ChangeWorkShop').append(htmlAppender);*/
+				}
+				else{
+					alert('無車間資料');
+				}
+			 }else{
+				alert('無車間資料');
+			 }
+			}
+		});   
 	}
 })

@@ -6,8 +6,13 @@ import org.apache.log4j.Logger;
 
 import com.foxlink.realtime.DAO.OTCardbdPersonDAO;
 import com.foxlink.realtime.model.Emp;
+import com.foxlink.realtime.model.GetDepid;
 import com.foxlink.realtime.model.OTCardBD;
 import com.foxlink.realtime.model.Page;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class OTCardbdPersonService extends Service<Emp>{
@@ -132,45 +137,35 @@ public class OTCardbdPersonService extends Service<Emp>{
 		return oTCardbdPersonDAO.checkEmpIdExistence(EmpId,userDataCostId);
 	}
 
-	public String UpdateBdOTCard(OTCardBD[] otCardbd, String updateUser) {
+	public boolean UpdateBdOTCard(OTCardBD otCardbd, String updateUser) {
 		// TODO Auto-generated method stub
-		JsonObject resultJson = new JsonObject();
-		int result = oTCardbdPersonDAO.UpdateBdOTCard(otCardbd,updateUser);
-		if (otCardbd!=null) {
-			if(result==0){
-				resultJson.addProperty("StatusCode", "200");
-				resultJson.addProperty("Message", "離崗卡和車間信息修改成功");
-			}else{
-				resultJson.addProperty("StatusCode", "500");
-				resultJson.addProperty("Message", "離崗卡和車間信息修改失敗");
-			}
-		} else {
-			resultJson.addProperty("StatusCode", "500");
-			resultJson.addProperty("Message", "離崗卡和車間信息修改錯誤");
-		}
-		return resultJson.toString();
+		return oTCardbdPersonDAO.UpdateBdOTCard(otCardbd,updateUser);
 	}
 
-	public String RelieveOTCard(OTCardBD[] otCardbd, String updateUser) {
+	public boolean RelieveOTCard(OTCardBD otCardbd, String updateUser) {
 		// TODO Auto-generated method stub
-		JsonObject resultJson = new JsonObject();
-		int result = oTCardbdPersonDAO.RelieveOTCard(otCardbd,updateUser);
-		int insertHT = oTCardbdPersonDAO.OTCardNbdPerson(otCardbd, updateUser);
-		if (otCardbd!=null) {
-			if(result==0) {
-				if(insertHT==0){
-					resultJson.addProperty("StatusCode", "200");
-					resultJson.addProperty("Message", "離崗卡和员工信息解绑成功");
-				}else{
-					resultJson.addProperty("StatusCode", "500");
-					resultJson.addProperty("Message", "離崗卡和员工信息解绑失敗");
-				}
-			}
-		} else {
-			resultJson.addProperty("StatusCode", "500");
-			resultJson.addProperty("Message", "離崗卡和员工信息解绑錯誤");
-		}
-		return resultJson.toString();
+		return oTCardbdPersonDAO.RelieveOTCard(otCardbd,updateUser);
+	}
+
+	public String ShowDeptNo(String CostId) {
+		// TODO Auto-generated method stub
+		    JsonObject result = new JsonObject();
+	        List<GetDepid> list_dcResult = oTCardbdPersonDAO.ShowDeptNo(CostId);
+	        Gson gson = new GsonBuilder().serializeNulls().create();
+	        if (list_dcResult.size() == 0 || list_dcResult == null) {
+	            result.addProperty("StatusCode", "500");
+	            result.addProperty("message", "查無數據");
+	        } else {
+	            result.addProperty("StatusCode", "200");
+	            result.addProperty("message", gson.toJson(list_dcResult));
+	        }
+	        System.out.println(result.toString());
+	        return result.toString();
+	}
+
+	public boolean OTCardNbdPerson(OTCardBD otCardbd, String updateUser) {
+		// TODO Auto-generated method stub
+		return oTCardbdPersonDAO.OTCardNbdPerson(otCardbd,updateUser);
 	}
 
 

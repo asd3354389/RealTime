@@ -57,13 +57,17 @@
 				"icon" : "icon-nav",
 				"url" : "FlinePerson/ShowFlinePersonMaintain"
 			},{
-				"menuname" : "離崗卡與員工綁定維護",
+				"menuname" : "離崗卡與綫別號綁定維護",
 				"icon" : "icon-nav",
 				"url" : "OTCardPerson/ShowOTCardbdPerson"
 			},{
 				"menuname" : "進出車間卡機IP維護",
 				"icon" : "icon-nav",
 				"url" : "IOCardBdIP/ShowIOCardbdIP"
+			},{
+				"menuname" : "進出車間臨時權限維護",
+				"icon" : "icon-nav",
+				"url" : "IOWorkShopPower/ShowIOWorkShopPwList"
 			}]
 		},{
 			"menuid" : "56",

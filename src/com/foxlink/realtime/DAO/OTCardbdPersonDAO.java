@@ -11,8 +11,10 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.foxlink.realtime.model.Emp;
+import com.foxlink.realtime.model.GetDepid;
 import com.foxlink.realtime.model.OTCardBD;
 import com.foxlink.realtime.model.Page;
+import com.foxlink.realtime.model.objectMapper.GetDepidMapper;
 import com.foxlink.realtime.model.objectMapper.QueryOTCardBdMapper;
 
 
@@ -24,7 +26,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 	public int getTotalRecord(String queryCritirea, String queryParam, String updateUser, String userDataCostId) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
-    	String sSQL = "select count(*) FROM SWIPE.DEPARTURE_CARD_INFO a ,(select t.id,t.name FROM SWIPE.Csr_Employee t where  t.isonwork = 0";
+    	String sSQL = "select count(*) FROM SWIPE.DEPARTURE_CARD_INFO a ,(select t.depid from DEPT_RELATION t";
     	try {
     		List <Object> queryList=new  ArrayList<Object>();
     		if(!userDataCostId.equals("ALL")){
@@ -36,22 +38,26 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 					}
 					idsStr.append("'").append(strIdArray[i]).append("'");
 				}
-				sSQL+=" and Costid in("+idsStr+")";
+				sSQL+=" where t.Costid in("+idsStr+")";
+				if(queryCritirea.equals("Depid")){
+					sSQL+=" and t.Depid = ?";  
+				}else if(queryCritirea.equals("Costid")){
+					sSQL+=" and t.Costid = ?";  
+				}
+				else{
+					sSQL+="";
+				}
+			}else {
+				if(queryCritirea.equals("Depid")){
+					sSQL+=" where t.Depid = ?";  
+				}else if(queryCritirea.equals("Costid")){
+					sSQL+=" where t.Costid = ?";  
+				}
+				else{
+					sSQL+="";
+				}
 			}
-    		if(queryCritirea.equals("Id")){
-				sSQL+=" and Id = ?";  
-			}
-			else if(queryCritirea.equals("Name")){
-				sSQL+=" and Name = ?";  
-			}else if(queryCritirea.equals("Depid")){
-				sSQL+=" and Depid = ?";  
-			}else if(queryCritirea.equals("Costid")){
-				sSQL+=" and Costid = ?";  
-			}
-			else{
-				sSQL+="";
-			}
-    		sSQL += ")b where a.DMP_ID = b.id ";
+    		sSQL += ")b where a.deptid = b.depid and a.enabled='Y' ";
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
@@ -70,7 +76,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 		// TODO Auto-generated method stub
 		List<OTCardBD> AllEmp = null;
 		// TODO Auto-generated method stub
-		String sSQL = "select * from(select c.*,rownum rn from (select a.d_cardid, a.dmp_id ,b.name, a.default_workshopno,a.enabled FROM SWIPE.DEPARTURE_CARD_INFO a ,(select t.id,t.name FROM SWIPE.Csr_Employee t where  t.isonwork = 0";
+		String sSQL = "select * from(select c.*,rownum rn from (select a.d_cardid, a.deptid,b.depid,a.default_workshopno,a.enabled FROM SWIPE.DEPARTURE_CARD_INFO a ,(select t.depid from DEPT_RELATION t";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
 			if(!userDataCostId.equals("ALL")){
@@ -82,24 +88,28 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 					}
 					idsStr.append("'").append(strIdArray[i]).append("'");
 				}
-				sSQL+=" and Costid in("+idsStr+")";
-			}
-    		if(queryCritirea.equals("Id")){
-				sSQL+=" and Id = ?";  
-			}
-			else if(queryCritirea.equals("Name")){
-				sSQL+=" and Name = ?";  
-			}else if(queryCritirea.equals("Depid")){
-				sSQL+=" and Depid = ?";  
-			}else if(queryCritirea.equals("Costid")){
-				sSQL+=" and Costid = ?";  
-			}
-			else{
-				sSQL+="";
+				sSQL+=" where Costid in("+idsStr+")";
+				 if(queryCritirea.equals("Depid")){
+						sSQL+=" and Depid = ?";  
+					}else if(queryCritirea.equals("Costid")){
+						sSQL+=" and Costid = ?";  
+					}
+					else{
+						sSQL+="";
+					}
+			}else {
+				 if(queryCritirea.equals("Depid")){
+						sSQL+=" where Depid = ?";  
+					}else if(queryCritirea.equals("Costid")){
+						sSQL+=" where Costid = ?";  
+					}
+					else{
+						sSQL+="";
+					}
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
-		    sSQL += "order by t.id)b where a.DMP_ID = b.id and a.enabled='Y')c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	    
+		    sSQL += " order by t.depid)b where a.deptid = b.depid and a.enabled='Y')c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	    
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
@@ -190,7 +200,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
 		
-		String sSQL="INSERT INTO SWIPE.DEPARTURE_CARD_INFO (D_CardId,Dmp_Id,Default_WorkShopNo,Update_UserId) VALUES(?,?,?,?)";
+		String sSQL="INSERT INTO SWIPE.DEPARTURE_CARD_INFO (D_CardId,Deptid,Default_WorkShopNo,Update_UserId) VALUES(?,?,?,?)";
 		try {
 			if(otCardbd!=null) {
 		      createRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
@@ -198,7 +208,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 					public void setValues(PreparedStatement arg0) throws SQLException {
 						// TODO Auto-generated method stub
 						arg0.setString(1, otCardbd.getD_CardID());
-						arg0.setString(2, otCardbd.getDmp_id());
+						arg0.setString(2, otCardbd.getDeptid());
 						arg0.setString(3, otCardbd.getDefault_WorkShop());
 						arg0.setString(4,otCardbd.getUpdate_UserId());
 					}	
@@ -243,103 +253,119 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 			 return false;
 	}
 
-	public int UpdateBdOTCard(OTCardBD[] otCardbd, String updateUser) {
+	public boolean UpdateBdOTCard(OTCardBD otCardbd, String updateUser) {
 		// TODO Auto-generated method stub
-		String sSQL = "update SWIPE.DEPARTURE_CARD_INFO set D_CardId =?,Default_WorkShopNo=?,update_time = sysdate,Update_UserId=? where enabled='Y' and Dmp_id =?";
-		int result = 0;
+		int updateRow=-1;
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);		
+		String sSQL = "update SWIPE.DEPARTURE_CARD_INFO set D_CardId =?,Default_WorkShopNo=?,update_time = sysdate,Update_UserId=? where enabled='Y' and Deptid =? and D_CardId=?";
 		try {
-			jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
-				
-				@Override
-				public void setValues(PreparedStatement ps, int i) throws SQLException {
-					// TODO Auto-generated method stub
-					ps.setString(1, otCardbd[i].getD_CardID());
-					ps.setString(2, otCardbd[i].getDefault_WorkShop());
-					ps.setString(3, updateUser);
-					ps.setString(4, otCardbd[i].getDmp_id());
-					
-				}
-				
-				@Override
-				public int getBatchSize() {
-					// TODO Auto-generated method stub
-					return otCardbd.length;
-				}
-			});
-		} catch (Exception e) {
-			// TODO: handle exception
-			logger.error("更改離崗卡與工號綁定狀態失敗，原因："+e);
-			e.printStackTrace();
-			result=1;
+			if(otCardbd!=null) {
+				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement ps) throws SQLException {
+						// TODO Auto-generated method stub
+						ps.setString(1, otCardbd.getD_CardID());
+						ps.setString(2, otCardbd.getDefault_WorkShop());
+						ps.setString(3, updateUser);
+						ps.setString(4, otCardbd.getDeptid());
+						ps.setString(5, otCardbd.getO_CardID());
+					}	
+				});
+				transactionManager.commit(txStatus);
+			}	
 		}
-		System.out.println(sSQL);
-		return result;
-	}
-
-	public int RelieveOTCard(OTCardBD[] otCardbd, String updateUser) {
-		// TODO Auto-generated method stub
-		String sSQL = "delete from SWIPE.DEPARTURE_CARD_INFO where enabled='Y' and Dmp_id =?";
-		int result = 0;
-		try {
-			jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
-				
-				@Override
-				public void setValues(PreparedStatement ps, int i) throws SQLException {
-					// TODO Auto-generated method stub
-					ps.setString(1, otCardbd[i].getDmp_id());				
-				}
-				
-				@Override
-				public int getBatchSize() {
-					// TODO Auto-generated method stub
-					return otCardbd.length;
-				}
-			});
-		} catch (Exception e) {
-			// TODO: handle exception
-			logger.error("解除離崗卡與工號綁定狀態失敗，原因："+e);
-			e.printStackTrace();
-			result=1;
-		}
-		return result;
+		catch(Exception ex) {
+			logger.error("Update BdOTCard is failed",ex);
+			transactionManager.rollback(txStatus);
+		}			
+			if(updateRow > 0) 
+				   return true; 
+				else
+				   return false;
 	}
 	
-	public int OTCardNbdPerson(OTCardBD[] otCardbd,String updateUser) {
+	public boolean RelieveOTCard(OTCardBD otCardbd, String updateUser) {
+		// TODO Auto-generated method stub	
+		int updateRow=-1;
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);		
+		String sSQL = "delete from SWIPE.DEPARTURE_CARD_INFO where enabled='Y' and Deptid =? and D_CardId=?";
+		try {
+			if(otCardbd!=null) {
+				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement ps) throws SQLException {
+						// TODO Auto-generated method stub
+						ps.setString(1, otCardbd.getDeptid());
+						ps.setString(2, otCardbd.getD_CardID());
+					}	
+				});
+				transactionManager.commit(txStatus);
+			}	
+		}
+		catch(Exception ex) {
+			logger.error("delete BdOTCard is failed",ex);
+			transactionManager.rollback(txStatus);
+		}			
+			if(updateRow > 0) 
+				   return true; 
+				else
+				   return false;
+	}
+	
+	public boolean OTCardNbdPerson(OTCardBD otCardbd,String updateUser) {
 		// TODO Auto-generated method stub
-		int result=0;
+		int result=-1;
 
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
 		
-		String sSQL="INSERT INTO SWIPE.DEPARTURE_CARD_INFO_HT (D_CardId,Dmp_Id,Default_WorkShopNo,Update_UserId,enabled) VALUES(?,?,?,?,'N')";
+		String sSQL="INSERT INTO SWIPE.DEPARTURE_CARD_INFO_HT (D_CardId,Deptid,Default_WorkShopNo,Update_UserId,enabled) VALUES(?,?,?,?,'N')";
 		try {
 			
-				jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
+			result=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 				
 				@Override
-				public void setValues(PreparedStatement ps, int i) throws SQLException {
+				public void setValues(PreparedStatement ps) throws SQLException {
 					// TODO Auto-generated method stub
-					ps.setString(1, otCardbd[i].getD_CardID());
-					ps.setString(2, otCardbd[i].getDmp_id());
-					ps.setString(3, otCardbd[i].getDefault_WorkShop());
+					ps.setString(1, otCardbd.getD_CardID());
+					ps.setString(2, otCardbd.getDeptid());
+					ps.setString(3, otCardbd.getDefault_WorkShop());
 					ps.setString(4, updateUser);	
-				}
-				
-				@Override
-				public int getBatchSize() {
-					// TODO Auto-generated method stub
-					return otCardbd.length;
 				}
 			});
 				transactionManager.commit(txStatus);
 			}			
 		catch(Exception ex) {
 			logger.error("HT表插入狀態為N數據失敗，原因："+ex);
-			ex.printStackTrace();
-			result=1;
 			transactionManager.rollback(txStatus);
 		}
-		return result;
+		if(result > 0) 
+			   return true; 
+			else
+			   return false;
+	}
+
+	public List<GetDepid> ShowDeptNo(String CostId) {
+		// TODO Auto-generated method stub
+		List<GetDepid> AllDept = null;
+		String sSQl = "select t.depid from DEPT_RELATION t where t.CostId = ?";
+		try {
+			AllDept = jdbcTemplate.query(sSQl, new PreparedStatementSetter() {
+				
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					// TODO Auto-generated method stub
+					ps.setString(1, CostId);
+				}
+			},new GetDepidMapper());
+		} catch (Exception e) {
+			// TODO: handle exception
+			  logger.error("Find Dept TotalRecord are failed ",e);
+    		  e.printStackTrace();
+		}
+		return AllDept;
 	}
 
 }
