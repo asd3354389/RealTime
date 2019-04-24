@@ -49,37 +49,37 @@
 		<div class="panel-body" style="border: 1px solid #e1e3e6;">
 			<div align="right">
 				查詢條件：<select id="queryCritirea" class="input-small">
-					<option value="Id">電腦Ip</option>
-					<option value="CostId">費用代碼</option>					
+				   <!--  <option value="UPDATE_USERID">工號</option>	 -->
+				    <option value="DEVICEIP">電腦Ip</option>	
+				    <option value="DEPTID">部門代碼</option>						
 				</select> <input type="text" id="queryParam" name="queryParam"
 					class="input-sm"> <input type="button"
-					id="searchPersonListBtn" name="searchPersonListBtn"
+					id="searchIpListBtn" name="searchPersonListBtn"
 					class="btn btn-sm btn-primary" value="Search">
 			</div>
 			<div>
 					<h4>電腦Ip綁定費用代碼列表：</h4>
+					<a id="addNewAccountBtn" role="button" href="#insertIpBinding"
+					class="btn btn-primary btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 500px;font-size: 14px;">電腦Ip綁定部門代碼</a>	
 			</div>
 			<div class="middle">
-				<div class="left" style="width:60%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
-					<table id="Personbinding" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
+				<div class="left" style="width:70%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+					<table id="Personbinding" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed; ">
 						<thead>
 							<tr>								
 								<th>電腦Ip</th>
-								<th>費用代碼</th>
-								<th>工號</th>								
+								<th>部門代碼</th>
+								<!-- <th>工號</th>		 -->						
 								<th>是否生效</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody class='spTable'>
 						</tbody>
 					</table>
-					<div id="PersonListPagination" align="right" style="height: 20;position:absolute; bottom: 20px;right: 0px;">
+					<div id="IpBindingListPagination" align="right" style="height: 20;position:absolute; bottom: -20px;right: 0px;">
 					</div>
-				</div>
-				<a id="addNewAccountBtn" role="button" href="#insertIpBinding"
-					class="btn btn-primary btn-sm" data-toggle="modal" style="position: relative;left: 30px">電腦Ip綁定費用代碼</a>	
 				
-			</div>
 			<jsp:include page="InsertIpBinding.jsp" />
 			</div>
 			</div>

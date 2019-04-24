@@ -62,7 +62,7 @@
 				"url" : "OTCardPerson/ShowOTCardbdPerson"
 			},{
 
-				"menuname" : "電腦Ip綁定部門代碼",
+				"menuname" : "電腦Ip綁定部門代碼維護",
 				"icon" : "icon-nav",
 				"url" : "IpBinding/ShowIpBinding"
 		}, {

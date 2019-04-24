@@ -1,5 +1,6 @@
 package com.foxlink.realtime.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -8,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.foxlink.realtime.DAO.FLinePersonMtDAO;
 import com.foxlink.realtime.DAO.IpBindingDAO;
 import com.foxlink.realtime.model.Emp;
+import com.foxlink.realtime.model.IOCardMachineIP;
 import com.foxlink.realtime.model.IpBinding;
-
+import com.foxlink.realtime.model.OTCardBD;
+import com.foxlink.realtime.model.Page;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -26,6 +29,8 @@ public class IpBindingService extends Service<IpBinding> {
 		this.ipBindingDAO = ipBindingDAO;
 	}
 	
+	
+	
 	//綁定ip(insert數據)
 	public String BindingIp(String DeviceIp,String DeptId,String ID) {
 		JsonObject result = new JsonObject();
@@ -35,7 +40,8 @@ public class IpBindingService extends Service<IpBinding> {
 		//System.out.println("卡機Ip=======>>"+DeviceIp);
 		//String com_ip = ipBindingDAO.SelectAppIp(DeviceIp);
 		boolean isSuccessful = ipBindingDAO.insertIPBinding(DeviceIp,DeptId,ID);
-		List<String> ListRe = ipBindingDAO.ListRe();
+		//List<String> ListRe = ipBindingDAO.ListRe();
+		JsonObject Update_Result = ipBindingDAO.ListRe();
 		Gson gson = new GsonBuilder().serializeNulls().create();
 		if (isSuccessful ) {
 			result.addProperty("StatusCode", "200");
@@ -43,7 +49,8 @@ public class IpBindingService extends Service<IpBinding> {
 		} else {
 			result.addProperty("StatusCode", "500");
 			//result.addProperty("message", "綁定失敗,資料庫中已經錄入此Ip或資料錄入錯誤!!");
-			result.addProperty("message", gson.toJson(ListRe));
+			//result.addProperty("message", gson.toJson(Update_Result));
+			result.addProperty("message", gson.toJson(Update_Result.get("Message")));
 		}
 		System.out.println(result.toString());
 		return result.toString();
@@ -115,6 +122,34 @@ public class IpBindingService extends Service<IpBinding> {
 		return null;
 	}
 
-
+	public Page getPersonPage(int currentPage, String queryCritirea, String queryParam) {
+		// TODO Auto-generated method stub
+		int totalRecord = ipBindingDAO.getTotalRecord(queryCritirea, queryParam);
+		Page page = new Page(currentPage, totalRecord);
+		// Page page = accountDAO.getPage(pageNum, User.class, totalRecord);
+		return page;
+	}
+	public List<IpBinding> FindQueryRecord( int currentPage, String queryCritirea, String queryParam) {
+		// TODO Auto-generated method stub
+		List<IpBinding> AllDeip = null;
+		try{
+			int totalRecord = ipBindingDAO.getTotalRecord(queryCritirea, queryParam);
+			/*System.out.println(totalRecord);*/
+			AllDeip = ipBindingDAO.FindAllRecord(currentPage,totalRecord, queryCritirea, queryParam);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Find IOCardIPList Record is failed ",e);
+		}
+		return AllDeip;
+	}
+	public boolean UpdateRecord(String DeviceIp,String DeptID, String updateUser,String OldDeptID) {
+		// TODO Auto-generated method stub
+		return ipBindingDAO.UpdateRecord(DeviceIp,DeptID,updateUser,OldDeptID);
+	}
 	
+	public boolean DeleteIpBinding(String Deviceip, String updateUser,String DeptId) {
+		// TODO Auto-generated method stub
+		return ipBindingDAO.DeleteIpBinding(Deviceip,updateUser,DeptId);
+	}
+
 }
