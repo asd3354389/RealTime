@@ -17,18 +17,18 @@
   		</div>
   			
   		<div class="control-group">
-    		<label class="control-label" for="inputCostId">費用代碼</label>
+    		<label class="control-label" for="inputCostId">部門代碼</label>
     		<div class="controls">
-      			<input type="text" id="inputCostId" name="inputCostId" class="required nameCheck form-control" placeholder="費用代碼">
+      			<input type="text" id="inputCostId" name="inputCostId" class="required nameCheck form-control" placeholder="部門代碼">
     		</div>
   		</div>
   			
-  	<div class="control-group">
+  	<!-- <div class="control-group">
     		<label class="control-label" for="inputId">工號</label>
     		<div class="controls">
       			<input type="text" id="inputId" name="inputId" class="required nameCheck form-control" placeholder="工號">
     		</div>
-  		</div>
+  		</div> -->
 	
         <br>
   		<button type="submit" id="changebdOT" class="btn btn-primary">綁定</button>

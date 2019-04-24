@@ -18,6 +18,14 @@ public class IpBinding {
 	private String COSTID;
 	//助理id
 	private String USERNAME;
+	//是否是例外
+	private String CONTROL_EXCEPT;
+	public String getCONTROL_EXCEPT() {
+		return CONTROL_EXCEPT;
+	}
+	public void setCONTROL_EXCEPT(String cONTROL_EXCEPT) {
+		CONTROL_EXCEPT = cONTROL_EXCEPT;
+	}
 	public String getUSERNAME() {
 		return USERNAME;
 	}
