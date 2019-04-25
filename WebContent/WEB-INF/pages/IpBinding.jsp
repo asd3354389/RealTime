@@ -6,7 +6,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
-<html>
 <head>
 <c:url value="/resources/assets/css/icons.css" var="iconsCSS" />
 <c:url value="/resources/assets/css/bootstrap.css" var="bootstrapCSS" />
@@ -20,25 +19,23 @@
 <link href="${bootstrapSelectCSS}" rel="stylesheet">
 
 <c:url value="/resources/assets/js/jquery-1.8.3.min.js" var="assetsJqueryJS" />
-<c:url value="/resources/js/Project/RealTime.Modify.IOWorkShopPW.js?version=${resourceVersion}" var="modifyIOWorkShopPW" /> 
+<%-- <c:url value="/resources/js/Project/RealTime.Modify.FLinePerson.js?version=${resourceVersion}" var="modifyFLinePerson" /> --%>
 <c:url value="/resources/js/jquery/jquery-1.11.3.min.js" var="JqueryJS" />
-
-<c:url value="/resources/assets/My97DatePicker/WdatePicker.js" var="WdatePicker"></c:url>
 <c:url value="/resources/js/bootstrap/bootstrap.min.js" var="bootstrapJS" />
 <c:url value="/resources/js/bootstrap/bootstrap-select.min.js" var="bootstrapSelectJS" />
-<c:url value="/resources/js/Project/AjaxCheckSession.js?version=${resourceVersion}" var="AjaxCheckSessionJS"/> 
+<%-- <c:url value="/resources/js/Project/AjaxCheckSession.js?version=${resourceVersion}" var="AjaxCheckSessionJS"/>  --%>
 <script src="${JqueryJS}" type="text/javascript"></script>
-
 <script src="${bootstrapJS}" type="text/javascript"></script>
-<script src="${WdatePicker }" type="text/javascript"></script>
 <script src="${bootstrapSelectJS}" type="text/javascript"></script>
-<script type="text/javascript" src='${AjaxCheckSessionJS}'></script>
-<script src="${modifyIOWorkShopPW}" type="text/javascript"></script>
+<%-- <script type="text/javascript" src='${AjaxCheckSessionJS}'></script> --%>
+<%-- <script src="${modifyFLinePerson}" type="text/javascript"></script> --%>
+<script type="text/javascript" src="../resources/js/Project/AjaxCheckSession.js"></script>
+<script type="text/javascript" src="../resources/js/Project/IpBinding.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>進出車間臨時權限維護</title>
+<title>電腦Ip綁定</title>
 </head>
 <body style="position:relative;">
-		<div id="header" class="header-fixed">
+<div id="header" class="header-fixed">
 		<div class="navbar">
 			<a class="navbar-brand" href="Login"> <i
 				class="im-windows8 text-logo-element animated bounceIn"></i> <span
@@ -47,30 +44,32 @@
 		</div>
 		<!-- Start .header-inner -->
 	</div>
-<div class="container-fluid"  style="margin: 50px 10% 0 0;">
+	<div class="container-fluid"  style="margin: 50px 10% 0 0;">
 	<div style="top: 55px; margin-left: 10px">
 		<div class="panel-body" style="border: 1px solid #e1e3e6;">
 			<div align="right">
 				查詢條件：<select id="queryCritirea" class="input-small">
-					<option value="ID">工號</option>
+				   <!--  <option value="UPDATE_USERID">工號</option>	 -->
+				    <option value="DEVICEIP">電腦Ip</option>	
+				    <option value="DEPTID">部門代碼</option>						
 				</select> <input type="text" id="queryParam" name="queryParam"
 					class="input-sm"> <input type="button"
-					id="searchIOWorkShopPW" name="searchIOWorkShopPW"
+					id="searchIpListBtn" name="searchPersonListBtn"
 					class="btn btn-sm btn-primary" value="Search">
 			</div>
 			<div>
-					<h4 style="position: relative;">進出車間臨時權限信息列表：</h4>
-					<a id="addNewIOWorkShopPW" role="button" href="#insertIOWorkShopPW"class="btn btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 500px;font-size: 14px;"><i class="glyphicon glyphicon-plus"></i>創建進出車間臨時權限</a>
+					<h4>電腦Ip綁定費用代碼列表：</h4>
+					<a id="addNewAccountBtn" role="button" href="#insertIpBinding"
+					class="btn btn-primary btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 500px;font-size: 14px;">電腦Ip綁定部門代碼</a>	
 			</div>
 			<div class="middle">
-				<div class="left" style="width:80%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
-					<table id="IOWorkShopPWTable" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
+				<div class="left" style="width:70%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+					<table id="Personbinding" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed; ">
 						<thead>
-							<tr>
-								<th>工號</th>
-								<th>車間名稱</th>
-								<th>生效起始日期</th>
-								<th>生效結束日期</th>
+							<tr>								
+								<th>電腦Ip</th>
+								<th>部門代碼</th>
+								<!-- <th>工號</th>		 -->						
 								<th>是否生效</th>
 								<th></th>
 							</tr>
@@ -78,14 +77,13 @@
 						<tbody class='spTable'>
 						</tbody>
 					</table>
-					<div id="IOWorkShopPWPagination" align="right" style="height: 20;position:absolute; bottom: -20px;right: 0px;">
+					<div id="IpBindingListPagination" align="right" style="height: 20;position:absolute; bottom: -20px;right: 0px;">
 					</div>
-				</div>
-					
+				
+			<jsp:include page="InsertIpBinding.jsp" />
 			</div>
-			<jsp:include page="InsertNewIOPW.jsp" />
-		</div>
-	</div>
-</div>	
+			</div>
+
+</div>
 </body>
 </html>

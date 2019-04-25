@@ -350,16 +350,13 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 	public List<GetDepid> ShowDeptNo(String CostId) {
 		// TODO Auto-generated method stub
 		List<GetDepid> AllDept = null;
-		String sSQl = "select t.depid from DEPT_RELATION t where t.CostId = ?";
+		String sSQl = "select t.depid from DEPT_RELATION t ";
 		try {
-			AllDept = jdbcTemplate.query(sSQl, new PreparedStatementSetter() {
-				
-				@Override
-				public void setValues(PreparedStatement ps) throws SQLException {
-					// TODO Auto-generated method stub
-					ps.setString(1, CostId);
-				}
-			},new GetDepidMapper());
+			if(!CostId.equals("ALL")) {
+				sSQl+= " where t.CostId = '"+CostId+"'";
+			}
+			AllDept = jdbcTemplate.query(sSQl,new GetDepidMapper());
+			System.out.println(sSQl);
 		} catch (Exception e) {
 			// TODO: handle exception
 			  logger.error("Find Dept TotalRecord are failed ",e);

@@ -2,7 +2,7 @@ $(document).ready(function(){
 	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false;
 	var reg = new RegExp("^[0-9]{10}$");
 	ShowAllPersonList();
-//	ShowCostNo()
+	ShowCostNo()
 	ShowWorkShop();
 	
 	
@@ -16,7 +16,7 @@ $(document).ready(function(){
           }
       }
 
-      $('#CostNo').blur(function(){
+      $('#CostNo').change(function(){
     	  var CostId = $("#CostNo").val();
     	  if(CostId!=""){
     		  $('#deptNo').empty();
@@ -280,7 +280,7 @@ $(document).ready(function(){
 				
 				if(User.D_CardID==="null" || User.D_CardID=='')
 					errorMessage+='離崗卡未填寫\n';
-				if(!reg.test(User.Deptid))	
+				if(!reg.test(User.D_CardID))	
 					errorMessage+='離崗卡號不符合規格！必須是10位數\n';
 				if(User.Default_WorkShop==="null" || User.Default_WorkShop=='')
 					errorMessage+='默認使用車間未填寫\n';
@@ -591,6 +591,35 @@ $(document).ready(function(){
 						htmlAppender+='<option value="'+data[i]+'">'+data[i]+'</option>';
 					}
 					 $('.'+selectClass).append(htmlAppender);
+				/*	 $('#ChangeWorkShop').append(htmlAppender);*/
+				}
+				else{
+					alert('無車間資料');
+				}
+			 }else{
+				alert('無車間資料');
+			 }
+			}
+		});   
+	}
+	
+	function ShowCostNo(){
+		$.ajax({
+			type:'POST',
+			url:'../OTCardPerson/ShowCostNo',
+			dataType:"text",
+			data:{},
+			async:false,
+			success:function(result){
+				var data = result.split('*');
+				var htmlAppender='';
+//				console.log(data);
+			 if(data!=null && data!=''){	
+				if(data.length>0 && data.StatusCode == null){
+					for(var i=0;i<data.length;i++){
+						htmlAppender+='<option value="'+data[i]+'">'+data[i]+'</option>';
+					}
+					 $('#CostNo').append(htmlAppender);
 				/*	 $('#ChangeWorkShop').append(htmlAppender);*/
 				}
 				else{

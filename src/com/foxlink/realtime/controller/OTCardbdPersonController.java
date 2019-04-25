@@ -225,10 +225,7 @@ public class OTCardbdPersonController {
 	public String ShowCostNo(HttpSession session) {
 		String JsonResult = null;
 		String userDataCostId=(String) session.getAttribute("userDataCostId");
-		Gson gson = new GsonBuilder().serializeNulls().create();
-		JsonResult = gson.toJson(userDataCostId);
-		System.out.println(JsonResult);
-		return JsonResult;
+		return userDataCostId;
 	}
 	
 	@RequestMapping(value = "/ShowDeptNo", method = RequestMethod.POST, produces = "application/json;charset=utf-8")

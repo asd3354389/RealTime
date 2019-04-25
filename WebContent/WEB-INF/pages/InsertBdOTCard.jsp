@@ -17,9 +17,11 @@
   		</div> -->
   		
   		<div class="control-group">
-    		<label class="control-label" for="CostNo">費用代碼</label>
     		<div class="controls">
-      			<input type="text" id="CostNo" name="CostNo" class="required nameCheck form-control" placeholder="費用代碼">
+      			<label for="outCard">费用代码</label>
+    					<select id="CostNo" name='CostNo' class="form-control">
+    						<option value=" "></option>
+    					</select>  			
     		</div>
   		</div> 		
   			
