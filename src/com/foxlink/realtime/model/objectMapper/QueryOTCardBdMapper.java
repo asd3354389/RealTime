@@ -14,10 +14,10 @@ public class QueryOTCardBdMapper implements RowMapper<OTCardBD>{
 		// TODO Auto-generated method stub
 		OTCardBD otcardbd = new OTCardBD();
 		otcardbd.setD_CardID(rs.getString("d_cardid"));
-		otcardbd.setDmp_id(rs.getString("dmp_id"));
-		otcardbd.setName(rs.getString("name"));
+		otcardbd.setDeptid(rs.getString("deptid"));
 		otcardbd.setDefault_WorkShop(rs.getString("default_workshopno"));
-		otcardbd.setEnable(rs.getString("enabled"));
+		otcardbd.setEnabled(rs.getString("enabled"));
+		otcardbd.setDepid(rs.getString("depid"));
 		return otcardbd;
 	}
 

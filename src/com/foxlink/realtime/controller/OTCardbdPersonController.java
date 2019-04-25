@@ -61,7 +61,7 @@ public class OTCardbdPersonController {
 			logger.error(e);
 			JsonObject exception=new JsonObject();
 			exception.addProperty("StatusCode", "500");
-			exception.addProperty("ErrorMessage", "取得離崗卡綁定工號資料列表列表失敗，原因："+e.toString());
+			exception.addProperty("ErrorMessage", "取得離崗卡綁定綫組別資料列表列表失敗，原因："+e.toString());
 			JsonResult=exception.toString();
 		}
 		return JsonResult;
@@ -106,36 +106,36 @@ public class OTCardbdPersonController {
 		return checkResult.toString();
 	}*/
 	
-	@RequestMapping(value="/checkUserName.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
-	@ResponseBody 
-	public String checkUserNameDuplicate(HttpSession session,@RequestParam("Dmp_id")String Dmp_id){
-		JsonObject checkResult=new JsonObject();	
-		String userDataCostId=(String) session.getAttribute("userDataCostId");
-		try{
-			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
-			oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
-			if(oTCardbdPersonService.checkEmpIdExistence(Dmp_id,userDataCostId)) {
-				if(oTCardbdPersonService.checkUserNameDuplicate(Dmp_id)){
-					checkResult.addProperty("StatusCode", "200");
-					checkResult.addProperty("Message", "此工號未綁定離崗卡，可以新增此賬號!");
-				}else{
-					checkResult.addProperty("StatusCode", "500");
-					checkResult.addProperty("Message", "此工號已綁定離崗卡，請更改賬號！");
-				}	
-			}else {
-				checkResult.addProperty("StatusCode", "500");
-				checkResult.addProperty("Message", "此工號錯誤或沒有權限綁定此工號，請更改賬號！");
-			}
-			
-		}
-		catch(Exception ex){
-			logger.error("Check new Account info is failed, due to: ",ex);
-			checkResult.addProperty("StatusCode", "500");
-			checkResult.addProperty("Message", "檢查工號是否綁定發生錯誤，原因："+ex.toString());
-		}
-		/*System.out.println(checkResult.toString());*/
-		return checkResult.toString();
-	}
+//	@RequestMapping(value="/checkUserName.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+//	@ResponseBody 
+//	public String checkUserNameDuplicate(HttpSession session,@RequestParam("Dmp_id")String Dmp_id){
+//		JsonObject checkResult=new JsonObject();	
+//		String userDataCostId=(String) session.getAttribute("userDataCostId");
+//		try{
+//			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+//			oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
+//			if(oTCardbdPersonService.checkEmpIdExistence(Dmp_id,userDataCostId)) {
+//				if(oTCardbdPersonService.checkUserNameDuplicate(Dmp_id)){
+//					checkResult.addProperty("StatusCode", "200");
+//					checkResult.addProperty("Message", "此工號未綁定離崗卡，可以新增此賬號!");
+//				}else{
+//					checkResult.addProperty("StatusCode", "500");
+//					checkResult.addProperty("Message", "此工號已綁定離崗卡，請更改賬號！");
+//				}	
+//			}else {
+//				checkResult.addProperty("StatusCode", "500");
+//				checkResult.addProperty("Message", "此工號錯誤或沒有權限綁定此工號，請更改賬號！");
+//			}
+//			
+//		}
+//		catch(Exception ex){
+//			logger.error("Check new Account info is failed, due to: ",ex);
+//			checkResult.addProperty("StatusCode", "500");
+//			checkResult.addProperty("Message", "檢查工號是否綁定發生錯誤，原因："+ex.toString());
+//		}
+//		/*System.out.println(checkResult.toString());*/
+//		return checkResult.toString();
+//	}
 	
 	@RequestMapping(value="/AddOTCardBdPerson.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 	@ResponseBody 
@@ -166,30 +166,74 @@ public class OTCardbdPersonController {
 
 	@RequestMapping(value="/UpdateBdOTCard",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String UpdateBdOTCard(HttpSession session,@RequestBody OTCardBD[] otCardbd) {
+	public String UpdateBdOTCard(HttpSession session,@RequestBody OTCardBD otCardbd) {
+		JsonObject UpdateResult=new JsonObject();		
+	try	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 		String updateUser = (String)session.getAttribute("username");
 		oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
-	/*	System.err.println("123");
-		System.out.println(Emp.length);*/
-		for(int i = 0 ;i<otCardbd.length;i++){
-			System.out.println(otCardbd[i]);
-		}	
-		return oTCardbdPersonService.UpdateBdOTCard(otCardbd,updateUser);
+		if(oTCardbdPersonService.UpdateBdOTCard(otCardbd,updateUser)){
+			UpdateResult.addProperty("StatusCode", "200");
+			UpdateResult.addProperty("Message", "更改離崗卡成功");
+		}
+		else{
+			UpdateResult.addProperty("StatusCode", "500");
+			UpdateResult.addProperty("Message", "更改離崗卡失敗");
+		}
+	}
+	catch(Exception ex){
+		logger.error("Updating the BdOTCard info is failed, due to: ",ex);
+		UpdateResult.addProperty("StatusCode", "500");
+		UpdateResult.addProperty("Message", "更改離崗卡發生錯誤，原因："+ex.toString());
+	}
+	return UpdateResult.toString();
 	}
 	
 	@RequestMapping(value="/RelieveOTCard",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String RelieveOTCard(HttpSession session,@RequestBody OTCardBD[] otCardbd) {
-		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
-		String updateUser = (String)session.getAttribute("username");
-		oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
-	/*	System.err.println("123");
-		System.out.println(Emp.length);*/
-		for(int i = 0 ;i<otCardbd.length;i++){
-			System.out.println(otCardbd[i]);
-		}	
-		return oTCardbdPersonService.RelieveOTCard(otCardbd,updateUser);
+	public String RelieveOTCard(HttpSession session,@RequestBody OTCardBD otCardbd) {
+		JsonObject DisableResult=new JsonObject();
+		System.out.println(otCardbd.getDeptid());
+		try {
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			String updateUser = (String)session.getAttribute("username");
+			oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
+			if(oTCardbdPersonService.RelieveOTCard(otCardbd, updateUser)){
+				if(oTCardbdPersonService.OTCardNbdPerson(otCardbd, updateUser)) {
+					DisableResult.addProperty("StatusCode", "200");
+					DisableResult.addProperty("Message", "離崗卡綁定已失效");
+				}else{
+					DisableResult.addProperty("StatusCode", "500");
+					DisableResult.addProperty("Message", "離崗卡綁定發生錯誤");
+				}
+			}else {
+				DisableResult.addProperty("StatusCode", "500");
+				DisableResult.addProperty("Message", "離崗卡綁定發生錯誤");
+			}
+			
 	}
+	catch(Exception ex){
+		logger.error("Disable the OTCard info is failed, due to:",ex);
+		DisableResult.addProperty("StatusCode", "500");
+		DisableResult.addProperty("Message", "車離崗卡綁定已發生錯誤，原因:"+ex.toString());
+	}		
+	return DisableResult.toString();
+	}
+	
+	@RequestMapping(value="/ShowCostNo",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+	@ResponseBody
+	public String ShowCostNo(HttpSession session) {
+		String JsonResult = null;
+		String userDataCostId=(String) session.getAttribute("userDataCostId");
+		return userDataCostId;
+	}
+	
+	@RequestMapping(value = "/ShowDeptNo", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String ShowDeptNo(@RequestParam("CostId") String CostId) {
+		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+		oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
+        return oTCardbdPersonService.ShowDeptNo(CostId);
+    }
 }
 
