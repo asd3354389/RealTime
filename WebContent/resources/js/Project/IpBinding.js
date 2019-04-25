@@ -96,7 +96,7 @@ $(function(){
 			url:'../IpBinding/ShowSelectIpList',
 			data:{curPage:curPage,queryCritirea:queryCritirea,queryParam:queryParam},
 			error:function(e){
-				alert(0);
+				alert(e);
 			},
 			success:function(rawData){	
 				if (rawData != null && rawData != "") {

@@ -127,6 +127,7 @@ public class IpBindingController {
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				ipBindingService = (IpBindingService) context.getBean("ipBindingService");
 				String updateUser=(String) session.getAttribute("username");
+				String userDataCostId=(String) session.getAttribute("userDataCostId");
 				if(ipBindingService.DeleteIpBinding(Deviceip, updateUser,DeptId)){
 					DisableResult.addProperty("StatusCode", "200");
 					DisableResult.addProperty("Message", "電腦IP狀態已失效");

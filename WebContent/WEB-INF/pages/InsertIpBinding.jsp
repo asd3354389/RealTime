@@ -16,13 +16,20 @@
     		</div>
   		</div>
   			
-  		<div class="control-group">
+  	<!-- 	<div class="control-group">
     		<label class="control-label" for="inputCostId">部門代碼</label>
     		<div class="controls">
       			<input type="text" id="inputCostId" name="inputCostId" class="required nameCheck form-control" placeholder="部門代碼">
     		</div>
+  		</div> -->
+  			<div class="control-group">
+    		<label class="control-label" for="inputCostID">部門代碼</label>
+    		<div class="controls">
+      			<!-- <input type="text" id="inputCostID" name="inputCostID" class="required costIDCheck" placeholder="費用代碼(格式:costId1*costId2)"> -->
+    		      <select id="inputCostID" name="inputCostID" class="selectpicker show-tick" multiple data-live-search="true">
+                  </select>
+    		</div>
   		</div>
-  			
   	<!-- <div class="control-group">
     		<label class="control-label" for="inputId">工號</label>
     		<div class="controls">

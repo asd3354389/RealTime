@@ -44,6 +44,8 @@ public class IpBindingDAO extends DAO<IpBinding>{
 	private String User_Id;
 	//存放異常list
 	List<String> reList;
+	//有查詢全的costid
+	private StringBuffer userData_CostId;
 	JsonObject UpdateResult;
 	private String Ipreturn;
 	
@@ -234,7 +236,8 @@ public class IpBindingDAO extends DAO<IpBinding>{
 		//查詢是否有該助理信息
 		public String SelectId(String ID) {
 			String user_id = "";
-			String DeptStr = "SELECT USERNAME FROM USER_DATA WHERE USERNAME ='"+ID+"'";
+			String cost_id = "";
+			String DeptStr = "SELECT USERNAME,COSTID FROM USER_DATA WHERE USERNAME  ='"+ID+"'";
 			System.out.println(DeptStr);
 			List<IpBinding> SpecList = new ArrayList<>();
 			try {
@@ -243,9 +246,21 @@ public class IpBindingDAO extends DAO<IpBinding>{
 				 if (SpecList == null) {
 					 user_id = "";
 				} else {
+					
 					 for(int i = 0; i < SpecList.size();i++){
 						 IpBinding ipBinding = SpecList.get(i); 
 						 user_id = ipBinding.getUSERNAME();
+						 cost_id = ipBinding.getCOSTID();
+						 String strIdArray[] = cost_id.split("\\*");
+						 StringBuffer idsStr = new StringBuffer();
+							for (int j = 0; i < strIdArray.length; i++) {
+								if (i > 0) {
+									idsStr.append(",");
+								}
+								idsStr.append("'").append(strIdArray[i]).append("'");
+							}
+							userData_CostId = idsStr;
+							//sSQL+=" and Costid in("+idsStr+")";
 						 System.out.println("查詢的助理工號==>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:"+ipBinding.getUSERNAME());
 					 }
 				}
@@ -373,17 +388,17 @@ public class IpBindingDAO extends DAO<IpBinding>{
 		String sSQL = "SELECT * FROM ((SELECT  DEVICEIP,DEPTID,UPDATE_USERID,ENABLED,ROWNUM RN  from SWIPE.DEVICE_DEPT_BINDING WHERE ENABLED = 'Y'";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
-			/*if(!userDataCostId.equals("ALL")){
-				String strIdArray[] = userDataCostId.split("\\*");
-				StringBuffer idsStr = new StringBuffer();
-				for (int i = 0; i < strIdArray.length; i++) {
-					if (i > 0) {
-						idsStr.append(",");
-					}
-					idsStr.append("'").append(strIdArray[i]).append("'");
-				}
-				sSQL+=" and Costid in("+idsStr+")";
-			}*/
+//			if(!userDataCostId.equals("ALL")){
+//				String strIdArray[] = userDataCostId.split("\\*");
+//				StringBuffer idsStr = new StringBuffer();
+//				for (int i = 0; i < strIdArray.length; i++) {
+//					if (i > 0) {
+//						idsStr.append(",");
+//					}
+//					idsStr.append("'").append(strIdArray[i]).append("'");
+//				}
+//				sSQL+=" and Costid in("+idsStr+")";
+//			}
     		if(queryCritirea.equals("UPDATE_USERID")){
 				sSQL+=" and UPDATE_USERID = '"+queryParam+"'ORDER BY DEVICEIP";  
 			}
