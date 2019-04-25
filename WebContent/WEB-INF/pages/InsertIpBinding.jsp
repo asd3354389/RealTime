@@ -16,13 +16,35 @@
     		</div>
   		</div>
   			
-  		<div class="control-group">
-    		<label class="control-label" for="inputCostId">部門代碼</label>
+  	 	<!-- <div class="control-group">
+    		<label class="control-label" for="inputCostId">費用代碼</label>
     		<div class="controls">
-      			<input type="text" id="inputCostId" name="inputCostId" class="required nameCheck form-control" placeholder="部門代碼">
+      			<input type="text" id="inputCostId" name="inputCostId" class="required nameCheck form-control" placeholder="費用代碼">
     		</div>
-  		</div>
-  			
+  		</div>  -->
+  		<div class="control-group">
+    		<div class="controls">
+      			<label for="outCard">费用代码</label>
+    					<select id="CostNo" name='CostNo' class="form-control">
+    						<option value=" "></option>
+    					</select>  			
+    		</div>
+  		</div> 	
+  			<div class="control-group">
+    		<div class="controls">
+      			<label for="deptNo">綫組別號</label>
+    					<select id="deptNo" name='deptNo' class="form-control"></select>  			
+    		</div>
+  		</div>	
+  		
+  			<!-- <div class="control-group">
+    		<label class="control-label" for="inputCostID">部門代碼</label>
+    		<div class="controls">
+      			<input type="text" id="inputCostID" name="inputCostID" class="required costIDCheck" placeholder="費用代碼(格式:costId1*costId2)">
+    		      <select id="inputDeptID" name="inputCostID" class="selectpicker show-tick" multiple data-live-search="true">
+                  </select>
+    		</div>
+  		</div> -->
   	<!-- <div class="control-group">
     		<label class="control-label" for="inputId">工號</label>
     		<div class="controls">

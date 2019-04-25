@@ -3,25 +3,38 @@ $(function(){
 	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false;
 	//顯示列表的信息
 	var messageList;
+	ShowCostIdList();
 	ShowAllIpList();
 	
 	//$('#closeBtn').click(function(){}
 		
-		
+		//綁定方法
 		$('#changebdOT').click(function(){	
-		
+			
+			 
+ 			  
 				//alert(ID);	
-					BindingIp();
-		
+			BindingIp();
+					
+				
 		});
 	
-
+		 $('#CostNo').change(function(){
+	    	  var CostId = $("#CostNo").val();
+	    	  if(CostId!=""){
+	    		  $('#deptNo').empty();
+	    		  ShowDepNo(CostId);
+	    		 
+	    	  }else{
+	    		  
+	    	  }   	 
+	      })
 
 	//清除
 	$('#resetSubmit').click(function(){	
 		
 		$("#inputIp").val("");
-		$("#inputCostId").val("");
+		//$("#inputCostId").val("");
 		//$("#inputId").val("");
 	
 	});
@@ -57,10 +70,11 @@ $(function(){
 //		var  str = one+'.'+two+'.'+three;
 		//alert(str);
 		//費用代碼
-		var DeptId = $("#inputCostId").val();
+		//var DeptId = $("#inputCostId").val();
 		//工號
 		//var ID = $("#inputId").val();
 		//alert(ID);
+		var DeptId = $('#deptNo option:selected').val(); 
 		if (  DeviceIp == ''  ||DeptId == '') {
 			alert("你輸入的信息不完整,請重新輸入!!");
 		}else{
@@ -77,7 +91,7 @@ $(function(){
 				}else if(StatusCode == "200"){
 					alert(message);
 					$("#inputIp").val("");
-					$("#inputCostId").val("");	
+					//$("#inputCostId").val("");	
 					//$("#inputId").val("");
 					ShowAllIpList();					
 				}  
@@ -96,7 +110,7 @@ $(function(){
 			url:'../IpBinding/ShowSelectIpList',
 			data:{curPage:curPage,queryCritirea:queryCritirea,queryParam:queryParam},
 			error:function(e){
-				alert(0);
+				alert(e);
 			},
 			success:function(rawData){	
 				if (rawData != null && rawData != "") {
@@ -248,7 +262,7 @@ $(function(){
 			var deleteDeviceip=$(parentElement).find('td').eq(0).text();
 			//部門代碼
 			var DeptId=$(parentElement).find('td').eq(1).text();
-			var results=confirm("確定刪除卡機IP為 "+deleteDeviceip+"部門代碼為"+DeptId+" 的狀態 ?");
+			var results=confirm("確定刪除卡機IP為 "+deleteDeviceip+"線組別代碼為"+DeptId+" 的狀態 ?");
 			
 			if(results==true){
 				$.ajax({
@@ -387,5 +401,68 @@ $(function(){
 			}
 		});
 		
+	}
+	
+	//助理部門權責
+	
+	function ShowCostIdList() {
+		
+		$.ajax({
+			type:'POST',
+			url:'../IpBinding/ShowCostNo',
+			dataType:"text",
+			data:{},
+			async:false,
+			success:function(result){
+				var data = result.split('*');
+				var htmlAppender='';
+//				console.log(data);
+			 if(data!=null && data!=''){	
+				if(data.length>0 && data.StatusCode == null){
+					for(var i=0;i<data.length;i++){
+						htmlAppender+='<option value="'+data[i]+'">'+data[i]+'</option>';
+					}
+					 $('#CostNo').append(htmlAppender);
+				/*	 $('#ChangeWorkShop').append(htmlAppender);*/
+				}
+				else{
+					alert('無資料');
+				}
+			 }else{
+				alert('無資料');
+			 }
+			}
+		});   
+	}
+	
+	function ShowDepNo(CostId){
+		//alert("部門代碼");
+		  $.ajax({
+	  			type:'POST',
+	  			url:'../IpBinding/ShowDeptNo',
+	  			data:{CostId:CostId},
+//	  			async:false,
+	  			success:function(data){
+	  				
+	  				var StatusCode = data.StatusCode;
+	  				var message = data.message;
+	  				var htmlAppender='';
+	  				 if(StatusCode=="200"){	
+	  					var obj=eval(message);
+	  					console.log(obj);
+	  						for(var i=0;i<obj.length;i++){
+	  								htmlAppender+='<option value="'+obj[i].depid+'">'+obj[i].depid+'</option>';
+	  							}
+	  							 $('#deptNo').append(htmlAppender);
+	  				}else{
+	  					alert("此費用代碼錯誤或無相應的綫組別號！請重新輸入");
+						  $("#CostNo").val("");
+//				    	  $('#inputOTCarid').val("")
+	  				}
+	  			},
+	  			error:function(e){
+	  				alert(e);
+	  			}
+	  		})
 	}
 });

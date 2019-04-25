@@ -20,6 +20,14 @@ public class IpBinding {
 	private String USERNAME;
 	//是否是例外
 	private String CONTROL_EXCEPT;
+	//部門表的部門代碼
+	private String DEPID;
+	public String getDEPID() {
+		return DEPID;
+	}
+	public void setDEPID(String dEPID) {
+		DEPID = dEPID;
+	}
 	public String getCONTROL_EXCEPT() {
 		return CONTROL_EXCEPT;
 	}
