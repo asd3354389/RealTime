@@ -68,7 +68,7 @@
 						<thead>
 							<tr>								
 								<th>電腦Ip</th>
-								<th>部門代碼</th>
+								<th>線組別代碼</th>
 								<!-- <th>工號</th>		 -->						
 								<th>是否生效</th>
 								<th></th>

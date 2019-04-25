@@ -16,9 +16,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.foxlink.realtime.model.Emp;
+import com.foxlink.realtime.model.GetDepid;
 import com.foxlink.realtime.model.IOCardMachineIP;
 import com.foxlink.realtime.model.IpBinding;
 import com.foxlink.realtime.model.Page;
+import com.foxlink.realtime.model.objectMapper.GetDepidMapper;
 import com.foxlink.realtime.model.objectMapper.QueryIOCardMaIPMapper;
 import com.foxlink.realtime.model.objectMapper.QueryIpBindingMapper;
 import com.google.gson.JsonObject;
@@ -250,18 +252,8 @@ public class IpBindingDAO extends DAO<IpBinding>{
 					 for(int i = 0; i < SpecList.size();i++){
 						 IpBinding ipBinding = SpecList.get(i); 
 						 user_id = ipBinding.getUSERNAME();
-						 cost_id = ipBinding.getCOSTID();
-						 String strIdArray[] = cost_id.split("\\*");
-						 StringBuffer idsStr = new StringBuffer();
-							for (int j = 0; i < strIdArray.length; i++) {
-								if (i > 0) {
-									idsStr.append(",");
-								}
-								idsStr.append("'").append(strIdArray[i]).append("'");
-							}
-							userData_CostId = idsStr;
-							//sSQL+=" and Costid in("+idsStr+")";
-						 System.out.println("查詢的助理工號==>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:"+ipBinding.getUSERNAME());
+						
+						
 					 }
 				}
 				
@@ -346,10 +338,20 @@ public class IpBindingDAO extends DAO<IpBinding>{
 		return null;
 	}
 
-	public int getTotalRecord(String queryCritirea, String queryParam) {
+	public int getTotalRecord(String queryCritirea, String queryParam,String userDataCostId) {
 		// TODO Auto-generated method stub
+		//只顯示自己部門的信息
+				String strIdArray[] = userDataCostId.split("\\*");
+				StringBuffer idsStr = new StringBuffer();
+				Dept_Id="";
+				for (int i = 0; i < strIdArray.length; i++) {
+					if (i > 0) {
+						idsStr.append(",");
+					}
+					idsStr.append("'").append(strIdArray[i]).append("'");
+				}
 		int totalRecord=-1;
-    	String sSQL = "SELECT COUNT(*) FROM SWIPE.DEVICE_DEPT_BINDING WHERE ENABLED = 'Y'";
+    	String sSQL = "SELECT COUNT(*) FROM SWIPE.DEVICE_DEPT_BINDING WHERE ENABLED = 'Y' AND DEPTID  IN (SELECT DEPID FROM DEPT_RELATION  WHERE COSTID IN ("+idsStr+"))";
     	try {
     		List <Object> queryList=new  ArrayList<Object>();
     		
@@ -381,11 +383,21 @@ public class IpBindingDAO extends DAO<IpBinding>{
 	}
 	
 	public List<IpBinding> FindAllRecord(int currentPage, int totalRecord, String queryCritirea,
-			String queryParam) {
+			String queryParam,String userDataCostId ) {
 		// TODO Auto-generated method stub
 		List<IpBinding> AllEmp = null;
+		//只顯示自己部門的信息
+		String strIdArray[] = userDataCostId.split("\\*");
+		StringBuffer idsStr = new StringBuffer();
+		Dept_Id="";
+		for (int i = 0; i < strIdArray.length; i++) {
+			if (i > 0) {
+				idsStr.append(",");
+			}
+			idsStr.append("'").append(strIdArray[i]).append("'");
+		}
 		// TODO Auto-generated method stub
-		String sSQL = "SELECT * FROM ((SELECT  DEVICEIP,DEPTID,UPDATE_USERID,ENABLED,ROWNUM RN  from SWIPE.DEVICE_DEPT_BINDING WHERE ENABLED = 'Y'";
+		String sSQL = "SELECT * FROM ((SELECT  DEVICEIP,DEPTID,UPDATE_USERID,ENABLED,ROWNUM RN  from SWIPE.DEVICE_DEPT_BINDING WHERE ENABLED = 'Y' AND DEPTID  IN (SELECT DEPID FROM DEPT_RELATION  WHERE COSTID IN ("+idsStr+"))";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
 //			if(!userDataCostId.equals("ALL")){
@@ -399,10 +411,10 @@ public class IpBindingDAO extends DAO<IpBinding>{
 //				}
 //				sSQL+=" and Costid in("+idsStr+")";
 //			}
-    		if(queryCritirea.equals("UPDATE_USERID")){
-				sSQL+=" and UPDATE_USERID = '"+queryParam+"'ORDER BY DEVICEIP";  
-			}
-    		else if (queryCritirea.equals("DEPTID")) {
+//    		if(queryCritirea.equals("UPDATE_USERID")){
+//				sSQL+=" and UPDATE_USERID = '"+queryParam+"'ORDER BY DEVICEIP";  
+//			}
+    		 if (queryCritirea.equals("DEPTID")) {
 				sSQL+=" and DEPTID = '"+queryParam+"'ORDER BY DEVICEIP";
 			}else if (queryCritirea.equals("DEVICEIP")) {
 				sSQL+=" and DEVICEIP = '"+queryParam+"'ORDER BY DEVICEIP";
@@ -430,65 +442,127 @@ public class IpBindingDAO extends DAO<IpBinding>{
 		return 0;
 	}
 	//更新資料
-	public boolean UpdateRecord(String DeviceIp,String DeptID, String updateUser,String OldDeptID) {
+	public boolean UpdateRecord(String DeviceIp,String DeptID, String updateUser,String OldDeptID,String userDataCostId) {
 		// TODO Auto-generated method stub
 		int updateRow=-1,updateRole=-1;
-		 System.out.println("Ip地址==>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:"+DeviceIp);
-		 System.out.println("部門代碼==>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:"+DeptID);
-		 
 		String CostIdReturn = SelectDeptId(DeptID);
-		//device表返回的ip信息		
-		String DeviceIpRe = SelectDeviceIp(DeviceIp,DeptID);
-		
-		System.out.println("是否存在IP====================>>"+DeviceIpRe);
+		//查詢輸入的部門代碼是否在該助理報加班的權限內
+		List<IpBinding> SpecList = SelectDeptIdRe(userDataCostId);
+		//數據庫是否有該部門的信息
+		String IsDeviceIP = SelectDeviceIp(DeviceIp, DeptID);
+//		System.out.println("舊的部門 代碼"+ OldDeptID);
+//		System.out.println("新的部門 代碼"+ DeptID);
+		  List<String> list=new ArrayList<String>();
+		 for(int i = 0; i < SpecList.size();i++){
+			 IpBinding ipBinding = SpecList.get(i); 
+			 //Dept_Id = ipBinding.getDEPID();
+			 list.add(ipBinding.getDEPID());
+			 //System.out.println("查詢的 代碼"+ Dept_Id);
+		 }
+//		 if (SpecList == null) {
+//		 Dept_Id = "";
+//	} else {
+//		
+//		 for(int i = 0; i < SpecList.size();i++){
+//			 IpBinding ipBinding = SpecList.get(i); 
+//			 Dept_Id = ipBinding.getDEPID();
+//			 System.out.println("查詢的 代碼"+ Dept_Id);
+//			
+//		 }
+//	}
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);	
 		//UPDATE SWIPE.DEVICE_DEPT_BINDING SET DEPTID = '8145',UPDATE_USERID = '129548' WHERE DEVICEIP = '127.0.0.1' AND ENABLED = 'Y'
 		//String sSQL="UPDATE SWIPE.RT_DEVICE_INFO SET WorkShopNo=?,WorkShop_Desc=?,Direction=?,Update_Userid=? WHERE Deviceip=? and Enabled='Y'";
 		String sSQL="UPDATE SWIPE.DEVICE_DEPT_BINDING SET DEPTID = ?,UPDATE_USERID = ? WHERE DEVICEIP = ? AND ENABLED = 'Y' AND DEPTID = ? ";
-		
-		if (DeviceIpRe == "") {
+		 System.out.println("輸入的部門 代碼"+ IsDeviceIP);
+		if (list.contains(DeptID)&& IsDeviceIP == "") {
+//			for(int i = 0; i < SpecList.size();i++){
+//				 IpBinding ipBinding = SpecList.get(i); 
+//				 Dept_Id = ipBinding.getDEPID();
+				 
 			
-		
-			try {
-				if(DeptID!=null) {
-					updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
-						@Override
-						public void setValues(PreparedStatement arg0) throws SQLException {
-							// TODO Auto-generated method stub
-							arg0.setString(1, DeptID);
-							arg0.setString(2, updateUser);
-							arg0.setString(3, DeviceIp);
-							arg0.setString(4, OldDeptID);
-						}	
-					});
-					//System.out.println("電腦Ip====================>>"+ipBinding.getDEPTID());
-					transactionManager.commit(txStatus);
-				}	
-			}
-			catch(Exception ex) {
-				logger.error("Update BindingIP is failed",ex);
-				transactionManager.rollback(txStatus);
-			}		
-		}
-		
-		if (CostIdReturn == "") {
+				// if (DeptID.equals(ipBinding.getDEPID())) {
+					 System.out.println("輸入的部門 代碼"+ DeptID);
+					 System.out.println("查詢的 代碼"+ Dept_Id);
+					 try {
+							if(DeptID!=null) {
+								updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+									@Override
+									public void setValues(PreparedStatement arg0) throws SQLException {
+										// TODO Auto-generated method stub
+										arg0.setString(1, DeptID);
+										arg0.setString(2, updateUser);
+										arg0.setString(3, DeviceIp);
+										arg0.setString(4, OldDeptID);
+									}	
+								});
+							
+								transactionManager.commit(txStatus);
+							}	
+						}
+						catch(Exception ex) {
+							logger.error("Update BindingIP is failed",ex);
+							transactionManager.rollback(txStatus);
+						
+				}
+				
+//				 }else {
+//					 updateRow=-1;
+//				 }
+			//}		
+		}else {
 			updateRow=-1;
 		}
+		
+		
 			if(updateRow > 0) {
 				return true; 
 				}else{
 				   return false;
 				   }
 	}
+	
+	public List<IpBinding> SelectDeptIdRe(String userDataCostId) {
+		String strIdArray[] = userDataCostId.split("\\*");
+		StringBuffer idsStr = new StringBuffer();
+		Dept_Id="";
+		for (int i = 0; i < strIdArray.length; i++) {
+			if (i > 0) {
+				idsStr.append(",");
+			}
+			idsStr.append("'").append(strIdArray[i]).append("'");
+		}
+		//sSQL+=" and Costid in("+idsStr+")";
+		String sSQL= "SELECT DEPID FROM DEPT_RELATION WHERE costid IN ("+idsStr+")";
+		System.out.println(sSQL);
+		List<IpBinding> SpecList = new ArrayList<>();
+		try {
+			 RowMapper<IpBinding> rowMapper=new BeanPropertyRowMapper<>(IpBinding.class);
+			 SpecList = jdbcTemplate.query(sSQL, rowMapper);	
+//			 if (SpecList == null) {
+//				 Dept_Id = "";
+//			} else {
+//				
+//				 for(int i = 0; i < SpecList.size();i++){
+//					 IpBinding ipBinding = SpecList.get(i); 
+//					 Dept_Id = ipBinding.getDEPID();
+//					 
+//					
+//				 }
+			//}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("SELECT_Dept_id_Error", e);
+		}
+		return SpecList;	
+		}
 	//刪除資料
 	public boolean DeleteIpBinding(String Deviceip, String updateUser,String DeptId) {
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		//UPDATE SWIPE.DEVICE_DEPT_BINDING  SET ENABLED = 'N' ,UPDATE_USERID = '133566' WHERE DEVICEIP = '10.64.154.235' AND ENABLED = 'Y'
-		//String sSQL="update SWIPE.RT_DEVICE_INFO set ENABLED='N',Update_Userid=? WHERE Deviceip=? AND Enabled='Y'";
-		//DELETE FROM SWIPE.DEVICE_DEPT_BINDING WHERE deviceip = '10.64.154.235'
 		String sSQL= "UPDATE SWIPE.DEVICE_DEPT_BINDING  SET ENABLED = 'N' ,UPDATE_USERID = ? WHERE DEVICEIP = ? AND ENABLED = 'Y' AND DEPTID = ?";
 		
 		System.out.println("刪除信息=============>>"+sSQL);
@@ -517,5 +591,27 @@ public class IpBindingDAO extends DAO<IpBinding>{
 			 return false;
 	}
 	
-	
+	//顯示部門代碼
+	public List<GetDepid> ShowDeptNo(String CostId) {
+		// TODO Auto-generated method stub
+		List<GetDepid> AllDept = null;
+		String sSQl = "select t.depid from DEPT_RELATION t ";
+		try {
+			if(!CostId.equals("ALL")) {
+				sSQl+= " where t.CostId = '"+CostId+"'";
+			}
+			AllDept = jdbcTemplate.query(sSQl,new GetDepidMapper());
+			System.out.println(sSQl);
+		} catch (Exception e) {
+			// TODO: handle exception
+			  logger.error("Find Dept TotalRecord are failed ",e);
+    		  e.printStackTrace();
+		}
+		return AllDept;
+	}
+	@Override
+	public int getTotalRecord(String queryCritirea, String queryParam) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
