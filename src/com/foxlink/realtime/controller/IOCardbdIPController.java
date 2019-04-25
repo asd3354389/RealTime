@@ -30,7 +30,7 @@ public class IOCardbdIPController {
 		private IOCardbdIPService iOCardbdIPService;
 		
 		@RequestMapping(value = "/ShowIOCardbdIP", method = RequestMethod.GET)
-		public String ShowAllAccountPage() {
+		public String ShowAllIOCardbdIP() {
 			return "IOCardMachineBd";
 		}
 		

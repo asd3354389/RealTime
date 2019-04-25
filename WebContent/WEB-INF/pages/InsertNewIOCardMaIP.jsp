@@ -23,14 +23,14 @@
     		</div>
   		</div>	
   		<div class="control-group">
-    		<label class="control-label" for="inputOTCarid">車間描述</label>
+    		<label class="control-label" for="inputOTCarid">車間描述:</label>
     		<div class="controls">
       			<textarea class="form-control" id="message-text" maxlength="60"></textarea>
     		</div>
   		</div>
   		<div class="control-group">
     		<div class="controls">
-      			<label for="machineState">卡機I/O狀態</label>
+      			<label for="machineState">卡機狀態</label>
     					<select id="machineState" name='machineState' class="form-control">
     						<option value="I">進</option>
 							<option value="O">出</option>

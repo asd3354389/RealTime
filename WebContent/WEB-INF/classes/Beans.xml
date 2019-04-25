@@ -194,11 +194,20 @@
 		<property name="iOCardbdIPDAO" ref="iOCardbdIPDAO" />
 	</bean>
 	
+
+	<bean id="iOWorkShopPowerDAO" class="com.foxlink.realtime.DAO.IOWorkShopPowerDAO"
+		parent="dAO">
+	</bean>
+	<bean id="iOWorkShopPowerService" class="com.foxlink.realtime.service.IOWorkShopPowerService">
+		<property name="iOWorkShopPowerDAO" ref="iOWorkShopPowerDAO" />
+	</bean>
+
 	<bean id="workshopNoRestDao" class="com.foxlink.realtime.DAO.WorkshopNoRestDao"
 		parent="dAO">
 	</bean>
 	<bean id="workshopNoRestService" class="com.foxlink.realtime.service.WorkshopNoRestService">
 		<property name="workshopNoRestDao" ref="workshopNoRestDao" />
 	</bean>
+
 
 </beans>
