@@ -397,7 +397,7 @@ public class IpBindingDAO extends DAO<IpBinding>{
 			idsStr.append("'").append(strIdArray[i]).append("'");
 		}
 		// TODO Auto-generated method stub
-		String sSQL = "SELECT * FROM ((SELECT  DEVICEIP,DEPTID,UPDATE_USERID,ENABLED,ROWNUM RN  from SWIPE.DEVICE_DEPT_BINDING WHERE ENABLED = 'Y' AND DEPTID  IN (SELECT DEPID FROM DEPT_RELATION  WHERE COSTID IN ("+idsStr+"))";
+		String sSQL = "SELECT * FROM ((SELECT  DEVICEIP,DEPTID,UPDATE_USERID,ENABLED,ROWNUM RN  from SWIPE.DEVICE_DEPT_BINDING WHERE ENABLED = 'Y' AND DEPTID  IN (SELECT DEPID FROM DEPT_RELATION )";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
 //			if(!userDataCostId.equals("ALL")){
@@ -534,7 +534,7 @@ public class IpBindingDAO extends DAO<IpBinding>{
 			idsStr.append("'").append(strIdArray[i]).append("'");
 		}
 		//sSQL+=" and Costid in("+idsStr+")";
-		String sSQL= "SELECT DEPID FROM DEPT_RELATION WHERE costid IN ("+idsStr+")";
+		String sSQL= "SELECT DEPID FROM DEPT_RELATION";
 		System.out.println(sSQL);
 		List<IpBinding> SpecList = new ArrayList<>();
 		try {
@@ -595,11 +595,11 @@ public class IpBindingDAO extends DAO<IpBinding>{
 	public List<GetDepid> ShowDeptNo(String CostId) {
 		// TODO Auto-generated method stub
 		List<GetDepid> AllDept = null;
-		String sSQl = "select t.depid from DEPT_RELATION t ";
+		String sSQl = "select t.depid from DEPT_RELATION t order by t.depid asc";
 		try {
-			if(!CostId.equals("ALL")) {
+			/*if(!CostId.equals("ALL")) {
 				sSQl+= " where t.CostId = '"+CostId+"'";
-			}
+			}*/
 			AllDept = jdbcTemplate.query(sSQl,new GetDepidMapper());
 			System.out.println(sSQl);
 		} catch (Exception e) {
