@@ -208,6 +208,13 @@
 	<bean id="workshopNoRestService" class="com.foxlink.realtime.service.WorkshopNoRestService">
 		<property name="workshopNoRestDao" ref="workshopNoRestDao" />
 	</bean>
+	
+	<bean id="iOWorkShopRecordDAO" class="com.foxlink.realtime.DAO.IOWorkShopRecordDAO"
+		parent="dAO">
+	</bean>
+	<bean id="iOWorkShopRecordService" class="com.foxlink.realtime.service.IOWorkShopRecordService">
+		<property name="iOWorkShopRecordDAO" ref="iOWorkShopRecordDAO" />
+	</bean>
 
 
 </beans>

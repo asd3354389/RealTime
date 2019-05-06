@@ -82,6 +82,11 @@
 				"icon" : "icon-nav",
 				"url" : "WorkShopNoRest/ShowWorkshopNoRestInfo"
 
+			},{
+				"menuname" : "进出车间门禁記錄查詢",
+				"icon" : "icon-nav",
+				"url" : "IOWorkShop/ShowIOWorkShopRecord"
+
 			}]
 		},{
 

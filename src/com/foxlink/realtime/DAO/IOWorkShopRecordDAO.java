@@ -5,26 +5,23 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.foxlink.realtime.model.IOWSRecord;
 import com.foxlink.realtime.model.Page;
-import com.foxlink.realtime.model.RawRecord;
 import com.foxlink.realtime.model.SearchRawRecordInfo;
+import com.foxlink.realtime.model.objectMapper.QueryIOWSRecord;
 import com.foxlink.realtime.model.objectMapper.SearchRawRecordInfoMapper;
 
-public class RawRecordDAO  extends DAO<RawRecord> {
-private static Logger logger=Logger.getLogger(RawRecordDAO.class);	
-	
-	public RawRecordDAO(){
-		super();
-	}
+public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
+	private static Logger logger = Logger.getLogger(IOWorkShopRecordDAO.class);
 
 	@Override
-	public boolean AddNewRecord(RawRecord newRecord) {
+	public boolean AddNewRecord(IOWSRecord newRecord) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean UpdateRecord(RawRecord updateRecord) {
+	public boolean UpdateRecord(IOWSRecord updateRecord) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -36,32 +33,50 @@ private static Logger logger=Logger.getLogger(RawRecordDAO.class);
 	}
 
 	@Override
-	public List<RawRecord> FindAllRecords(int currentPage, int totalRecord, String queryCritirea, String queryParam) {
+	public List<IOWSRecord> FindAllRecords() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	public List<IOWSRecord> FindAllRecords(int currentPage, int totalRecord, String queryCritirea, String queryParam) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<IOWSRecord> FindRecord(String userDataCostId, int currentPage, int totalRecord, IOWSRecord t) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<IOWSRecord> FindRecords(IOWSRecord t) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public int getTotalRecord(String queryCritirea, String queryParam) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	@Override
-	public List<RawRecord> FindAllRecords() {
+	public int getTotalRecords(String userDataCostId, IOWSRecord t) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
-	
-	public int getTotalRecord(String userDataCostId,String empId,String depId,String costId,String startDate,String endDate,String recordStatus) {
+
+	public int getTotalRecord(String userDataCostId, String empId, String workShopNo,String depId, String costId, String startDate,
+			String endDate, String recordStatus) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
-    	String sSQL = "select count(*) FROM SWIPE.raw_record r join csr_employee e on r.cardId=e.cardId where e.isOnwork='0'";
+    	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_CONTRONL_RECORD r join csr_employee e on r.Emp_id=e.id where e.isOnwork='0'";
     	try {     		
     		 List <Object> queryList=new  ArrayList<Object>();  
     		 if(!empId.equals("")){
- 				sSQL+=" and r.id in(";  
+ 				sSQL+=" and r.Emp_id in(";  
  				  String [] empIdArray = empId.split(",");
  		            for(int i=0;i<empIdArray.length;i++){
  		            	sSQL+="'"+empIdArray[i].trim()+"'";
@@ -72,6 +87,18 @@ private static Logger logger=Logger.getLogger(RawRecordDAO.class);
  		               }
  			
  			}
+    		if(!workShopNo.equals("")){
+  				sSQL+=" and r.WorkShopNo in(";  
+  				  String [] workShopNoArray = workShopNo.split(",");
+  		            for(int i=0;i<workShopNoArray.length;i++){
+  		            	sSQL+="'"+workShopNoArray[i].trim()+"'";
+  		                if(workShopNoArray.length-1!=i)
+  		                	sSQL+=",";
+  		                else
+  		                	sSQL+=") ";				                
+  		               }
+  			
+  			}
  			if(!depId.equals("")){
  				sSQL+=" and e.depId in(";  
  				  String [] depIdArray = depId.split(",");
@@ -111,22 +138,7 @@ private static Logger logger=Logger.getLogger(RawRecordDAO.class);
   		                	sSQL+=") ";				
  		               }
  			}
- 			
- 			if (userDataCostId != null && userDataCostId != "") {
-				if (!userDataCostId.equals("ALL")) {
-					sSQL += " and e.costId in(";
-					String[] userDataCostArray = userDataCostId.split("\\*");
-					for (int i = 0; i < userDataCostArray.length; i++) {
-						sSQL += "'" + userDataCostArray[i] + "'";
-						if (userDataCostArray.length - 1 != i)
-							sSQL += ",";
-						else
-							sSQL += ") ";
-					}
-				}
-			}else{
-				sSQL += " and e.costId in('')";
-			}
+ 			 
  			
  		   totalRecord = jdbcTemplate.queryForObject(sSQL, queryList.toArray(), Integer.class);
  		
@@ -135,17 +147,18 @@ private static Logger logger=Logger.getLogger(RawRecordDAO.class);
     		  }
     	return totalRecord;
 	}
-	
-	public List<SearchRawRecordInfo> FindSearchRawRecords(String userDataCostId,int currentPage,int totalRecord,String empId,String depId,String costId,String startDate,String endDate,String recordStatus,Boolean isShowAll) {
+
+	public List<IOWSRecord> FindSearchRawRecords(String userDataCostId, int currentPage, int totalRecord, String empId,String workShopNo,
+			String depId, String costId, String startDate, String endDate, String recordStatus, Boolean isShowAll) {
 		// TODO Auto-generated method stub
-		List<SearchRawRecordInfo> searchRawRecord = null;
+		List<IOWSRecord> searchRawRecord = null;
 		String sSQL = "select * from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from "
-				+ "(SELECT r.id empId,e.name,e.depid,e.costId,to_char(r.SwipeCardTime,'yyyy-MM-dd HH24:mi:ss') swipeCardTime,r.IP_ADDRESS swipeCardIpAddress"
-				+ " FROM SWIPE.raw_record r join SWIPE.csr_employee e on r.id=e.id where e.isOnwork='0'";
+				+ "(SELECT r.Emp_id,r.D_Cardid,r.WorkShopNo,e.name,e.depid,e.costId,to_char(r.SwipeCardTime,'yyyy-MM-dd HH24:mi:ss') swipeCardTime,r.Direction"
+				+ " FROM SWIPE.RT_ACCESS_CONTRONL_RECORD r join SWIPE.csr_employee e on r.Emp_id=e.id where e.isOnwork='0'";
 		try {	
 			 List <Object> queryList=new  ArrayList<Object>();  
 			if(!empId.equals("")){
-				sSQL+=" and r.id in(";  
+				sSQL+=" and r.Emp_id in(";  
 				  String [] empIdArray = empId.split(",");
 		            for(int i=0;i<empIdArray.length;i++){
 		            	sSQL+="'"+empIdArray[i].trim()+"'";
@@ -156,6 +169,18 @@ private static Logger logger=Logger.getLogger(RawRecordDAO.class);
 		               }
 			
 			}
+			if(!workShopNo.equals("")){
+  				sSQL+=" and r.WorkShopNo in(";  
+  				  String [] workShopNoArray = workShopNo.split(",");
+  		            for(int i=0;i<workShopNoArray.length;i++){
+  		            	sSQL+="'"+workShopNoArray[i].trim()+"'";
+  		                if(workShopNoArray.length-1!=i)
+  		                	sSQL+=",";
+  		                else
+  		                	sSQL+=") ";				                
+  		               }
+  			
+  			}
 			if(!depId.equals("")){
 				sSQL+=" and e.depId in(";  
 				  String [] depIdArray = depId.split(",");
@@ -197,63 +222,23 @@ private static Logger logger=Logger.getLogger(RawRecordDAO.class);
  		               }
  			}
 			
-			if (userDataCostId != null && userDataCostId != "") {
-				if (!userDataCostId.equals("ALL")) {
-					sSQL += " and e.costId in(";
-					String[] userDataCostArray = userDataCostId.split("\\*");
-					for (int i = 0; i < userDataCostArray.length; i++) {
-						sSQL += "'" + userDataCostArray[i] + "'";
-						if (userDataCostArray.length - 1 != i)
-							sSQL += ",";
-						else
-							sSQL += ") ";
-					}
-				}
-			}else{
-				sSQL += " and e.costId in('')";
-			}
 			
 			if(!isShowAll){
 				Page page = new Page(currentPage, totalRecord);	  
 				int endIndex=page.getStartIndex() + page.getPageSize();
-				sSQL += " order by e.costID,e.depid,r.id,r.swipecardtime ) a ) where rnum > "+page.getStartIndex()+" and rnum <= "+ endIndex ;
+				sSQL += " order by e.costID,e.depid,r.Emp_id,r.SwipeCardTime ) a ) where rnum > "+page.getStartIndex()+" and rnum <= "+ endIndex ;
 			}
 			else
 			{
-				sSQL += " order by e.costID,e.depid,r.id,r.swipecardtime ) a ) where 1=1";
+				sSQL += " order by e.costID,e.depid,r.Emp_id,r.SwipeCardTime ) a ) where 1=1";
 			}
 		    
-		    searchRawRecord = jdbcTemplate.query(sSQL,  queryList.toArray(), new SearchRawRecordInfoMapper());			    
-		
+		    searchRawRecord = jdbcTemplate.query(sSQL,  queryList.toArray(), new QueryIOWSRecord());			    
+		    System.out.println(searchRawRecord);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			logger.error("Search RawRecords Record is failed",ex);
+			logger.error("Search IOWSRecord Record is failed",ex);
 		}
 		return searchRawRecord;
 	}
-
-	
-
-	
-
-	@Override
-	public List<RawRecord> FindRecords(RawRecord t) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-
-	@Override
-	public List<RawRecord> FindRecord(String userDataCostId, int currentPage, int totalRecord, RawRecord t) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getTotalRecords(String userDataCostId, RawRecord t) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }
