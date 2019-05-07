@@ -65,7 +65,12 @@
 				"menuname" : "線組代碼對應的實時卡機設定",
 				"icon" : "icon-nav",
 				"url" : "IpBinding/ShowIpBinding"
-		}, {
+			},{
+
+				"menuname" : "員工對應的實時卡機設定",
+				"icon" : "icon-nav",
+				"url" : "EmpIPBinding/ShowEmpIPBinding"
+			},{
 
 				"menuname" : "進出車間卡機IP維護",
 				"icon" : "icon-nav",

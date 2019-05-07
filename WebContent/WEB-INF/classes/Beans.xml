@@ -215,6 +215,13 @@
 	<bean id="iOWorkShopRecordService" class="com.foxlink.realtime.service.IOWorkShopRecordService">
 		<property name="iOWorkShopRecordDAO" ref="iOWorkShopRecordDAO" />
 	</bean>
+	
+	<bean id="empIPBindingDAO" class="com.foxlink.realtime.DAO.EmpIPBindingDAO"
+		parent="dAO">
+	</bean>
+	<bean id="empIPBindingService" class="com.foxlink.realtime.service.EmpIPBindingService">
+		<property name="empIPBindingDAO" ref="empIPBindingDAO" />
+	</bean>
 
 
 </beans>
