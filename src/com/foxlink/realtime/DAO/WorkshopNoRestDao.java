@@ -79,8 +79,14 @@ public class WorkshopNoRestDao extends DAO<WorkshopNoRestInfo>{
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.WORKSHOPNO_REST_INFO t where t.enabled = 'Y' ";
     	try {
-
-		 totalRecord = jdbcTemplate.queryForObject(sSQL, Integer.class);	
+    		List <Object> queryList=new  ArrayList<Object>();
+			if(queryCritirea.equals("workshopno")){
+				sSQL+=" and workshopno = ?";  
+			}
+			if (!queryCritirea.equals("")){
+		    	queryList.add(queryParam);
+		    }
+		 totalRecord = jdbcTemplate.queryForObject(sSQL,queryList.toArray(), Integer.class);	
 		 
     	} catch (Exception ex) {
     		  logger.error("Find WorkshopNoRestInfo TotalRecord are failed ",ex);
