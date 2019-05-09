@@ -37,12 +37,13 @@ public class IpBindingController {
 	//電腦Ip綁定
 	@RequestMapping(value="/BindingIp",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String ShowProjectName(HttpSession session,@RequestParam(value="DeviceIp")String DeviceIp,@RequestParam(value="DeptId")String DeptId){
+	public String ShowProjectName(HttpSession session,@RequestParam(value="DeviceIp")String DeviceIp,@RequestParam(value="DeptId")String DeptId,@RequestParam(value="Dif")Boolean isDif){
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 		ipBindingService = (IpBindingService) context.getBean("ipBindingService");
 		String updateUser=(String) session.getAttribute("username");
-		return ipBindingService.BindingIp(DeviceIp,DeptId,updateUser);
+		
+		return ipBindingService.BindingIp(DeviceIp,DeptId,updateUser,isDif);
 	} 
 	
 //	//電腦Ip綁定
@@ -151,7 +152,7 @@ public class IpBindingController {
 		@ResponseBody
 		public String ShowCostNo(HttpSession session) {
 			String JsonResult = null;
-			String userDataCostId="ALL";//(String) session.getAttribute("userDataCostId");
+			String userDataCostId=(String) session.getAttribute("userDataCostId");
 			System.out.println("助理報加班的費用代碼=====>>"+userDataCostId);
 			return userDataCostId;
 		}
