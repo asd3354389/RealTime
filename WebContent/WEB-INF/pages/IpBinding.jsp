@@ -19,8 +19,8 @@
 <link href="${bootstrapSelectCSS}" rel="stylesheet">
 
 <c:url value="/resources/assets/js/jquery-1.8.3.min.js" var="assetsJqueryJS" />
-<%-- <c:url value="/resources/js/Project/RealTime.Modify.FLinePerson.js?version=${resourceVersion}" var="modifyFLinePerson" /> --%>
 <c:url value="/resources/js/jquery/jquery-1.11.3.min.js" var="JqueryJS" />
+<c:url value="/resources/js/Project/IpBinding.js?version=${resourceVersion}" var="modifyFLinePerson" />
 <c:url value="/resources/js/bootstrap/bootstrap.min.js" var="bootstrapJS" />
 <c:url value="/resources/js/bootstrap/bootstrap-select.min.js" var="bootstrapSelectJS" />
 <%-- <c:url value="/resources/js/Project/AjaxCheckSession.js?version=${resourceVersion}" var="AjaxCheckSessionJS"/>  --%>
@@ -28,9 +28,10 @@
 <script src="${bootstrapJS}" type="text/javascript"></script>
 <script src="${bootstrapSelectJS}" type="text/javascript"></script>
 <%-- <script type="text/javascript" src='${AjaxCheckSessionJS}'></script> --%>
-<%-- <script src="${modifyFLinePerson}" type="text/javascript"></script> --%>
+ <script src="${modifyFLinePerson}" type="text/javascript"></script> 
 <script type="text/javascript" src="../resources/js/Project/AjaxCheckSession.js"></script>
-<script type="text/javascript" src="../resources/js/Project/IpBinding.js"></script>
+
+<!-- <script type="text/javascript" src="../resources/js/Project/IpBinding.js"></script> -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>電腦Ip綁定</title>
 </head>
@@ -58,9 +59,9 @@
 					class="btn btn-sm btn-primary" value="Search">
 			</div>
 			<div>
-					<h4>電腦Ip綁定費用代碼列表：</h4>
-					<a id="addNewAccountBtn" role="button" href="#insertIpBinding"
-					class="btn btn-primary btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 500px;font-size: 14px;">電腦Ip綁定部門代碼</a>	
+					<h4>電腦Ip綁定線組別代碼列表：</h4>
+					<!-- <a id="addNewAccountBtn" role="button" href="#insertIpBinding"
+					class="btn btn-primary btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 450px;font-size: 14px;">電腦Ip綁定部門代碼</a>	 -->
 			</div>
 			<div class="middle">
 				<div class="left" style="width:70%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
@@ -79,9 +80,20 @@
 					</table>
 					<div id="IpBindingListPagination" align="right" style="height: 20;position:absolute; bottom: -20px;right: 0px;">
 					</div>
-				
-			<jsp:include page="InsertIpBinding.jsp" />
+				<div style="background: red;position: absolute;top: 50px;right: 450px;">
+				</div>
+			 <jsp:include page="InsertMoreIP.jsp" /> 
+			<jsp:include page="InsertMoreDeptId.jsp"></jsp:include>
 			</div>
+			</div>
+			<div style="float: right;margin-right: 195px;top: 10px;">
+					<!--  <a id="addNewAccountBtn" role="button" href="#insertIpBinding"
+					class="btn btn-primary btn-sm" data-toggle="modal" style="font-size: 14px;">電腦Ip綁定部門代碼</a><br><br>	 -->
+					<a id="addMoreDeptIdBtn" role="button" href="#InsertMoreDeptId"
+					class="btn btn-primary btn-sm" data-toggle="modal" style="font-size: 14px;">電腦Ip綁定多個線組別代碼</a><br><br>	
+					<a id="addMoreIpBtn" role="button" href="#InsertMoreIP"
+					class="btn btn-primary btn-sm" data-toggle="modal" style="font-size: 14px;">線組別代碼綁定多個電腦Ip</a>	
+				 
 			</div>
 
 </div>

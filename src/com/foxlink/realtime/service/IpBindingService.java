@@ -33,14 +33,14 @@ public class IpBindingService extends Service<IpBinding> {
 	
 	
 	//綁定ip(insert數據)
-	public String BindingIp(String DeviceIp,String DeptId,String ID) {
+	public String BindingIp(String DeviceIp,String DeptId,String ID,Boolean isDif) {
 		JsonObject result = new JsonObject();
 		
 		//返回的異常信息
 		
 		//System.out.println("卡機Ip=======>>"+DeviceIp);
 		//String com_ip = ipBindingDAO.SelectAppIp(DeviceIp);
-		boolean isSuccessful = ipBindingDAO.insertIPBinding(DeviceIp,DeptId,ID);
+		boolean isSuccessful = ipBindingDAO.insertIPBinding(DeviceIp,DeptId,ID,isDif);
 		//List<String> ListRe = ipBindingDAO.ListRe();
 		JsonObject Update_Result = ipBindingDAO.ListRe();
 		Gson gson = new GsonBuilder().serializeNulls().create();

@@ -53,7 +53,7 @@
 	</div>
 	<div region="south" split="true"
 		style="height: 30px; background: #D2E0F2;">
-		<div class="footer">By 林東平 Tel:#36908,劉峰君 Tel:#31007,陳健文 Tel:#31007</div>
+		<div class="footer">By 林東平 Tel:#36908,劉峰君 Tel:#31007,陳健文 Tel:#31013</div>
 	</div>
 	<div region="west" split="true" title="导航菜单" style="width: 180px;"
 		id="west">
