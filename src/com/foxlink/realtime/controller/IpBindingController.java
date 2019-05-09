@@ -152,7 +152,7 @@ public class IpBindingController {
 		@ResponseBody
 		public String ShowCostNo(HttpSession session) {
 			String JsonResult = null;
-			String userDataCostId=(String) session.getAttribute("userDataCostId");
+			String userDataCostId= "ALL";//(String) session.getAttribute("userDataCostId");
 			System.out.println("助理報加班的費用代碼=====>>"+userDataCostId);
 			return userDataCostId;
 		}
