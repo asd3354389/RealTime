@@ -222,7 +222,7 @@ private static Logger logger=Logger.getLogger(RawRecordDAO.class);
 			{
 				sSQL += " order by e.costID,e.depid,r.id,r.swipecardtime ) a ) where 1=1";
 			}
-		    
+		    	    
 		    searchRawRecord = jdbcTemplate.query(sSQL,  queryList.toArray(), new SearchRawRecordInfoMapper());			    
 		
 		} catch (Exception ex) {

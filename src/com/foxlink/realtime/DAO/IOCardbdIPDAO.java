@@ -122,7 +122,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 		// TODO Auto-generated method stub
 		List<IOCardMachineIP> AllEmp = null;
 		// TODO Auto-generated method stub
-		String sSQL = "select * from(select c.*,ROWNUM rn from (SELECT Deviceip,WorkShopNo,WorkShop_Desc,Direction,Enabled from SWIPE.RT_DEVICE_INFO where Enabled='Y'";
+		String sSQL = "select * from(select c.*,ROWNUM rn from (SELECT Deviceip,WorkShopNo,WorkShop_Desc,Direction,Enabled,IS_SPECIAL from SWIPE.RT_DEVICE_INFO where Enabled='Y'";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
 			/*if(!userDataCostId.equals("ALL")){
@@ -187,8 +187,13 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
+		String sSQL="";
+		if(checkSecrecyWS(ioCardMachineIP.getWorkShopNo())) {
+			sSQL+="INSERT INTO SWIPE.RT_DEVICE_INFO (Deviceip,WorkShopNo,WorkShop_Desc,Direction,Update_UserId,IS_SPECIAL) VALUES(?,?,?,?,?,'Y')";
+		}else {
+			sSQL+="INSERT INTO SWIPE.RT_DEVICE_INFO (Deviceip,WorkShopNo,WorkShop_Desc,Direction,Update_UserId,IS_SPECIAL) VALUES(?,?,?,?,?,'N')";
+		}
 		
-		String sSQL="INSERT INTO SWIPE.RT_DEVICE_INFO (Deviceip,WorkShopNo,WorkShop_Desc,Direction,Update_UserId) VALUES(?,?,?,?,?)";
 		try {
 			if(ioCardMachineIP!=null) {
 		      createRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
@@ -215,6 +220,22 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 		 else
 			 return false;
 	}
+	
+	public boolean checkSecrecyWS(String WorkShopNo) {
+		// TODO Auto-generated method stub
+		int totalRecord=-1;
+    	String sSQL = "select count(*) from SWIPE.RT_DEVICE_INFO where WorkShopNo =? and IS_SPECIAL='Y'";
+    	try {   
+    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { WorkShopNo },Integer.class);	   	
+    	  } catch (Exception ex) {
+    		  ex.printStackTrace();
+    		  }
+    	 if(totalRecord > 0) 
+			   return true; 
+		 else
+			 return false;
+	}
+
 
 	public boolean checkMachineIPExistence(String Deviceip) {
 		// TODO Auto-generated method stub
@@ -290,5 +311,35 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 			   return true; 
 		 else
 			 return false;
+	}
+
+	public boolean setWorkShop(String secrecyWS, String updateUser, String status) {
+		// TODO Auto-generated method stub
+		int updateRow=-1,updateRole=-1;
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);		
+		String sSQL="UPDATE SWIPE.RT_DEVICE_INFO SET IS_SPECIAL=?,Update_Userid=? WHERE WorkShopNo=? and Enabled='Y'";
+		try {
+			if(secrecyWS!=null) {
+				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement arg0) throws SQLException {
+						// TODO Auto-generated method stub
+						arg0.setString(1, status);
+						arg0.setString(2, updateUser);
+						arg0.setString(3, secrecyWS);	
+					}	
+				});
+				transactionManager.commit(txStatus);
+			}	
+		}
+		catch(Exception ex) {
+			logger.error("Update SecrecyWorkShop is failed",ex);
+			transactionManager.rollback(txStatus);
+		}			
+			if(updateRow > 0) 
+				   return true; 
+				else
+				   return false;
 	}
 }

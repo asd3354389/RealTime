@@ -151,6 +151,31 @@ public class IOCardbdIPController {
 			return UpdateResult.toString();
 		}
 		
+		@RequestMapping(value="/setSecrecyWS.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+		@ResponseBody
+		public String SetSecrecyWS(HttpSession session,@RequestParam("SecrecyWS")String SecrecyWS,@RequestParam("Status")String Status){
+			JsonObject SetResult=new JsonObject();		
+			try{
+				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+				iOCardbdIPService = (IOCardbdIPService) context.getBean("iOCardbdIPService");
+				String updateUser=(String) session.getAttribute("username");
+				if(iOCardbdIPService.setWorkShop(SecrecyWS,Status,updateUser)){
+					SetResult.addProperty("StatusCode", "200");
+					SetResult.addProperty("Message", "設置保密車閒成功");
+				}
+				else{
+					SetResult.addProperty("StatusCode", "500");
+					SetResult.addProperty("Message", "設置保密車閒失敗");
+				}
+			}
+			catch(Exception ex){
+				logger.error("Updating the Account info is failed, due to: ",ex);
+				SetResult.addProperty("StatusCode", "500");
+				SetResult.addProperty("Message", "設置保密車閒發生錯誤，原因："+ex.toString());
+			}
+			return SetResult.toString();
+		}
+		
 		@RequestMapping(value="/deleteIOCardMaIP.do",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 		@ResponseBody
 		public String DeleteIOCardMaIP(HttpSession session,@RequestParam("Deviceip")String Deviceip){
