@@ -7,18 +7,19 @@
     			<h5>新增車間休息時間段</h5>
 			</div>
 			<div class="modal-body">
+			<div class="control-group"><label for="outCard" style="color:red">多個ip或者工號之間用英文,（逗號）隔開，如132456,123456</label></div>
   		<div class="control-group">
     		<div class="controls">
-      			<label for="outCard">車間ip</label>
+      			<label for="outCard">卡機ip</label>
     			<div class="controls">
-      				<input type="text" id="insert_deviceIP" name="inputChineseName" class="required nameCheck" placeholder="車間ip">
+      				<input type="text" id="insert_deviceIP" name="inputChineseName" autocomplete="off" style="width:250px" class="required nameCheck" placeholder="卡機ip">
     			</div>		
     		</div>
   		</div>
   		<div class="control-group">
     		<label class="control-label" for="inputOTCarid">員工工號</label>
     		<div class="controls">
-      				<input type="text" id="insert_emp_id" name="inputChineseName" class="required nameCheck" placeholder="員工工號">
+      				<input type="text" id="insert_emp_id" name="inputChineseName" autocomplete="off" style="width:250px" class="required nameCheck" placeholder="員工工號">
     		</div>	
   		</div>
   			

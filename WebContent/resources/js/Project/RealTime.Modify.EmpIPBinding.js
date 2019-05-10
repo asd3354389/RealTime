@@ -14,14 +14,8 @@ $(document).ready(function(){
      }
 	
 	$('#resetSubmit').click(function(){
-	    $('#insert_rest_start1').val('');
-    	$('#insert_rest_end1').val('');
-    	$('#insert_rest_start2').val('');
-    	$('#insert_rest_end2').val('');
-    	$('#insert_rest_start3').val('');
-    	$('#insert_rest_end3').val('');
-    	$('#insert_rest_start4').val('');
-    	$('#insert_rest_end4').val('');
+		$('#insert_deviceIP').val('');
+	     $('#insert_emp_id').val('');
 	});
 	
 	$('#searchEmpIPBinding').click(function(){
@@ -59,7 +53,7 @@ $(document).ready(function(){
 					 if(data!=null && data!=''){
 						 if(data.StatusCode=="200"){
 							 $('#insert_deviceIP').val('');
-						     $('#insert_rest_end1').val('');
+						     $('#insert_emp_id').val('');
 							 alert(data.Message);
 							 ShowAllEmpIPBinding();
 							/* alert(data.Message);			
