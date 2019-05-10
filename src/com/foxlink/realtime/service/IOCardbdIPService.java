@@ -114,4 +114,9 @@ public class IOCardbdIPService extends Service<IOCardMachineIP>{
 		// TODO Auto-generated method stub
 		return iOCardbdIPDAO.DeleteIOCardMaIP(Deviceip,updateUser);
 	}
+
+	public boolean setWorkShop(String secrecyWS, String updateUser, String status) {
+		// TODO Auto-generated method stub
+		return iOCardbdIPDAO.setWorkShop(secrecyWS,status,updateUser);
+	}
 }
