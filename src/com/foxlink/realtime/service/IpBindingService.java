@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.foxlink.realtime.DAO.FLinePersonMtDAO;
 import com.foxlink.realtime.DAO.IpBindingDAO;
 import com.foxlink.realtime.model.Emp;
+import com.foxlink.realtime.model.GetDepid;
 import com.foxlink.realtime.model.IOCardMachineIP;
 import com.foxlink.realtime.model.IpBinding;
 import com.foxlink.realtime.model.OTCardBD;
@@ -32,14 +33,14 @@ public class IpBindingService extends Service<IpBinding> {
 	
 	
 	//綁定ip(insert數據)
-	public String BindingIp(String DeviceIp,String DeptId,String ID) {
+	public String BindingIp(String DeviceIp,String DeptId,String ID,Boolean isDif) {
 		JsonObject result = new JsonObject();
 		
 		//返回的異常信息
 		
 		//System.out.println("卡機Ip=======>>"+DeviceIp);
 		//String com_ip = ipBindingDAO.SelectAppIp(DeviceIp);
-		boolean isSuccessful = ipBindingDAO.insertIPBinding(DeviceIp,DeptId,ID);
+		boolean isSuccessful = ipBindingDAO.insertIPBinding(DeviceIp,DeptId,ID,isDif);
 		//List<String> ListRe = ipBindingDAO.ListRe();
 		JsonObject Update_Result = ipBindingDAO.ListRe();
 		Gson gson = new GsonBuilder().serializeNulls().create();
@@ -122,29 +123,29 @@ public class IpBindingService extends Service<IpBinding> {
 		return null;
 	}
 
-	public Page getPersonPage(int currentPage, String queryCritirea, String queryParam) {
+	public Page getPersonPage(int currentPage, String queryCritirea, String queryParam,String userDataCostId) {
 		// TODO Auto-generated method stub
-		int totalRecord = ipBindingDAO.getTotalRecord(queryCritirea, queryParam);
+		int totalRecord = ipBindingDAO.getTotalRecord(queryCritirea, queryParam,userDataCostId);
 		Page page = new Page(currentPage, totalRecord);
 		// Page page = accountDAO.getPage(pageNum, User.class, totalRecord);
 		return page;
 	}
-	public List<IpBinding> FindQueryRecord( int currentPage, String queryCritirea, String queryParam) {
+	public List<IpBinding> FindQueryRecord( int currentPage, String queryCritirea, String queryParam,String userDataCostId) {
 		// TODO Auto-generated method stub
 		List<IpBinding> AllDeip = null;
 		try{
 			int totalRecord = ipBindingDAO.getTotalRecord(queryCritirea, queryParam);
 			/*System.out.println(totalRecord);*/
-			AllDeip = ipBindingDAO.FindAllRecord(currentPage,totalRecord, queryCritirea, queryParam);
+			AllDeip = ipBindingDAO.FindAllRecord(currentPage,totalRecord, queryCritirea, queryParam,userDataCostId);
 		}catch(Exception e){
 			e.printStackTrace();
 			logger.error("Find IOCardIPList Record is failed ",e);
 		}
 		return AllDeip;
 	}
-	public boolean UpdateRecord(String DeviceIp,String DeptID, String updateUser,String OldDeptID) {
+	public boolean UpdateRecord(String DeviceIp,String DeptID, String updateUser,String OldDeptID,String userDataCostId) {
 		// TODO Auto-generated method stub
-		return ipBindingDAO.UpdateRecord(DeviceIp,DeptID,updateUser,OldDeptID);
+		return ipBindingDAO.UpdateRecord(DeviceIp,DeptID,updateUser,OldDeptID,userDataCostId);
 	}
 	
 	public boolean DeleteIpBinding(String Deviceip, String updateUser,String DeptId) {
@@ -152,4 +153,20 @@ public class IpBindingService extends Service<IpBinding> {
 		return ipBindingDAO.DeleteIpBinding(Deviceip,updateUser,DeptId);
 	}
 
+	//顯示部門代碼
+	public String ShowDeptNo(String CostId) {
+		// TODO Auto-generated method stub
+		    JsonObject result = new JsonObject();
+	        List<GetDepid> list_dcResult = ipBindingDAO.ShowDeptNo(CostId);
+	        Gson gson = new GsonBuilder().serializeNulls().create();
+	        if (list_dcResult.size() == 0 || list_dcResult == null) {
+	            result.addProperty("StatusCode", "500");
+	            result.addProperty("message", "查無數據");
+	        } else {
+	            result.addProperty("StatusCode", "200");
+	            result.addProperty("message", gson.toJson(list_dcResult));
+	        }
+	        System.out.println(result.toString());
+	        return result.toString();
+	}
 }

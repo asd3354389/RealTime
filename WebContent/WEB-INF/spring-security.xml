@@ -27,6 +27,10 @@
 		<intercept-url pattern="/ShowCheckOverTime15min" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
 		<intercept-url pattern="/FlinePerson/ShowFlinePersonMaintain" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
 		<intercept-url pattern="/OTCardPerson/ShowOTCardbdPerson" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
+		<intercept-url pattern="/IpBinding/ShowIpBinding" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
+		<intercept-url pattern="/WorkShopNoRest/ShowWorkshopNoRestInfo" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
+		<intercept-url pattern="/IOWorkShopPower/ShowIOWorkShopPwList" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
+		<intercept-url pattern="/IOCardBdIP/ShowIOCardbdIP" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
 		<!-- access="hasRole('ROLE_USER','ROLE_ADMIN')"  -->
 
      <!--会话管理 -->   

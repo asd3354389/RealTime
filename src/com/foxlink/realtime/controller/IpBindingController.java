@@ -37,12 +37,13 @@ public class IpBindingController {
 	//電腦Ip綁定
 	@RequestMapping(value="/BindingIp",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String ShowProjectName(HttpSession session,@RequestParam(value="DeviceIp")String DeviceIp,@RequestParam(value="DeptId")String DeptId){
+	public String ShowProjectName(HttpSession session,@RequestParam(value="DeviceIp")String DeviceIp,@RequestParam(value="DeptId")String DeptId,@RequestParam(value="Dif")Boolean isDif){
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 		ipBindingService = (IpBindingService) context.getBean("ipBindingService");
 		String updateUser=(String) session.getAttribute("username");
-		return ipBindingService.BindingIp(DeviceIp,DeptId,updateUser);
+		
+		return ipBindingService.BindingIp(DeviceIp,DeptId,updateUser,isDif);
 	} 
 	
 //	//電腦Ip綁定
@@ -72,11 +73,11 @@ public class IpBindingController {
 				}
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				String updateUser = (String)session.getAttribute("username");
-				//String userDataCostId=(String) session.getAttribute("userDataCostId");
+				String userDataCostId=(String) session.getAttribute("userDataCostId");
 				ipBindingService = (IpBindingService)context.getBean("ipBindingService");
 				Gson gson = new GsonBuilder().serializeNulls().create();
-				Page page = ipBindingService.getPersonPage(currentPage,queryCritirea,queryParam);				
-				page.setList(ipBindingService.FindQueryRecord(currentPage, queryCritirea,queryParam));
+				Page page = ipBindingService.getPersonPage(currentPage,queryCritirea,queryParam,userDataCostId);				
+				page.setList(ipBindingService.FindQueryRecord(currentPage, queryCritirea,queryParam,userDataCostId));
 				JsonResult = gson.toJson(page);
 				System.out.println("分頁顯示工號========="+gson.toJson(page).toString());
 			} catch (Exception e) {
@@ -100,14 +101,15 @@ public class IpBindingController {
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				ipBindingService = (IpBindingService) context.getBean("ipBindingService");
 				String updateUser=(String) session.getAttribute("username");
+				String userDataCostId=(String) session.getAttribute("userDataCostId");
 				System.out.println("電腦ip=============>"+DeviceIp);
-				if(ipBindingService.UpdateRecord(DeviceIp,DeptID,updateUser,OldDeptID)){
+				if(ipBindingService.UpdateRecord(DeviceIp,DeptID,updateUser,OldDeptID,userDataCostId)){
 					UpdateResult.addProperty("StatusCode", "200");
 					UpdateResult.addProperty("Message", "更新成功");
 				}
 				else{
 					UpdateResult.addProperty("StatusCode", "500");
-					UpdateResult.addProperty("Message", "更新失敗");
+					UpdateResult.addProperty("Message", "更新失敗,部門代碼已存在或沒有該部門報加班權限");
 				}
 			}
 			catch(Exception ex){
@@ -127,6 +129,7 @@ public class IpBindingController {
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				ipBindingService = (IpBindingService) context.getBean("ipBindingService");
 				String updateUser=(String) session.getAttribute("username");
+				String userDataCostId=(String) session.getAttribute("userDataCostId");
 				if(ipBindingService.DeleteIpBinding(Deviceip, updateUser,DeptId)){
 					DisableResult.addProperty("StatusCode", "200");
 					DisableResult.addProperty("Message", "電腦IP狀態已失效");
@@ -143,4 +146,22 @@ public class IpBindingController {
 			}		
 			return DisableResult.toString();
 		}
+		
+		//顯示費用代碼
+		@RequestMapping(value="/ShowCostNo",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		@ResponseBody
+		public String ShowCostNo(HttpSession session) {
+			String JsonResult = null;
+			String userDataCostId= "ALL";//(String) session.getAttribute("userDataCostId");
+			System.out.println("助理報加班的費用代碼=====>>"+userDataCostId);
+			return userDataCostId;
+		}
+		//顯示部門代碼
+		@RequestMapping(value = "/ShowDeptNo", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	    @ResponseBody
+	    public String ShowDeptNo(@RequestParam("CostId") String CostId) {
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			ipBindingService = (IpBindingService) context.getBean("ipBindingService");
+	        return ipBindingService.ShowDeptNo(CostId);
+	    }
 }
