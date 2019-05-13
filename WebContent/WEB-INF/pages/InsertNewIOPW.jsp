@@ -50,46 +50,5 @@
 	</div>
 </div>
 	
-	<div class="modal-dialog modal-sm up" >
-		 <div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    			<h5>修改車間臨時權限設置</h5>
-			</div>
-			<div class="modal-body">
-  		<div class="control-group">
-    		<div class="controls">
-      			<label for="outCard">車間號</label>
-    					<select id="workShopUpdate" name='workShopUpdate' class="form-control workShopUpdate">
-    					<option value=""></option>
-    					</select>  			
-    		</div>
-  		</div>	
-  		
-  		<div class="control-group">
-    		<label class="control-label" for="dpick3">生效起始日期</label>
-    		<div class="controls">
-      			<input
-						id="dpick3" class="Wdate" type="text" name="OVERTIMEDATE"
-						onfocus="WdatePicker({dateFmt:'yyyy/MM/dd',minDate:'%y-\#{%M-2}-01',maxDate:'#F{$dp.$D(\'dpick4\')}'})" autocomplete="off" />  
-  			</div>		
-  		</div>
-  		
-  		<div class="control-group">
-    		<label class="control-label" for="dpick4">生效結束日期</label>
-    		<div class="controls">
-    			<input id="dpick4" class="Wdate" type="text" name="OVERTIMEDATEEnd"
-						onfocus="WdatePicker({dateFmt:'yyyy/MM/dd',minDate:'#F{$dp.$D(\'dpick3\')}'})" autocomplete="off" />
-  			</div>		
-  		</div>
- 		
-	
-        <br>
-  		<button type="submit" id="updateNewIOWShPW" class="btn btn-primary">設置</button>
-  		<button type="reset" id="resetSubmit" class="btn">清除</button>
-
-			</div>	
-		</div>
-	</div> 
 </div>
 

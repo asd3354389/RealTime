@@ -57,7 +57,7 @@
 				"icon" : "icon-nav",
 				"url" : "FlinePerson/ShowFlinePersonMaintain"
 			},{
-				"menuname" : "離崗卡與綫別號綁定維護",
+				"menuname" : "離崗卡與費用代碼綁定維護",
 				"icon" : "icon-nav",
 				"url" : "OTCardPerson/ShowOTCardbdPerson"
 			},{

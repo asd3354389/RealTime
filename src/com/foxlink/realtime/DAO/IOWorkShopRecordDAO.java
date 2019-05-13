@@ -72,7 +72,7 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
 			String endDate, String recordStatus) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
-    	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_CONTRONL_RECORD r join csr_employee e on r.Emp_id=e.id where e.isOnwork='0'";
+    	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_CONTROL_RECORD r join csr_employee e on r.Emp_id=e.id where e.isOnwork='0'";
     	try {     		
     		 List <Object> queryList=new  ArrayList<Object>();  
     		 if(!empId.equals("")){
@@ -154,7 +154,7 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
 		List<IOWSRecord> searchRawRecord = null;
 		String sSQL = "select * from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from "
 				+ "(SELECT r.Emp_id,r.D_Cardid,r.WorkShopNo,e.name,e.depid,e.costId,to_char(r.SwipeCardTime,'yyyy-MM-dd HH24:mi:ss') swipeCardTime,r.Direction"
-				+ " FROM SWIPE.RT_ACCESS_CONTRONL_RECORD r join SWIPE.csr_employee e on r.Emp_id=e.id where e.isOnwork='0'";
+				+ " FROM SWIPE.RT_ACCESS_CONTROL_RECORD r join SWIPE.csr_employee e on r.Emp_id=e.id where e.isOnwork='0'";
 		try {	
 			 List <Object> queryList=new  ArrayList<Object>();  
 			if(!empId.equals("")){
