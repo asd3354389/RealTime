@@ -1,5 +1,7 @@
 $(document).ready(function(){
 	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false;
+	var reg ="^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
+	var re = new RegExp(reg);
 	ShowAllIOCardMaIPList();
 	ShowWorkShop();
 	
@@ -49,8 +51,10 @@ $(document).ready(function(){
 		
 		if(machine["Deviceip"]==="null" || machine["Deviceip"]=='')
 			errorMessage+='工號未填寫\n';
-		
-		checkDeviceipDuplicate(machine["Deviceip"]);
+		if(!re.test(machine["Deviceip"])){
+			errorMessage+='卡机IP不符合规范\n';
+		}
+//		checkDeviceipDuplicate(machine["Deviceip"]);
 		
 		/*if(machine["WorkShop_Desc"]=='' || machine["WorkShop_Desc"]==null){
 			errorMessage+='未填寫卡機描述 \n';
@@ -61,7 +65,7 @@ $(document).ready(function(){
 		if(machine["Direction"]==="null" || machine["Direction"]=='')
 			errorMessage+='未選擇卡機狀態\n';
 		
-		if(errorMessage=='' && isUserNameValid){
+		if(errorMessage==''){
 			//新增綁定賬號
 			$.ajax({
 				type:'POST',
@@ -482,6 +486,7 @@ $(document).ready(function(){
 					success:function(data){	
 						 if(data!=null && data!=''){
 							 if(data.StatusCode==500){
+								/* if(Deviceip)*/
 								 alert(data.Message);
 								 isUserNameValid=false;
 							 }

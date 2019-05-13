@@ -3,6 +3,7 @@ package com.foxlink.realtime.model;
 public class OTCardBD {
 	private String D_CardID;
 	private String O_CardID;
+	private String CostId;
 	private String Dmp_id;
     private String Deptid;
 	private String Depid;
@@ -59,11 +60,18 @@ public class OTCardBD {
 	public void setO_CardID(String o_CardID) {
 		O_CardID = o_CardID;
 	}
+	
+	public String getCostId() {
+		return CostId;
+	}
+	public void setCostId(String costId) {
+		CostId = costId;
+	}
 	@Override
 	public String toString() {
-		return "OTCardBD [D_CardID=" + D_CardID + ", O_CardID=" + O_CardID + ", Dmp_id=" + Dmp_id + ", Deptid=" + Deptid
-				+ ", Depid=" + Depid + ", Default_WorkShop=" + Default_WorkShop + ", Enabled=" + Enabled
-				+ ", Update_UserId=" + Update_UserId + "]";
+		return "OTCardBD [D_CardID=" + D_CardID + ", O_CardID=" + O_CardID + ", CostId=" + CostId + ", Dmp_id=" + Dmp_id
+				+ ", Deptid=" + Deptid + ", Depid=" + Depid + ", Default_WorkShop=" + Default_WorkShop + ", Enabled="
+				+ Enabled + ", Update_UserId=" + Update_UserId + "]";
 	}
 	
 	

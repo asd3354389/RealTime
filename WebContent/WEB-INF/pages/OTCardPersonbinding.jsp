@@ -31,7 +31,7 @@
 <script type="text/javascript" src='${AjaxCheckSessionJS}'></script>
 <script src="${modifyOTCardbdPerson}" type="text/javascript"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>綫組別綁定離崗卡維護</title>
+<title>費用代碼綁定離崗卡維護</title>
 </head>
 <body style="position:relative;">
 		<div id="header" class="header-fixed">
@@ -48,7 +48,7 @@
 		<div class="panel-body" style="border: 1px solid #e1e3e6;">
 			<div align="right">
 				查詢條件：<select id="queryCritirea" class="input-small">
-					<option value="Depid">部門代碼</option>
+					<!-- <option value="Depid">部門代碼</option> -->
 					<option value="Costid">費用代碼</option>
 				</select> <input type="text" id="queryParam" name="queryParam"
 					class="input-sm"> <input type="button"
@@ -58,14 +58,14 @@
 					class="btn btn-primary btn-sm" data-toggle="modal">創建綫組別綁定離崗卡</a>
 			</div>
 			<div>
-					<h4>離崗卡與員工工號綁定列表：</h4>
+					<h4>離崗卡與費用代碼綁定列表：</h4>
 			</div>
 			<div class="middle">
 				<div class="left" style="width:80%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
 					<table id="Personbinding" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
 						<thead>
 							<tr>
-								<th>綫組別號</th>
+								<th>費用代碼</th>
 								<th>離崗卡號</th>
 								<th>默認使用車間</th>
 								<th>是否生效</th>

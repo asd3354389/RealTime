@@ -11,11 +11,16 @@ $(document).ready(function(){
 		if(queryParam==""){
 			ShowAllFLPersonListY();
 			ShowAllFLPersonListN();
+			$(".getAllToY").css("display","none");
+			$(".getAllToN").css("display","none");
 		}else{
 			/*searchPersonList(curPage,queryCritirea,queryParam);
 			queryParam=='';*/
+			
 			getPersonListY(curPage,queryCritirea,queryParam);
 			getPersonListN(curPage,queryCritirea,queryParam);
+			$(".getAllToY").css("display","block");
+			$(".getAllToN").css("display","block");
 		}
 			/*ShowAllFLPersonListN(curPage,queryCritirea,queryParam);*/
 
@@ -50,6 +55,7 @@ $(document).ready(function(){
 	})
 	$(".getAllToY").click(function(){
 		var status = "Y";
+		var html = $('#queryCritirea option:selected').text();
 		var queryCritirea=$('#queryCritirea option:selected').val();
 		var queryParam=$('#queryParam').val();
 		if(queryParam==""){
@@ -428,6 +434,7 @@ $(document).ready(function(){
 								var pageSize=rawData.pageSize;
 								$('#FLinePersonMtY tbody').empty()
 								$('.left').css('height','727px');
+								
 								refreshUserInfoPaginationY(currentPage,totalRecord,totalPage,pageSize);
 							}	
 						}
@@ -727,4 +734,6 @@ $(document).ready(function(){
 				}
 		})
 	}
+	
+	 
 })

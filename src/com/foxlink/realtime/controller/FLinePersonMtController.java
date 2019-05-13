@@ -55,6 +55,7 @@ public class FLinePersonMtController {
 			Page page = fLinePersonMtService.getFindPersonPageY(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
 			page.setList(fLinePersonMtService.FindQueryRecordY(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
 			/*System.out.println(gson.toJson(page));*/
+			System.out.println(gson.toJson(page));
 			JsonResult = gson.toJson(page);
 		} catch (Exception e) {
 			// TODO: handle exception

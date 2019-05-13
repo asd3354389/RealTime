@@ -100,9 +100,9 @@
 				
 				<div style="position:absolute; top: 50%;left:43%;">
 					<input type="button" class="getToN btn btn-primary" style="width:80px;display: block;color:#4c535d"  value="N=>">
-					<input type="button" class="getAllToN btn btn-primary" style="width:80px;display: block;margin: 10px 0px;color:#4c535d "  value="全轉N=>>">
+					<input type="button" class="getAllToN btn btn-primary" style="width:80px;display: none;margin: 10px 0px;color:#4c535d "  value="全轉N=>>">
 					<input type="button" class="getToY btn btn-primary" style="width:80px;display: block;margin: 10px 0px;color:#4c535d" value="<=Y">
-					<input type="button" class="getAllToY btn btn-primary" style="width:80px;display: block;margin: 10px 0px;color:#4c535d" value="<<=全轉Y">
+					<input type="button" class="getAllToY btn btn-primary" style="width:80px;display: none;margin: 10px 0px;color:#4c535d" value="<<=全轉Y">
 				</div>
 			</div>
 		</div>
