@@ -237,7 +237,7 @@ $(document).ready(function(){
 					$.ajax({
 						type:'POST',
 						contentType: "application/json",
-						url:'../IOSpecialWSEmp/UpdateIOWorkShopPW.do',
+						url:'../IOSpecialWSEmp/UpdateIOSpecialWSEmp.do',
 						data:JSON.stringify(IOWorkShopPW),
 						dataType:'json',
 						error:function(e){
