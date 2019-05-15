@@ -41,7 +41,7 @@ public class EmpIPBindingController {
 			if(curPage=="" || curPage==null)
 			     currentPage=1;
 			else
-				currentPage=Integer.parseInt(curPage);;
+				currentPage=Integer.parseInt(curPage);
 			    if(queryParam=="" || queryParam==null)
 			    	queryCritirea="";
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
