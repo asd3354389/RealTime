@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
@@ -97,7 +98,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 		    }
 		    IOWorkShopPW = jdbcTemplate.query(sSQL,queryList.toArray(), new QueryIOWorkShopPW());	
     	  } catch (Exception ex) {
-    		  logger.error("Find WorkshopNoRestInfo TotalRecord are failed ",ex);
+    		  logger.error("Find IOSpecialWSEmp TotalRecord are failed ",ex);
     		  ex.printStackTrace();
     		  }
 		return IOWorkShopPW;
@@ -120,7 +121,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 		 totalRecord = jdbcTemplate.queryForObject(sSQL,queryList.toArray(), Integer.class);	
 		 
     	} catch (Exception ex) {
-    		  logger.error("Find WorkshopNoRestInfo TotalRecord are failed ",ex);
+    		  logger.error("Find IOSpecialWSEmp TotalRecord are failed ",ex);
     		  ex.printStackTrace();
     	}
     	return totalRecord;
@@ -151,7 +152,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 			}			
 		}
 		catch(Exception ex) {
-			logger.error(ex);
+			logger.error("add IOSpecialWSEmp are failed ",ex);
 			transactionManager.rollback(txStatus);
 		}
 		
@@ -168,6 +169,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
     	try {      	
     		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { Emp_id },Integer.class);	   	
     	  } catch (Exception ex) {
+    		  logger.error("Check IOSpecialWSEmp are failed ",ex);
     		  ex.printStackTrace();
     		  }
     	 if(totalRecord > 0) 
@@ -183,6 +185,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
     	try {    	    	
     		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { Emp_id,workShopNo },Integer.class);	   	
     	  } catch (Exception ex) {
+    		  logger.error("Check IOSpecialWSEmp checkUserNameDuplicate are failed ",ex);
     		  ex.printStackTrace();
     		  }
     	/*System.out.println(sSQL);*/
@@ -216,7 +219,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 			transactionManager.commit(txStatus);
 		}
 		catch(Exception ex) {
-			logger.error("Update IOWorkShopPW is failed",ex);
+			logger.error("Update IOSpecialWSEmp is failed",ex);
 			transactionManager.rollback(txStatus);
 		}			
 			if(updateRow > 0) 
@@ -246,13 +249,69 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 			}
 		}
 		catch(Exception ex) {
-			logger.error("Disable IOWorkShopPW is failed",ex);
+			logger.error("Disable IOSpecialWSEmp is failed",ex);
 			transactionManager.rollback(txStatus);
 		}
 		 if(disableRow > 0) 
 			   return true; 
 		 else
 			 return false;
+	}
+
+	public boolean addIOSpecialWSEmp(List<String> exEmpList, IOWorkShopPW ioWorkShopPW, String updateUser) {
+		// TODO Auto-generated method stub
+		int createRow=-1;
+
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);
+		String sSQL = "update RT_SPECIAL_AREA_CONTROL set ENABLED='N',Update_Userid=?,update_time=sysdate WHERE Emp_id=? and WorkShopNo=? AND Enabled='Y'";
+		String insertSQL="INSERT INTO SWIPE.RT_SPECIAL_AREA_CONTROL (Emp_id,WorkShopNo,Start_Date,End_Date,Update_UserId) VALUES(?,?,?,?,?)";
+		try {
+			if(ioWorkShopPW!=null) {
+					jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
+					
+					@Override
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						// TODO Auto-generated method stub
+						ps.setString(1, updateUser);
+						ps.setString(2, exEmpList.get(i));
+						ps.setString(3, ioWorkShopPW.getWorkShopNo());
+					}
+					
+					@Override
+					public int getBatchSize() {
+						// TODO Auto-generated method stub
+						return exEmpList.size();
+					}
+				});
+				jdbcTemplate.batchUpdate(insertSQL, new BatchPreparedStatementSetter() {
+					
+					@Override
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						// TODO Auto-generated method stub
+						ps.setString(1, exEmpList.get(i));
+						ps.setString(2, ioWorkShopPW.getWorkShopNo());
+						ps.setString(3, ioWorkShopPW.getStart_Date());
+						ps.setString(4, ioWorkShopPW.getEnd_Date());
+						ps.setString(5, updateUser);
+					}
+					
+					@Override
+					public int getBatchSize() {
+						// TODO Auto-generated method stub
+						return exEmpList.size();
+					}
+				});
+				transactionManager.commit(txStatus);
+			}			
+		}
+		catch(Exception ex) {
+			System.out.println(ex);
+			logger.error("add IOSpecialWSEmp are failed ",ex);
+			transactionManager.rollback(txStatus);
+			return false;
+		}
+		return true; 
 	}
 
 }

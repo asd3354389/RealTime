@@ -80,7 +80,7 @@
 					</div>
 				</div>
 			</div>
-			<jsp:include page="InsertNewIOPW.jsp" />
+			<jsp:include page="InsertSpecialWSEmp.jsp" />
 		</div>
 	</div>
 </div>	

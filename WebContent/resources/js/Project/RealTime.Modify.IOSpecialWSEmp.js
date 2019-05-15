@@ -46,7 +46,7 @@ $(document).ready(function(){
 		if(ioWsPw["Emp_id"]==="null" || ioWsPw["Emp_id"]=='')
 			errorMessage+='工號未填寫\n';
 		
-		checkEmpidDuplicate(ioWsPw["Emp_id"],ioWsPw["WorkShopNo"]);
+		/*checkEmpidDuplicate(ioWsPw["Emp_id"],ioWsPw["WorkShopNo"]);*/
 		
 		/*if(machine["WorkShop_Desc"]=='' || machine["WorkShop_Desc"]==null){
 			errorMessage+='未填寫卡機描述 \n';
@@ -60,7 +60,7 @@ $(document).ready(function(){
 		if(ioWsPw["End_Date"]==="null" || ioWsPw["End_Date"]=='')
 			errorMessage+='為選擇生效結束日期\n';
 		
-		if(errorMessage=='' && isUserNameValid){
+		if(errorMessage==''){
 			//新增綁定賬號
 			$.ajax({
 				type:'POST',
@@ -93,11 +93,11 @@ $(document).ready(function(){
 							 alert(data.Message);
 						 }
 					 }else{
-						 alert('設置車間臨時進出權限失敗!');
+						 alert('設置保密車間臨時進出權限失敗!');
 					 }
 				},
 				error:function(e){
-					alert('設置車間臨時進出權限發生錯誤');
+					alert('設置保密車間臨時進出權限發生錯誤');
 				}
 			});
 		}
@@ -162,7 +162,7 @@ $(document).ready(function(){
 							ShowAllIOSpecialWSEmpTable(rawData);
 						else{
 							/*$('.left').css('height','727px');*/
-							alert('暫無卡機信息資料');
+							alert('暫無保密車間資料');
 						}
 					}
 				}
@@ -477,33 +477,4 @@ $(document).ready(function(){
 		});   
 	}	
 	
-	 function checkDeviceipDuplicate(Deviceip){
-			if(Deviceip!=""){
-				$.ajax({
-					type:'POST',
-					url:'../IOCardBdIP/checkDeviceip.do',
-					data:{
-						Deviceip:Deviceip
-					},
-					async:false,
-					error:function(e){
-						alert(e);
-					},
-					success:function(data){	
-						 if(data!=null && data!=''){
-							 if(data.StatusCode==500){
-								 alert(data.Message);
-								 isUserNameValid=false;
-							 }
-							 else
-								{
-								 isUserNameValid=true;
-								}
-					}else{
-						 isUserNameValid=false;
-						}
-					}
-				});
-			}
-		}
 })

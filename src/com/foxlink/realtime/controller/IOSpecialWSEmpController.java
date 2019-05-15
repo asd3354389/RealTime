@@ -56,7 +56,7 @@ public class IOSpecialWSEmpController {
 			logger.error(ex);
 			JsonObject exception=new JsonObject();
 			exception.addProperty("StatusCode", "500");
-			exception.addProperty("ErrorMessage", "取得車間休息時間列表失敗，原因："+ex.toString());
+			exception.addProperty("ErrorMessage", "取得保密車間進出權限列表失敗，原因："+ex.toString());
 			DisableResult=exception.toString();
 		}		
 		System.out.println(DisableResult);
@@ -74,10 +74,10 @@ public class IOSpecialWSEmpController {
 			if(iOSpecialWSEmpService.checkEmpIdExistence(Emp_id)) {
 				if(iOSpecialWSEmpService.checkUserNameDuplicate(Emp_id,WorkShopNo)){
 					checkResult.addProperty("StatusCode", "200");
-					checkResult.addProperty("Message", "此工號未設置臨時權限，可以新增此賬號!");
+					checkResult.addProperty("Message", "此工號未設置保密車間臨時權限，可以新增此賬號!");
 				}else{
 					checkResult.addProperty("StatusCode", "500");
-					checkResult.addProperty("Message", "此工號已設置臨時權限，請更改賬號！");
+					checkResult.addProperty("Message", "此工號已設置保密車間臨時權限，請更改賬號！");
 				}	
 			}else {
 				checkResult.addProperty("StatusCode", "500");
@@ -103,19 +103,13 @@ public class IOSpecialWSEmpController {
 //			otCardbd.setUpdate_UserId(updateUser);
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			iOSpecialWSEmpService = (IOSpecialWSEmpService) context.getBean("iOSpecialWSEmpService");
-			if(iOSpecialWSEmpService.addIOSpecialWSEmp(ioWorkShopPW,updateUser)){
-				AddResult.addProperty("StatusCode", "200");
-				AddResult.addProperty("Message", "車間進出臨時權限設置成功");
-			}
-			else{
-				AddResult.addProperty("StatusCode", "500");
-				AddResult.addProperty("Message", "車間進出臨時權限設置失敗");
-			}
+			AddResult.addProperty("StatusCode", "200");
+			AddResult.addProperty("Message", iOSpecialWSEmpService.addIOSpecialWSEmp(ioWorkShopPW,updateUser));
 		}
 		catch(Exception ex){
 			logger.error("Adding the new IOWsPw info is failed, due to: ",ex);
 			AddResult.addProperty("StatusCode", "500");
-			AddResult.addProperty("Message", "車間進出臨時權限設置發生錯誤，原因："+ex.toString());
+			AddResult.addProperty("Message", "保密車間進出臨時權限設置發生錯誤，原因："+ex.toString());
 		}
 		System.out.println(AddResult.toString());
 		return AddResult.toString();
@@ -131,17 +125,17 @@ public class IOSpecialWSEmpController {
 			String updateUser=(String) session.getAttribute("username");
 			if(iOSpecialWSEmpService.UpdateRecord(ioWorkShopPW,updateUser)){
 				UpdateResult.addProperty("StatusCode", "200");
-				UpdateResult.addProperty("Message", "更新臨時權限成功");
+				UpdateResult.addProperty("Message", "更新保密車間臨時權限成功");
 			}
 			else{
 				UpdateResult.addProperty("StatusCode", "500");
-				UpdateResult.addProperty("Message", "更新臨時權限失敗");
+				UpdateResult.addProperty("Message", "更新保密車間臨時權限失敗");
 			}
 		}
 		catch(Exception ex){
 			logger.error("Updating the Account info is failed, due to: ",ex);
 			UpdateResult.addProperty("StatusCode", "500");
-			UpdateResult.addProperty("Message", "更新臨時權限發生錯誤，原因："+ex.toString());
+			UpdateResult.addProperty("Message", "更新保密車間臨時權限發生錯誤，原因："+ex.toString());
 		}
 		return UpdateResult.toString();
 	}
@@ -156,17 +150,17 @@ public class IOSpecialWSEmpController {
 			String updateUser=(String) session.getAttribute("username");
 			if(iOSpecialWSEmpService.DeleteIOWorkShopPW(Emp_id,WorkShopNo, updateUser)){
 				DisableResult.addProperty("StatusCode", "200");
-				DisableResult.addProperty("Message", "車間進出臨時權限已失效");
+				DisableResult.addProperty("Message", "保密車間進出臨時權限已失效");
 			}
 			else{
 				DisableResult.addProperty("StatusCode", "500");
-				DisableResult.addProperty("Message", "車間進出臨時權限發生錯誤");
+				DisableResult.addProperty("Message", "保密車間進出臨時權限發生錯誤");
 			}
 		}
 		catch(Exception ex){
 			logger.error("Disable the IOCardMaIP info is failed, due to:",ex);
 			DisableResult.addProperty("StatusCode", "500");
-			DisableResult.addProperty("Message", "車間進出臨時權限發生錯誤，原因:"+ex.toString());
+			DisableResult.addProperty("Message", "保密車間進出臨時權限發生錯誤，原因:"+ex.toString());
 		}		
 		return DisableResult.toString();
 	}
