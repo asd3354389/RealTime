@@ -18,6 +18,7 @@ public class QueryIOCardMaIPMapper implements RowMapper<IOCardMachineIP> {
 		ioc.setWorkShop_Desc(rs.getString("WorkShop_Desc"));
 		ioc.setDirection(rs.getString("Direction"));
 		ioc.setEnabled(rs.getString("Enabled"));
+		ioc.setIS_SPECIAL(rs.getString("IS_SPECIAL"));
 		return ioc;
 	}
 

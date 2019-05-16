@@ -115,10 +115,10 @@ public class OTCardbdPersonService extends Service<Emp>{
 		return resultJson.toString();
 	}*/
 
-	public boolean checkUserNameDuplicate(String Dmp_id) {
+	public boolean checkUserNameDuplicate(String CostId) {
 		// TODO Auto-generated method stub
 		/*System.out.println(oTCardbdPersonDAO.checkUserNameDuplicate(Dmp_id));*/
-		return oTCardbdPersonDAO.checkUserNameDuplicate(Dmp_id);
+		return oTCardbdPersonDAO.checkUserNameDuplicate(CostId);
 	}
 
 	public boolean OTCardbd(OTCardBD otCardbd) {
@@ -166,6 +166,11 @@ public class OTCardbdPersonService extends Service<Emp>{
 	public boolean OTCardNbdPerson(OTCardBD otCardbd, String updateUser) {
 		// TODO Auto-generated method stub
 		return oTCardbdPersonDAO.OTCardNbdPerson(otCardbd,updateUser);
+	}
+
+	public boolean checkDcardDuplicate(String CostId, String D_CardId) {
+		// TODO Auto-generated method stub
+		return oTCardbdPersonDAO.checkDcardDuplicate(CostId,D_CardId);
 	}
 
 

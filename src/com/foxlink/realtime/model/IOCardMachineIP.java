@@ -6,6 +6,7 @@ public class IOCardMachineIP {
 	private String WorkShop_Desc;
 	private String Direction;
 	private String Enabled;
+	private String IS_SPECIAL;
 	
 	public String getDeviceip() {
 		return Deviceip;
@@ -37,10 +38,18 @@ public class IOCardMachineIP {
 	public void setEnabled(String enabled) {
 		Enabled = enabled;
 	}
+	
+	public String getIS_SPECIAL() {
+		return IS_SPECIAL;
+	}
+	public void setIS_SPECIAL(String iS_SPECIAL) {
+		IS_SPECIAL = iS_SPECIAL;
+	}
 	@Override
 	public String toString() {
 		return "IOCardMachineIP [Deviceip=" + Deviceip + ", WorkShopNo=" + WorkShopNo + ", WorkShop_Desc="
-				+ WorkShop_Desc + ", Direction=" + Direction + ", Enabled=" + Enabled + "]";
+				+ WorkShop_Desc + ", Direction=" + Direction + ", Enabled=" + Enabled + ", IS_SPECIAL=" + IS_SPECIAL
+				+ "]";
 	}
 	
 }

@@ -8,6 +8,7 @@
 			</div>
 			<div class="modal-body">
 		<!--		<form id="addNewUserForm" action="modifyReceiverDevice.do" method="post" class="form-horizontal">   -->
+		<div class="control-group"><label for="outCard" style="color:red">多個工號之間用英文,（逗號）隔開，如132456,123456</label></div>
 		<div class="control-group">
     		<label class="control-label" for="inputUserName">工號</label>
     		<div class="controls">

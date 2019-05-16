@@ -251,6 +251,7 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 						arg0.setString(5, ioWorkShopPW.getEmp_id());
 					}	
 				});
+				System.out.print(sSQL);
 				transactionManager.commit(txStatus);
 			}	
 		}

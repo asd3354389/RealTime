@@ -61,7 +61,7 @@ public class OTCardbdPersonController {
 			logger.error(e);
 			JsonObject exception=new JsonObject();
 			exception.addProperty("StatusCode", "500");
-			exception.addProperty("ErrorMessage", "取得離崗卡綁定綫組別資料列表列表失敗，原因："+e.toString());
+			exception.addProperty("ErrorMessage", "取得離崗卡綁定費用代碼資料列表列表失敗，原因："+e.toString());
 			JsonResult=exception.toString();
 		}
 		return JsonResult;
@@ -80,62 +80,64 @@ public class OTCardbdPersonController {
 		return oTCardbdPersonService.BDotCardPerson(otCardbd) 1;
 	}*/
 	//判斷csr_empoylee表是否存在此員工信息
-	/*@RequestMapping(value="/checkEmpIdExistence.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
-	@ResponseBody 
-	public String checkEmpIdExistence(HttpSession session,@RequestParam("Dmp_id")String Dmp_id){
-		JsonObject checkResult=new JsonObject();	
-		
-		try{
-			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
-			oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
-			if(oTCardbdPersonService.checkUserNameDuplicate(Dmp_id)){
-				checkResult.addProperty("StatusCode", "200");
-				checkResult.addProperty("Message", "此工號未綁定離崗卡，可以新增此賬號!");
-			}
-			else{
-				checkResult.addProperty("StatusCode", "500");
-				checkResult.addProperty("Message", "此工號已綁定離崗卡，請更改賬號！");
-			}
-		}
-		catch(Exception ex){
-			logger.error("Check new Account info is failed, due to: ",ex);
-			checkResult.addProperty("StatusCode", "500");
-			checkResult.addProperty("Message", "檢查工號是否綁定發生錯誤，原因："+ex.toString());
-		}
-		System.out.println(checkResult.toString());
-		return checkResult.toString();
-	}*/
-	
-//	@RequestMapping(value="/checkUserName.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+//	@RequestMapping(value="/checkCostIdExistence.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 //	@ResponseBody 
-//	public String checkUserNameDuplicate(HttpSession session,@RequestParam("Dmp_id")String Dmp_id){
+//	public String checkEmpIdExistence(HttpSession session,@RequestParam("CostId")String CostId){
 //		JsonObject checkResult=new JsonObject();	
-//		String userDataCostId=(String) session.getAttribute("userDataCostId");
+//		
 //		try{
 //			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 //			oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
-//			if(oTCardbdPersonService.checkEmpIdExistence(Dmp_id,userDataCostId)) {
-//				if(oTCardbdPersonService.checkUserNameDuplicate(Dmp_id)){
-//					checkResult.addProperty("StatusCode", "200");
-//					checkResult.addProperty("Message", "此工號未綁定離崗卡，可以新增此賬號!");
-//				}else{
-//					checkResult.addProperty("StatusCode", "500");
-//					checkResult.addProperty("Message", "此工號已綁定離崗卡，請更改賬號！");
-//				}	
-//			}else {
+//			if(oTCardbdPersonService.checkUserNameDuplicate(CostId)){
 //				checkResult.addProperty("StatusCode", "500");
-//				checkResult.addProperty("Message", "此工號錯誤或沒有權限綁定此工號，請更改賬號！");
+//				checkResult.addProperty("Message", "沒有此費用代碼，請重新輸入!");
 //			}
-//			
+//			else{
+//				checkResult.addProperty("StatusCode", "200");
+//				checkResult.addProperty("Message", "此費用代碼存在！");
+//			}
 //		}
 //		catch(Exception ex){
 //			logger.error("Check new Account info is failed, due to: ",ex);
 //			checkResult.addProperty("StatusCode", "500");
 //			checkResult.addProperty("Message", "檢查工號是否綁定發生錯誤，原因："+ex.toString());
 //		}
-//		/*System.out.println(checkResult.toString());*/
+//		System.out.println(checkResult.toString());
 //		return checkResult.toString();
 //	}
+	
+	@RequestMapping(value="/checkCostIDCard.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+	@ResponseBody 
+	public String checkUserNameDuplicate(HttpSession session,@RequestParam("CostId")String CostId,@RequestParam("D_CardId")String D_CardId){
+		JsonObject checkResult=new JsonObject();	
+		String userDataCostId=(String) session.getAttribute("userDataCostId");
+		try{
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
+			System.out.println(CostId);
+			System.out.println(D_CardId);
+			if(oTCardbdPersonService.checkUserNameDuplicate(CostId)) {
+				if(oTCardbdPersonService.checkDcardDuplicate(CostId,D_CardId)){
+					checkResult.addProperty("StatusCode", "200");
+					checkResult.addProperty("Message", "此費用代碼未綁定此離崗卡號，可以綁定此離崗卡號!");
+				}else{
+					checkResult.addProperty("StatusCode", "500");
+					checkResult.addProperty("Message", "此費用代碼已經綁定此離崗卡號，請重新輸入離崗卡號！");
+				}	
+			}else {
+				checkResult.addProperty("StatusCode", "500");
+				checkResult.addProperty("Message", "沒有此費用代碼！");
+			}
+			
+		}
+		catch(Exception ex){
+			logger.error("Check new Account info is failed, due to: ",ex);
+			checkResult.addProperty("StatusCode", "500");
+			checkResult.addProperty("Message", "檢查費用代碼是否綁定發生錯誤，原因："+ex.toString());
+		}
+		/*System.out.println(checkResult.toString());*/
+		return checkResult.toString();
+	}
 	
 	@RequestMapping(value="/AddOTCardBdPerson.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 	@ResponseBody 
@@ -148,11 +150,11 @@ public class OTCardbdPersonController {
 			oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
 			if(oTCardbdPersonService.OTCardbd(otCardbd)){
 				AddResult.addProperty("StatusCode", "200");
-				AddResult.addProperty("Message", "離崗卡與工號綁定成功");
+				AddResult.addProperty("Message", "離崗卡與費用代碼綁定成功");
 			}
 			else{
 				AddResult.addProperty("StatusCode", "500");
-				AddResult.addProperty("Message", "離崗卡與工號綁定失敗");
+				AddResult.addProperty("Message", "離崗卡與費用代碼綁定失敗");
 			}
 		}
 		catch(Exception ex){

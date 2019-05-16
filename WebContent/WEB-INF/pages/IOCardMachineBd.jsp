@@ -67,7 +67,7 @@
 								<th>車間名稱</th>
 								<th>車間描述</th>
 								<th>卡機狀態</th>
-								<th>是否生效</th>
+								<th>是否為保密車間</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -77,6 +77,31 @@
 					<div id="IOCardMaIPListPagination" align="right" style="height: 20;position:absolute; bottom: -20px;right: 0px;">
 					</div>
 				</div>
+				<div class="right" style="width:18%;height:730px;float:right;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+				<h3>設置車間保密狀態</h3>
+					<div class="control-group">
+			    		<div class="controls">
+			      			<label for="workShopSecrecy">車間號</label>
+			    					<select id="workShopSecrecy" name='workShopSecrecy' class="form-control">
+			    					<option value=""></option>
+			    					</select>  			
+    					</div>
+  					</div>
+  					
+  					<div class="control-group">
+			    		<div class="controls">
+			      			<label for="secrecyStatus">是否為保密車間</label>
+			    					<select id="secrecyStatus" name='secrecyStatus' class="form-control">
+			    						<option value=""></option>
+			    						<option value="N">否</option>
+			    						<option value="Y">是</option>
+			    					</select>  			
+			    		</div>
+			  		</div>	
+			  			
+  					<button type="submit" id="setSecrecyWS" class="btn btn-primary" style="margin-top: 10px;">設置為保密車間</button>	
+				</div>
+				
 			</div>
 			<jsp:include page="InsertNewIOCardMaIP.jsp" />
 		</div>

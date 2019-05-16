@@ -2,7 +2,7 @@ $(document).ready(function(){
 	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false;
 	var reg = new RegExp("^[0-9]{10}$");
 	ShowAllPersonList();
-	ShowCostNo()
+//	ShowCostNo()
 	ShowWorkShop();
 	
 	
@@ -16,15 +16,15 @@ $(document).ready(function(){
           }
       }
 
-      $('#CostNo').change(function(){
-    	  var CostId = $("#CostNo").val();
-    	  if(CostId!=""){
-    		  $('#deptNo').empty();
-    		  ShowDepNo(CostId);
-    	  }else{
-    		  
-    	  }   	 
-      })
+//      $('#CostNo').blur(function(){
+//    	  var CostId = $("#CostNo").val();
+//    	  if(CostId!=""){
+//    		  $('#deptNo').empty();
+//    		  ShowDepNo(CostId);
+//    	  }else{
+//    		  
+//    	  }   	 
+//      })
 		
 	$('#searchBdPersonListBtn').click(function(){
 		curPage = 1;
@@ -43,27 +43,28 @@ $(document).ready(function(){
 
 	});
 	
-	//離崗卡綁定工號
+	//離崗卡綁定費用代碼
 	$('#changebdOT').click(function(){
 		button_onclick($('#changebdOT')[0])
 		var user={},errorMessage='';
 		user["D_CardID"]=$('#inputOTCarid').val();
-		user["Deptid"]=$('#deptNo option:selected').val();
+		user["CostId"]=$('#CostNo').val();
 		user["Default_WorkShop"]=$('#workShop option:selected').val();
 		console.log(user);
 		
-		if(user["Deptid"]==="null" || user["Deptid"]=='')
-			errorMessage+='未選擇使用的綫組別號\n';		
-		
+		if(user["CostId"]==="null" || user["CostId"]=='')
+			errorMessage+='費用代碼不能爲空\n';		
+//		checkCostIdDuplicate(user["CostId"]);
 		if(user["D_CardID"]=='' || user["D_CardID"]==null){
 			errorMessage+='離崗卡號必填 \n';
 		}
 		if(!reg.test(user["D_CardID"])){
 			errorMessage+='離崗卡號不符合規格！必須是10位數\n';
 		}
+		checkDcard(user["CostId"],user["D_CardID"]);
 		if(user["Default_WorkShop"]==="null" || user["Default_WorkShop"]=='')
 			errorMessage+='未選擇使用的車間\n';
-		if(errorMessage==''){
+		if(errorMessage==''&& isUserNameValid){
 			//新增綁定賬號
 			$.ajax({
 				type:'POST',
@@ -77,7 +78,7 @@ $(document).ready(function(){
 						 if(data.StatusCode=="200"){
 							 $('#CostNo').val('');
 							 $('#inputOTCarid').val('');
-							 $('#deptNo').empty();
+//							 $('#deptNo').empty();
 							 ShowAllPersonList();
 							 alert(data.Message);
 //							 $('#changebdOT').prop("disabled",false);
@@ -194,7 +195,7 @@ $(document).ready(function(){
 	            }
 		 }
 	}
-	//顯示綁定離崗卡的綫組別
+	//顯示綁定離崗卡的費用代碼
 	function ShowAllPersonList(){
 		$.ajax({
 			type:'POST',
@@ -217,7 +218,7 @@ $(document).ready(function(){
 						else{
 							/*$('.left').css('height','727px');*/
 							ShowAllPersonListTable(rawData);
-							setTimeout(function(){ alert('暫無離崗卡與綫體號綁定資料'); }, 100);					
+							setTimeout(function(){ alert('暫無離崗卡與費用代碼綁定資料'); }, 100);					
 						}
 					}
 				}
@@ -234,7 +235,7 @@ $(document).ready(function(){
 		var executeResult=rawData["list"];
 		for(var i=0;i<executeResult.length;i++){
 			var	tableContents='<tr>'+
-					'<td>'+executeResult[i]["Deptid"]+'</td>'+
+					'<td>'+executeResult[i]["CostId"]+'</td>'+
 					'<td>'+executeResult[i]["D_CardID"]+'</td>'+
 					'<td>'+executeResult[i]["Default_WorkShop"]+'</td>'
 					var enabled =executeResult[i].Enabled=="Y"?'已生效':'';		
@@ -272,7 +273,7 @@ $(document).ready(function(){
 				var parentElement=$(this).parent().parent();
 				var User=new Object(),errorMessage='';
 //				var Direction=$(parentElement).find('.changeStatus option:selected').eq(0).text();
-				User.Deptid=$(parentElement).find('td').eq(0).text();
+				User.CostId=$(parentElement).find('td').eq(0).text();
 				User.D_CardID=$(parentElement).find('td input:text').eq(0).val();
 				User.Default_WorkShop=$(parentElement).find('option:selected').eq(0).val();
 				User.O_CardID = o_CardNo;
@@ -340,7 +341,7 @@ $(document).ready(function(){
 			var WorkShopNo=$(parentElement).find('td').eq(2).text();
 			var user={};
 			user["D_CardID"]=o_CardNo;
-			user["Deptid"]=deleteDeptid;		
+			user["CostId"]=deleteDeptid;		
 			user["Default_WorkShop"]=WorkShopNo
 			var results=confirm("確定刪除綫號為 "+deleteDeptid+" 的離崗卡綁定 ?");
 			console.log(user);
@@ -631,4 +632,63 @@ $(document).ready(function(){
 			}
 		});   
 	}
+	
+	 function checkCostIdDuplicate(CostId){
+//		 alert(1);
+			if(CostId!=""){
+				$.ajax({
+					type:'POST',
+					url:'../OTCardPerson/checkCostIdExistence.do',
+					data:{
+						CostId:CostId
+					},
+					async:false,
+					error:function(e){
+						alert(e);
+					},
+					success:function(data){	
+						 if(data!=null && data!=''){
+							 if(data.StatusCode==500){
+								 alert(data.Message);
+								 isUserNameValid=false;
+							 }
+							 else
+								 isUserNameValid=true;
+					}else{
+						 isUserNameValid=false;
+						}
+					}
+				});
+			}
+		}
+	 
+	 function checkDcard(CostId,D_CardId){
+//		 alert(1);
+			if(CostId!=""&& D_CardId!=""){
+				$.ajax({
+					type:'POST',
+					url:'../OTCardPerson/checkCostIDCard.do',
+					data:{
+						CostId:CostId,
+						D_CardId:D_CardId
+					},
+					async:false,
+					error:function(e){
+						alert(e);
+					},
+					success:function(data){	
+						 if(data!=null && data!=''){
+							 if(data.StatusCode==500){
+								 alert(data.Message);
+								 isUserNameValid=false;
+							 }
+							 else
+								 isUserNameValid=true;
+					}else{
+						 isUserNameValid=false;
+						}
+					}
+				});
+			}
+		}
 })

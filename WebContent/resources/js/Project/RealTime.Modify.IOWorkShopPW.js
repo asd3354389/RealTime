@@ -4,20 +4,9 @@ $(document).ready(function(){
 	ShowIOWorkShopPWList();
 	ShowWorkShop();
 	
-	$("#addNewIOWorkShopPW").click(function(){
-		$(".up").css("display","none");
-		$(".ins").css("display","block");
-	})
 	
-	 var CLICKTAG = 0;
-     function button_onclick(pElement){
-         if (CLICKTAG == 0) {  
-             CLICKTAG = 1;  
-             pElement.disabled=true;
-             // 等待2s后重置按钮可用
-             setTimeout(function () { CLICKTAG = 0 ; pElement.disabled=false;}, 2000);  
-         }
-     }
+	
+
      $('#searchIOWorkShopPW').click(function(){
  		var queryCritirea=$('#queryCritirea option:selected').val();
  		var queryParam=$('#queryParam').val();
@@ -37,7 +26,7 @@ $(document).ready(function(){
  	});
      
 	$('#setIOWorkShopPW').click(function(){
-		button_onclick($('#setIOWorkShopPW')[0]);
+//		button_onclick($('#setIOWorkShopPW')[0]);
 		var Start =$('#dpick1').val().replace(/\//g,'-');
 		var End =$('#dpick2').val().replace(/\//g,'-');
 //		console.log(Start,End);+
@@ -164,7 +153,7 @@ $(document).ready(function(){
 //					'<td>'++'</td>'+
 					var enabled =executeResult[i].Enabled=="Y"?'已生效':'';		
 					tableContents+='<td>'+enabled+'</td>'+
-					'<td><a class="updateIOWorkShopPW" role="button" href="#insertIOWorkShopPW"class="btn btn-xs btn-link" data-toggle="modal">編輯</a><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>';
+					'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>';
 				tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
 					$('#IOWorkShopPWTable tbody').append(tableContents);
@@ -172,14 +161,13 @@ $(document).ready(function(){
 		refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize);
 			
 	
-		$(".updateIOWorkShopPW").click(function(){
-			$(".ins").css("display","none");
-			$(".up").css("display","block");
+		$(".editBtn").click(function(){
 			var parentElement = $(this).parent().parent();
 			var WorkShopNo=$(parentElement).find('td').eq(1).text();
-//			$(parentElement).find('td').eq(1).html('<select class="changeWorkShopNo input-small"></select>');
+//			console.log(WorkShopNo);
+			$(parentElement).find('td').eq(1).html('<select class="changeWorkShopNo input-small"></select>');
 			
-			ShowWorkShopNo('workShopUpdate');
+			ShowWorkShopNo('changeWorkShopNo');
 			
 			$("#workShopUpdate").find('option').each(function(){
 				if($(this).val()==WorkShopNo){
@@ -188,29 +176,26 @@ $(document).ready(function(){
 			});
 			
 			var Start_Date=$(parentElement).find('td').eq(2).text();
-			$("#dpick3").val(Start_Date);
-			
-//			$(parentElement).find('td').eq(2).html('<input type="text" class="changeStartDate input-small" maxlength="60" value="'+Start_Date+'">');
-//			$(parentElement).find('td').eq(2).html('<textarea class="input-small changeWorkShop_Desc" id="message-text" value="'+WorkShop_Desc+'"></textarea>');
-//			$(parentElement).find('td').eq(2).html('<input id="mydatepicker1" type="text" value="'+Start_Date+'"/>');
+			$(parentElement).find('td').eq(2).html("<input id=\"dpick3\" class=\"Wdate\" type=\"text\" name=\"OVERTIMEDATE\" value="+Start_Date+" onfocus=\"WdatePicker({dateFmt:\'yyyy-MM-dd\',minDate:\'%y-\\#{%M-2}-01\',maxDate:\'#F{$dp.$D(\\\'dpick4\\\')}\'})\" autocomplete=\"off\" />");
 			
 			var End_Date=$(parentElement).find('td').eq(3).text();
-//			$(parentElement).find('td').eq(3).html('<input type="text" class="changeEndDate input-small" maxlength="60" value="'+End_Date+'">');
-			$("#dpick4").val("");
+			$(parentElement).find('td').eq(3).html("<input id=\"dpick4\" class=\"Wdate\" type=\"text\" name=\"OVERTIMEDATEEnd\" value="+End_Date+" onfocus=\"WdatePicker({dateFmt:\'yyyy-MM-dd\',minDate:\'#F{$dp.$D(\\\'dpick3\\\')}\'})\" autocomplete=\"off\" />");
+
 			
 //			$(parentElement).children().find('.editBtn .deleteBtn').hide();
-//			$(parentElement).find('td').eq(5).append('<a class="confirmBtn btn btn-xs btn-link" role="button">確認</a>'+
-//	        		'<a class="cancelBtn btn btn-xs btn-link" role="button">取消</a>');
-//			$(parentElement).find('.editBtn,.deleteBtn').hide(); 
+			$(parentElement).find('td').eq(5).append('<a class="confirmBtn btn btn-xs btn-link" role="button">確認</a>'+
+	        		'<a class="cancelBtn btn btn-xs btn-link" role="button">取消</a>');
+			$(parentElement).find('.editBtn,.deleteBtn').hide(); 
 			
-			$('#updateNewIOWShPW').click(function(){
+			$('.confirmBtn').click(function(){
 				var parentElement=$(this).parent().parent();
 				var User=new Object(),errorMessage='';
 //				var Direction=$(parentElement).find('.changeStatus option:selected').eq(0).text();
-				User.Emp_id=$(".empid").text();
-				User.WorkShopNo=$("#workShopUpdate").find('option:selected').eq(0).val();
-				User.Start_Date=$("#dpick3").val().replace(/\//g,'-');
-				User.End_Date=$("#dpick4").val().replace(/\//g,'-');
+				User.Emp_id=$(parentElement).find('td').eq(0).text();
+//				User.Emp_id=Emp_id;
+				User.WorkShopNo=$(parentElement).find('td option:selected').eq(0).val();
+				User.Start_Date=$("#dpick3").val();
+				User.End_Date=$("#dpick4").val();
 
 				if(User.WorkShopNo==="null" || User.WorkShopNo=='')
 					errorMessage+='車間號未填寫\n';
@@ -234,11 +219,13 @@ $(document).ready(function(){
 							  if(data!=null && data!=''){
 								  if(data.StatusCode=="200"){
 									  alert(data.Message);
+									  $(parentElement).find('.editBtn,.deleteBtn').show();
 									  $(parentElement).find('td').eq(0).html(User.Emp_id);
 									  $(parentElement).find('td').eq(1).html(User.WorkShopNo);
 									  $(parentElement).find('td').eq(2).html(User.Start_Date);
 									  $(parentElement).find('td').eq(3).html(User.End_Date);
 //									  $(parentElement).find('td').eq(6).html(User.ROLE);
+									  $(parentElement).find('.confirmBtn,.cancelBtn').remove();
 								  }
 								  else{
 									  alert(data.Message);
@@ -255,8 +242,18 @@ $(document).ready(function(){
 						event.preventDefault(); //preventDefault() 方法阻止元素发生默认的行为（例如，当点击提交按钮时阻止对表单的提交）。
 					}
 				  }
-				});				
+				});
+			$('.cancelBtn').click(function(){
+				var parentElement=$(this).parent().parent();
+				$(parentElement).find('.editBtn,.deleteBtn').show();
+				$(parentElement).find('td').eq(1).html(WorkShopNo);
+				$(parentElement).find('td').eq(2).html(Start_Date);
+				$(parentElement).find('td').eq(3).html(End_Date);
+				$(this).parent().find('.confirmBtn,.cancelBtn').remove();
+			})
 		})
+		
+			
 		
 		$('.deleteBtn').click(function(){
 			var parentElement=$(this).parent().parent();

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
@@ -117,7 +118,7 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
-		    sSQL += "order by t.emp_id)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+" " ;
+		    sSQL += "order by t.emp_id)b order by b.deviceip asc) where rn>"+page.getStartIndex()+" and rn<="+endIndex+" " ;
 		    
 		    if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
@@ -166,8 +167,8 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 						arg0.setString(3, updateUser);
 					}	
 				});
-				transactionManager.commit(txStatus);
 			}	
+			transactionManager.commit(txStatus);
 		}
 		catch(Exception ex) {
 			logger.error("Update WorkshopNoRestInfo is failed",ex);
@@ -239,6 +240,78 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 			   return true; 
 		 else
 			 return false;
+	}
+
+	public boolean checkEmpID(String empID) {
+		// TODO Auto-generated method stub
+		String sql = "select count(*) from csr_employee t where t.id = ? and t.isonwork = '0'";
+		int checkEmpCount = 0;
+		try {
+    		List <Object> queryList=new  ArrayList<Object>();
+    		queryList.add(empID);
+    		checkEmpCount = jdbcTemplate.queryForObject(sql,queryList.toArray(), Integer.class);	
+		 
+    	} catch (Exception ex) {
+    		  logger.error("Find WorkshopNoRestInfo TotalRecord are failed ",ex);
+    		  ex.printStackTrace();
+    	}
+		if(checkEmpCount>0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean insertEmpIPBinding(String ip, List<String> exEmpList, String updateUser) {
+		// TODO Auto-generated method stub
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);
+		String sSQL="update EMP_DEPT_BINDING t set t.enabled = 'N',t.update_userid=?,t.Update_Time=sysdate where t.deviceip = ? and t.emp_id = ? and t.enabled = 'Y'";
+		String insertSQL="insert into EMP_DEPT_BINDING(Deviceip,Emp_Id,Update_Userid,Update_Time,Enabled) values(?,?,?,sysdate,'Y')";
+		int[] disableRow;
+		try {
+			if(ip!=null && exEmpList.size()>0) {
+				jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
+					
+					@Override
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						// TODO Auto-generated method stub
+						ps.setString(1, updateUser);
+						ps.setString(2, ip);
+						ps.setString(3, exEmpList.get(i));
+					}
+					
+					@Override
+					public int getBatchSize() {
+						// TODO Auto-generated method stub
+						return exEmpList.size();
+					}
+				});
+				jdbcTemplate.batchUpdate(insertSQL, new BatchPreparedStatementSetter() {
+					
+					@Override
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						// TODO Auto-generated method stub
+						ps.setString(1, ip);
+						ps.setString(2, exEmpList.get(i));
+						ps.setString(3, updateUser);
+					}
+					
+					@Override
+					public int getBatchSize() {
+						// TODO Auto-generated method stub
+						return exEmpList.size();
+					}
+				});
+				transactionManager.commit(txStatus);
+			}
+		}
+		catch(Exception ex) {
+			logger.error("Disable WorkshopNoRestInfo is failed",ex);
+			transactionManager.rollback(txStatus);
+			return false;
+		}
+		return true;
 	}
 
 }

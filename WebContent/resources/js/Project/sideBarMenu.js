@@ -57,7 +57,7 @@
 				"icon" : "icon-nav",
 				"url" : "FlinePerson/ShowFlinePersonMaintain"
 			},{
-				"menuname" : "離崗卡與綫別號綁定維護",
+				"menuname" : "離崗卡與費用代碼綁定維護",
 				"icon" : "icon-nav",
 				"url" : "OTCardPerson/ShowOTCardbdPerson"
 			},{
@@ -81,7 +81,12 @@
 				"icon" : "icon-nav",
 				"url" : "IOWorkShopPower/ShowIOWorkShopPwList"
 
-			}, {
+			},{
+				"menuname" : "保密車間臨時權限維護",
+				"icon" : "icon-nav",
+				"url" : "IOSpecialWSEmp/ShowIOSpecialWSEmp"
+
+			},{
 
 				"menuname" : "維護車間休息時間段",
 				"icon" : "icon-nav",

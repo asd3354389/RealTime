@@ -1,5 +1,7 @@
 $(document).ready(function(){
 	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false;
+	var reg ="^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
+	var re = new RegExp(reg);
 	ShowAllIOCardMaIPList();
 	ShowWorkShop();
 	
@@ -28,6 +30,16 @@ $(document).ready(function(){
 		}
 	});
 	
+	$('#setSecrecyWS').click(function(){
+		var secrecyWS = $('#workShopSecrecy option:selected').val();
+		var status = $('#secrecyStatus option:selected').val();
+		if(secrecyWS==""||secrecyWS=="null"){
+			alert("車間號不能爲空！")
+		}else{
+			setWorkShopSecrecy(secrecyWS,status);
+		}
+	})
+	
 	$('#setIOCardMaIP').click(function(){
 		button_onclick($('#setIOCardMaIP')[0]);
 		var machine={},errorMessage='';
@@ -39,8 +51,10 @@ $(document).ready(function(){
 		
 		if(machine["Deviceip"]==="null" || machine["Deviceip"]=='')
 			errorMessage+='工號未填寫\n';
-		
-		checkDeviceipDuplicate(machine["Deviceip"]);
+		if(!re.test(machine["Deviceip"])){
+			errorMessage+='卡机IP不符合规范\n';
+		}
+//		checkDeviceipDuplicate(machine["Deviceip"]);
 		
 		/*if(machine["WorkShop_Desc"]=='' || machine["WorkShop_Desc"]==null){
 			errorMessage+='未填寫卡機描述 \n';
@@ -51,7 +65,7 @@ $(document).ready(function(){
 		if(machine["Direction"]==="null" || machine["Direction"]=='')
 			errorMessage+='未選擇卡機狀態\n';
 		
-		if(errorMessage=='' && isUserNameValid){
+		if(errorMessage==''){
 			//新增綁定賬號
 			$.ajax({
 				type:'POST',
@@ -146,9 +160,13 @@ $(document).ready(function(){
 					}
 //					'<td>'+executeResult[i]["Direction"]+'</td>'
 //					'<td>'++'</td>'+
-					var enabled =executeResult[i].Enabled=="Y"?'已生效':'';		
-					tableContents+='<td>'+enabled+'</td>'+
-					'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>';
+					var iS_SPECIAL =executeResult[i].IS_SPECIAL=="Y"?'保密車間':'非保密車間';
+					if(iS_SPECIAL=="保密車間"){
+						tableContents+='<td style="color:red;">'+iS_SPECIAL+'</td>';
+					}else{
+						tableContents+='<td>'+iS_SPECIAL+'</td>';
+					}
+					tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>';
 				tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
 					$('#IOCardMaIPTable tbody').append(tableContents);
@@ -414,6 +432,7 @@ $(document).ready(function(){
 						htmlAppender+='<option value="'+data[i]+'">'+data[i]+'</option>';
 					}
 					 $('#workShop').append(htmlAppender);
+					 $('#workShopSecrecy').append(htmlAppender);
 				/*	 $('#ChangeWorkShop').append(htmlAppender);*/
 				}
 				else{
@@ -467,6 +486,7 @@ $(document).ready(function(){
 					success:function(data){	
 						 if(data!=null && data!=''){
 							 if(data.StatusCode==500){
+								/* if(Deviceip)*/
 								 alert(data.Message);
 								 isUserNameValid=false;
 							 }
@@ -481,4 +501,37 @@ $(document).ready(function(){
 				});
 			}
 		}
+	 
+	 //設置保密車間ajax請求
+	 function setWorkShopSecrecy(secrecyWS,status){
+		 $.ajax({
+			 type:'POST',
+				url:'../IOCardBdIP/setSecrecyWS.do',
+				data:{
+					SecrecyWS:secrecyWS,
+					Status:status
+				},
+				async:false,
+				error:function(e){
+					alert(e);
+				},
+				success:function(data){	
+					 if(data!=null && data!=''){
+						 if(data.StatusCode=="200"){
+							 ShowAllIOCardMaIPList();
+							 alert(data.Message);
+						/*	 $('#IOCardMaIPTable tbody').empty();*/
+							 $('#workShopSecrecy').val('');
+							 $('#secrecyStatus').val('');
+						 }
+						 else
+							{
+							  alert(data.Message);
+							}
+					}else{
+						  alert("操作失敗！");
+					}
+				}
+		 })
+	 }
 })

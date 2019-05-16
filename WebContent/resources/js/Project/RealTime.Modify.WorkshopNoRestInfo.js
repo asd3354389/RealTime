@@ -222,6 +222,7 @@ $(document).ready(function(){
 				WorkshopNoRestInfo.rest_start4=$(parentElement).find('td').eq(7).find('input').val();
 				WorkshopNoRestInfo.rest_end4=$(parentElement).find('td').eq(8).find('input').val();
 				
+
 				if(WorkshopNoRestInfo.workshopno==="null" || WorkshopNoRestInfo.workshopno=='')
 					errorMessage+='車間號未填寫\n';
 				if(WorkshopNoRestInfo.rest_start1==="null" || WorkshopNoRestInfo.rest_start1==''||

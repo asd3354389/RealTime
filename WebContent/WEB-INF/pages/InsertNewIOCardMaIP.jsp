@@ -36,7 +36,17 @@
 							<option value="O">出</option>
     					</select>  			
     		</div>
-  		</div>			
+  		</div>	
+  		
+  		<!-- <div class="control-group">
+    		<div class="controls">
+      			<label for="secrecyWorkShop">是否為保密車間</label>
+    					<select id="secrecyWorkShop" name='secrecyWorkShop' class="form-control">
+    						<option value="F">否</option>
+    						<option value="T">是</option>
+    					</select>  			
+    		</div>
+  		</div>				 -->
 	
         <br>
   		<button type="submit" id="setIOCardMaIP" class="btn btn-primary">設置</button>

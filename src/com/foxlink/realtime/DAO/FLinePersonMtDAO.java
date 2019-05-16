@@ -58,6 +58,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			else{
 				sSQL+="";
 			}
+    		sSQL+="and SUBSTR (t.depname, 1, 2) = '通訊'";
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
@@ -109,7 +110,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
-		    sSQL += "order by t.id,t.costid)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+" " ;
+		    sSQL += "and SUBSTR (t.depname, 1, 2) = '通訊' order by t.id,t.costid)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+" " ;
 		   /* where rn>"+page.getStartIndex()+" and rn<="+endIndex+"*/
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
@@ -157,6 +158,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			else{
 				sSQL+="";
 			}
+    		sSQL+="and SUBSTR (t.depname, 1, 2) = '通訊'";
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
@@ -206,7 +208,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
-		    sSQL += "order by t.id,t.costid)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	    
+		    sSQL += "and SUBSTR (t.depname, 1, 2) = '通訊' order by t.id,t.costid)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	    
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
@@ -376,7 +378,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			else{
 				sSQL+="";
 			}
-		  
+		  sSQL+="and SUBSTR (t.depname, 1, 2) = '通訊'";
 		  result = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 			
 			@Override
@@ -435,7 +437,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			else{
 				sSQL+="";
 			}
-		  
+    		sSQL+="and SUBSTR (t.depname, 1, 2) = '通訊'";
 		  result = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 			
 			@Override

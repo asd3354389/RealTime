@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false;
-	ShowAllEmpIPBinding();
+	ShowAllIOSpecialWSEmp();
 	ShowWorkShop();
 	
 	 var CLICKTAG = 0;
@@ -14,48 +14,70 @@ $(document).ready(function(){
      }
 	
 	$('#resetSubmit').click(function(){
-		$('#insert_deviceIP').val('');
-	     $('#insert_emp_id').val('');
+ 	    $('#inputUserName').val('');
+     	$('#dpick1').val('');
+     	$('#dpick2').val('');
+     	$('#dpick3').val('');
+     	$('#dpick4').val('');
 	});
 	
-	$('#searchEmpIPBinding').click(function(){
+	$('#searchIOSpecialWSEmp').click(function(){
 		var queryCritirea=$('#queryCritirea option:selected').val();
 		var queryParam=$('#queryParam').val();
 		if(queryParam==""){
-			ShowAllEmpIPBinding();
+			ShowAllIOSpecialWSEmp();
 		}else{
 			getPersonList(curPage,queryCritirea,queryParam)	
 		}
 	});
 	
-	$('#setEmpIPBinding').click(function(){
-		button_onclick($('#setEmpIPBinding')[0]);
-		var EmpIpBinding=new Object(),errorMessage='';
-		EmpIpBinding.deviceIP=$('#insert_deviceIP').val();
-		EmpIpBinding.emp_id=$('#insert_emp_id').val();
-		console.log(EmpIpBinding);
+	$('#setIOWorkShopPW').click(function(){
+//		button_onclick($('#setIOWorkShopPW')[0]);
+		var Start =$('#dpick1').val().replace(/\//g,'-');
+		var End =$('#dpick2').val().replace(/\//g,'-');
+//		console.log(Start,End);+
+		var ioWsPw={},errorMessage='';
+		ioWsPw["Emp_id"]=$('#inputUserName').val();
+		ioWsPw["WorkShopNo"]=$('#workShop option:selected').val();
+		ioWsPw["Start_Date"]= Start;
+		ioWsPw["End_Date"]= End;
+		console.log(ioWsPw);
 		
-		if(EmpIpBinding.deviceIP==="null" || EmpIpBinding.deviceIP=='')
-			errorMessage+='車間ip未填寫\n';
-		if(EmpIpBinding.emp_id==="null" || EmpIpBinding.emp_id=='')
-			errorMessage+='未填寫車間ip綁定員工工號\n';
+		if(ioWsPw["Emp_id"]==="null" || ioWsPw["Emp_id"]=='')
+			errorMessage+='工號未填寫\n';
+		
+		/*checkEmpidDuplicate(ioWsPw["Emp_id"],ioWsPw["WorkShopNo"]);*/
+		
+		/*if(machine["WorkShop_Desc"]=='' || machine["WorkShop_Desc"]==null){
+			errorMessage+='未填寫卡機描述 \n';
+		}*/
+		if(ioWsPw["WorkShopNo"]==="null" || ioWsPw["WorkShopNo"]=='')
+			errorMessage+='未選擇使用的車間\n';
+		
+		if(ioWsPw["Start_Date"]==="null" || ioWsPw["Start_Date"]=='')
+			errorMessage+='為選擇生效起始日期\n';
+		
+		if(ioWsPw["End_Date"]==="null" || ioWsPw["End_Date"]=='')
+			errorMessage+='為選擇生效結束日期\n';
 		
 		if(errorMessage==''){
 			//新增綁定賬號
 			$.ajax({
 				type:'POST',
 				contentType: "application/json",
-				url:'../EmpIPBinding/AddEmpIPBinding.do',
-				data:JSON.stringify(EmpIpBinding),
+				url:'../IOSpecialWSEmp/AddIOSpecialWSEmp.do',
+				data:JSON.stringify(ioWsPw),
 				dataType:'json',
 				success:function(data){
-					$('#setIOCardMaIP').prop("disabled",false);
+					$('#setIOWorkShopPW').prop("disabled",false);
 					 if(data!=null && data!=''){
 						 if(data.StatusCode=="200"){
-							 $('#insert_deviceIP').val('');
-						     $('#insert_emp_id').val('');
+							 $('#inputUserName').val('');
+							 $('#workShop').val('');
+							 $('#dpick1').val('');
+							 $('#dpick2').val('');
 							 alert(data.Message);
-							 ShowAllEmpIPBinding();
+							 ShowAllIOSpecialWSEmp();
 							/* alert(data.Message);			
 							 $('#inputUserName').val('');
 							 $('#inputChineseName').val('');
@@ -71,11 +93,11 @@ $(document).ready(function(){
 							 alert(data.Message);
 						 }
 					 }else{
-						 alert('新增車間休息時間段失敗!');
+						 alert('設置保密車間臨時進出權限失敗!');
 					 }
 				},
 				error:function(e){
-					alert('新增車間休息時間段發生錯誤');
+					alert('設置保密車間臨時進出權限發生錯誤');
 				}
 			});
 		}
@@ -87,10 +109,41 @@ $(document).ready(function(){
 	    }	
 	})
 	
-	function ShowAllEmpIPBinding(){
+	function checkEmpidDuplicate(Emp_id,WorkShopNo){
+		if(Emp_id!=""){
+			$.ajax({
+				type:'POST',
+				url:'../IOSpecialWSEmp/checkUserName.do',
+				data:{
+					Emp_id:Emp_id,
+					WorkShopNo:WorkShopNo
+				},
+				async:false,
+				error:function(e){
+					alert(e);
+				},
+				success:function(data){	
+					 if(data!=null && data!=''){
+						 if(data.StatusCode==500){
+							 alert(data.Message);
+							 isUserNameValid=false;
+						 }
+						 else
+							{
+							 isUserNameValid=true;
+							}
+				}else{
+					 isUserNameValid=false;
+					}
+				}
+			});
+		}
+	}
+	
+	function ShowAllIOSpecialWSEmp(){
 		$.ajax({
 			type:'POST',
-			url:'../EmpIPBinding/ShowAllEmpIPBinding',
+			url:'../IOSpecialWSEmp/ShowAllIOSpecialWSEmp',
 			data:{curPage:curPage,queryCritirea:queryCritirea,queryParam:queryParam},
 			error:function(e){
 //				alert('找不到資料');
@@ -106,10 +159,10 @@ $(document).ready(function(){
 					else{
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0)	
-							ShowAllEmpIPBindingTable(rawData);
+							ShowAllIOSpecialWSEmpTable(rawData);
 						else{
 							/*$('.left').css('height','727px');*/
-							alert('暫無卡機信息資料');
+							alert('暫無保密車間資料');
 						}
 					}
 				}
@@ -117,22 +170,24 @@ $(document).ready(function(){
 		});	
 	}
 	
-	function ShowAllEmpIPBindingTable(rawData){
-		$('#EmpIPBindingTable tbody').empty();
+	function ShowAllIOSpecialWSEmpTable(rawData){
+		$('#IOSpecialWSEmpTable tbody').empty();
 		var currentPage=rawData.currentPage;
 		var totalRecord=rawData.totalRecord;
 		var totalPage=rawData.totalPage;
 		var pageSize=rawData.pageSize;
 		var executeResult=rawData["list"];
 		for(var i=0;i<executeResult.length;i++){
-			var	tableContents='<tr><td>'+executeResult[i]["deviceIP"]+'</td>'+
-					'<td>'+executeResult[i]["emp_id"]+'</td>'+
+			var	tableContents='<tr><td>'+executeResult[i]["Emp_id"]+'</td>'+
+					'<td>'+executeResult[i]["WorkShopNo"]+'</td>'+
+					'<td>'+executeResult[i]["Start_Date"]+'</td>'+
+					'<td>'+executeResult[i]["End_Date"]+'</td>'+
 //					'<td>'+executeResult[i]["Direction"]+'</td>'
 //					'<td>'++'</td>'+
 					'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>';
 				tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
-					$('#EmpIPBindingTable tbody').append(tableContents);
+					$('#IOSpecialWSEmpTable tbody').append(tableContents);
 		}
 		refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize);
 	/*	console.log(currentPage);
@@ -143,36 +198,47 @@ $(document).ready(function(){
 		
 		$(".editBtn").click(function(){
 			var parentElement = $(this).parent().parent();
-			var deviceIP=$(parentElement).find('td').eq(0).text();
+			var Emp_id=$(parentElement).find('td').eq(0).text();
 			
-			var emp_id=$(parentElement).find('td').eq(1).text();
-			$(parentElement).find('td').eq(1).html('<input type="text" value='+emp_id+'>');
+			var WorkShopNo=$(parentElement).find('td').eq(1).text();
+			/*$(parentElement).find('td').eq(1).html('<select class="changeWorkShopNo input-small"></select>');
+			ShowWorkShopNo('changeWorkShopNo');
+			$('.changeWorkShopNo').val(WorkShopNo);*/
+			var Start_Date=$(parentElement).find('td').eq(2).text();
+			$(parentElement).find('td').eq(2).html("<input id=\"dpick3\" class=\"Wdate\" type=\"text\" name=\"OVERTIMEDATE\" value="+Start_Date+" onfocus=\"WdatePicker({dateFmt:\'yyyy-MM-dd\',minDate:\'%y-\\#{%M-2}-01\',maxDate:\'#F{$dp.$D(\\\'dpick4\\\')}\'})\" autocomplete=\"off\" />");
+			
+			var End_Date=$(parentElement).find('td').eq(3).text();
+			$(parentElement).find('td').eq(3).html("<input id=\"dpick4\" class=\"Wdate\" type=\"text\" name=\"OVERTIMEDATEEnd\" value="+End_Date+" onfocus=\"WdatePicker({dateFmt:\'yyyy-MM-dd\',minDate:\'#F{$dp.$D(\\\'dpick3\\\')}\'})\" autocomplete=\"off\" />");
 
 //			$(parentElement).children().find('.editBtn .deleteBtn').hide();
-			$(parentElement).find('td').eq(2).append('<a class="confirmBtn btn btn-xs btn-link" role="button">確認</a>'+
+			$(parentElement).find('td').eq(4).append('<a class="confirmBtn btn btn-xs btn-link" role="button">確認</a>'+
 	        		'<a class="cancelBtn btn btn-xs btn-link" role="button">取消</a>');
 			$(parentElement).find('.editBtn,.deleteBtn').hide();
-			
 			$('.confirmBtn').click(function(){
 				var parentElement=$(this).parent().parent();
-				var EmpIpBinding=new Object(),errorMessage='';
+				var IOWorkShopPW=new Object(),errorMessage='';
 				var Direction=$(parentElement).find('.changeStatus option:selected').eq(0).text();
-				EmpIpBinding.deviceIP=deviceIP;
-				EmpIpBinding.emp_id=$(parentElement).find('td').eq(1).find('input').val();
-				EmpIpBinding.oldEmp_id=emp_id;
+				IOWorkShopPW.Emp_id=Emp_id;
+				IOWorkShopPW.WorkShopNo=WorkShopNo;
+				IOWorkShopPW.Start_Date=$(parentElement).find('td').eq(2).find('input').val();
+				IOWorkShopPW.End_Date=$(parentElement).find('td').eq(3).find('input').val();
 				
-				if(EmpIpBinding.deviceIP==="null" || EmpIpBinding.deviceIP=='')
-					errorMessage+='車間ip未填寫\n';
-				if(EmpIpBinding.emp_id==="null" || EmpIpBinding.emp_id=='')
-					errorMessage+='對應人員為填寫\n';
+
+				if(IOWorkShopPW.Emp_id==="null" || IOWorkShopPW.Emp_id=='')
+					errorMessage+='工號未填寫\n';
+				if(IOWorkShopPW.WorkShopNo==="null" || IOWorkShopPW.WorkShopNo=='')
+					errorMessage+='車間名稱未填寫\n';
+				if(IOWorkShopPW.Start_Date==="null" || IOWorkShopPW.Start_Date=='')
+					errorMessage+='生效起始日期未填寫\n';
+				if(IOWorkShopPW.End_Date==="null" || IOWorkShopPW.End_Date=='')
+					errorMessage+='生效結束日期未填寫\n';
 				
-				console.log(EmpIpBinding);
 				if(errorMessage==''){	
 					$.ajax({
 						type:'POST',
 						contentType: "application/json",
-						url:'../EmpIPBinding/UpdateEmpIPBinding.do',
-						data:JSON.stringify(EmpIpBinding),
+						url:'../IOSpecialWSEmp/UpdateIOSpecialWSEmp.do',
+						data:JSON.stringify(IOWorkShopPW),
 						dataType:'json',
 						error:function(e){
 							alert(e);
@@ -182,7 +248,8 @@ $(document).ready(function(){
 								  if(data.StatusCode=="200"){
 									  alert(data.Message);
 									  $(parentElement).find('.editBtn,.deleteBtn').show();
-									  $(parentElement).find('td').eq(1).html(EmpIpBinding.emp_id);
+									  $(parentElement).find('td').eq(2).html(IOWorkShopPW.Start_Date);
+									  $(parentElement).find('td').eq(3).html(IOWorkShopPW.End_Date);
 									  $(parentElement).find('.confirmBtn,.cancelBtn').remove();
 								  }
 								  else{
@@ -205,21 +272,22 @@ $(document).ready(function(){
 			$('.cancelBtn').click(function(){
 				var parentElement=$(this).parent().parent();
 				$(parentElement).find('.editBtn,.deleteBtn').show();
-				$(parentElement).find('td').eq(1).html(emp_id);
+				$(parentElement).find('td').eq(2).html(Start_Date);
+				$(parentElement).find('td').eq(3).html(End_Date);
 				$(this).parent().find('.confirmBtn,.cancelBtn').remove();
 			})					
 		})
 		
 		$('.deleteBtn').click(function(){
 			var parentElement=$(this).parent().parent();
-			deviceIP=$(parentElement).find('td').eq(0).text();
-			emp_id=$(parentElement).find('td').eq(1).text();
-			var results=confirm("確定刪除"+deviceIP+"與"+emp_id+"的綁定訊息 ?");
+			var Emp_id=$(parentElement).find('td').eq(0).text();
+			var WorkShopNo=$(parentElement).find('td').eq(1).text();
+			var results=confirm("確定刪除工號 "+Emp_id+"與"+WorkShopNo+"的綁定訊息 ?");
 			if(results==true){
 				$.ajax({
 					type:'GET',
-					url:'../EmpIPBinding/deleteEmpIPBinding.do',
-					data:{deviceIP:deviceIP,emp_id:emp_id},
+					url:'../IOSpecialWSEmp/deleteIOSpecialWSEmp.do',
+					data:{Emp_id:Emp_id,WorkShopNo:WorkShopNo},
 					error:function(e){
 						alert(e);
 					},
@@ -232,7 +300,7 @@ $(document).ready(function(){
 								//刪除，所以將此列從畫面移除
 								parentElement.remove();
 								  */
-								 ShowAllEmpIPBinding();
+								 ShowAllIOSpecialWSEmp();
 							 }
 							 else{
 								 alert(data.Message);
@@ -249,7 +317,7 @@ $(document).ready(function(){
 	
 	
 	function refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize){
-		$('#WorkshopNoRestInfoListPagination').empty();
+		$('#IOSpecialWSEmpListPagination').empty();
 		var paginationElement='頁次：'+currentPage+'/'+totalPage +'&nbsp;每页:&nbsp;'+pageSize+'&nbsp;共&nbsp;'+totalRecord+'&nbsp;條&nbsp;';
 		if(currentPage==1)
 			paginationElement+='<a href ="javascript:return false;">首页</a>';		  
@@ -269,7 +337,7 @@ $(document).ready(function(){
 		else
 			paginationElement+='<a href ="javascript:return false;">下一頁</a>';
 		
-		$('#WorkshopNoRestInfoListPagination').append(paginationElement);
+		$('#IOSpecialWSEmpListPagination').append(paginationElement);
 		
 		$('.firstPage').click(function(){
 			curPage=1;
@@ -320,7 +388,7 @@ $(document).ready(function(){
 	function getPersonList(curPage,queryCritirea,queryParam){
 		$.ajax({
 			type:'POST',
-			url:'../EmpIPBinding/ShowEmpIPBindingList',
+			url:'../IOSpecialWSEmp/ShowAllIOSpecialWSEmp',
 			data:{curPage:curPage,queryCritirea:queryCritirea,queryParam:queryParam},
 			error:function(e){
 				alert('找不到資料');
@@ -335,7 +403,7 @@ $(document).ready(function(){
 					else{
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0){
-							ShowAllEmpIPBindingTable(rawData);
+							ShowAllIOSpecialWSEmpTable(rawData);
 							$('#queryParam').val('');
 						}
 						else{
@@ -409,33 +477,4 @@ $(document).ready(function(){
 		});   
 	}	
 	
-	 function checkDeviceipDuplicate(Deviceip){
-			if(Deviceip!=""){
-				$.ajax({
-					type:'POST',
-					url:'../IOCardBdIP/checkDeviceip.do',
-					data:{
-						Deviceip:Deviceip
-					},
-					async:false,
-					error:function(e){
-						alert(e);
-					},
-					success:function(data){	
-						 if(data!=null && data!=''){
-							 if(data.StatusCode==500){
-								 alert(data.Message);
-								 isUserNameValid=false;
-							 }
-							 else
-								{
-								 isUserNameValid=true;
-								}
-					}else{
-						 isUserNameValid=false;
-						}
-					}
-				});
-			}
-		}
 })
