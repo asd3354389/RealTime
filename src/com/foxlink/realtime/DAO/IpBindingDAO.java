@@ -428,22 +428,25 @@ public class IpBindingDAO extends DAO<IpBinding>{
 				}
 		int totalRecord=-1;
     	String sSQL = "SELECT COUNT(*) FROM SWIPE.DEVICE_DEPT_BINDING WHERE ENABLED = 'Y' ";
-    	 System.out.println("条数语句==>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:"+sSQL);
+    	// System.out.println("条数语句==>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:"+sSQL);
+    	 
     	try {
     		List <Object> queryList=new  ArrayList<Object>();
     		
 //    		if(queryCritirea.equals("UPDATE_USERID")){
 //				sSQL+=" and UPDATE_USERID = '"+queryParam+"'";  
 //			}
+    		//AND DEPTID IN (SELECT DEPID FROM DEPT_RELATION WHERE COSTID IN ('5728') ) 
     		 if (queryCritirea.equals("DEPTID")) {
-				sSQL+=" and DEPTID = '"+queryParam+"'";  
+    			sSQL+= "AND DEPTID IN (SELECT DEPID FROM DEPT_RELATION WHERE COSTID IN ('"+queryParam+"') ) ";
+				//sSQL+=" and DEPTID = '"+queryParam+"'";  
 			}else if (queryCritirea.equals("DEVICEIP")) {
 				sSQL+=" and DEVICEIP = '"+queryParam+"'"; 
 			}
 			else{
 				sSQL+="";
 			}
- 
+    	 System.out.println("条数语句==>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:"+sSQL);
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
@@ -460,7 +463,7 @@ public class IpBindingDAO extends DAO<IpBinding>{
 	}
 	
 	public List<IpBinding> FindAllRecord(int currentPage, int totalRecord, String queryCritirea,
-			String queryParam,String userDataCostId ) {
+			String queryParam,String userDataCostId) {
 		// TODO Auto-generated method stub
 		List<IpBinding> AllEmp = null;
 		//只顯示自己部門的信息
@@ -475,7 +478,10 @@ public class IpBindingDAO extends DAO<IpBinding>{
 //		}
 		// TODO Auto-generated method stub
 		//SELECT * FROM ((SELECT  DEVICEIP,DEPTID,UPDATE_USERID,ENABLED,ROWNUM RN  from SWIPE.DEVICE_DEPT_BINDING WHERE ENABLED = 'Y' AND DEPTID  IN (SELECT DEPID FROM DEPT_RELATION WHERE COSTID IN ('8146','6438') ) )c) where rn>0 and rn<=20
-		String sSQL = "SELECT * FROM ((SELECT  DEVICEIP,DEPTID,UPDATE_USERID,ENABLED,ROWNUM RN  from SWIPE.DEVICE_DEPT_BINDING WHERE ENABLED = 'Y' AND DEPTID  IN (SELECT DEPID FROM DEPT_RELATION )";
+		
+		//String sSQL = "SELECT * FROM ((SELECT  DEVICEIP,DEPTID,UPDATE_USERID,ENABLED,ROWNUM RN  from SWIPE.DEVICE_DEPT_BINDING WHERE ENABLED = 'Y' AND DEPTID  IN (SELECT DEPID FROM DEPT_RELATION ";
+		//String sSQL = "SELECT * FROM ((SELECT  DEVICEIP,DEPTID,UPDATE_USERID,ENABLED,ROWNUM RN  from SWIPE.DEVICE_DEPT_BINDING WHERE ENABLED = 'Y' AND DEPTID  IN (SELECT DEPID FROM DEPT_RELATION WHERE COSTID = '"+queryParam+"' ) ";
+		String sSQL = "SELECT * FROM ((SELECT  DEVICEIP,DEPTID,UPDATE_USERID,ENABLED,ROWNUM RN  from SWIPE.DEVICE_DEPT_BINDING WHERE ENABLED = 'Y' AND DEPTID  IN";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
 //			if(!userDataCostId.equals("ALL")){
@@ -489,15 +495,13 @@ public class IpBindingDAO extends DAO<IpBinding>{
 //				}
 //				sSQL+=" and Costid in("+idsStr+")";
 //			}
-    		if(queryCritirea.equals("UPDATE_USERID")){
-				sSQL+=" and UPDATE_USERID = '"+queryParam+"'ORDER BY DEVICEIP";  
-			}
+    		System.out.println("查詢的Value值==============================>>>"+queryCritirea);
     		 if (queryCritirea.equals("DEPTID")) {
-				sSQL+=" and DEPTID = '"+queryParam+"'ORDER BY DEVICEIP";
+				sSQL+="(SELECT DEPID FROM DEPT_RELATION WHERE COSTID = '"+queryParam+"') ORDER BY DEVICEIP";
 			}else if (queryCritirea.equals("DEVICEIP")) {
-				sSQL+=" and DEVICEIP = '"+queryParam+"'ORDER BY DEVICEIP";
+				sSQL+="(SELECT DEPID FROM DEPT_RELATION) and DEVICEIP = '"+queryParam+"'ORDER BY DEVICEIP";
 			}else{
-				sSQL+="";
+				sSQL+="(SELECT DEPID FROM DEPT_RELATION)";
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
