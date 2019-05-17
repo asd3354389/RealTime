@@ -92,6 +92,11 @@
 				"icon" : "icon-nav",
 				"url" : "IOWorkShop/ShowIOWorkShopRecord"
 
+			},{
+				"menuname" : "車間例外費用代碼維護",
+				"icon" : "icon-nav",
+				"url" : "ExceptionCost/ShowExceptionCost"
+
 			}]
 		},{
 

@@ -48,7 +48,7 @@ public class FLinePersonMtController {
 			}
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			String updateUser = (String)session.getAttribute("username");
-			String userDataCostId=(String) session.getAttribute("userDataCostId");
+			String userDataCostId="ALL";
 			System.out.println(userDataCostId);
 			fLinePersonMtService = (FLinePersonMtService)context.getBean("fLinePersonMtService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
@@ -85,7 +85,7 @@ public class FLinePersonMtController {
 			}
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			String updateUser = (String)session.getAttribute("username");
-			String userDataCostId=(String) session.getAttribute("userDataCostId");
+			String userDataCostId="ALL";
 			fLinePersonMtService = (FLinePersonMtService)context.getBean("fLinePersonMtService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			Page page = fLinePersonMtService.getFindPersonPageN(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
@@ -120,7 +120,7 @@ public class FLinePersonMtController {
 			}
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			String updateUser = (String)session.getAttribute("username");
-			String userDataCostId=(String) session.getAttribute("userDataCostId");
+			String userDataCostId="ALL";
 			fLinePersonMtService = (FLinePersonMtService)context.getBean("fLinePersonMtService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			Page page = fLinePersonMtService.getFindPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);

@@ -485,7 +485,7 @@ $(document).ready(function(){
 				}
 			}
 		});
-}
+	}
 	//顯示所有車間
 	function ShowWorkShop(){
 		$.ajax({
