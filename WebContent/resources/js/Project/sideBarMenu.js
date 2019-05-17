@@ -85,9 +85,7 @@
 				"menuname" : "保密車間臨時權限維護",
 				"icon" : "icon-nav",
 				"url" : "IOSpecialWSEmp/ShowIOSpecialWSEmp"
-
 			},{
-
 				"menuname" : "維護車間休息時間段",
 				"icon" : "icon-nav",
 				"url" : "WorkShopNoRest/ShowWorkshopNoRestInfo"
@@ -96,6 +94,11 @@
 				"menuname" : "进出车间门禁記錄查詢",
 				"icon" : "icon-nav",
 				"url" : "IOWorkShop/ShowIOWorkShopRecord"
+
+			},{
+				"menuname" : "車間例外費用代碼維護",
+				"icon" : "icon-nav",
+				"url" : "ExceptionCost/ShowExceptionCost"
 
 			}]
 		},{

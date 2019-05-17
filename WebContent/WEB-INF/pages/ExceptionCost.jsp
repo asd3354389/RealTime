@@ -20,7 +20,7 @@
 <link href="${bootstrapSelectCSS}" rel="stylesheet">
 
 <c:url value="/resources/assets/js/jquery-1.8.3.min.js" var="assetsJqueryJS" />
-<c:url value="/resources/js/Project/RealTime.Modify.OTCardbdPerson.js?version=${resourceVersion}" var="modifyOTCardbdPerson" /> 
+<c:url value="/resources/js/Project/RealTime.Modify.ExceCost.js?version=${resourceVersion}" var="modifyExceptionCost" />
 <c:url value="/resources/js/jquery/jquery-1.11.3.min.js" var="JqueryJS" />
 <c:url value="/resources/js/bootstrap/bootstrap.min.js" var="bootstrapJS" />
 <c:url value="/resources/js/bootstrap/bootstrap-select.min.js" var="bootstrapSelectJS" />
@@ -29,9 +29,9 @@
 <script src="${bootstrapJS}" type="text/javascript"></script>
 <script src="${bootstrapSelectJS}" type="text/javascript"></script>
 <script type="text/javascript" src='${AjaxCheckSessionJS}'></script>
-<script src="${modifyOTCardbdPerson}" type="text/javascript"></script>
+<script src="${modifyExceptionCost}" type="text/javascript"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>費用代碼綁定離崗卡維護</title>
+<title>車間例外費用代碼維護</title>
 </head>
 <body style="position:relative;">
 		<div id="header" class="header-fixed">
@@ -48,26 +48,23 @@
 		<div class="panel-body" style="border: 1px solid #e1e3e6;">
 			<div align="right">
 				查詢條件：<select id="queryCritirea" class="input-small">
-					<!-- <option value="Depid">部門代碼</option> -->
-					<option value="Costid">費用代碼</option>
+					<option value="CosttId">費用代碼</option>
+					<option value="WorkShopNo">車間號</option>
 				</select> <input type="text" id="queryParam" name="queryParam"
-					class="input-sm"> <input type="button"
-					id="searchBdPersonListBtn" name="searchBdPersonListBtn"
+					class="input-sm" style="display: inline-block;"><select id="changeWorkShopNo" name="changeWorkShopNo"  style="display:none"></select><input type="button"
+					id="searchExceCostBtn" name="searchExceCostBtn"
 					class="btn btn-sm btn-primary" value="Search">
-					 <a id="addNewBdOTCardBtn" role="button" href="#insertBdOTCard"
-					class="btn btn-primary btn-sm" data-toggle="modal">創建綫組別綁定離崗卡</a>
 			</div>
 			<div>
-					<h4>離崗卡與費用代碼綁定列表：</h4>
+					<h4>車間例外費用代碼列表</h4>
 			</div>
 			<div class="middle">
-				<div class="left" style="width:80%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+				<div class="left" style="width:60%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
 					<table id="Personbinding" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
 						<thead>
 							<tr>
-								<th>費用代碼</th>
-								<th>離崗卡號</th>
-								<th>默認使用車間</th>
+								<th>車間號</th>
+								<th>費用代碼</th>			
 								<th>是否生效</th>
 								<th></th>
 							</tr>
@@ -78,7 +75,23 @@
 					<div id="PersonListPagination" align="right" style="height: 20;position:absolute; bottom: -5px;right: 0px;">
 					</div>
 				</div>
-			<jsp:include page="InsertBdOTCard.jsp" />
+				<div class="right" style="width:18%;height:730px;float:right;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+					<h4>設置車間例外費用代碼</h4>
+					<div class="control-group">
+						<div class="controls">
+			      			<label for="WorkShopCost">費用代碼</label>
+			    					<input type="text" class="form-control" id="WorkShopCost" onkeyup="this.value =this.value.replace(/\s/g,'').replace(/[^\d]/g,'').replace(/(\d{4})(?=\d)/g,'$1,');">
+    					</div>
+			    		<div class="controls">
+			      			<label for="workShopNo">車間號</label>
+			    		<!-- 		<select id="workShopNo" name='workShopSecrecy' class="form-control">
+			    						<option value=""></option>
+			    					</select> -->
+			    					 <select id="workShopNo" name="workShopNo" class="selectpicker show-tick" multiple data-live-search="true"></select>  			
+    					</div>
+  					</div>
+  					<button type="submit" id="setCostWorkShop" class="btn btn-primary" style="margin-top: 10px;">設置</button>	
+				</div>
 		</div>
 	</div>
 </div>	
