@@ -42,7 +42,8 @@ public class IpBindingController {
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 		ipBindingService = (IpBindingService) context.getBean("ipBindingService");
 		String updateUser=(String) session.getAttribute("username");
-		
+		System.out.println("電腦ip=================================="+DeviceIp);
+		System.err.println("部門代碼=================================="+DeptId);
 		return ipBindingService.BindingIp(DeviceIp,DeptId,updateUser,isDif);
 	} 
 	
