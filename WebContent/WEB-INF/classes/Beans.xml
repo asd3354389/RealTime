@@ -222,13 +222,14 @@
 	<bean id="empIPBindingService" class="com.foxlink.realtime.service.EmpIPBindingService">
 		<property name="empIPBindingDAO" ref="empIPBindingDAO" />
 	</bean>
-
+	
 	<bean id="iOSpecialWSEmpDAO" class="com.foxlink.realtime.DAO.IOSpecialWSEmpDAO"
 		parent="dAO">
 	</bean>
 	<bean id="iOSpecialWSEmpService" class="com.foxlink.realtime.service.IOSpecialWSEmpService">
 		<property name="iOSpecialWSEmpDAO" ref="iOSpecialWSEmpDAO" />
 	</bean>
+
 
 	<bean id="exceptionCostDAO" class="com.foxlink.realtime.DAO.ExceptionCostDAO"
 		parent="dAO">

@@ -4,8 +4,9 @@ $(function(){
 	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false;
 	//顯示列表的信息
 	var messageList;
+	var DeptArr;
 	ShowCostIdList();
-	ShowAllIpList();
+	//ShowAllIpList();
 	
 	//初始化下拉框
 	 $('#MoredeptNo').selectpicker({
@@ -28,7 +29,49 @@ $(function(){
 		//點擊綁定多個線組別代碼
 		$('#MorechangebdOT').click(function(){	
 			
-			MoreBindingIp();
+			//獲取輸入ip的大小
+			var ipStr = $('#queryParamIp').val();;
+			var arr= ipStr.split(",");
+//			console.log(arr);
+			
+			
+			if (ipStr == '') {
+				alert("你輸入的信息不完整,請重新輸入");
+			} else {
+				var Emp=[];
+				var deptidArr;
+				$("#DeptNobinding .spTable").find('input:checked').each(function (index, item) {
+				     $(this).each(function () {
+					      var depid = $(this).val();
+					      //td里的内容
+					     //depid=depid.join('*');
+					      var Empid = new Object();
+					      Empid.depid = depid;
+					      Emp.push(depid);
+					      deptidArr = Emp.join('*');
+					      console.log(deptidArr);	
+					      
+					     
+				     })
+				})
+				if(Emp.length>0){
+					if (arr.length==1&&Emp.length>=1) {
+						//綁定多個部門代碼
+						MoreBindingIp(deptidArr,ipStr);
+					} else if(arr.length>=1&&Emp.length==1) {
+						//綁定多個Ip
+						BindingIpMore(deptidArr,ipStr);
+						
+					}else{
+						alert("多個部門不能同時綁定多個IP");
+					}
+				}else {
+					alert("未勾選需要綁定的部門代碼");
+				}	
+				
+			}
+			
+			//MoreBindingIp();
 							
 	});
 		//點擊綁定多個Ip
@@ -108,10 +151,21 @@ $(function(){
 		
 		
 		if(queryParam==""){
-			ShowAllIpList();
+			//ShowAllIpList();
 		}else{
 			//
+			
 			getSelectIpList(curPage,queryCritirea,queryParam);
+			//$("#queryCritirea").change(function(){
+				 console.log($('#queryCritirea').val()); 
+				//alert($(this).val());
+
+				//})
+				 if ( $('#queryCritirea').val() == "DEPTID") {
+					
+					 ShowDepNoList(queryParam);
+				} 
+			
 		}
 		
 		
@@ -161,32 +215,30 @@ $(function(){
 	
 	
 	//綁定多个部门
-	function MoreBindingIp() {
+	function MoreBindingIp(Emp,ipStr) {
 		
-		//ip地址
-		//10.64.119.3
-		//MoreinputIp
 		
-		var MoreDeviceIp = $("#MoreinputIp").val();
-	
 		
-		var MoreDeptId = $('#MoredeptNo').val(); 
-		console.log(MoreDeviceIp);
-		if(MoreDeptId===null){
-			MoreDeptId='';
-		}else{
-			MoreDeptId=MoreDeptId.join('*');
-	}
-		
-		//alert(MoreDeptId);
-		if (MoreDeptId== ''||MoreDeviceIp== '') {
-			alert("你輸入的信息不完整,請重新輸入!!");
-		}else{
+//		var MoreDeviceIp = $("#MoreinputIp").val();
+//	
+//		
+//		var MoreDeptId = $('#MoredeptNo').val(); 
+//		console.log(MoreDeviceIp);
+//		if(MoreDeptId===null){
+//			MoreDeptId='';
+//		}else{
+//			MoreDeptId=MoreDeptId.join('*');
+//	}
+//		
+//		
+//		if (MoreDeptId== ''||MoreDeviceIp== '') {
+//			alert("你輸入的信息不完整,請重新輸入!!");
+//		}else{
 			$.ajax({ 
 				   url:"../IpBinding/BindingIp", 
 				   type:"POST",
 				   async: false,
-				   data:{"DeviceIp":MoreDeviceIp,"DeptId":MoreDeptId,"Dif":false},
+				   data:{"DeviceIp":ipStr,"DeptId":Emp,"Dif":false},
 				   success:function(result){ 
 				    var StatusCode = result.StatusCode;
 				    var message = result.message;
@@ -195,46 +247,53 @@ $(function(){
 				}else if(StatusCode == "200"){
 					alert(message);
 					
-					$("#MoreinputIp").val("");
+					//$("#MoreinputIp").val("");
 					
 					//$("#inputCostId").val("");	
 					//$("#inputId").val("");
-					ShowAllIpList();					
+					//var bindingT = true;
+					//ShowAllIpList($('#queryParam').val(),bindingT);		
+					//選擇查詢的條件
+					var queryCritirea=$('#queryCritirea option:selected').val();
+					//輸入的信息
+					var queryParam=$('#queryParam').val();
+					getSelectIpList(curPage,queryCritirea,queryParam);
 				}  
 				   }, 
 				   error:function(err){ 
-				    console.log("NG:"+err); 
+					alert("绑定失败")
+				   // console.log("NG:"+err); 
 				   } 	
 			}) 
-		}	
+		//}	
 }	
 	//綁定多个ip
-	function BindingIpMore() {
+	function BindingIpMore(Emp,ipStr) {
 		
 		//ip地址
 		//10.64.119.3
 		//MoreinputIp
 		
-		var MoreDeviceIp = $("#inputIpMore").val();
-	
-		
-		var MoreDeptId = $('#MoreIpdept').val(); 
-		console.log(MoreDeviceIp);
-		if(MoreDeptId===null){
-			MoreDeptId='';
-		}else{
-			MoreDeptId=MoreDeptId.join('*');
-	}
+//		var MoreDeviceIp = $("#inputIpMore").val();
+//	
+//		
+//		var MoreDeptId = $('#MoreIpdept').val(); 
+//		console.log(MoreDeviceIp);
+//		if(MoreDeptId===null){
+//			MoreDeptId='';
+//		}else{
+//			MoreDeptId=MoreDeptId.join('*');
+//	}
 		
 		//alert(MoreDeptId);
-		if (MoreDeptId== ''||MoreDeviceIp== '') {
-			alert("你輸入的信息不完整,請重新輸入!!");
-		}else{
+//		if (MoreDeptId== ''||MoreDeviceIp== '') {
+//			alert("你輸入的信息不完整,請重新輸入!!");
+//		}else{
 			$.ajax({ 
 				   url:"../IpBinding/BindingIp", 
 				   type:"POST",
 				   async: false,
-				   data:{"DeviceIp":MoreDeviceIp,"DeptId":MoreDeptId,"Dif":true},
+				   data:{"DeviceIp":ipStr,"DeptId":Emp,"Dif":true},
 				   success:function(result){ 
 				    var StatusCode = result.StatusCode;
 				    var message = result.message;
@@ -243,21 +302,25 @@ $(function(){
 				}else if(StatusCode == "200"){
 					alert(message);
 					
-					$("#inputIpMore").val("");
+					//$("#inputIpMore").val("");
 					
 					//$("#inputCostId").val("");	
 					//$("#inputId").val("");
-					ShowAllIpList();					
+					var queryCritirea=$('#queryCritirea option:selected').val();
+					//輸入的信息
+					var queryParam=$('#queryParam').val();
+					getSelectIpList(curPage,queryCritirea,queryParam);			
 				}  
 				   }, 
 				   error:function(err){ 
 				    console.log("NG:"+err); 
 				   } 	
 			}) 
-		}	
+		//}	
 }	
 	//顯示綁定的Ip
-	function ShowAllIpList() {
+	function ShowAllIpList(queryParam,Boolean) {
+
 		$.ajax({
 			type:'POST',
 			url:'../IpBinding/ShowSelectIpList',
@@ -276,7 +339,7 @@ $(function(){
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0){
 							ShowAllIpListTable(rawData);
-							$('#queryParam').val('');
+							//$('#queryParam').val('');
 						}
 						else{
 							
@@ -289,6 +352,41 @@ $(function(){
 			}
 		});
 	}
+	
+//	function ShowAllIpListDelete(queryCritirea,queryParam) {
+//		
+//		$.ajax({
+//			type:'POST',
+//			url:'../IpBinding/ShowSelectIpList',
+//			data:{curPage:curPage,queryCritirea:queryCritirea,queryParam:queryParam},
+//			error:function(e){
+//				alert(e);
+//			},
+//			success:function(rawData){	
+//				if (rawData != null && rawData != "") {
+//					var executeResult=rawData["list"];
+//					var errorResponse=executeResult.ErrorMessage;
+//					if(errorResponse!=null){
+//						alert('找不到資料');
+//					}
+//					else{
+//						var numOfRecords=executeResult.length;
+//						if(numOfRecords>0){
+//							ShowAllIpListTable(rawData);
+//							//$('#queryParam').val('');
+//						}
+//						else{
+//							
+//							ShowAllIpListTable(rawData);
+//							setTimeout(function(){ alert('暫無信息為'+queryParam+'的綁定資料'); }, 100);
+//							
+//						}	
+//					}
+//				}
+//			}
+//		});
+//	}
+	//顯示刪除之後的綁定的信息
 /////////////////////////////////////////////////////////////////////////////////////
 	function ShowAllIp() {
 		$.ajax({
@@ -436,11 +534,14 @@ $(function(){
 								parentElement.remove();
 								  */	
 								// $("#Personbinding tbody").html("");
-								 ShowAllIpList();	
+//								var queryCritirea=$('#queryCritirea option:selected').val();
+//									//輸入的信息
+//								var queryParam=$('#queryParam').val();
+								getSelectIpList(curPage,queryCritirea,queryParam);
 							 }
 							 else{
 								 alert(data.Message);
-								
+								getSelectIpList(curPage,queryCritirea,queryParam);
 							 }
 						 }else{
 							 alert('操作失敗!')
@@ -531,7 +632,7 @@ $(function(){
 			url:'../IpBinding/ShowSelectIpList',
 			data:{curPage:curPage,queryCritirea:queryCritirea,queryParam:queryParam},
 			error:function(e){
-				alert('找不到資料');
+				alert('無綁定資料');
 			},
 			success:function(rawData){	
 				if (rawData != null && rawData != "") {
@@ -539,16 +640,20 @@ $(function(){
 					var executeResult=rawData["list"];
 					var errorResponse=executeResult.ErrorMessage;
 					if(errorResponse!=null){
-						alert('找不到資料');
+						
+						alert('無信息為'+queryParam+'的綁定資料');
+						
 					}
 					else{
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0){
 							ShowAllIpListTable(rawData);
-							$('#queryParam').val('');
+							console.log(rawData);	
+							//$('#queryParam').val('');
 						}
 						else{
-							alert('找不到資料');
+							alert('無綁定資料');
+							ShowAllIpListTable(rawData);
 						}	
 					}
 				}
@@ -614,7 +719,7 @@ $(function(){
 	  							// $('#MoredeptNo').append(htmlAppender);
 	  				}else{
 	  					alert("此費用代碼錯誤或無相應的綫組別號！請重新輸入");
-						  $("#CostNo").val("");
+						 // $("#CostNo").val("");
 						  //$("#MoreCostNo").val("");
 //				    	  $('#inputOTCarid').val("")
 	  				}
@@ -663,5 +768,49 @@ $(function(){
 	  		})
 	}
 	
+	//顯示部門代碼列表
+	function ShowDepNoList(CostId){
+		//alert("部門代碼");
+		  $.ajax({
+	  			type:'POST',
+	  			url:'../IpBinding/ShowDeptNo',
+	  			data:{CostId:CostId},
+//	  			async:false,
+	  			success:function(data){
+	  				
+	  				var StatusCode = data.StatusCode;
+	  				var message = data.message;
+	  				var htmlAppender='';
+	  				 if(StatusCode=="200"){	
+	  					var obj=eval(message);
+	  					console.log(obj);	
+	  					DeptArr = obj;
+	  					ShowAllDepNoListTable(obj);
+	  				}else{
+	  					alert("此費用代碼錯誤或無相應的綫組別號！請重新輸入");
+						  //$("#CostNo").val("");
+						  //$("#MoreCostNo").val("");
+//				    	  $('#inputOTCarid').val("")
+	  				}
+	  			},
+	  			error:function(e){
+	  				alert(e);
+	  			}
+	  		})
+	}
+	
+	function ShowAllDepNoListTable(obj){
+		//DeptNobinding
+		$('#DeptNobinding tbody').empty();
+		for(var i=0;i<obj.length;i++){
+			var	tableContents='<tr><td><input type="checkbox" value='+obj[i].depid+' style="float: left;margin-left: 10px"></td>'+
+			'<td>'+obj[i].depid+'</td>';
+			tableContents+='</tr>';
+			
+			$('#DeptNobinding tbody').append(tableContents);
+			}
+		
+	}
+	//$('#queryParam').val()
 	//================================================
 });
