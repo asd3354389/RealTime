@@ -26,7 +26,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 	public int getTotalRecord(String queryCritirea, String queryParam, String updateUser, String userDataCostId) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
-    	String sSQL = "select count(*) FROM SWIPE.DEPARTURE_CARD_INFO a ,(select t.costid from DEPT_RELATION t";
+    	String sSQL = "select count(*) FROM SWIPE.DEPARTURE_CARD_INFO a ,(select DISTINCT(t.costid) from DEPT_RELATION t";
     	try {
     		List <Object> queryList=new  ArrayList<Object>();
     		if(!userDataCostId.equals("ALL")){
@@ -76,7 +76,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 		// TODO Auto-generated method stub
 		List<OTCardBD> AllEmp = null;
 		// TODO Auto-generated method stub
-		String sSQL = "select * from(select c.*,rownum rn from (select a.d_cardid, a.CostId,b.costid CostNo,a.default_workshopno,a.enabled FROM SWIPE.DEPARTURE_CARD_INFO a ,(select t.costid from DEPT_RELATION t";
+		String sSQL = "select * from(select c.*,rownum rn from (select a.d_cardid, a.CostId,b.costid CostNo,a.default_workshopno,a.enabled FROM SWIPE.DEPARTURE_CARD_INFO a ,(select DISTINCT(t.costid) from DEPT_RELATION t";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
 			if(!userDataCostId.equals("ALL")){

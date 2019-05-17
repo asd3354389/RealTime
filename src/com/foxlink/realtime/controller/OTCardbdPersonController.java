@@ -49,7 +49,7 @@ public class OTCardbdPersonController {
 			}
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			String updateUser = (String)session.getAttribute("username");
-			String userDataCostId=(String) session.getAttribute("userDataCostId");
+			String userDataCostId="ALL";
 			oTCardbdPersonService = (OTCardbdPersonService)context.getBean("oTCardbdPersonService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			Page page = oTCardbdPersonService.getPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
@@ -217,7 +217,7 @@ public class OTCardbdPersonController {
 	catch(Exception ex){
 		logger.error("Disable the OTCard info is failed, due to:",ex);
 		DisableResult.addProperty("StatusCode", "500");
-		DisableResult.addProperty("Message", "車離崗卡綁定已發生錯誤，原因:"+ex.toString());
+		DisableResult.addProperty("Message", "離崗卡綁定已發生錯誤，原因:"+ex.toString());
 	}		
 	return DisableResult.toString();
 	}

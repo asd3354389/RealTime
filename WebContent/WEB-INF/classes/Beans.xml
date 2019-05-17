@@ -231,4 +231,10 @@
 	</bean>
 
 
+	<bean id="exceptionCostDAO" class="com.foxlink.realtime.DAO.ExceptionCostDAO"
+		parent="dAO">
+	</bean>
+	<bean id="exceptionCostService" class="com.foxlink.realtime.service.ExceptionCostService">
+		<property name="exceptionCostDAO" ref="exceptionCostDAO" />
+	</bean>
 </beans>
