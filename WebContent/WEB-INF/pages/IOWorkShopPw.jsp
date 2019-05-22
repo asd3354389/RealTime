@@ -135,12 +135,14 @@
 					<input type="checkbox" name="recordStatus" value="10">非本事業処人員異常刷卡
 					<input type="checkbox" name="recordStatus" value="11">非本事業処人員正常刷卡
 					<input type="checkbox" name="recordStatus" value="20">隨綫人員上班時間外出異常刷卡
+					<input type="checkbox" name="recordStatus" value="31">保密車間正常刷卡
+					<input type="checkbox" name="recordStatus" value="32">保密車間異常刷卡
 				</div>
 				<div class="col-sm-12 col-sm-12" style="margin: 5px;">				   
 					<input type="button" id="searchRawRecordBtn" name="searchRawRecordBtn" class="btn btn-sm btn-primary" value="查詢">
 					<input type="button" id="showAllRawRecordBtn" name="showAllRawRecordBtn" class="btn btn-sm btn-primary" value="顯示全部">
 					<a href="#" class="easyui-linkbutton" id="exportExcel" data-options="iconCls:'icon-search'"></a>
-					<input type="button" onclick="javascript:Save1('原始刷卡記錄')" name="exportRawRecordBtn" class="btn btn-sm btn-primary" value="導出">
+					<input type="button" onclick="javascript:Save1('門禁刷卡記錄')" name="exportRawRecordBtn" class="btn btn-sm btn-primary" value="導出">
 					<input type="button" id="resetBtn" name="resetBtn" class="btn btn-sm btn-primary" value="清空">
 				<div>
 					<div>
