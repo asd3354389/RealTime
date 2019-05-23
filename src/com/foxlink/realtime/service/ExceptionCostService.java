@@ -118,14 +118,14 @@ public class ExceptionCostService extends Service<ExceptionCost>{
 		return exceptionCostDAO.RelieveExceCost(exceptionCost,updateUser);
 	}
 
-	public boolean checkExceCost(String CosttId) {
+	public boolean checkExceCost(String CostId) {
 		// TODO Auto-generated method stub
-		return exceptionCostDAO.checkExceCost(CosttId);
+		return exceptionCostDAO.checkExceCost(CostId);
 	}
 
-	public boolean checkWorkShopCost(String CosttId, String WorkShopNo) {
+	public boolean checkWorkShopCost(String CostId, String WorkShopNo) {
 		// TODO Auto-generated method stub
-		return exceptionCostDAO.checkWorkShopCost(CosttId,WorkShopNo);
+		return exceptionCostDAO.checkWorkShopCost(CostId,WorkShopNo);
 	}
 
 }
