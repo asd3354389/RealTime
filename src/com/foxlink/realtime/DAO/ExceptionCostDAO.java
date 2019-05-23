@@ -78,7 +78,7 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
 		deleteExcep(exceptionCost);
-		String sSQL="INSERT INTO SWIPE.RT_ACCESS_CONTROL_EXCEPTION (WorkShopNo,CosttId,Update_UserId) VALUES(?,?,?)";
+		String sSQL="INSERT INTO SWIPE.RT_ACCESS_CONTROL_EXCEPTION (WorkShopNo,CostId,Update_UserId) VALUES(?,?,?)";
 		try {
 			if(exceptionCost!=null) {
 				
@@ -89,7 +89,7 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					// TODO Auto-generated method stub
 					ps.setString(1,exceptionCost[i].getWorkShopNo());
-					ps.setString(2, exceptionCost[i].getCosttId());
+					ps.setString(2, exceptionCost[i].getCostId());
 					ps.setString(3, updateUser);
 				}
 				
@@ -115,7 +115,7 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 		// TODO Auto-generated method stub
 		
 		
-		String sSQL = "delete from RT_ACCESS_CONTROL_EXCEPTION where WorkShopNo=? and Costtid=?";
+		String sSQL = "delete from RT_ACCESS_CONTROL_EXCEPTION where WorkShopNo=? and Costid=?";
 		try {
 			
 				jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
@@ -124,7 +124,7 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 					public void setValues(PreparedStatement ps, int i) throws SQLException {
 						// TODO Auto-generated method stub
 						ps.setString(1, exceptionCost[i].getWorkShopNo());
-						ps.setString(2, exceptionCost[i].getCosttId());
+						ps.setString(2, exceptionCost[i].getCostId());
 					}
 					
 					@Override
@@ -148,8 +148,8 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
     	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_CONTROL_EXCEPTION t where t.Enabled='Y'";
     	try {
     		List <Object> queryList=new  ArrayList<Object>();
-    		if(queryCritirea.equals("CosttId")){
-				sSQL+=" and CosttId = ?";  
+    		if(queryCritirea.equals("CostId")){
+				sSQL+=" and CostId = ?";  
 			}
 			else if(queryCritirea.equals("WorkShopNo")){
 				sSQL+=" and WorkShopNo = ?";  
@@ -175,12 +175,12 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 		// TODO Auto-generated method stub
 		List<ExceptionCost> AllExce = null;
 		// TODO Auto-generated method stub
-		String sSQL = "select * from (select c.*,rownum rn from (select WorkShopNo,CosttId,Enabled from SWIPE.RT_ACCESS_CONTROL_EXCEPTION t where t.Enabled = 'Y'";
+		String sSQL = "select * from (select c.*,rownum rn from (select WorkShopNo,CostId,Enabled from SWIPE.RT_ACCESS_CONTROL_EXCEPTION t where t.Enabled = 'Y'";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
 			
-    		if(queryCritirea.equals("CosttId")){
-				sSQL+=" and CosttId = ?";  
+    		if(queryCritirea.equals("CostId")){
+				sSQL+=" and CostId = ?";  
 			}
 			else if(queryCritirea.equals("WorkShopNo")){
 				sSQL+=" and WorkShopNo = ?";  
@@ -211,7 +211,7 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 		int updateRow=-1;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
-		String sSQL = "update SWIPE.RT_ACCESS_CONTROL_EXCEPTION set CosttId=?,update_time = sysdate,Update_UserId=? where enabled='Y' and CosttId =? and WorkShopNo=?";
+		String sSQL = "update SWIPE.RT_ACCESS_CONTROL_EXCEPTION set CostId=?,update_time = sysdate,Update_UserId=? where enabled='Y' and CostId =? and WorkShopNo=?";
 		try {
 			if(exceptionCost!=null) {
 				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
@@ -219,9 +219,9 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 					public void setValues(PreparedStatement ps) throws SQLException {
 						// TODO Auto-generated method stub
 						
-						ps.setString(1, exceptionCost.getCosttId());
+						ps.setString(1, exceptionCost.getCostId());
 						ps.setString(2, updateUser);
-						ps.setString(3, exceptionCost.getO_CosttId());
+						ps.setString(3, exceptionCost.getO_CostId());
 						ps.setString(4, exceptionCost.getO_WorkShopNo());
 					}	
 				});
@@ -243,14 +243,14 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 		int updateRow=-1;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
-		String sSQL = "delete from SWIPE.RT_ACCESS_CONTROL_EXCEPTION where enabled='Y' and CosttId =? and WorkShopNo=?";
+		String sSQL = "delete from SWIPE.RT_ACCESS_CONTROL_EXCEPTION where enabled='Y' and CostId =? and WorkShopNo=?";
 		try {
 			if(exceptionCost!=null) {
 				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement ps) throws SQLException {
 						// TODO Auto-generated method stub
-						ps.setString(1, exceptionCost.getCosttId());
+						ps.setString(1, exceptionCost.getCostId());
 						ps.setString(2, exceptionCost.getWorkShopNo());
 					}	
 				});
@@ -267,12 +267,12 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 				   return false;
 	}
 
-	public boolean checkExceCost(String CosttId) {
+	public boolean checkExceCost(String CostId) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.DEPT_RELATION where CostId=? ";
     	try {    	    	
-    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { CosttId },Integer.class);	   	
+    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { CostId },Integer.class);	   	
     	  } catch (Exception ex) {
     		  ex.printStackTrace();
     		  }
@@ -283,12 +283,12 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 			 return false;
 	}
 
-	public boolean checkWorkShopCost(String CosttId, String WorkShopNo) {
+	public boolean checkWorkShopCost(String CostId, String WorkShopNo) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
-    	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_CONTROL_EXCEPTION where CosttId=? and WorkShopNo=?";
+    	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_CONTROL_EXCEPTION where CostId=? and WorkShopNo=?";
     	try {    	    	
-    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { CosttId,WorkShopNo },Integer.class);	   	
+    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { CostId,WorkShopNo },Integer.class);	   	
     	  } catch (Exception ex) {
     		  ex.printStackTrace();
     		  }

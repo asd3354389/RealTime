@@ -14,7 +14,7 @@ public class QueryExceptionCost implements RowMapper<ExceptionCost>{
 		// TODO Auto-generated method stub
 		ExceptionCost exce = new ExceptionCost();
 		exce.setWorkShopNo(rs.getString("WorkShopNo"));
-		exce.setCosttId(rs.getString("CosttId"));
+		exce.setCostId(rs.getString("CostId"));
 		exce.setEnabled(rs.getString("Enabled"));
 		return exce;
 	}

@@ -29,7 +29,7 @@ $(document).ready(function(){
 						errorMessage+='费用代码必须都是4位数字\n';
 						break;
 					}
-					data.CosttId = CostNo[i];
+					data.CostId = CostNo[i];
 					data.WorkShopNo=WorkShopNo[j];
 //					console.log(data.WorkShopNo);
 //					console.log(data);
@@ -96,7 +96,7 @@ $(document).ready(function(){
 		curPage = 1;
 		var queryCritirea=$('#queryCritirea option:selected').val();
 		var queryParam;
-		if(queryCritirea=="CosttId"){
+		if(queryCritirea=="CostId"){
 			queryParam=$('#queryParam').val();
 		}else if(queryCritirea=="WorkShopNo"){
 			queryParam=$('#changeWorkShopNo').val();
@@ -123,7 +123,7 @@ $(document).ready(function(){
 	
 	$('#queryCritirea').change(function(){
 		var type= $(this).find('option:selected').val();
-		if(type=="CosttId"){
+		if(type=="CostId"){
 			$('#queryParam').css("display","inline-block");
 			$('#changeWorkShopNo').css("display","none");
 		}else if(type=="WorkShopNo"){
@@ -201,7 +201,7 @@ $(document).ready(function(){
 		for(var i=0;i<executeResult.length;i++){
 			var	tableContents='<tr>'+
 					'<td>'+executeResult[i]["WorkShopNo"]+'</td>'+
-					'<td>'+executeResult[i]["CosttId"]+'</td>'
+					'<td>'+executeResult[i]["CostId"]+'</td>'
 					var enabled =executeResult[i].Enabled=="Y"?'已生效':'';		
 					tableContents+='<td>'+enabled+'</td>'+
 					'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>';
@@ -238,20 +238,20 @@ $(document).ready(function(){
 				var User=new Object(),errorMessage='';
 //				var Direction=$(parentElement).find('.changeStatus option:selected').eq(0).text();
 				/*User.WorkShopNo = $(parentElement).find('td option:selected').eq(0).val();*/
-				User.CosttId=$(parentElement).find('td input:text').eq(0).val();	
-				User.O_CosttId = CostNo;
+				User.CostId=$(parentElement).find('td input:text').eq(0).val();	
+				User.O_CostId = CostNo;
 				User.O_WorkShopNo = WorkShopNo;
 				
 				
-				if(User.CosttId==="null" || User.CosttId=='')
+				if(User.CostId==="null" || User.CostId=='')
 					errorMessage+='費用代碼未填寫\n';
-				if(!reg.test(User.CosttId))	
+				if(!reg.test(User.CostId))	
 					errorMessage+='費用代碼不符合規格！必須是4位數\n';
-				checkCostIdDuplicate(User.CosttId);
+				checkCostIdDuplicate(User.CostId);
 				if(!isUserNameValid){
 					errorMessage+='此费用代码資料不存在';
 				}
-				checkWorkShopCost(User.CosttId,User.O_WorkShopNo);
+				checkWorkShopCost(User.CostId,User.O_WorkShopNo);
 				if(isUserNameValid){
 					errorMessage+='此费用代码綁定此車間資料已存在，請重新輸入！';
 				}
@@ -275,7 +275,7 @@ $(document).ready(function(){
 									  alert(data.Message);
 									  $(parentElement).find('.editBtn,.deleteBtn').show();
 									  $(parentElement).find('td').eq(0).html(User.WorkShopNo);
-									  $(parentElement).find('td').eq(1).html(User.CosttId);
+									  $(parentElement).find('td').eq(1).html(User.CostId);
 									  $(parentElement).find('.confirmBtn,.cancelBtn').remove();
 								  }
 								  else{
@@ -309,7 +309,7 @@ $(document).ready(function(){
 			var CosttID=$(parentElement).find('td').eq(1).text();
 			var WorkShopNo=$(parentElement).find('td').eq(0).text();
 			var user={};
-			user["CosttId"]=CosttID;		
+			user["CostId"]=CosttID;		
 			user["WorkShopNo"]=WorkShopNo;
 			var results=confirm("確定刪除車間號為 "+WorkShopNo+" 的例外費用代碼"+CosttID+"嗎?");
 			console.log(user);
@@ -473,14 +473,14 @@ $(document).ready(function(){
 		});   
 	}
 	//判斷是否存在此費用代碼
-	 function checkCostIdDuplicate(CosttId){
+	 function checkCostIdDuplicate(CostId){
 //		 alert(1);
-			if(CosttId!=""){
+			if(CostId!=""){
 				$.ajax({
 					type:'POST',
 					url:'../ExceptionCost/checkExceCost.do',
 					data:{
-						CosttId:CosttId
+						CostId:CostId
 					},
 					async:false,
 					error:function(e){
@@ -502,14 +502,14 @@ $(document).ready(function(){
 			}
 		}
 	 
-	 function checkWorkShopCost(CosttId,WorkShopNo){
+	 function checkWorkShopCost(CostId,WorkShopNo){
 //		 alert(1);
-			if(CosttId!=""&&WorkShopNo!=""){
+			if(CostId!=""&&WorkShopNo!=""){
 				$.ajax({
 					type:'POST',
 					url:'../ExceptionCost/checkWorkShopCost.do',
 					data:{
-						CosttId:CosttId,
+						CostId:CostId,
 						WorkShopNo:WorkShopNo
 					},
 					async:false,
