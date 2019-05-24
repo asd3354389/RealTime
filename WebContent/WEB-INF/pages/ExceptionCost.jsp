@@ -48,7 +48,7 @@
 		<div class="panel-body" style="border: 1px solid #e1e3e6;">
 			<div align="right">
 				查詢條件：<select id="queryCritirea" class="input-small">
-					<option value="CosttId">費用代碼</option>
+					<option value="CostId">費用代碼</option>
 					<option value="WorkShopNo">車間號</option>
 				</select> <input type="text" id="queryParam" name="queryParam"
 					class="input-sm" style="display: inline-block;"><select id="changeWorkShopNo" name="changeWorkShopNo"  style="display:none"></select><input type="button"

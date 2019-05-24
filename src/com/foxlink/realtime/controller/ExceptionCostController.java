@@ -136,13 +136,13 @@ public class ExceptionCostController {
 	
 	@RequestMapping(value="/checkExceCost.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 	@ResponseBody 
-	public String checkExceCost(HttpSession session,@RequestParam("CosttId")String CosttId){
+	public String checkExceCost(HttpSession session,@RequestParam("CostId")String CostId){
 		JsonObject checkResult=new JsonObject();	
 		
 		try{
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			exceptionCostService = (ExceptionCostService) context.getBean("exceptionCostService");
-			if(exceptionCostService.checkExceCost(CosttId)){
+			if(exceptionCostService.checkExceCost(CostId)){
 				checkResult.addProperty("StatusCode", "200");
 				checkResult.addProperty("Message", "此費用代碼存在！");
 			}
@@ -162,13 +162,13 @@ public class ExceptionCostController {
 	
 	@RequestMapping(value="/checkWorkShopCost.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 	@ResponseBody 
-	public String checkWorkShopCost(HttpSession session,@RequestParam("CosttId")String CosttId,@RequestParam("WorkShopNo")String WorkShopNo){
+	public String checkWorkShopCost(HttpSession session,@RequestParam("CostId")String CostId,@RequestParam("WorkShopNo")String WorkShopNo){
 		JsonObject checkResult=new JsonObject();	
 		
 		try{
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			exceptionCostService = (ExceptionCostService) context.getBean("exceptionCostService");
-			if(exceptionCostService.checkWorkShopCost(CosttId,WorkShopNo)){
+			if(exceptionCostService.checkWorkShopCost(CostId,WorkShopNo)){
 				checkResult.addProperty("StatusCode", "200");
 				checkResult.addProperty("Message", "此費用代碼綁定例外車間已存在！");
 			}
