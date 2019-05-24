@@ -40,7 +40,7 @@ $(document).ready(function(){
 		if(ioWsPw["Emp_id"]==="null" || ioWsPw["Emp_id"]=='')
 			errorMessage+='工號未填寫\n';
 		
-		checkEmpidDuplicate(ioWsPw["Emp_id"]);
+		checkEmpidDuplicate(ioWsPw["Emp_id"],ioWsPw["WorkShopNo"]);
 		
 		/*if(machine["WorkShop_Desc"]=='' || machine["WorkShop_Desc"]==null){
 			errorMessage+='未填寫卡機描述 \n';
@@ -342,13 +342,14 @@ $(document).ready(function(){
 		});   
 	}
 	
-	function checkEmpidDuplicate(Emp_id){
+	function checkEmpidDuplicate(Emp_id,WorkshopNo){
 		if(Emp_id!=""){
 			$.ajax({
 				type:'POST',
 				url:'../IOWorkShopPower/checkUserName.do',
 				data:{
-					Emp_id:Emp_id
+					Emp_id:Emp_id,
+					WorkshopNo:WorkshopNo
 				},
 				async:false,
 				error:function(e){
