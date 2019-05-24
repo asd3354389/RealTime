@@ -32,6 +32,7 @@
 		<intercept-url pattern="/EmpIPBinding/ShowEmpIPBinding" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
 		<intercept-url pattern="/IOCardBdIP/ShowIOCardbdIP" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
 		<intercept-url pattern="/IOWorkShopPower/ShowIOWorkShopPwList" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
+		<intercept-url pattern="/IOSpecialWSEmp/ShowIOSpecialWSEmp" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
 		<intercept-url pattern="/WorkShopNoRest/ShowWorkshopNoRestInfo" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
 		<intercept-url pattern="/IOWorkShop/ShowIOWorkShopRecord" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
 		<intercept-url pattern="/ExceptionCost/ShowExceptionCost" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
