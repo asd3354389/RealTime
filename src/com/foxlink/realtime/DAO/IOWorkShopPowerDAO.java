@@ -181,12 +181,12 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 			 return false;
 	}
 
-	public boolean checkUserNameDuplicate(String Emp_id) {
+	public boolean checkUserNameDuplicate(String Emp_id, String workshopNo) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
-    	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_USER_TEMP where Emp_id=? and ENABLED='Y'";
+    	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_USER_TEMP where Emp_id=? and workshopno = ? and ENABLED='Y'";
     	try {    	    	
-    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { Emp_id },Integer.class);	   	
+    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { Emp_id,workshopNo },Integer.class);	   	
     	  } catch (Exception ex) {
     		  ex.printStackTrace();
     		  }

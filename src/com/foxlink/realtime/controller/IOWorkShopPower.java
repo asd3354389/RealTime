@@ -69,14 +69,14 @@ public class IOWorkShopPower {
 	
 	@RequestMapping(value="/checkUserName.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 	@ResponseBody 
-	public String checkUserNameDuplicate(HttpSession session,@RequestParam("Emp_id")String Emp_id){
+	public String checkUserNameDuplicate(HttpSession session,@RequestParam("Emp_id")String Emp_id,@RequestParam("WorkshopNo")String WorkshopNo){
 		JsonObject checkResult=new JsonObject();	
 		String userDataCostId=(String) session.getAttribute("userDataCostId");
 		try{
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			iOWorkShopPowerService = (IOWorkShopPowerService) context.getBean("iOWorkShopPowerService");
 			if(iOWorkShopPowerService.checkEmpIdExistence(Emp_id)) {
-				if(iOWorkShopPowerService.checkUserNameDuplicate(Emp_id)){
+				if(iOWorkShopPowerService.checkUserNameDuplicate(Emp_id,WorkshopNo)){
 					checkResult.addProperty("StatusCode", "200");
 					checkResult.addProperty("Message", "此工號未設置臨時權限，可以新增此賬號!");
 				}else{
