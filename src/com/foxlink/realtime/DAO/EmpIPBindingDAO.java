@@ -77,7 +77,7 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 	public int getTotalRecord(String queryCritirea, String queryParam, String updateUser, String userDataCostId) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
-    	String sSQL = "select count(*) FROM SWIPE.EMP_DEPT_BINDING t where t.enabled = 'Y' ";
+    	String sSQL = "select count(*) FROM SWIPE.DEVICE_EMP_BINDING t where t.enabled = 'Y' ";
     	try {
     		List <Object> queryList=new  ArrayList<Object>();
 			if(queryCritirea.equals("deviceIP")){
@@ -106,7 +106,7 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 		List<EmpIpBinding> empIpBinding = null;
 		// TODO Auto-generated method stub
 		String sSQL = "select * from (select b.*,rownum rn from "
-				+ "(select t.deviceip,t.emp_id  from EMP_DEPT_BINDING t "
+				+ "(select t.deviceip,t.emp_id  from DEVICE_EMP_BINDING t "
 				+ " where t.enabled = 'Y' ";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
@@ -133,7 +133,7 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 
 	public boolean checkRepeat(EmpIpBinding empIpBinding) {
 		// TODO Auto-generated method stub
-		String sSQL="select count(*) from EMP_DEPT_BINDING t where t.deviceip = ? and t.emp_id = ? and t.enabled = 'Y'";
+		String sSQL="select count(*) from DEVICE_EMP_BINDING t where t.deviceip = ? and t.emp_id = ? and t.enabled = 'Y'";
 		int updateRow=-1;
 		try{
 			List <Object> queryList=new  ArrayList<Object>();
@@ -152,7 +152,7 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 
 	public boolean insertEmpIPBinding(EmpIpBinding empIpBinding, String updateUser) {
 		// TODO Auto-generated method stub
-		String sSQL="insert into EMP_DEPT_BINDING t values(?,?,?,sysdate,'Y')";
+		String sSQL="insert into DEVICE_EMP_BINDING t values(?,?,?,sysdate,'Y')";
 		int insertRow=-1;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
@@ -185,7 +185,7 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 		int updateRow=-1,updateRole=-1;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
-		String sSQL="update EMP_DEPT_BINDING t set t.emp_id=?,t.update_userid=? "
+		String sSQL="update DEVICE_EMP_BINDING t set t.emp_id=?,t.update_userid=? "
 				+ " where t.deviceip = ? and t.emp_id = ? and t.enabled = 'Y'";
 		try {
 			if(empIpBinding!=null) {
@@ -216,7 +216,7 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		String sSQL="update EMP_DEPT_BINDING t set t.enabled = 'N',t.update_userid=? where t.deviceip = ? and t.emp_id = ? and t.enabled = 'Y'";
+		String sSQL="update DEVICE_EMP_BINDING t set t.enabled = 'N',t.update_userid=? where t.deviceip = ? and t.emp_id = ? and t.enabled = 'Y'";
 		int disableRow=-1;
 		try {
 			if(deviceIP!=null && emp_id!=null) {
@@ -266,8 +266,8 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		String sSQL="update EMP_DEPT_BINDING t set t.enabled = 'N',t.update_userid=?,t.Update_Time=sysdate where t.deviceip = ? and t.emp_id = ? and t.enabled = 'Y'";
-		String insertSQL="insert into EMP_DEPT_BINDING(Deviceip,Emp_Id,Update_Userid,Update_Time,Enabled) values(?,?,?,sysdate,'Y')";
+		String sSQL="update DEVICE_EMP_BINDING t set t.enabled = 'N',t.update_userid=?,t.Update_Time=sysdate where t.deviceip = ? and t.emp_id = ? and t.enabled = 'Y'";
+		String insertSQL="insert into DEVICE_EMP_BINDING(Deviceip,Emp_Id,Update_Userid,Update_Time,Enabled) values(?,?,?,sysdate,'Y')";
 		int[] disableRow;
 		try {
 			if(ip!=null && exEmpList.size()>0) {
