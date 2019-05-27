@@ -4,7 +4,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    			<h5>新增車間休息時間段</h5>
+    			<h5>新增員工綁定卡機IP</h5>
 			</div>
 			<div class="modal-body">
 			<div class="control-group"><label for="outCard" style="color:red">多個ip或者工號之間用英文,（逗號）隔開，如132456,123456</label></div>
