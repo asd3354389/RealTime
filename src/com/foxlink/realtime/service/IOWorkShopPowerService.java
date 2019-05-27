@@ -91,9 +91,9 @@ public class IOWorkShopPowerService extends Service<IOWorkShopPW>{
 		// TODO Auto-generated method stub
 		return iOWorkShopPowerDAO.checkEmpIdExistence(Emp_id);
 	}
-	public boolean checkUserNameDuplicate(String Emp_id) {
+	public boolean checkUserNameDuplicate(String Emp_id, String workshopNo) {
 		// TODO Auto-generated method stub
-		return iOWorkShopPowerDAO.checkUserNameDuplicate(Emp_id);
+		return iOWorkShopPowerDAO.checkUserNameDuplicate(Emp_id,workshopNo);
 	}
 	public boolean addIOWorkShopPW(IOWorkShopPW ioWorkShopPW, String updateUser) {
 		// TODO Auto-generated method stub
