@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.foxlink.realtime.model.ExceptionCost;
 import com.foxlink.realtime.model.IOWorkShopPW;
 import com.foxlink.realtime.model.Page;
 import com.foxlink.realtime.service.IOCardbdIPService;
@@ -54,7 +55,7 @@ public class IOWorkShopPower {
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			Page page = iOWorkShopPowerService.getPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
 			page.setList(iOWorkShopPowerService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
-			System.out.println(gson.toJson(page));
+			System.out.println(iOWorkShopPowerService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
 			JsonResult = gson.toJson(page);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -98,14 +99,16 @@ public class IOWorkShopPower {
 		return checkResult.toString();
 	}
 	
+	//創建員工車間臨時權限
 	@RequestMapping(value="/AddIOWorkShopPW.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 	@ResponseBody 
-	public String IOWorkShopPW(HttpSession session,@RequestBody IOWorkShopPW ioWorkShopPW){
+	public String IOWorkShopPW(HttpSession session,@RequestBody IOWorkShopPW[] ioWorkShopPW ){
 		JsonObject AddResult=new JsonObject();		
 		try{
 			String updateUser=(String) session.getAttribute("username");
 //			otCardbd.setUpdate_UserId(updateUser);
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			System.out.println("數據信息===========>>>>>>"+ioWorkShopPW);
 			iOWorkShopPowerService = (IOWorkShopPowerService) context.getBean("iOWorkShopPowerService");
 			if(iOWorkShopPowerService.addIOWorkShopPW(ioWorkShopPW,updateUser)){
 				AddResult.addProperty("StatusCode", "200");
@@ -124,7 +127,33 @@ public class IOWorkShopPower {
 		System.out.println(AddResult.toString());
 		return AddResult.toString();
 	}
-	
+	//創建廠商和臺干車間臨時權限
+	@RequestMapping(value="/AddIOWorkShopPWOther.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+	@ResponseBody 
+	public String IOWorkShopPWOther(HttpSession session,@RequestBody IOWorkShopPW[] ioWorkShopPW){
+		JsonObject AddResult=new JsonObject();		
+		try{
+			String updateUser=(String) session.getAttribute("username");
+//			otCardbd.setUpdate_UserId(updateUser);
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			iOWorkShopPowerService = (IOWorkShopPowerService) context.getBean("iOWorkShopPowerService");
+			if(iOWorkShopPowerService.addIOWorkShopPWOther(ioWorkShopPW,updateUser)){
+				AddResult.addProperty("StatusCode", "200");
+				AddResult.addProperty("Message", "車間進出臨時權限設置成功");
+			}
+			else{
+				AddResult.addProperty("StatusCode", "500");
+				AddResult.addProperty("Message", "車間進出臨時權限設置失敗");
+			}
+		}
+		catch(Exception ex){
+			logger.error("Adding the new IOWsPw info is failed, due to: ",ex);
+			AddResult.addProperty("StatusCode", "500");
+			AddResult.addProperty("Message", "車間進出臨時權限設置發生錯誤，原因："+ex.toString());
+		}
+		System.out.println(AddResult.toString());
+		return AddResult.toString();
+	}
 	@RequestMapping(value="/UpdateIOWorkShopPW.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 	@ResponseBody
 	public String UpdateIOWorkShopPW(HttpSession session,@RequestBody IOWorkShopPW ioWorkShopPW){
@@ -133,6 +162,7 @@ public class IOWorkShopPower {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			iOWorkShopPowerService = (IOWorkShopPowerService) context.getBean("iOWorkShopPowerService");
 			String updateUser=(String) session.getAttribute("username");
+			System.out.println("数据信息============="+ioWorkShopPW);
 			if(iOWorkShopPowerService.UpdateRecord(ioWorkShopPW,updateUser)){
 				UpdateResult.addProperty("StatusCode", "200");
 				UpdateResult.addProperty("Message", "更新臨時權限成功");
@@ -152,13 +182,13 @@ public class IOWorkShopPower {
 	
 	@RequestMapping(value="/deleteIOWorkShopPW.do",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String DeleteIOWorkShopPW(HttpSession session,@RequestParam("Emp_id")String Emp_id){
+	public String DeleteIOWorkShopPW(HttpSession session,@RequestParam("Emp_id")String Emp_id,@RequestParam("CardID")String CardID,@RequestParam("WorkShopNo")String WorkShopNo){
 		JsonObject DisableResult=new JsonObject();
 		try{
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			iOWorkShopPowerService = (IOWorkShopPowerService) context.getBean("iOWorkShopPowerService");
 			String updateUser=(String) session.getAttribute("username");
-			if(iOWorkShopPowerService.DeleteIOWorkShopPW(Emp_id, updateUser)){
+			if(iOWorkShopPowerService.DeleteIOWorkShopPW(Emp_id, updateUser,CardID,WorkShopNo)){
 				DisableResult.addProperty("StatusCode", "200");
 				DisableResult.addProperty("Message", "車間進出臨時權限已失效");
 			}

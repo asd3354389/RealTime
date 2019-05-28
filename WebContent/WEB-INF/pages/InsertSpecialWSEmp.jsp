@@ -4,7 +4,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    			<h5>進出車間臨時權限設置</h5>
+    			<h5>保密車間臨時權限設置</h5>
 			</div>
 			<div class="modal-body">
 		<!--		<form id="addNewUserForm" action="modifyReceiverDevice.do" method="post" class="form-horizontal">   -->
@@ -18,7 +18,8 @@
   		<div class="control-group">
     		<div class="controls">
       			<label for="outCard">車間號</label>
-    					<select id="workShop" name='workShop' class="form-control">
+      			        <select id="workShop" name='workShop' class="selectpicker show-tick" multiple data-live-search="true">
+    					<!-- <select id="workShop" name='workShop' class="form-control"> -->
     					<option value=""></option>
     					</select>  			
     		</div>

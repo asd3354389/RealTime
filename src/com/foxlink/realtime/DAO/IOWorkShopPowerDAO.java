@@ -1,11 +1,14 @@
 package com.foxlink.realtime.DAO;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
@@ -94,6 +97,9 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
     		if(queryCritirea.equals("ID")){
 				sSQL+=" and Emp_id = ?";  
 			}
+    		if(queryCritirea.equals("CardId")){
+				sSQL+=" and CardId = ?";  
+			}
 			/*else if(queryCritirea.equals("Name")){
 				sSQL+=" and Name = ?";  
 			}else if(queryCritirea.equals("Depid")){
@@ -123,7 +129,7 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 		// TODO Auto-generated method stub
 		List<IOWorkShopPW> AllPW = null;
 		// TODO Auto-generated method stub
-		String sSQL = "select * from(select c.*,ROWNUM rn from (SELECT Emp_id,WorkShopNo,Start_Date,End_Date,Enabled from SWIPE.RT_ACCESS_USER_TEMP where Enabled='Y'";
+		String sSQL = "select * from(select c.*,ROWNUM rn from (SELECT Emp_id,WorkShopNo,Start_Date,End_Date,Enabled,Cardid,Remark from SWIPE.RT_ACCESS_USER_TEMP where Enabled='Y'";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
 			/*if(!userDataCostId.equals("ALL")){
@@ -140,6 +146,10 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
     		if(queryCritirea.equals("ID")){
 				sSQL+=" and Emp_id = ?";  
 			}
+    		//CardId
+    		if(queryCritirea.equals("CardId")){
+				sSQL+=" and CardId = ?";  
+			}
 			/*else if(queryCritirea.equals("Name")){
 				sSQL+=" and Name = ?";  
 			}else if(queryCritirea.equals("Depid")){
@@ -152,7 +162,8 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
-		    sSQL += ")c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	    
+		    sSQL += ")c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	  
+		    System.out.println("列表顯示數據+================================>>>>>"+sSQL);
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
@@ -197,63 +208,156 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 			 return true;
 	}
 
-	public boolean addIOWorkShopPW(IOWorkShopPW ioWorkShopPW, String updateUser) {
+	//員工進出車間權限
+	public boolean addIOWorkShopPW(IOWorkShopPW[] ioWorkShopPW, String updateUser) {
 		// TODO Auto-generated method stub
-		int createRow=-1;
+
+		int createRow=0;
+
+		//先刪除之前的
+		DeleteSettingMessage(ioWorkShopPW);
 
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
 		
-		String sSQL="INSERT INTO SWIPE.RT_ACCESS_USER_TEMP (Emp_id,WorkShopNo,Start_Date,End_Date,Update_UserId) VALUES(?,?,?,?,?)";
+		String sSQL="INSERT INTO SWIPE.RT_ACCESS_USER_TEMP (Emp_id,WorkShopNo,Start_Date,End_Date,Update_UserId,CardId,Remark) VALUES(?,?,?,?,?,?,?)";
 		try {
 			if(ioWorkShopPW!=null) {
-		      createRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+
+				jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
+					
 					@Override
-					public void setValues(PreparedStatement arg0) throws SQLException {
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
 						// TODO Auto-generated method stub
-						arg0.setString(1, ioWorkShopPW.getEmp_id());
-						arg0.setString(2, ioWorkShopPW.getWorkShopNo());
-						arg0.setString(3, ioWorkShopPW.getStart_Date());
-						arg0.setString(4, ioWorkShopPW.getEnd_Date());
-						arg0.setString(5, updateUser);
-					}	
+
+						ps.setString(1, ioWorkShopPW[i].getEmp_id());
+						ps.setString(2, ioWorkShopPW[i].getWorkShopNo());
+						ps.setString(3, ioWorkShopPW[i].getStart_Date());
+						ps.setString(4, ioWorkShopPW[i].getEnd_Date());
+						ps.setString(5, updateUser);
+						ps.setString(6, ioWorkShopPW[i].getCardId());
+						ps.setString(7, ioWorkShopPW[i].getRemark());
+					}
+					
+					@Override
+					public int getBatchSize() {
+						// TODO Auto-generated method stub
+						return ioWorkShopPW.length;
+					}
 				});
-				transactionManager.commit(txStatus);
+				 transactionManager.commit(txStatus);
+			}
+		}catch(Exception ex) {
+			logger.error(ex);
+			transactionManager.rollback(txStatus);
+			createRow = 1;
+		}
+		
+		if(createRow == 0) {
+			 return true; 
+		} else {
+			 return false;
+	}
+	}
+//addIOWorkShopPWOther
+	
+	public boolean addIOWorkShopPWOther(IOWorkShopPW[] ioWorkShopPW, String updateUser) {
+		// TODO Auto-generated method stub
+		int createRow=0;
+		 System.out.println("進入方法----------=======================>");
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);
+		//先刪除之前的
+		DeleteSettingMessageCard(ioWorkShopPW);
+		String sSQL="INSERT INTO SWIPE.RT_ACCESS_USER_TEMP (Emp_id,WorkShopNo,Start_Date,End_Date,Update_UserId,CardId,Remark) VALUES(?,?,?,?,?,?,?)";
+		try {
+			if(ioWorkShopPW!=null) {
+
+				jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
+					
+					@Override
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						// TODO Auto-generated method stub
+						ps.setString(1, ioWorkShopPW[i].getEmp_id());
+						ps.setString(2, ioWorkShopPW[i].getWorkShopNo());
+						ps.setString(3, ioWorkShopPW[i].getStart_Date());
+						ps.setString(4, ioWorkShopPW[i].getEnd_Date());
+						ps.setString(5, updateUser);
+						ps.setString(6, ioWorkShopPW[i].getCardId());
+						ps.setString(7, ioWorkShopPW[i].getRemark());
+					}
+					
+					@Override
+					public int getBatchSize() {
+						// TODO Auto-generated method stub
+						return ioWorkShopPW.length;
+					}
+				});
+				 transactionManager.commit(txStatus);
 			}			
 		}
 		catch(Exception ex) {
 			logger.error(ex);
 			transactionManager.rollback(txStatus);
+			createRow = 1;
 		}
 		
-		 if(createRow > 0) 
-			   return true; 
-		 else
+		if(createRow == 0) {
+			 return true; 
+		} else {
 			 return false;
 	}
-
+	}
 	public boolean UpdateRecord(IOWorkShopPW ioWorkShopPW, String updateUser) {
 		// TODO Auto-generated method stub
 		int updateRow=-1;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
-		String sSQL="UPDATE SWIPE.RT_ACCESS_USER_TEMP SET WorkShopNo=?,Start_Date=?,End_Date=?,Update_Userid=? WHERE Emp_id=? and Enabled='Y'";
+		//String sSQL="UPDATE SWIPE.RT_ACCESS_USER_TEMP SET WorkShopNo=?,Start_Date=?,End_Date=?,Update_Userid=?,Remark=? WHERE Emp_id=? and Enabled='Y'";
+		String sSQL="UPDATE SWIPE.RT_ACCESS_USER_TEMP SET WorkShopNo=?,Start_Date=?,End_Date=?,Update_Userid=?,Remark=?";
+		System.out.println("更新信息================="+ioWorkShopPW.getCardId());
 		try {
-			if(ioWorkShopPW!=null) {
-				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
-					@Override
-					public void setValues(PreparedStatement arg0) throws SQLException {
-						// TODO Auto-generated method stub
-						arg0.setString(1, ioWorkShopPW.getWorkShopNo());
-						arg0.setString(2, ioWorkShopPW.getStart_Date());
-						arg0.setString(3, ioWorkShopPW.getEnd_Date());
-						arg0.setString(4, updateUser);
-						arg0.setString(5, ioWorkShopPW.getEmp_id());
-					}	
-				});
-				System.out.print(sSQL);
-				transactionManager.commit(txStatus);
-			}	
+			if (ioWorkShopPW.getEmp_id() == null||ioWorkShopPW.getEmp_id() == "" ||ioWorkShopPW.getEmp_id().equals("null")) {
+				System.out.println("=====================>>>>>>進入方法");
+				sSQL += "WHERE CardId=? and Enabled='Y'";
+				//if(ioWorkShopPW!=null) {
+					updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+						@Override
+						public void setValues(PreparedStatement arg0) throws SQLException {
+							// TODO Auto-generated method stub
+							arg0.setString(1, ioWorkShopPW.getWorkShopNo());
+							arg0.setString(2, ioWorkShopPW.getStart_Date());
+							arg0.setString(3, ioWorkShopPW.getEnd_Date());
+							arg0.setString(4, updateUser);
+							arg0.setString(5, ioWorkShopPW.getRemark());
+							arg0.setString(6, ioWorkShopPW.getCardId());
+						}	
+					});
+					System.out.print(sSQL);
+					transactionManager.commit(txStatus);
+				
+				//}	
+			}else {
+				sSQL += "WHERE Emp_id=? and Enabled='Y'";
+				//if(ioWorkShopPW!=null) {
+					updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+						@Override
+						public void setValues(PreparedStatement arg0) throws SQLException {
+							// TODO Auto-generated method stub
+							arg0.setString(1, ioWorkShopPW.getWorkShopNo());
+							arg0.setString(2, ioWorkShopPW.getStart_Date());
+							arg0.setString(3, ioWorkShopPW.getEnd_Date());
+							arg0.setString(4, updateUser);
+							arg0.setString(5, ioWorkShopPW.getRemark());
+							arg0.setString(6, ioWorkShopPW.getEmp_id());
+						}	
+					});
+					System.out.print(sSQL);
+					transactionManager.commit(txStatus);
+
+			}
+			
+			
 		}
 		catch(Exception ex) {
 			logger.error("Update IOWorkShopPW is failed",ex);
@@ -265,23 +369,42 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 				   return false;
 	}
 
-	public boolean DeleteIOWorkShopPW(String emp_id, String updateUser) {
+	public boolean DeleteIOWorkShopPW(String emp_id, String updateUser,String CardID,String WorkShopNo) {
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		String sSQL="update RT_ACCESS_USER_TEMP set ENABLED='N',Update_Userid=? WHERE Emp_id=? AND Enabled='Y'";
+		String sSQL="update RT_ACCESS_USER_TEMP set ENABLED='N',Update_Userid=? ";
 		int disableRow=-1;
+		System.out.println("工号========="+emp_id+"卡号==========="+CardID);
 		try {
-			if(emp_id!=null) {
+			if(emp_id.equals("null")||emp_id.equals("")||emp_id==null) {
+				sSQL += "WHERE CardId=? AND Enabled='Y' AND WORKSHOPNO = ?";
+				disableRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement arg0) throws SQLException {
+						// TODO Auto-generated method stub
+						arg0.setString(1, updateUser);
+						arg0.setString(2, CardID);
+						arg0.setString(3, WorkShopNo);
+					}	
+				});
+				System.out.print(sSQL);
+				transactionManager.commit(txStatus);
+				
+			}else {
+				sSQL += "WHERE Emp_id=? AND Enabled='Y' AND WORKSHOPNO = ?";
 				disableRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement arg0) throws SQLException {
 						// TODO Auto-generated method stub
 						arg0.setString(1, updateUser);
 						arg0.setString(2, emp_id);
+						arg0.setString(3, WorkShopNo);
 					}	
 				});
+				System.out.print(sSQL);
 				transactionManager.commit(txStatus);
+
 			}
 		}
 		catch(Exception ex) {
@@ -292,6 +415,81 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 			   return true; 
 		 else
 			 return false;
+	}
+	//刪除員工信息
+	private void DeleteSettingMessage(IOWorkShopPW[] ioWorkShopPW) {
+
+		// TODO Auto-generated method stub	
+				int updateRow=-1;		
+				//String sSQL = "DELETE FROM SWIPE.RT_ACCESS_USER_TEMP WHERE EMP_ID = ? AND WORKSHOPNO = ?";
+				String sSQL = "DELETE FROM SWIPE.RT_ACCESS_USER_TEMP WHERE EMP_ID = ? AND WORKSHOPNO = ?";
+				System.out.println("批量删除==========>>>>>>>>>>"+sSQL);
+				//IOWorkShopPW ioWorkShopPW2 = null;
+				try {
+//					
+							System.out.println("刪除員工信息=========="+sSQL);
+							jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
+								
+								@Override
+								public void setValues(PreparedStatement ps,int i ) throws SQLException {
+									// TODO Auto-generated method stub
+									ps.setString(1, ioWorkShopPW[i].getEmp_id());
+									ps.setString(2, ioWorkShopPW[i].getWorkShopNo());									
+								}
+								
+								@Override
+								public int getBatchSize() {
+									// TODO Auto-generated method stub
+									return ioWorkShopPW.length;
+								}
+							});
+							
+
+				} catch (Exception e) {
+					// TODO: handle exception
+					logger.error("删除失敗，原因："+e);
+					e.printStackTrace();
+					
+				}
+	}
+	//刪除卡號信息
+	private void DeleteSettingMessageCard(IOWorkShopPW[] ioWorkShopPW) {
+
+		// TODO Auto-generated method stub	
+				int updateRow=-1;		
+				
+				String sSQL = "DELETE FROM SWIPE.RT_ACCESS_USER_TEMP WHERE CARDID = ? AND WORKSHOPNO = ?";
+				System.out.println("批量删除==========>>>>>>>>>>"+sSQL);
+				
+				try {
+
+							System.out.println("刪除員工信息=========="+sSQL);
+						
+							
+							jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
+								
+								@Override
+								public void setValues(PreparedStatement ps,int i ) throws SQLException {
+									// TODO Auto-generated method stub
+									ps.setString(1, ioWorkShopPW[i].getCardId());
+									ps.setString(2, ioWorkShopPW[i].getWorkShopNo());									
+								}
+								
+								@Override
+								public int getBatchSize() {
+									// TODO Auto-generated method stub
+									return ioWorkShopPW.length;
+								}
+							});
+
+					
+					
+				} catch (Exception e) {
+					// TODO: handle exception
+					logger.error("删除失敗，原因："+e);
+					e.printStackTrace();
+					
+				}
 	}
 
 }

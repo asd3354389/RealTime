@@ -8,6 +8,7 @@
 			</div>
 			<div class="modal-body">
 		<!--		<form id="addNewUserForm" action="modifyReceiverDevice.do" method="post" class="form-horizontal">   -->
+		<div class="control-group"><label for="outCard" style="color:red">多個工號之間用英文,（逗號）隔開，如132456,123456</label></div>
 		<div class="control-group">
     		<label class="control-label" for="inputUserName">工號</label>
     		<div class="controls">
@@ -17,7 +18,7 @@
   		<div class="control-group">
     		<div class="controls">
       			<label for="outCard">車間號</label>
-    					<select id="workShop" name='workShop' class="form-control">
+    					<select id="workShop" name='workShop' class="selectpicker show-tick" multiple data-live-search="true">
     					<option value=""></option>
     					</select>  			
     		</div>

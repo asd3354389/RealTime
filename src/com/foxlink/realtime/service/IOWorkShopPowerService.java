@@ -1,6 +1,10 @@
 package com.foxlink.realtime.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -9,6 +13,7 @@ import com.foxlink.realtime.DAO.IOWorkShopPowerDAO;
 import com.foxlink.realtime.model.IOCardMachineIP;
 import com.foxlink.realtime.model.IOWorkShopPW;
 import com.foxlink.realtime.model.Page;
+import com.google.gson.JsonObject;
 
 public class IOWorkShopPowerService extends Service<IOWorkShopPW>{
 
@@ -95,17 +100,24 @@ public class IOWorkShopPowerService extends Service<IOWorkShopPW>{
 		// TODO Auto-generated method stub
 		return iOWorkShopPowerDAO.checkUserNameDuplicate(Emp_id,workshopNo);
 	}
-	public boolean addIOWorkShopPW(IOWorkShopPW ioWorkShopPW, String updateUser) {
+	//員工進出車間權限
+	public boolean addIOWorkShopPW(IOWorkShopPW[] ioWorkShopPW, String updateUser) {
 		// TODO Auto-generated method stub
+
 		return iOWorkShopPowerDAO.addIOWorkShopPW(ioWorkShopPW,updateUser);
+	}
+	//廠商和臺干進出車間權限
+	public boolean addIOWorkShopPWOther(IOWorkShopPW[] ioWorkShopPW, String updateUser) {
+		// TODO Auto-generated method stub
+		return iOWorkShopPowerDAO.addIOWorkShopPWOther(ioWorkShopPW,updateUser);
 	}
 	public boolean UpdateRecord(IOWorkShopPW ioWorkShopPW, String updateUser) {
 		// TODO Auto-generated method stub
 		return iOWorkShopPowerDAO.UpdateRecord(ioWorkShopPW,updateUser);
 	}
-	public boolean DeleteIOWorkShopPW(String emp_id, String updateUser) {
+	public boolean DeleteIOWorkShopPW(String emp_id, String updateUser,String CardID,String WorkShopNo) {
 		// TODO Auto-generated method stub
-		return iOWorkShopPowerDAO.DeleteIOWorkShopPW(emp_id,updateUser);
+		return iOWorkShopPowerDAO.DeleteIOWorkShopPW(emp_id,updateUser,CardID,WorkShopNo);
 	}
 
 }

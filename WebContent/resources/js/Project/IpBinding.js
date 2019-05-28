@@ -30,7 +30,7 @@ $(function(){
 		$('#MorechangebdOT').click(function(){	
 			
 			//獲取輸入ip的大小
-			var ipStr = $('#queryParamIp').val();;
+			var ipStr = $('#queryParamIp').val();
 			var arr= ipStr.split(",");
 //			console.log(arr);
 			

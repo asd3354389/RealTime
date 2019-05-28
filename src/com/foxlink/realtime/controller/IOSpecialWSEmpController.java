@@ -93,18 +93,25 @@ public class IOSpecialWSEmpController {
 		/*System.out.println(checkResult.toString());*/
 		return checkResult.toString();
 	}
-	
+	//設置員工保密車間臨時權限
 	@RequestMapping(value="/AddIOSpecialWSEmp.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 	@ResponseBody 
-	public String ADDIOSpecialWSEmp(HttpSession session,@RequestBody IOWorkShopPW ioWorkShopPW){
-		JsonObject AddResult=new JsonObject();		
+	public String ADDIOSpecialWSEmp(HttpSession session,@RequestBody IOWorkShopPW[] ioWorkShopPW){
+		JsonObject AddResult=new JsonObject();	
+
 		try{
 			String updateUser=(String) session.getAttribute("username");
-//			otCardbd.setUpdate_UserId(updateUser);
+
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			iOSpecialWSEmpService = (IOSpecialWSEmpService) context.getBean("iOSpecialWSEmpService");
-			AddResult.addProperty("StatusCode", "200");
-			AddResult.addProperty("Message", iOSpecialWSEmpService.addIOSpecialWSEmp(ioWorkShopPW,updateUser));
+			if (iOSpecialWSEmpService.addIOSpecialWSEmp(ioWorkShopPW,updateUser)) {
+				AddResult.addProperty("StatusCode", "200");
+				AddResult.addProperty("Message", "保密車間臨時權限設置成功");
+			} else {
+				AddResult.addProperty("StatusCode", "500");
+				AddResult.addProperty("Message", "保密車間臨時權限設置失敗");
+			}
+
 		}
 		catch(Exception ex){
 			logger.error("Adding the new IOWsPw info is failed, due to: ",ex);
@@ -114,7 +121,34 @@ public class IOSpecialWSEmpController {
 		System.out.println(AddResult.toString());
 		return AddResult.toString();
 	}
-	
+	//設置臺干和廠商保密車間臨時權限
+		@RequestMapping(value="/AddIOSpecialWSEmpOther.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+		@ResponseBody 
+		public String ADDIOSpecialWSEmpOther(HttpSession session,@RequestBody IOWorkShopPW[] ioWorkShopPW){
+			JsonObject AddResult=new JsonObject();	
+
+			try{
+				String updateUser=(String) session.getAttribute("username");
+
+				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+				iOSpecialWSEmpService = (IOSpecialWSEmpService) context.getBean("iOSpecialWSEmpService");
+				if (iOSpecialWSEmpService.addIOSpecialWSEmpOther(ioWorkShopPW,updateUser)) {
+					AddResult.addProperty("StatusCode", "200");
+					AddResult.addProperty("Message", "保密車間臨時權限設置成功");
+				} else {
+					AddResult.addProperty("StatusCode", "500");
+					AddResult.addProperty("Message", "保密車間臨時權限設置失敗");
+				}
+
+			}
+			catch(Exception ex){
+				logger.error("Adding the new IOWsPw info is failed, due to: ",ex);
+				AddResult.addProperty("StatusCode", "500");
+				AddResult.addProperty("Message", "保密車間進出臨時權限設置發生錯誤，原因："+ex.toString());
+			}
+			System.out.println(AddResult.toString());
+			return AddResult.toString();
+		}
 	@RequestMapping(value="/UpdateIOSpecialWSEmp.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 	@ResponseBody
 	public String UpdateIOSpecialWSEmp(HttpSession session,@RequestBody IOWorkShopPW ioWorkShopPW){
@@ -142,13 +176,14 @@ public class IOSpecialWSEmpController {
 	
 	@RequestMapping(value="/deleteIOSpecialWSEmp.do",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String DeleteIOSpecialWSEmp(HttpSession session,@RequestParam("Emp_id")String Emp_id,@RequestParam("WorkShopNo")String WorkShopNo){
+	public String DeleteIOSpecialWSEmp(HttpSession session,@RequestParam("Emp_id")String Emp_id,@RequestParam("WorkShopNo")String WorkShopNo,@RequestParam("CardID")String CardID){
 		JsonObject DisableResult=new JsonObject();
 		try{
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			iOSpecialWSEmpService = (IOSpecialWSEmpService) context.getBean("iOSpecialWSEmpService");
 			String updateUser=(String) session.getAttribute("username");
-			if(iOSpecialWSEmpService.DeleteIOWorkShopPW(Emp_id,WorkShopNo, updateUser)){
+			System.out.println("卡號========="+CardID);
+			if(iOSpecialWSEmpService.DeleteIOWorkShopPW(Emp_id,WorkShopNo, updateUser,CardID)){
 				DisableResult.addProperty("StatusCode", "200");
 				DisableResult.addProperty("Message", "保密車間進出臨時權限已失效");
 			}
