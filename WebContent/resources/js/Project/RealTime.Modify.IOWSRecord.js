@@ -1,53 +1,59 @@
 $(document).ready(function(){
-	ShowWorkShop()
+	ShowWorkShop();
 	var curPage=1,empId=null,depId=null,costId=null,startDate=null,endDate=null,recordStatus=null,isShowAll=false;
 	
-	 $('#searchWorkShopNo').selectpicker({
+	 $('#workShop').selectpicker({
 	       'selectedText': 'cat'
 		 // size: 6
 	    });
 
+	
 	 $('.selectpicker').selectpicker('val', 'Mustard');  
 
 	$('#empIdcheck').click(function(){
 	  	$('#searchEmpId').val('');
-	  	$("#searchWorkShopNo").val('');
+	  	$("#workShop").val('');
     	$('#searchDepId').val('');
     	$('#searchCostId').val('');
     	$('#importEmpIdSum').text('0');
     	$('#importEmpIdSum').text('0');
     	$('#importDepIdSum').text('0');
-    	$('#importWorkShopNoSum').text('0');
+//    	$('#importWorkShopNoSum').text('0');
 	    if($(this).prop("checked")==true){
 	        //当前为选中状态
 	    	$("#searchEmpId").attr("disabled", true); //设置为不可编辑
 //	    	$('#searchWorkShopNo').attr("disabled","disabled");	
-	    	$("#searchWorkShopNo").attr("disabled", true);
+	    	$("#workShop").attr("disabled", true);
+	    	$('#workShop').selectpicker('val',['noneSelectedText']);
+	    	$("#workShop").selectpicker('refresh');
+	    	$(".bs-placeholder").css("backgroundColor","#ebebe4");
 	    	$("#searchDepId").attr("disabled", true);
 	    	$("#searchCostId").attr("disabled", true);	  
 	    	$("#importEmpIdSearchBtn").attr("disabled", false); 
-	    	$("#importWorkShopNoSearchBtn").attr("disabled", true); 
+//	    	$("#importWorkShopNoSearchBtn").attr("disabled", true); 
 	    	$("#importDepIdSearchBtn").attr("disabled", true); 
 	    	$("#importCostIdSearchBtn").attr("disabled", true); 
-	    	$('#WorkShopNocheck').attr("checked",false);
+//	    	$('#WorkShopNocheck').attr("checked",false);
 	    	$("#depIdcheck").attr("checked",false);
 	    	$("#costIdcheck").attr("checked",false);
 	    }else{
 	        //当前为不选中状态	    	
 	    	$("#searchEmpId").attr("disabled", false); //设置为可编辑
 //	    	$('#searchWorkShopNo').removeAttr("disabled");
-	    	$("#searchWorkShopNo").attr("disabled", false);
+	    	$("#workShop").attr("disabled", false);
+	    	$("#workShop").selectpicker('refresh');
+	    	$(".bs-placeholder").removeAttr("style");
 	    	$("#searchDepId").attr("disabled", false);
 	    	$("#searchCostId").attr("disabled", false);
 	    	$("#importEmpIdSearchBtn").attr("disabled", true); 
-	    	$("#importWorkShopNoSearchBtn").attr("disabled", true); 
+//	    	$("#importWorkShopNoSearchBtn").attr("disabled", true); 
 	    	$("#importDepIdSearchBtn").attr("disabled", true); 
 	    	$("#importCostIdSearchBtn").attr("disabled", true); 
 
 	    }
 	});
 	
-	$('#WorkShopNocheck').click(function(){
+	/*$('#WorkShopNocheck').click(function(){
 	  	$('#searchEmpId').val('');
 	  	$("#searchWorkShopNo").val('');
     	$('#searchDepId').val('');
@@ -81,96 +87,108 @@ $(document).ready(function(){
 	    	$("#importCostIdSearchBtn").attr("disabled", true); 
 
 	    }
-	});
+	});*/
 	
 	$('#depIdcheck').click(function(){
 	  	$('#searchEmpId').val('');
-	  	$("#searchWorkShopNo").val('');
+	  	$("#workShop").val('');
     	$('#searchDepId').val('');
     	$('#searchCostId').val('');
     	$('#importEmpIdSum').text('0');
     	$('#importDepIdSum').text('0');
     	$('#importCostIdSum').text('0');
-    	$('#importWorkShopNoSum').text('0');
+//  	$('#importWorkShopNoSum').text('0');
 	    if($(this).prop("checked")==true){
 	        //当前为选中状态
 	    	$("#searchEmpId").attr("disabled", true); //设置为不可编辑
-	    	$("#searchWorkShopNo").attr("disabled", true);
+	    	$("#workShop").attr("disabled", true);
+	    	$('#workShop').selectpicker('val',['noneSelectedText']);
+	    	$("#workShop").selectpicker('refresh');
+	    	$(".bs-placeholder").css("backgroundColor","#ebebe4");
 	    	$("#searchDepId").attr("disabled", true);
 	    	$("#searchCostId").attr("disabled", true);	    	
 	    	$("#importDepIdSearchBtn").attr("disabled", false); 
-	    	$("#importWorkShopNoSearchBtn").attr("disabled", true); 
+//	    	$("#importWorkShopNoSearchBtn").attr("disabled", true); 
 	    	$("#importEmpIdSearchBtn").attr("disabled", true); 
 	    	$("#importCostIdSearchBtn").attr("disabled", true); 
 	    	$("#empIdcheck").attr("checked",false);
-	    	$('#WorkShopNocheck').attr("checked",false);
+//	    	$('#WorkShopNocheck').attr("checked",false);
 	    	$("#costIdcheck").attr("checked",false);
 	    }else{
 	        //当前为不选中状态	    	
 	    	$("#searchDepId").attr("disabled", false); //设置为可编辑
-	    	$("#searchWorkShopNo").attr("disabled", false);
+	    	$("#workShop").attr("disabled", false);
+	    	$("#workShop").selectpicker('refresh');
+	    	$(".bs-placeholder").removeAttr("style");
 	    	$("#searchEmpId").attr("disabled", false); 
 	    	$("#searchCostId").attr("disabled", false);
 	    	$("#importDepIdSearchBtn").attr("disabled", true); 
 	    	$("#importEmpIdSearchBtn").attr("disabled", true); 
 	    	$("#importCostIdSearchBtn").attr("disabled", true); 
-	    	$("#importWorkShopNoSearchBtn").attr("disabled", true); 
+//	    	$("#importWorkShopNoSearchBtn").attr("disabled", true); 
 
 	    }
 	});
 	
 	$('#costIdcheck').click(function(){
 	  	$('#searchEmpId').val('');
-		$("#searchWorkShopNo").val('');
+		$("#workShop").val('');
     	$('#searchDepId').val('');
     	$('#searchCostId').val('');
     	$('#importEmpIdSum').text('0');
     	$('#importDepIdSum').text('0');
     	$('#importCostIdSum').text('0');
-    	$('#importWorkShopNoSum').text('0');
+//    	$('#importWorkShopNoSum').text('0');
 	    if($(this).prop("checked")==true){
 	        //当前为选中状态
 	    	$("#searchEmpId").attr("disabled", true); //设置为不可编辑
-	    	$("#searchWorkShopNo").attr("disabled", true);
+	    	$("#workShop").attr("disabled", true);
+	    	$('#workShop').selectpicker('val',['noneSelectedText']);
+	    	$("#workShop").selectpicker('refresh');
+	    	$(".bs-placeholder").css("backgroundColor","#ebebe4");
 	    	$("#searchDepId").attr("disabled", true);
 	    	$("#searchCostId").attr("disabled", true); 	    	
 	    	$("#importEmpIdSearchBtn").attr("disabled", true); 
-	    	$("#importWorkShopNoSearchBtn").attr("disabled", true); 
+//	    	$("#importWorkShopNoSearchBtn").attr("disabled", true); 
 	    	$("#importDepIdSearchBtn").attr("disabled", true); 
 	    	$("#importCostIdSearchBtn").attr("disabled", false); 	
 	    	$("#empIdcheck").attr("checked",false);
-	    	$('#WorkShopNocheck').attr("checked",false);
+//	    	$('#WorkShopNocheck').attr("checked",false);
 	    	$("#depIdcheck").attr("checked",false);
 	    }else{
 	        //当前为不选中状态
 	    	$("#searchEmpId").attr("disabled", false); //设置为不可编辑
-	    	$("#searchWorkShopNo").attr("disabled", false);
+	    	$("#workShop").attr("disabled", false);
+	    	$("#workShop").selectpicker('refresh');
+	    	$(".bs-placeholder").removeAttr("style");
 	    	$("#searchDepId").attr("disabled", false);
 	    	$("#searchCostId").attr("disabled", false);
 	    	$("#importEmpIdSearchBtn").attr("disabled", true); 
 	    	$("#importDepIdSearchBtn").attr("disabled", true); 
 	    	$("#importCostIdSearchBtn").attr("disabled", true); 
-	    	$("#importWorkShopNoSearchBtn").attr("disabled", true); 
+//	    	$("#importWorkShopNoSearchBtn").attr("disabled", true); 
 	    }
 	});
 	
 	$('#resetBtn').click(function(){
 		$('#searchEmpId').val('');
-		$("#searchWorkShopNo").val('');
+//		$("#searchWorkShopNo").val('');
+		$('#workShop').selectpicker('val',['noneSelectedText']);
+    	$("#workShop").selectpicker('refresh');
     	$('#searchDepId').val('');
     	$('#searchCostId').val('');
     	$('#startDate').val('');
     	$('#endDate').val('');
 		$("#empIdcheck").attr("checked",false);
-		$('#WorkShopNocheck').attr("checked",false);
+//		$('#WorkShopNocheck').attr("checked",false);
 		$("#depIdcheck").attr("checked",false);
     	$("#costIdcheck").attr("checked",false);
 		$("#searchEmpId").attr("disabled", false); //设置为不可编辑
-		$("#searchWorkShopNo").attr("disabled", false);
+//		$("#searchWorkShopNo").attr("disabled", false);
 	    $("#searchDepId").attr("disabled", false);
 	    $("#searchCostId").attr("disabled", false);
 	    $("#importEmpIdSearchBtn").attr("disabled", true); 
-	    $("#importWorkShopNoSearchBtn").attr("disabled", true); 
+//	    $("#importWorkShopNoSearchBtn").attr("disabled", true); 
 	    $("#importDepIdSearchBtn").attr("disabled", true); 
 	    $("#importCostIdSearchBtn").attr("disabled", true); 
 	
@@ -189,7 +207,7 @@ $(document).ready(function(){
 		 $('#uploadEmpIdFile').val('');
 	});	
 	
-	$('#uploadWorkShopNoFile').change(function(){  
+/*	$('#uploadWorkShopNoFile').change(function(){  
 		$('#searchEmpId').val('');	
 		$("#searchWorkShopNo").val('');
 		$('#searchDepId').val('');
@@ -200,7 +218,7 @@ $(document).ready(function(){
 			$('#importWorkShopNoSum').text(exportEmpId.split(",").length);
             });	   
 		 $('#uploadWorkShopNoFile').val('');
-	});	
+	});	*/
 	
 	$('#uploadDepIdFile').change(function(){  
 		$('#searchEmpId').val('');	
@@ -256,8 +274,8 @@ $(document).ready(function(){
 	});
 	
 	function SearchRawRecords(isShowAll){		
-		empId=$('#searchEmpId').val();
-		workShopNo=	$("#searchWorkShopNo").val();
+		empId=$('#searchEmpId').val();	
+		workShopNo=	$("#workShop").val()!=null? $("#workShop").val().join(","):'';
 		depId=$('#searchDepId').val();
 		costId=$('#searchCostId').val();
 		startDate = $("#startDate").val();
@@ -287,6 +305,8 @@ $(document).ready(function(){
 	    		event.preventDefault(); //preventDefault() 方法阻止元素发生默认的行为（例如，当点击提交按钮时阻止对表单的提交）。
 	    		}
 		}
+		/*console.log(empId);
+		console.log(workShopNo);*/
 	}
 	
 	function ShowSearchRawRecordTable(rawData,isShowAll){
@@ -412,7 +432,7 @@ $(document).ready(function(){
 					for(var i=0;i<data.length;i++){
 						htmlAppender+='<option value="'+data[i]+'">'+data[i]+'</option>';
 					}
-					 $('#searchWorkShopNo').append(htmlAppender);
+					 $('#workShop').append(htmlAppender);
 				}
 				else{
 					alert('無車間資料');

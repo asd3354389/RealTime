@@ -78,20 +78,21 @@
 				<div class="col-sm-12 col-sm-12" style="margin: 5px;">
 				    <form action="#" id="uploadWorkShopNoForm" method="POST" enctype="multipart/form-data">
 						<label for="searchWorkShopNo">車間號:</label>
-						<input type="text" id="searchWorkShopNo" name="searchWorkShopNo" class="input-sm" autocomplete="off">
-						<!-- <select id="searchWorkShopNo" name='searchWorkShopNo' class="input-sm">
+						<!-- <input type="text" id="searchWorkShopNo" name="searchWorkShopNo" class="input-sm" autocomplete="off">
+						<select id="searchWorkShopNo" name='searchWorkShopNo' class="input-sm">
     						<option value=""></option>
-    					</select>  	 -->
+    					</select>  	
     					
-    					<!-- <select id="searchWorkShopNo" name="searchWorkShopNo" class="selectpicker show-tick" multiple data-live-search="true">
-                  		</select>	 -->
+    					<select id="searchWorkShopNo" name="searchWorkShopNo" class="selectpicker show-tick" multiple data-live-search="true">
+                  		</select>	
 						<input type="checkbox" id="WorkShopNocheck" name="WorkShopNocheck" value="0">
 						<span class="btn btn-primary fileinput-button"
 							id="importWorkShopNoSearchBtn" name="importWorkShopNoSearchBtn" disabled="disabled">
 							 <span>導入查詢車間號</span> 
 							 <input type="file" id="uploadWorkShopNoFile" accept="text/plain">
 						</span>
-						&nbsp;此次共選擇:<span id="importWorkShopNoSum">0</span> 個車間號
+						&nbsp;此次共選擇:<span id="importWorkShopNoSum">0</span> 個車間號 -->
+						 <select id="workShop" name="workShopNo" class="selectpicker show-tick" multiple data-live-search="true"></select> 
 					</form>
 				</div>
 				
@@ -137,6 +138,7 @@
 					<input type="checkbox" name="recordStatus" value="20">隨綫人員上班時間外出異常刷卡
 					<input type="checkbox" name="recordStatus" value="31">保密車間正常刷卡
 					<input type="checkbox" name="recordStatus" value="32">保密車間異常刷卡
+					<input type="checkbox" name="recordStatus" value="41">供應商及東坑廠區以外的員工刷卡
 				</div>
 				<div class="col-sm-12 col-sm-12" style="margin: 5px;">				   
 					<input type="button" id="searchRawRecordBtn" name="searchRawRecordBtn" class="btn btn-sm btn-primary" value="查詢">
