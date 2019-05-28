@@ -234,7 +234,7 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
 			}
 		    
 		    searchRawRecord = jdbcTemplate.query(sSQL,  queryList.toArray(), new QueryIOWSRecord());			    
-		    System.out.println(searchRawRecord);
+		    System.out.println(sSQL);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.error("Search IOWSRecord Record is failed",ex);
