@@ -6,6 +6,20 @@ public class IOWorkShopPW {
 	private String Start_Date;
 	private String End_Date;
 	private String Enabled;
+	private String CardId;
+	private String Remark;
+	public String getCardId() {
+		return CardId;
+	}
+	public void setCardId(String cardId) {
+		CardId = cardId;
+	}
+	public String getRemark() {
+		return Remark;
+	}
+	public void setRemark(String remark) {
+		Remark = remark;
+	}
 	public String getEmp_id() {
 		return Emp_id;
 	}
@@ -39,7 +53,7 @@ public class IOWorkShopPW {
 	@Override
 	public String toString() {
 		return "IOWorkShopPW [Emp_id=" + Emp_id + ", WorkShopNo=" + WorkShopNo + ", Start_Date=" + Start_Date
-				+ ", End_Date=" + End_Date + ", Enabled=" + Enabled + "]";
+				+ ", End_Date=" + End_Date + ", Enabled=" + Enabled + ", CardId=" + CardId + ", Remark=" + Remark + "]";
 	}
 	
 	
