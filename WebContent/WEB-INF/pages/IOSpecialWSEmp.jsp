@@ -52,6 +52,7 @@
 				查詢條件：<select id="queryCritirea" class="input-small">
 					<option value="emp_id">工號</option>
 					<option value="workshopno">車間</option>
+					<option value="CardId">卡號</option>
 				</select> <input type="text" id="queryParam" name="queryParam"
 					class="input-sm"> <input type="button"
 					id="searchIOSpecialWSEmp" name="searchIOSpecialWSEmp"
@@ -60,9 +61,10 @@
 			<div>
 					<h4 style="position: relative;">保密車間人員列表信息：</h4>
 					<a id="addNewIOCardMaIP" role="button" href="#insertIOWorkShopPW"class="btn btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 500px;font-size: 14px;"><i class="glyphicon glyphicon-plus"></i>創建員工保密車間臨時權限</a>
+			        <a id="addNewIOWorkShopPWOther" role="button" href="#insertIOWorkShopPWOther"class="btn btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 300px;font-size: 14px;"><i class="glyphicon glyphicon-plus"></i>創建台籍人員或供應商信息</a>
 			</div>
 			<div class="middle">
-				<div class="left" style="width:80%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+				<div class="left" style="width:90%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
 					<table id="IOSpecialWSEmpTable" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
 						<thead>
 							<tr>
@@ -70,6 +72,8 @@
 								<th>車間名稱</th>
 								<th>生效起始日期</th>
 								<th>生效結束日期</th>
+								<th>卡號</th>
+								<th>備註</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -80,7 +84,9 @@
 					</div>
 				</div>
 			</div>
+			
 			<jsp:include page="InsertSpecialWSEmp.jsp" />
+			<jsp:include page="InsertSpecialWSEmpOther.jsp" />
 		</div>
 	</div>
 </div>	

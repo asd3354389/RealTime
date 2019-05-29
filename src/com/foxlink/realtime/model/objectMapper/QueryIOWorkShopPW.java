@@ -18,6 +18,8 @@ public class QueryIOWorkShopPW implements RowMapper<IOWorkShopPW>{
 		ioWorkShopPW.setStart_Date(rs.getString("Start_Date"));
 		ioWorkShopPW.setEnd_Date(rs.getString("End_Date"));
 		ioWorkShopPW.setEnabled(rs.getString("Enabled"));
+		ioWorkShopPW.setCardId(rs.getString("CardId"));
+		ioWorkShopPW.setRemark(rs.getString("Remark"));
 		return ioWorkShopPW;
 	}
 
