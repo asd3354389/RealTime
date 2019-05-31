@@ -129,15 +129,15 @@
 					<input id="endDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm',minDate:'#F{$dp.$D(\'startDate\')}'})" autocomplete="off" />
 				</div>
 				<div class="col-sm-12 col-sm-12" style="margin: 5px;">
-					<input type="checkbox" name="recordStatus" value="21"
+					<input type="checkbox" name="recordStatus" value="21" class="normal"
 						checked="checked">隨綫人員上班時間外出正常刷卡
 					<!-- 	<input type="checkbox" name="recordStatus" value="1">無人員資料 -->
-					<input type="checkbox" name="recordStatus" value="01">正常普通刷卡
-					<input type="checkbox" name="recordStatus" value="10">非本事業処人員異常刷卡
-					<input type="checkbox" name="recordStatus" value="11">非本事業処人員正常刷卡
-					<input type="checkbox" name="recordStatus" value="20">隨綫人員上班時間外出異常刷卡
-					<input type="checkbox" name="recordStatus" value="31">保密車間正常刷卡
-					<input type="checkbox" name="recordStatus" value="32">保密車間異常刷卡
+					<input type="checkbox" name="recordStatus" value="01" class="normal">正常普通刷卡
+					<input type="checkbox" name="recordStatus" value="10" class="normal">非本事業処人員異常刷卡
+					<input type="checkbox" name="recordStatus" value="11" class="normal">非本事業処人員正常刷卡
+					<input type="checkbox" name="recordStatus" value="20" class="normal">隨綫人員上班時間外出異常刷卡
+					<input type="checkbox" name="recordStatus" value="31" class="normal">保密車間正常刷卡
+					<input type="checkbox" name="recordStatus" value="32" class="normal">保密車間異常刷卡
 					<input type="checkbox" name="recordStatus" value="41">供應商及東坑廠區以外的員工刷卡
 				</div>
 				<div class="col-sm-12 col-sm-12" style="margin: 5px;">				   

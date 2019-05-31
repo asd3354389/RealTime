@@ -4,12 +4,12 @@ $(document).ready(function(){
 	ShowAllPersonList();
 	ShowWorkShop();
 	$("#setCostWorkShop").click(function(){
+		$('#setCostWorkShop').attr("disabled",true);
 		var Cost=$('#WorkShopCost').val();
 		var CostNo=Cost.split(",");
 		var WorkShopNo=$('#workShopNo').val();
 //		console.log(WorkShopNo);
-		var list=[],errorMessage='';
-		
+		var list=[],errorMessage='',CostId=[];
 		//console.log(CostNo.length);
 		if(CostNo==null||CostNo==''){
 			errorMessage+='费用代码不能为空\n';
@@ -18,18 +18,25 @@ $(document).ready(function(){
 			errorMessage+='車間號不能爲空\n';
 		}else{
 			for(var i=0;i<CostNo.length;i++){
-				 checkCostIdDuplicate(CostNo[i])
+				if(CostId.indexOf(CostNo[i])==-1){
+					CostId.push(CostNo[i]);
+				}
+			}
+//			console.log(CostId);
+			
+			for(var i=0;i<CostId.length;i++){
+				 checkCostIdDuplicate(CostId[i])
 				 if(!isUserNameValid){
 					 errorMessage+="輸入的費用代碼有不存在的費用代碼！";
 					 break;
 				 }
 				for(var j=0;j<WorkShopNo.length;j++){
 					var data = new Object();
-					if(!reg.test(CostNo[i])){
+					if(!reg.test(CostId[i])){
 						errorMessage+='费用代码必须都是4位数字\n';
 						break;
 					}
-					data.CostId = CostNo[i];
+					data.CostId = CostId[i];
 					data.WorkShopNo=WorkShopNo[j];
 //					console.log(data.WorkShopNo);
 //					console.log(data);
@@ -75,7 +82,7 @@ $(document).ready(function(){
 						$('#WorkShopCost').val('');
 						$('#workShopNo').selectpicker('val',['noneSelectedText'])
 						$("#workShopNo").selectpicker('refresh');
-						
+
 					}
 					
 				},
@@ -178,6 +185,7 @@ $(document).ready(function(){
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0)	
 							ShowAllExceListTable(rawData);
+						
 						else{
 							/*$('.left').css('height','727px');*/
 							/*ShowAllPersonListTable(rawData);*/

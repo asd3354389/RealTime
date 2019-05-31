@@ -272,6 +272,52 @@ $(document).ready(function(){
 	$('#showAllRawRecordBtn').click(function(){		
 		SearchRawRecords(true);
 	});
+//	$('input[value="41"]').on(click,()=>{
+//		alert(1);
+//	})
+	
+/*	$('input[name="recordStatus"][value="41"]').on('click',()=>{
+		if($(this).prop("checked")==true){
+			$('.normal').attr("disabled",true);
+		}else{
+			$('.normal').attr("disabled",false);
+		}
+		console.log($(this));
+//		$(this).prevAll().attr("disabled",true);
+	})*/
+	$('input[name="recordStatus"][value="41"]').on('click',function(){
+		$('#searchEmpId').val('');
+	  	$("#workShop").val('');
+    	$('#searchDepId').val('');
+    	$('#searchCostId').val('');
+    	$('#importEmpIdSum').text('0');
+    	$('#importEmpIdSum').text('0');
+    	$('#importDepIdSum').text('0');
+		if($(this).prop("checked")==true){
+			$('.normal').attr("disabled",true);
+			$('.normal').removeAttr("checked");
+			$("#searchEmpId").attr("disabled", true); //设置为不可编辑
+	    	$("#searchDepId").attr("disabled", true);
+	    	$("#searchCostId").attr("disabled", true); 	    	
+	    	$("#importEmpIdSearchBtn").attr("disabled", true); 
+//	    	$("#importWorkShopNoSearchBtn").attr("disabled", true); 
+	    	$("#importDepIdSearchBtn").attr("disabled", true); 
+	    	$("#importCostIdSearchBtn").attr("disabled", true);
+	    	$("#empIdcheck").attr("checked",false);
+//	    	$('#WorkShopNocheck').attr("checked",false);
+	    	$("#depIdcheck").attr("checked",false);
+	    	$('#costIdcheck').attr("checked",false)
+		}else{
+			$('.normal').attr("disabled",false);
+			$("#searchEmpId").attr("disabled", false); //设置为不可编辑
+	    	$("#searchDepId").attr("disabled", false);
+	    	$("#searchCostId").attr("disabled", false);
+	    	$("#importEmpIdSearchBtn").attr("disabled", true); 
+	    	$("#importDepIdSearchBtn").attr("disabled", true); 
+	    	$("#importCostIdSearchBtn").attr("disabled", true); 
+		}
+//		console.log($(this));
+	})
 	
 	function SearchRawRecords(isShowAll){		
 		empId=$('#searchEmpId').val();	
@@ -292,13 +338,14 @@ $(document).ready(function(){
 		$('input[name="recordStatus"]:checked').each(function(){
 			recordStatusArray.push($(this).val());
 		});
+		console.log(recordStatusArray);
 		if(recordStatusArray.length>0)
 			recordStatus = recordStatusArray.join(",");
 		else
 			recordStatus = "";		
 	
 		if(errorMessage==''){
-			getAsyncRawRecordInfo(curPage,empId,workShopNo,depId,costId,startDate,endDate,recordStatus,isShowAll);
+				getAsyncRawRecordInfo(curPage,empId,workShopNo,depId,costId,startDate,endDate,recordStatus,isShowAll);
 		}else{
 			if(errorMessage.length>0 ||errorMessage!='' ){
 	    		alert(errorMessage);		

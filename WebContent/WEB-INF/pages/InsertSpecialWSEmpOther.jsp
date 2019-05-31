@@ -4,11 +4,11 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    			<h5>進出車間臨時權限設置</h5>
+    			<h5>保密車間臨時權限設置</h5>
 			</div>
 			<div class="modal-body">
 		<!--		<form id="addNewUserForm" action="modifyReceiverDevice.do" method="post" class="form-horizontal">   -->
-		<div class="control-group"><label for="outCard" style="color:red">多個卡號號之間用英文,（逗號）隔開，如1324567890,1234567890</label></div>
+		<!-- <div class="control-group"><label for="outCard" style="color:red">多個卡號號之間用英文,（逗號）隔開，如1324567890,1234567890</label></div> -->
 		<div class="control-group">
     		<label class="control-label" for="inputCardId">卡號</label>
     		<div class="controls">
