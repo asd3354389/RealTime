@@ -8,7 +8,7 @@
 			</div>
 			<div class="modal-body">
 		<!--		<form id="addNewUserForm" action="modifyReceiverDevice.do" method="post" class="form-horizontal">   -->
-		<div class="control-group"><label for="outCard" style="color:red">多個卡號號之間用英文,（逗號）隔開，如1324567890,1234567890</label></div>
+		<!-- <div class="control-group"><label for="outCard" style="color:red">多個卡號號之間用英文,（逗號）隔開，如1324567890,1234567890</label></div> -->
 		<div class="control-group">
     		<label class="control-label" for="inputCardId">卡號</label>
     		<div class="controls">

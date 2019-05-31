@@ -62,7 +62,7 @@
 					<a id="addNewIOCardMaIP" role="button" href="#insertIOCardMaIP"class="btn btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 500px;font-size: 14px;"><i class="glyphicon glyphicon-plus"></i>創建卡機ip綁定員工</a>
 			</div>
 			<div class="middle">
-				<div class="left" style="width:80%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+				<div class="left" style="width:60%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
 					<table id="EmpIPBindingTable" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
 						<thead>
 							<tr>
@@ -77,6 +77,21 @@
 					<div id="WorkshopNoRestInfoListPagination" align="right" style="height: 20;position:absolute; bottom: -20px;right: 0px;">
 					</div>
 				</div>
+				<!-- <div class="right" style="width:20%;height:730px;float:right;border:1px solid #f3f5f6;" >
+					<div style="padding:10px 10px;overflow-y:auto;height: 650px;border-bottom: 1px solid #f3f5f6">
+						<table id="deleteId" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
+							<thead>
+								<tr>
+									<th colspan='2'>卡機ip列表</th>
+								</tr>
+							</thead>
+							<tbody class='dlTable'">
+							 	
+							</tbody>
+						</table>
+					</div>
+					<button class="reset btn btn-sm btn-primary">清空</button>
+				</div> -->
 			</div>
 			<jsp:include page="InsertNewEmpIPBinding.jsp" />
 		</div>

@@ -78,4 +78,27 @@ public class IOWorkShopRecordService extends Service<IOWSRecord>{
 		}
 		return searchRawRecord;
 	}
+
+	public Page getRawRecordOtherPage(String userDataCostId, int currentPage, String workShopNo, String startDate,
+			String endDate, String recordStatus) {
+		// TODO Auto-generated method stub
+		 int totalRecord = iOWorkShopRecordDAO.getTotalOtherRecord(userDataCostId,workShopNo,startDate, endDate, recordStatus);	      
+	        Page page = new Page(currentPage, totalRecord);
+	        return page;
+	}
+
+	public List<IOWSRecord> FindSearchOtherRawRecords(String userDataCostId, int currentPage, String workShopNo, String startDate,
+			String endDate, String recordStatus, Boolean isShowAll) {
+		// TODO Auto-generated method stub
+		List<IOWSRecord>searchRawRecord=null;
+		try {
+			int totalRecord = iOWorkShopRecordDAO.getTotalOtherRecord(userDataCostId,workShopNo,startDate,endDate,recordStatus);	     
+			searchRawRecord = iOWorkShopRecordDAO.FindSearchOtherRawRecords(userDataCostId,currentPage,totalRecord,workShopNo,startDate,endDate,recordStatus,isShowAll);					  
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.error("Search IOWSRecords Record is failed ",e);
+		}
+		return searchRawRecord;
+	}
 }
