@@ -395,9 +395,10 @@ $(document).ready(function(){
 				if(User.End_Date==="null" || User.End_Date=='')
 					errorMessage+='生效截止时间未填寫\n';
 				if (User.Emp_id === "null" ||User.Emp_id =='' ) {
-					if (User.Remark==="null" || User.Remark=='') {
-						errorMessage+='備註未填寫\n';
-					}
+					
+				}
+				if (User.Remark==="null" || User.Remark=='') {
+					errorMessage+='備註未填寫\n';
 				}
 				
 				console.log(User);

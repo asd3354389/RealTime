@@ -459,6 +459,8 @@ $(document).ready(function(){
 					errorMessage+='生效起始日期未填寫\n';
 				if(IOWorkShopPW.End_Date==="null" || IOWorkShopPW.End_Date=='')
 					errorMessage+='生效結束日期未填寫\n';
+				if(IOWorkShopPW.Remark==="null" || IOWorkShopPW.Remark=='')
+					errorMessage+='備註未填寫\n\n';
 				
 				if(errorMessage==''){	
 					$.ajax({
