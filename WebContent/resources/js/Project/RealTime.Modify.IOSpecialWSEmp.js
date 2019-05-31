@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false;
+	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false,isCardIdValid=false,empmessage='';
 	var reg = new RegExp("^[0-9]{10}$");
 	ShowAllIOSpecialWSEmp();
 	ShowWorkShop();
@@ -20,8 +20,21 @@ $(document).ready(function(){
      	$('#dpick2').val('');
      	$('#dpick3').val('');
      	$('#dpick4').val('');
+     	 $('#workShop').selectpicker('val',['noneSelectedText']);
+		 $("#workShop").selectpicker('refresh');
 	});
-	
+	//resetSubmitOther
+	$('#resetSubmitOther').click(function(){
+ 	    $('#inputCardId').val('');
+     	$('#dpick1Other').val('');
+     	$('#dpick2Other').val('');
+     	$('#dpick3').val('');
+     	$('#dpick4').val('');
+     	$('#inputRemark').val('');
+     	 $('#workShopOther').selectpicker('val',['noneSelectedText']);
+		 $("#workShopOther").selectpicker('refresh');
+     
+	});
 	$('#searchIOSpecialWSEmp').click(function(){
 		var queryCritirea=$('#queryCritirea option:selected').val();
 		var queryParam=$('#queryParam').val();
@@ -34,6 +47,9 @@ $(document).ready(function(){
 	
 	//設置員工保密車間權限
 	$('#setIOWorkShopPW').click(function(){
+		
+		 $("#setIOWorkShopPW").attr("disabled", "disabled");
+		 setTimeout(function(){ $("#setIOWorkShopPW").attr("disabled",false); }, 100);
 //		button_onclick($('#setIOWorkShopPW')[0]);
 		var Start =$('#dpick1').val().replace(/\//g,'-');
 		var End =$('#dpick2').val().replace(/\//g,'-');
@@ -59,29 +75,58 @@ $(document).ready(function(){
 		/*if(machine["WorkShop_Desc"]=='' || machine["WorkShop_Desc"]==null){
 			errorMessage+='未填寫卡機描述 \n';
 		}*/
-		if(WorkShopNo==null || WorkShopNo=="")
-			errorMessage+='未選擇使用的車間\n';
+		
 		
 		if(Start==null || Start=="")
 			errorMessage+='為選擇生效起始日期\n';
 		
 		if(End==null || End=="")
 			errorMessage+='為選擇生效結束日期\n';
-		
-		for (var i = 0; i < arr.length; i++) {
-		
-			for(var j=0;j<WorkShopNo.length;j++){ 
-						    var ioWsPw={};
-						    ioWsPw["Emp_id"] = arr[i];
-				  			ioWsPw["WorkShopNo"]=WorkShopNo[j];
-				  			ioWsPw["Start_Date"]= Start;
-				  			ioWsPw["End_Date"]= End;
-				  			list.push(ioWsPw)
-				  			//checkEmpidDuplicate(arr[i],ioWsPw["WorkShopNo"]);
-				 	
+		if (arr.length >0) {
+//			var nary=arr.sort();
+//			for(var i=0;i<arr.length;i++){
+//			if (nary[i].toUpperCase()==nary[i+1].toUpperCase()){
+//			alert("工號不能重複,重複工號："+nary[i]);
+//			
+//			return;
+//			}
+//			}
+			if (isRepeat(arr)) {
+				errorMessage+='工號不能重複\n';
+				//alert("工號不能重複");
+			}
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i]==null||arr[i]==""||arr[i]=='') {
+					errorMessage+='未正確填寫工號\n';
+				}else{
+					if(WorkShopNo==null || WorkShopNo==""){
+						errorMessage+='未選擇使用的車間\n';
+					}else{
+					for(var j=0;j<WorkShopNo.length;j++){ 
+								    var ioWsPw={};
+								    ioWsPw["Emp_id"] = arr[i];
+						  			ioWsPw["WorkShopNo"]=WorkShopNo[j];
+						  			ioWsPw["Start_Date"]= Start;
+						  			ioWsPw["End_Date"]= End;
+						  			list.push(ioWsPw)
+						  			checkEmpidDuplicate(arr[i],ioWsPw["WorkShopNo"]);
+						  			console.log(ioWsPw);
+						  			//checkEmpidDuplicate(arr[i],ioWsPw["WorkShopNo"]);
+						  			//alert(isUserNameValid);
+//						  			if (!isUserNameValid) {
+//						  				empmessage+='工號'+arr[i]+'不存在\n';
+//									}
+						 	
+						}
+					}
+					
 				}
+				
+			}
 		}
-		if(errorMessage==''){
+		
+		if(errorMessage=='' && empmessage=='' ){
+			//alert("進入方法");
 			//新增綁定賬號
 			$.ajax({
 				type:'POST',
@@ -97,10 +142,11 @@ $(document).ready(function(){
 							 $('#workShop').val('');
 							 $('#dpick1').val('');
 							 $('#dpick2').val('');
-							 $('#workShop').selectpicker('val',['noneSelectedText'])
+							 $('#workShop').selectpicker('val',['noneSelectedText']);
 							 $("#workShop").selectpicker('refresh');
 							 alert(data.Message);
 							 ShowAllIOSpecialWSEmp();
+							// $("#setIOWorkShopPW").attr("enabled", "enabled");
 							/* alert(data.Message);			
 							 $('#inputUserName').val('');
 							 $('#inputChineseName').val('');
@@ -114,6 +160,7 @@ $(document).ready(function(){
 						 }
 						 else{
 							 alert(data.Message);
+							// $("#setIOWorkShopPW").attr("enabled", "enabled");
 						 }
 					 }else{
 						 alert('設置保密車間臨時進出權限失敗!');
@@ -123,16 +170,24 @@ $(document).ready(function(){
 					alert('設置保密車間臨時進出權限發生錯誤');
 				}
 			});
-		}
-	    else{
+		}else{
 	    	if(errorMessage.length>0 ||errorMessage!='' ){
 		    alert(errorMessage);		
 			event.preventDefault(); //preventDefault() 方法阻止元素发生默认的行为（例如，当点击提交按钮时阻止对表单的提交）。
+	    	return;
 	    	}
+	    	if (empmessage.length>0 ||empmessage!='') {
+	    		 alert(empmessage);	
+	    		 empmessage = '';
+	  			 event.preventDefault(); //preventDefault() 方法阻止元素发生默认的行为（例如，当点击提交按钮时阻止对表单的提交）。
+			}
 	    }	
 	})
 		 //設置廠商和台籍人員臨時權限
 	$('#setIOWorkShopPWOther').click(function(){
+		
+		 $("#setIOWorkShopPWOther").attr("disabled", "disabled");
+		 setTimeout(function(){ $("#setIOWorkShopPWOther").attr("disabled",false); }, 100);
 //		button_onclick($('#setIOWorkShopPW')[0]);
 		var Start =$('#dpick1Other').val().replace(/\//g,'-');
 		var End =$('#dpick2Other').val().replace(/\//g,'-');
@@ -182,15 +237,16 @@ $(document).ready(function(){
 		  			ioWsPw["End_Date"]= End;
 		  			ioWsPw["Remark"]= $('#inputRemark').val();
 		  			list.push(ioWsPw)
-		  			//checkEmpidDuplicate(arr[i],ioWsPw["WorkShopNo"]);
+		  			
+		  			checkCardIdDuplicate(CardId,ioWsPw["WorkShopNo"]);
 		  		
 		  		}
 			}
 			 
 		}
-	//checkEmpidDuplicate(ioWsPw["Emp_id"],ioWsPw["WorkShopNo"]);
+
 	
-		if(errorMessage==''){
+		if(errorMessage==''&& isCardIdValid){
 			//新增綁定賬號
 			//alert(ioWsPw["Remark"]);
 			console.log(ioWsPw);
@@ -209,13 +265,15 @@ $(document).ready(function(){
 							 $('#dpick1Other').val('');
 							 $('#dpick2Other').val('');
 							 $('#inputRemark').val('');
-							 $('#workShopOther').selectpicker('val',['noneSelectedText'])
+							 $('#workShopOther').selectpicker('val',['noneSelectedText']);
 							 $("#workShopOther").selectpicker('refresh');
 							 alert(data.Message); 
-							 ShowAllIOSpecialWSEmp();		 
+							 ShowAllIOSpecialWSEmp();	
+							// $("#setIOWorkShopPWOther").attr("enabled", "enabled");
 						 }
 						 else{
 							 alert(data.Message);
+							 //$("#setIOWorkShopPWOther").attr("enabled", "enabled");
 						 }
 					 }else{
 						 alert('設置車間臨時進出權限失敗!');
@@ -234,6 +292,7 @@ $(document).ready(function(){
 	    }	
 	});
 	function checkEmpidDuplicate(Emp_id,WorkShopNo){
+		
 		if(Emp_id!=""){
 			$.ajax({
 				type:'POST',
@@ -247,9 +306,11 @@ $(document).ready(function(){
 					alert(e);
 				},
 				success:function(data){	
+					
 					 if(data!=null && data!=''){
 						 if(data.StatusCode==500){
-							 alert(data.Message);
+							 //alert(data.Message);
+							 empmessage = data.Message
 							 isUserNameValid=false;
 						 }
 						 else
@@ -263,7 +324,38 @@ $(document).ready(function(){
 			});
 		}
 	}
-	
+	//判斷同一卡號和車間是否有數據
+	function checkCardIdDuplicate(CardId,WorkshopNo){
+		
+		if(CardId!=""){
+			$.ajax({
+				type:'POST',
+				url:'../IOSpecialWSEmp/checkCardId.do',
+				data:{
+					CardId:CardId,
+					WorkshopNo:WorkshopNo
+				},
+				async:false,
+				error:function(e){
+					alert(e);
+				},
+				success:function(data){	
+					 if(data!=null && data!=''){
+						 if(data.StatusCode==500){
+							 alert(data.Message);
+							 isCardIdValid=false;
+						 }
+						 else
+							{
+							 isCardIdValid=true;
+							}
+				}else{
+					isCardIdValid=false;
+					}
+				}
+			});
+		}
+	}
 	function ShowAllIOSpecialWSEmp(){
 		$.ajax({
 			type:'POST',
@@ -338,8 +430,12 @@ $(document).ready(function(){
 
 			//編輯備註
 			//編輯備註
-			var Remark = $(parentElement).find('td').eq(5).text();
-			$(parentElement).find('td').eq(5).html('<input id=\"Remark1\"  type="text" class="changeRemark input-small" maxlength="60" value="'+Remark+'">');
+			if ($(parentElement).find('td').eq(0).text()==null ||$(parentElement).find('td').eq(0).text()==""||$(parentElement).find('td').eq(0).text()=="null") {
+				
+				var Remark = $(parentElement).find('td').eq(5).text();
+				$(parentElement).find('td').eq(5).html('<input id=\"Remark1\"  type="text" class="changeRemark input-small" maxlength="60" value="'+Remark+'">');
+			}
+			
 //			$(parentElement).children().find('.editBtn .deleteBtn').hide();
 			$(parentElement).find('td').eq(6).append('<a class="confirmBtn btn btn-xs btn-link" role="button">確認</a>'+
 	        		'<a class="cancelBtn btn btn-xs btn-link" role="button">取消</a>');
@@ -612,5 +708,16 @@ $(document).ready(function(){
 			}
 		});   
 	}	
-	
+	// 验证重复元素，有重复返回true；否则返回false
+	function isRepeat(arr) {
+	    var hash = {};
+	    for(var i in arr) {
+	        if(hash[arr[i].toUpperCase()]) {
+	            return true;
+	        }
+	        // 不存在该元素，则赋值为true，可以赋任意值，相应的修改if判断条件即可
+	        hash[arr[i].toUpperCase()] = true;
+	    }
+	    return false;
+	}
 })

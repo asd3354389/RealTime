@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.util.HSSFColor.TURQUOISE;
 
 import com.foxlink.realtime.DAO.IOSpecialWSEmpDAO;
 import com.foxlink.realtime.model.IOWorkShopPW;
@@ -44,7 +45,16 @@ public class IOSpecialWSEmpService {
 		public boolean addIOSpecialWSEmp(IOWorkShopPW[] ioWorkShopPW, String updateUser) {
 			// TODO Auto-generated method stub
 
+//			boolean isaddEmp = true;
+//			for (int i = 0; i < ioWorkShopPW.length; i++) {
+//				if (iOSpecialWSEmpDAO.checkEmpIdExistence(ioWorkShopPW[i].getEmp_id())) {
+//					isaddEmp = iOSpecialWSEmpDAO.addIOSpecialWSEmp(ioWorkShopPW,updateUser);
+//				}else {
+//					isaddEmp = false;
+//				}
+//			}
 			return iOSpecialWSEmpDAO.addIOSpecialWSEmp(ioWorkShopPW,updateUser);
+			//return isaddEmp;
 		}
 	//臺干和廠商保密車間權限  addIOSpecialWSEmpOther
 		public boolean addIOSpecialWSEmpOther(IOWorkShopPW[] ioWorkShopPW, String updateUser) {
@@ -99,6 +109,12 @@ public class IOSpecialWSEmpService {
 		// TODO Auto-generated method stub
 		return iOSpecialWSEmpDAO.checkUserNameDuplicate(Emp_id,workShopNo);
 	}
+	
+	//checkCardIdDuplicate
+		public boolean checkCardIdDuplicate(String CardId, String workshopNo) {
+			// TODO Auto-generated method stub
+			return iOSpecialWSEmpDAO.checkCardIdDuplicate(CardId,workshopNo);
+		}
 	public boolean UpdateRecord(IOWorkShopPW ioWorkShopPW, String updateUser) {
 		// TODO Auto-generated method stub
 		return iOSpecialWSEmpDAO.UpdateRecord(ioWorkShopPW,updateUser);

@@ -180,7 +180,7 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 	public boolean checkEmpIdExistence(String Emp_id) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
-    	String sSQL = "select count(*) from SWIPE.CSR_EMPLOYEE where id =? and isonwork = 0";
+    	String sSQL = "select count(*) from SWIPE.CSR_EMPLOYEE where id =upper(?) and isonwork = 0";
     	try {      	
     		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { Emp_id },Integer.class);	   	
     	  } catch (Exception ex) {
@@ -192,12 +192,14 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 			 return false;
 	}
 
-	public boolean checkUserNameDuplicate(String Emp_id, String workshopNo) {
+	//判斷同一卡號和車間是否有數據
+	public boolean checkCardIdDuplicate(String CardId, String workshopNo) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
-    	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_USER_TEMP where Emp_id=? and workshopno = ? and ENABLED='Y'";
+    	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_USER_TEMP where CardId=? and workshopno = ? and ENABLED='Y'";
+    	System.out.println(" 查詢語句"+sSQL+"卡號"+CardId+"車間號"+workshopNo);
     	try {    	    	
-    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { Emp_id,workshopNo },Integer.class);	   	
+    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { CardId,workshopNo },Integer.class);	   	
     	  } catch (Exception ex) {
     		  ex.printStackTrace();
     		  }
@@ -207,7 +209,22 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 		 else
 			 return true;
 	}
-
+	//判斷同一工號和車間是否有數據
+		public boolean checkUserNameDuplicate(String Emp_id, String workshopNo) {
+			// TODO Auto-generated method stub
+			int totalRecord=-1;
+	    	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_USER_TEMP where Emp_id=upper(?)and workshopno = ? and ENABLED='Y'";
+	    	try {    	    	
+	    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { Emp_id,workshopNo },Integer.class);	   	
+	    	  } catch (Exception ex) {
+	    		  ex.printStackTrace();
+	    		  }
+	    	/*System.out.println(sSQL);*/
+	    	 if(totalRecord > 0) 
+				   return false; 
+			 else
+				 return true;
+		}
 	//員工進出車間權限
 	public boolean addIOWorkShopPW(IOWorkShopPW[] ioWorkShopPW, String updateUser) {
 		// TODO Auto-generated method stub
@@ -219,8 +236,8 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		
-		String sSQL="INSERT INTO SWIPE.RT_ACCESS_USER_TEMP (Emp_id,WorkShopNo,Start_Date,End_Date,Update_UserId,CardId,Remark) VALUES(?,?,?,?,?,?,?)";
+		//upper(Emp_id)
+		String sSQL="INSERT INTO SWIPE.RT_ACCESS_USER_TEMP (Emp_id,WorkShopNo,Start_Date,End_Date,Update_UserId,CardId,Remark) VALUES(upper(?),?,?,?,?,?,?)";
 		try {
 			if(ioWorkShopPW!=null) {
 
@@ -269,7 +286,7 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 		txStatus = transactionManager.getTransaction(txDef);
 		//先刪除之前的
 		DeleteSettingMessageCard(ioWorkShopPW);
-		String sSQL="INSERT INTO SWIPE.RT_ACCESS_USER_TEMP (Emp_id,WorkShopNo,Start_Date,End_Date,Update_UserId,CardId,Remark) VALUES(?,?,?,?,?,?,?)";
+		String sSQL="INSERT INTO SWIPE.RT_ACCESS_USER_TEMP (Emp_id,WorkShopNo,Start_Date,End_Date,Update_UserId,CardId,Remark) VALUES(upper(?),?,?,?,?,?,?)";
 		try {
 			if(ioWorkShopPW!=null) {
 
@@ -314,23 +331,24 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
 		//String sSQL="UPDATE SWIPE.RT_ACCESS_USER_TEMP SET WorkShopNo=?,Start_Date=?,End_Date=?,Update_Userid=?,Remark=? WHERE Emp_id=? and Enabled='Y'";
-		String sSQL="UPDATE SWIPE.RT_ACCESS_USER_TEMP SET WorkShopNo=?,Start_Date=?,End_Date=?,Update_Userid=?,Remark=?";
+		//String sSQL="UPDATE SWIPE.RT_ACCESS_USER_TEMP SET WorkShopNo=?,Start_Date=?,End_Date=?,Update_Userid=?,Remark=?";
+		String sSQL="UPDATE SWIPE.RT_ACCESS_USER_TEMP SET Start_Date=?,End_Date=?,Update_Userid=?,update_time=sysdate,Remark=?";
 		System.out.println("更新信息================="+ioWorkShopPW.getCardId());
 		try {
 			if (ioWorkShopPW.getEmp_id() == null||ioWorkShopPW.getEmp_id() == "" ||ioWorkShopPW.getEmp_id().equals("null")) {
 				System.out.println("=====================>>>>>>進入方法");
-				sSQL += "WHERE CardId=? and Enabled='Y'";
+				sSQL += "WHERE CardId=? and Enabled='Y' and WorkShopNo=?";
 				//if(ioWorkShopPW!=null) {
 					updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 						@Override
 						public void setValues(PreparedStatement arg0) throws SQLException {
 							// TODO Auto-generated method stub
-							arg0.setString(1, ioWorkShopPW.getWorkShopNo());
-							arg0.setString(2, ioWorkShopPW.getStart_Date());
-							arg0.setString(3, ioWorkShopPW.getEnd_Date());
-							arg0.setString(4, updateUser);
-							arg0.setString(5, ioWorkShopPW.getRemark());
-							arg0.setString(6, ioWorkShopPW.getCardId());
+							arg0.setString(1, ioWorkShopPW.getStart_Date());
+							arg0.setString(2, ioWorkShopPW.getEnd_Date());
+							arg0.setString(3, updateUser);
+							arg0.setString(4, ioWorkShopPW.getRemark());
+							arg0.setString(5, ioWorkShopPW.getCardId());
+							arg0.setString(6, ioWorkShopPW.getWorkShopNo());
 						}	
 					});
 					System.out.print(sSQL);
@@ -338,18 +356,18 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 				
 				//}	
 			}else {
-				sSQL += "WHERE Emp_id=? and Enabled='Y'";
+				sSQL += "WHERE Emp_id=? and Enabled='Y' and WorkShopNo=?";
 				//if(ioWorkShopPW!=null) {
 					updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 						@Override
 						public void setValues(PreparedStatement arg0) throws SQLException {
 							// TODO Auto-generated method stub
-							arg0.setString(1, ioWorkShopPW.getWorkShopNo());
-							arg0.setString(2, ioWorkShopPW.getStart_Date());
-							arg0.setString(3, ioWorkShopPW.getEnd_Date());
-							arg0.setString(4, updateUser);
-							arg0.setString(5, ioWorkShopPW.getRemark());
-							arg0.setString(6, ioWorkShopPW.getEmp_id());
+							arg0.setString(1, ioWorkShopPW.getStart_Date());
+							arg0.setString(2, ioWorkShopPW.getEnd_Date());
+							arg0.setString(3, updateUser);
+							arg0.setString(4, ioWorkShopPW.getRemark());
+							arg0.setString(5, ioWorkShopPW.getEmp_id());
+							arg0.setString(6, ioWorkShopPW.getWorkShopNo());
 						}	
 					});
 					System.out.print(sSQL);
