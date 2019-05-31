@@ -96,9 +96,15 @@ public class IOWorkShopPowerService extends Service<IOWorkShopPW>{
 		// TODO Auto-generated method stub
 		return iOWorkShopPowerDAO.checkEmpIdExistence(Emp_id);
 	}
+	//判斷同一工號和車間是否有數據
 	public boolean checkUserNameDuplicate(String Emp_id, String workshopNo) {
 		// TODO Auto-generated method stub
 		return iOWorkShopPowerDAO.checkUserNameDuplicate(Emp_id,workshopNo);
+	}
+	//checkCardIdDuplicate
+	public boolean checkCardIdDuplicate(String CardId, String workshopNo) {
+		// TODO Auto-generated method stub
+		return iOWorkShopPowerDAO.checkCardIdDuplicate(CardId,workshopNo);
 	}
 	//員工進出車間權限
 	public boolean addIOWorkShopPW(IOWorkShopPW[] ioWorkShopPW, String updateUser) {

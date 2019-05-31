@@ -74,14 +74,14 @@ public class IOSpecialWSEmpController {
 			if(iOSpecialWSEmpService.checkEmpIdExistence(Emp_id)) {
 				if(iOSpecialWSEmpService.checkUserNameDuplicate(Emp_id,WorkShopNo)){
 					checkResult.addProperty("StatusCode", "200");
-					checkResult.addProperty("Message", "此工號未設置保密車間臨時權限，可以新增此賬號!");
+					checkResult.addProperty("Message", "此工號未設置臨時權限，可以新增此賬號!");
 				}else{
 					checkResult.addProperty("StatusCode", "500");
-					checkResult.addProperty("Message", "此工號已設置保密車間臨時權限，請更改賬號！");
+					checkResult.addProperty("Message","工號"+Emp_id+ "已設置車間"+WorkShopNo+"的臨時權限，請更改賬號！");
 				}	
 			}else {
 				checkResult.addProperty("StatusCode", "500");
-				checkResult.addProperty("Message", "無此工號信息，請更改賬號！");
+				checkResult.addProperty("Message", "無工號為:"+Emp_id+"的信息，請更改賬號！");
 			}
 			
 		}
@@ -93,6 +93,34 @@ public class IOSpecialWSEmpController {
 		/*System.out.println(checkResult.toString());*/
 		return checkResult.toString();
 	}
+	//判斷同一卡號和車間是否有數據
+			@RequestMapping(value="/checkCardId.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+			@ResponseBody 
+			public String checkCardIdDuplicate(HttpSession session,@RequestParam("CardId")String CardId,@RequestParam("WorkshopNo")String WorkshopNo){
+				JsonObject checkResult=new JsonObject();	
+				String userDataCostId=(String) session.getAttribute("userDataCostId");
+				try{
+					ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+					iOSpecialWSEmpService = (IOSpecialWSEmpService) context.getBean("iOSpecialWSEmpService");
+					System.out.println("進入查詢同一卡號=======================>>>>>>>>>>");
+						if(iOSpecialWSEmpService.checkCardIdDuplicate(CardId,WorkshopNo)){
+							checkResult.addProperty("StatusCode", "200");
+							checkResult.addProperty("Message", "此卡號未設置臨時權限，可以新增此賬號!");
+						}else{
+							checkResult.addProperty("StatusCode", "500");
+							checkResult.addProperty("Message","卡號"+CardId+ "已設置車間"+WorkshopNo+"的臨時權限，請更改賬號！");
+						}	
+				
+					
+				}
+				catch(Exception ex){
+					logger.error("Check new Account info is failed, due to: ",ex);
+					checkResult.addProperty("StatusCode", "500");
+					checkResult.addProperty("Message", "檢查卡號是否置臨時權限，原因："+ex.toString());
+				}
+				/*System.out.println(checkResult.toString());*/
+				return checkResult.toString();
+			}
 	//設置員工保密車間臨時權限
 	@RequestMapping(value="/AddIOSpecialWSEmp.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 	@ResponseBody 
