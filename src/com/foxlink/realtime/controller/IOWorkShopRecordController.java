@@ -47,13 +47,19 @@ public class IOWorkShopRecordController {
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				iOWorkShopRecordService = (IOWorkShopRecordService) context.getBean("iOWorkShopRecordService");
 				Gson gson = new GsonBuilder().serializeNulls().create();
-
-				Page page = iOWorkShopRecordService.getRawRecordPage(userDataCostId,currentPage, empId,workShopNo, depId, costId, startDate, endDate,
-						recordStatus);
-				page.setList(iOWorkShopRecordService.FindSearchRawRecords(userDataCostId,currentPage, empId,workShopNo, depId, costId, startDate,
-						endDate, recordStatus, isShowAll));
-				
-				jsonResults = gson.toJson(page);
+				if(!recordStatus.equals("41")) {
+					System.out.println(123);
+					Page page = iOWorkShopRecordService.getRawRecordPage(userDataCostId,currentPage, empId,workShopNo, depId, costId, startDate, endDate,
+							recordStatus);
+					page.setList(iOWorkShopRecordService.FindSearchRawRecords(userDataCostId,currentPage, empId,workShopNo, depId, costId, startDate,
+							endDate, recordStatus, isShowAll));
+					jsonResults = gson.toJson(page);
+				}else {
+					System.out.println(456);
+					Page page = iOWorkShopRecordService.getRawRecordOtherPage(userDataCostId,currentPage,workShopNo, startDate, endDate,recordStatus);
+					page.setList(iOWorkShopRecordService.FindSearchOtherRawRecords(userDataCostId,currentPage,workShopNo, startDate,endDate, recordStatus, isShowAll));
+					jsonResults = gson.toJson(page);
+				}	
 			}
 			else{
 				JsonObject costIdJson=new JsonObject();

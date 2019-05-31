@@ -28,6 +28,8 @@ $(document).ready(function(){
 		}
 	});
 	
+	
+	
 	$('#setEmpIPBinding').click(function(){
 		button_onclick($('#setEmpIPBinding')[0]);
 		var EmpIpBinding=new Object(),errorMessage='';
@@ -125,7 +127,7 @@ $(document).ready(function(){
 		var pageSize=rawData.pageSize;
 		var executeResult=rawData["list"];
 		for(var i=0;i<executeResult.length;i++){
-			var	tableContents='<tr><td>'+executeResult[i]["deviceIP"]+'</td>'+
+			var	tableContents='<tr><td class="touch">'+executeResult[i]["deviceIP"]+'</td>'+
 					'<td>'+executeResult[i]["emp_id"]+'</td>'+
 //					'<td>'+executeResult[i]["Direction"]+'</td>'
 //					'<td>'++'</td>'+
@@ -135,11 +137,47 @@ $(document).ready(function(){
 					$('#EmpIPBindingTable tbody').append(tableContents);
 		}
 		refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize);
-	/*	console.log(currentPage);
-		console.log(totalRecord);
-		console.log(totalPage);
-		console.log(pageSize);*/
-		/*goPageY(currentPage,totalRecord,totalPage,pageSize);*/
+
+
+/*		$('EmpIPBindingTable tbody').find('td .touch').click(function(){
+			$('#deleteId .dlTable').append('<td>'+a+'</td>')
+		})*/
+		/*$('.touch').click(function(){
+//			$('#deleteId tbody').empty();
+			
+			var a = $(this).text();
+			var b = $(this).next().text();
+			console.log(a,b);
+			var list =[];
+			if($('#deleteId .dlTable').children().length==0){
+				$('#deleteId .dlTable').append('<tr><td>'+a+'</td><td>'+b+'</td></tr>');
+			}else{
+			$('#deleteId .dlTable').find('tr').each(function(i,e){
+//				console.log(i);
+				var dltr = {};
+				var child =$(this).children();
+				dltr.c = child.eq(0).text();
+				dltr.d = child.eq(1).text();
+				list.push(dltr);
+				console.log(list);
+				
+			})
+			var count=0;
+			for(var i=0;i<list.length;i++){
+				if((list[i].c==a)&&(list[i].d==b)){
+					count++;
+				}
+			}
+			if(count==0){
+				$('#deleteId .dlTable').append('<tr><td>'+a+'</td><td>'+b+'</td></tr>')
+			}
+			}
+			$('#deleteId .dlTable').append('<tr><td>'+a+'</td><td>'+b+'</td></tr>')
+		})
+		
+		$('.reset').on('click',()=>{
+			$('#deleteId .dlTable').find('tr').remove();
+		})*/
 		
 		$(".editBtn").click(function(){
 			var parentElement = $(this).parent().parent();
