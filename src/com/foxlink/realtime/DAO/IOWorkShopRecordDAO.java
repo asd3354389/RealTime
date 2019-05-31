@@ -241,4 +241,111 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
 		}
 		return searchRawRecord;
 	}
+
+	public int getTotalOtherRecord(String userDataCostId, String workShopNo, String startDate, String endDate,
+			String recordStatus) {
+		// TODO Auto-generated method stub
+		int totalRecord=-1;
+    	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_CONTROL_RECORD r  where 1=1";
+    	try {     		
+    		 List <Object> queryList=new  ArrayList<Object>();  
+    		if(!workShopNo.equals("")){
+  				sSQL+=" and r.WorkShopNo in(";  
+  				  String [] workShopNoArray = workShopNo.split(",");
+  		            for(int i=0;i<workShopNoArray.length;i++){
+  		            	sSQL+="'"+workShopNoArray[i].trim()+"'";
+  		                if(workShopNoArray.length-1!=i)
+  		                	sSQL+=",";
+  		                else
+  		                	sSQL+=") ";				                
+  		               }
+  			
+  			}
+ 			if(!startDate.equals("") && !endDate.equals("")){
+ 				sSQL+=" and r.SwipeCardTime >= to_date(?,'yyyy-MM-dd HH24:mi:ss') and r.SwipeCardTime< to_date(?,'yyyy-MM-dd HH24:mi:ss')";  
+ 				queryList.add(startDate);
+ 				queryList.add(endDate);
+ 			}
+ 	        
+ 			if(!recordStatus.equals("")){
+ 				sSQL+=" and r.RECORD_STATUS in(";  
+ 				  String [] recordStatusArray = recordStatus.split(",");
+ 		            for(int i=0;i<recordStatusArray.length;i++){
+ 		            	sSQL+="'"+recordStatusArray[i].trim()+"'";
+ 		            	 if(recordStatusArray.length-1!=i)
+  		                	sSQL+=",";
+  		                else
+  		                	sSQL+=") ";				
+ 		               }
+ 			}
+ 			 
+ 			
+ 		   totalRecord = jdbcTemplate.queryForObject(sSQL, queryList.toArray(), Integer.class);
+ 		   System.out.println(sSQL);
+    	  } catch (Exception ex) {
+    		  ex.printStackTrace();
+    		  }
+    	return totalRecord;
+	}
+
+	public List<IOWSRecord> FindSearchOtherRawRecords(String userDataCostId, int currentPage, int totalRecord,
+			String workShopNo, String startDate, String endDate, String recordStatus, Boolean isShowAll) {
+		// TODO Auto-generated method stub
+		List<IOWSRecord> searchRawRecord = null;
+		String sSQL = "select * from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from "
+				+ "(SELECT r.Emp_id,r.D_Cardid,r.WorkShopNo,'' AS NAME,'' as depid,'' as costId,to_char(r.SwipeCardTime,'yyyy-MM-dd HH24:mi:ss') swipeCardTime,r.Direction"
+				+ " FROM SWIPE.RT_ACCESS_CONTROL_RECORD r  where 1=1";
+		try {	
+			 List <Object> queryList=new  ArrayList<Object>();  
+
+			if(!workShopNo.equals("")){
+  				sSQL+=" and r.WorkShopNo in(";  
+  				  String [] workShopNoArray = workShopNo.split(",");
+  		            for(int i=0;i<workShopNoArray.length;i++){
+  		            	sSQL+="'"+workShopNoArray[i].trim()+"'";
+  		                if(workShopNoArray.length-1!=i)
+  		                	sSQL+=",";
+  		                else
+  		                	sSQL+=") ";				                
+  		               }
+  			
+  			}
+
+			if(!startDate.equals("") && !endDate.equals("")){
+				sSQL+=" and r.SwipeCardTime >= to_date(?,'yyyy-MM-dd HH24:mi:ss') and r.SwipeCardTime< to_date(?,'yyyy-MM-dd HH24:mi:ss')";  
+				queryList.add(startDate);
+				queryList.add(endDate);
+			}
+			
+			if(!recordStatus.equals("")){
+ 				sSQL+=" and r.RECORD_STATUS in(";  
+ 				  String [] recordStatusArray = recordStatus.split(",");
+ 		            for(int i=0;i<recordStatusArray.length;i++){
+ 		            	sSQL+="'"+recordStatusArray[i].trim()+"'";
+ 		                if(recordStatusArray.length-1!=i)
+ 		                	sSQL+=",";
+ 		                else
+ 		                	sSQL+=") ";		
+ 		                
+ 		               }
+ 			}
+			
+			if(!isShowAll){
+				Page page = new Page(currentPage, totalRecord);	  
+				int endIndex=page.getStartIndex() + page.getPageSize();
+				sSQL += " order by r.SwipeCardTime ) a ) where rnum > "+page.getStartIndex()+" and rnum <= "+ endIndex ;
+			}
+			else
+			{
+				sSQL += " order by r.SwipeCardTime ) a ) where 1=1";
+			}
+		    
+		    searchRawRecord = jdbcTemplate.query(sSQL,  queryList.toArray(), new QueryIOWSRecord());			    
+		    System.out.println(sSQL);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.error("Search IOWSRecord Record is failed",ex);
+		}
+		return searchRawRecord;
+	}
 }
