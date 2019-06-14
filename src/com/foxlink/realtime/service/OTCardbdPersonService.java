@@ -142,7 +142,7 @@ public class OTCardbdPersonService extends Service<Emp>{
 		return oTCardbdPersonDAO.UpdateBdOTCard(otCardbd,updateUser);
 	}
 
-	public boolean RelieveOTCard(OTCardBD otCardbd, String updateUser) {
+	public boolean RelieveOTCard(OTCardBD[] otCardbd, String updateUser) {
 		// TODO Auto-generated method stub
 		return oTCardbdPersonDAO.RelieveOTCard(otCardbd,updateUser);
 	}
@@ -163,7 +163,7 @@ public class OTCardbdPersonService extends Service<Emp>{
 	        return result.toString();
 	}
 
-	public boolean OTCardNbdPerson(OTCardBD otCardbd, String updateUser) {
+	public boolean OTCardNbdPerson(OTCardBD[] otCardbd, String updateUser) {
 		// TODO Auto-generated method stub
 		return oTCardbdPersonDAO.OTCardNbdPerson(otCardbd,updateUser);
 	}
@@ -171,6 +171,11 @@ public class OTCardbdPersonService extends Service<Emp>{
 	public boolean checkDcardDuplicate(String CostId, String D_CardId) {
 		// TODO Auto-generated method stub
 		return oTCardbdPersonDAO.checkDcardDuplicate(CostId,D_CardId);
+	}
+
+	public boolean checkData(OTCardBD otCardbd) {
+		// TODO Auto-generated method stub
+		return oTCardbdPersonDAO.checkData(otCardbd);
 	}
 
 

@@ -4,7 +4,7 @@ $(document).ready(function(){
 	ShowAllPersonList();
 	ShowWorkShop();
 	$("#setCostWorkShop").click(function(){
-		$('#setCostWorkShop').attr("disabled",true);
+		/*$('#setCostWorkShop').attr("disabled",true);*/
 		var Cost=$('#WorkShopCost').val();
 		var CostNo=Cost.split(",");
 		var WorkShopNo=$('#workShopNo').val();
@@ -98,7 +98,60 @@ $(document).ready(function(){
 		}
 	}
 })
+	$('.reset').on('click',()=>{
+		$('#deleteId .dlTable').find('tr').remove();
+	})
 	
+	$('.deleteIp').on('click',()=>{
+		var size = $('#deleteId .dlTable').children().length;
+		if($('#deleteId .dlTable').children().length==0){
+			alert("無數據可刪除!");
+		}else{
+			var relist =[];
+			$('#deleteId .dlTable').find('tr').each(function(i,e){
+				//				console.log(i);
+								var dltr = {};
+								var child =$(this).children();
+								dltr.WorkShopNo = child.eq(0).text();
+								dltr.CostId = child.eq(1).text();
+								relist.push(dltr);
+			})
+			console.log(relist);
+			var results=confirm("確定刪除表格内的"+size+"條綁定訊息 ?");
+			if(results==true){
+				$.ajax({
+					type:'POST',
+					contentType: "application/json",
+					url:'../ExceptionCost/RelieveExceCost',
+					data:JSON.stringify(relist),
+					dataType:'json',
+					error:function(e){
+						alert(e);
+					},
+					success:function(data){
+						 if(data!=null && data!=''){
+							 if(data.StatusCode=="200"){
+								 alert(data.Message);
+								 /*
+								var parentElement=$(this).parent().parent();
+								//刪除，所以將此列從畫面移除
+								parentElement.remove();
+								  */
+								 ShowAllPersonList();
+								 $('#deleteId .dlTable').empty();
+							 }
+							 else{
+								 alert(data.Message);
+							 }
+						 }else{
+							 alert('操作失敗!')
+						 }
+					}
+				});
+			}
+		}
+	})
+
 	$('#searchExceCostBtn').click(function(){
 		curPage = 1;
 		var queryCritirea=$('#queryCritirea option:selected').val();
@@ -208,16 +261,52 @@ $(document).ready(function(){
 		var executeResult=rawData["list"];
 		for(var i=0;i<executeResult.length;i++){
 			var	tableContents='<tr>'+
-					'<td>'+executeResult[i]["WorkShopNo"]+'</td>'+
+					'<td class="touch">'+executeResult[i]["WorkShopNo"]+'</td>'+
 					'<td>'+executeResult[i]["CostId"]+'</td>'
 					var enabled =executeResult[i].Enabled=="Y"?'已生效':'';		
 					tableContents+='<td>'+enabled+'</td>'+
-					'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>';
+					'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"></td>';
 				   tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
 					$('#Personbinding tbody').append(tableContents);
 		}
 		refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize);
+		
+		$('.touch').click(function(){	
+			$('.cancelBtn').click();
+			var a = $(this).text();
+			var b = $(this).next().text();
+	//		console.log(a,b);
+			var list =[];
+			if($('#deleteId .dlTable').children().length==0){
+				$('#deleteId .dlTable').append('<tr><td>'+a+'</td><td>'+b+'</td></tr>');
+			}else{
+				$('#deleteId .dlTable').find('tr').each(function(i,e){
+	//				console.log(i);
+					var dltr = {};
+					var child =$(this).children();
+					dltr.c = child.eq(0).text();
+					dltr.d = child.eq(1).text();
+					list.push(dltr);
+	//				console.log(list);
+					
+				})
+				var count=0;
+				for(var i=0;i<list.length;i++){
+					if((list[i].c==a)&&(list[i].d==b)){
+						count++;
+					}
+				}
+				if(count==0){
+					$('#deleteId .dlTable').append('<tr><td>'+a+'</td><td>'+b+'</td></tr>')
+				}
+			}
+			$('#deleteId .dlTable').find('tr').each(function(i,e){
+				$(this).click(function(){
+					$(e).remove();
+				})
+			})
+		})
 		
 		$(".editBtn").click(function(){
 			var parentElement = $(this).parent().parent();
@@ -281,7 +370,7 @@ $(document).ready(function(){
 							  if(data!=null && data!=''){
 								  if(data.StatusCode=="200"){
 									  alert(data.Message);
-									  $(parentElement).find('.editBtn,.deleteBtn').show();
+									  $(parentElement).find('.editBtn').show();
 									  $(parentElement).find('td').eq(0).html(User.WorkShopNo);
 									  $(parentElement).find('td').eq(1).html(User.CostId);
 									  $(parentElement).find('.confirmBtn,.cancelBtn').remove();
@@ -305,14 +394,14 @@ $(document).ready(function(){
 			
 			$('.cancelBtn').click(function(){
 				var parentElement=$(this).parent().parent();
-				$(parentElement).find('.editBtn,.deleteBtn').show();
+				$(parentElement).find('.editBtn').show();
 				$(parentElement).find('td').eq(0).html(WorkShopNo);
 				$(parentElement).find('td').eq(1).html(CostNo);
 				$(this).parent().find('.confirmBtn,.cancelBtn').remove();
 			})					
 		})
 		
-		$('.deleteBtn').click(function(){
+/*		$('.deleteBtn').click(function(){
 			var parentElement=$(this).parent().parent();
 			var CosttID=$(parentElement).find('td').eq(1).text();
 			var WorkShopNo=$(parentElement).find('td').eq(0).text();
@@ -351,7 +440,7 @@ $(document).ready(function(){
 					}
 				});
 			}
-		});
+		});*/
 		
 	}
 

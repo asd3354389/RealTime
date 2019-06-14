@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
@@ -165,7 +166,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 		return AllEmp;
 	}
 
-	public boolean checkDeviceipDuplicate(String Deviceip) {
+	public boolean checkDeviceipDuplicate(String Deviceip,String WorkShopNo) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.RT_DEVICE_INFO where Deviceip=? and ENABLED='Y'";
@@ -284,21 +285,28 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 				   return false;
 	}
 
-	public boolean DeleteIOCardMaIP(String Deviceip, String updateUser) {
+	public boolean DeleteIOCardMaIP(IOCardMachineIP[] ioCardMachineIP, String updateUser) {
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
 		String sSQL="update SWIPE.RT_DEVICE_INFO set ENABLED='N',Update_Userid=? WHERE Deviceip=? AND Enabled='Y'";
-		int disableRow=-1;
+		int disableRow=0;
 		try {
-			if(Deviceip!=null) {
-				disableRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+			if(ioCardMachineIP!=null) {
+				jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
+					
 					@Override
-					public void setValues(PreparedStatement arg0) throws SQLException {
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
 						// TODO Auto-generated method stub
-						arg0.setString(1, updateUser);
-						arg0.setString(2, Deviceip);
-					}	
+						ps.setString(1, updateUser);
+						ps.setString(2, ioCardMachineIP[i].getDeviceip());
+					}
+					
+					@Override
+					public int getBatchSize() {
+						// TODO Auto-generated method stub
+						return ioCardMachineIP.length;
+					}
 				});
 				transactionManager.commit(txStatus);
 			}
@@ -307,7 +315,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 			logger.error("Disable IOCardMaIP is failed",ex);
 			transactionManager.rollback(txStatus);
 		}
-		 if(disableRow > 0) 
+		 if(disableRow ==0) 
 			   return true; 
 		 else
 			 return false;

@@ -21,9 +21,11 @@ import com.foxlink.realtime.model.EmpInOTIdentifiedSheet;
 import com.foxlink.realtime.model.EmpInOTPendingSheet;
 import com.foxlink.realtime.model.Holiday;
 import com.foxlink.realtime.model.OTHourConfirm;
+import com.foxlink.realtime.model.OverTimePending;
 import com.foxlink.realtime.model.OverTimeSheet;
 import com.foxlink.realtime.model.Page;
 import com.foxlink.realtime.service.HolidayService;
+import com.foxlink.realtime.service.IOWorkShopPowerService;
 import com.foxlink.realtime.service.OTIdentifiedService;
 import com.foxlink.realtime.service.OTPendingService;
 import com.foxlink.realtime.service.OTService;
@@ -418,4 +420,34 @@ public class OverTimeController {
 		return jsonResults;
 	}
 	
+	/*判斷是否有修改頂崗時數權限*/
+	@RequestMapping(value="/checkdepId.show",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+	public @ResponseBody String checkdepId(){
+		String checkResult=null;	
+		OTService otService=null;
+		try{
+			otService=(OTService)context.getBean("OTService");
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			checkResult=gson.toJson(otService.checkDeptIdExistence());
+			
+		}
+		catch(Exception ex){
+			logger.error("Check new DeptId info is failed, due to: ",ex);
+			JsonObject exception=new JsonObject();
+			exception.addProperty("StatusCode", "500");
+			exception.addProperty("Message", "檢查此部門代碼是否有修改時數權限，原因："+ex.toString());
+			checkResult=exception.toString();
+		}
+		System.out.println(checkResult);
+		return checkResult;
+	}
+	
+	/*修改頂崗津貼時數*/
+	@RequestMapping(value="/updataBonus.show",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+	public @ResponseBody String updataBonus(HttpSession session,@RequestBody OverTimePending[] overTimePending){
+		OTService otService=null;
+		otService=(OTService)context.getBean("OTService");
+		String updateUser = (String)session.getAttribute("username");
+		return otService.updateBonus(updateUser,overTimePending);
+	}
 }

@@ -301,21 +301,28 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 				   return false;
 	}
 	
-	public boolean RelieveOTCard(OTCardBD otCardbd, String updateUser) {
+	public boolean RelieveOTCard(OTCardBD[] otCardbd, String updateUser) {
 		// TODO Auto-generated method stub	
-		int updateRow=-1;
+		int updateRow=0;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
 		String sSQL = "delete from SWIPE.DEPARTURE_CARD_INFO where enabled='Y' and CostId =? and D_CardId=?";
 		try {
 			if(otCardbd!=null) {
-				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+				jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
+					
 					@Override
-					public void setValues(PreparedStatement ps) throws SQLException {
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
 						// TODO Auto-generated method stub
-						ps.setString(1, otCardbd.getCostId());
-						ps.setString(2, otCardbd.getD_CardID());
-					}	
+						ps.setString(1, otCardbd[i].getCostId());
+						ps.setString(2, otCardbd[i].getD_CardID());
+					}
+					
+					@Override
+					public int getBatchSize() {
+						// TODO Auto-generated method stub
+						return otCardbd.length;
+					}
 				});
 				transactionManager.commit(txStatus);
 			}	
@@ -324,15 +331,15 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 			logger.error("delete BdOTCard is failed",ex);
 			transactionManager.rollback(txStatus);
 		}			
-			if(updateRow > 0) 
+			if(updateRow == 0) 
 				   return true; 
 				else
 				   return false;
 	}
 	
-	public boolean OTCardNbdPerson(OTCardBD otCardbd,String updateUser) {
+	public boolean OTCardNbdPerson(OTCardBD[] otCardbd,String updateUser) {
 		// TODO Auto-generated method stub
-		int result=-1;
+		int result=0;
 
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
@@ -340,15 +347,21 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 		String sSQL="INSERT INTO SWIPE.DEPARTURE_CARD_INFO_HT (D_CardId,CostId,Default_WorkShopNo,Update_UserId,enabled) VALUES(?,?,?,?,'N')";
 		try {
 			
-			result=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+			jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
 				
 				@Override
-				public void setValues(PreparedStatement ps) throws SQLException {
+				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					// TODO Auto-generated method stub
-					ps.setString(1, otCardbd.getD_CardID());
-					ps.setString(2, otCardbd.getCostId());
-					ps.setString(3, otCardbd.getDefault_WorkShop());
-					ps.setString(4, updateUser);	
+					ps.setString(1, otCardbd[i].getD_CardID());
+					ps.setString(2, otCardbd[i].getCostId());
+					ps.setString(3, otCardbd[i].getDefault_WorkShop());
+					ps.setString(4, updateUser);
+				}
+				
+				@Override
+				public int getBatchSize() {
+					// TODO Auto-generated method stub
+					return otCardbd.length;
 				}
 			});
 				transactionManager.commit(txStatus);
@@ -357,7 +370,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 			logger.error("HT表插入狀態為N數據失敗，原因："+ex);
 			transactionManager.rollback(txStatus);
 		}
-		if(result > 0) 
+		if(result == 0) 
 			   return true; 
 			else
 			   return false;
@@ -391,6 +404,22 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
     		  ex.printStackTrace();
     		  }
     	/*System.out.println(sSQL);*/
+    	 if(totalRecord > 0) 
+			   return false; 
+		 else
+			 return true;
+	}
+
+	public boolean checkData(OTCardBD otCardbd) {
+		// TODO Auto-generated method stub
+		int totalRecord=-1;
+    	String sSQL = "select count(*) FROM SWIPE.DEPARTURE_CARD_INFO where CostId=? and D_CardId=? and Default_WorkShopNo=? and Enabled = 'Y'";
+    	try {    	    	
+    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { otCardbd.getCostId(),otCardbd.getD_CardID(),otCardbd.getDefault_WorkShop()},Integer.class);	   	
+    	  } catch (Exception ex) {
+    		  ex.printStackTrace();
+    		  }
+    	System.out.println(totalRecord);
     	 if(totalRecord > 0) 
 			   return false; 
 		 else

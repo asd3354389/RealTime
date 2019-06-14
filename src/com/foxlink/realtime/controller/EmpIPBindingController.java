@@ -3,6 +3,7 @@ package com.foxlink.realtime.controller;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.hibernate.dialect.function.VarArgsSQLFunction;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -107,27 +108,30 @@ public class EmpIPBindingController {
 		return UpdateResult.toString();
 	}
 	
-	@RequestMapping(value="/deleteEmpIPBinding.do",method=RequestMethod.GET,produces="application/json;charset=utf-8")
+	@RequestMapping(value="/deleteEmpIPBinding.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String DeleteWorkShopNoRest(HttpSession session,@RequestParam("deviceIP")String deviceIP,@RequestParam("emp_id")String emp_id){
+	public String DeleteWorkShopNoRest(HttpSession session,@RequestBody EmpIpBinding[] empIpBindings){
 		JsonObject DisableResult=new JsonObject();
 		try{
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			empIPBindingService = (EmpIPBindingService) context.getBean("empIPBindingService");
-			String updateUser=(String) session.getAttribute("username");
-			if(empIPBindingService.DeleteEmpIPBinding(deviceIP,emp_id, updateUser)){
+			String updateUser=(String) session.getAttribute("username");		
+			for(int i = 0;i<empIpBindings.length;i++) {
+				System.out.println(empIpBindings[i].getDeviceIP());
+			}
+			if(empIPBindingService.DeleteEmpIPBinding(empIpBindings, updateUser)){
 				DisableResult.addProperty("StatusCode", "200");
-				DisableResult.addProperty("Message", "該員工綁定卡機ip已失效");
+				DisableResult.addProperty("Message", "員工綁定卡機ip已失效");
 			}
 			else{
 				DisableResult.addProperty("StatusCode", "500");
-				DisableResult.addProperty("Message", "刪除該員工綁定卡機ip發生錯誤");
+				DisableResult.addProperty("Message", "刪除員工綁定卡機ip發生錯誤");
 			}
 		}
 		catch(Exception ex){
 			logger.error("Disable the WorkShopNoRest info is failed, due to:",ex);
 			DisableResult.addProperty("StatusCode", "500");
-			DisableResult.addProperty("Message", "刪除該員工綁定卡機ip發生錯誤，原因:"+ex.toString());
+			DisableResult.addProperty("Message", "刪除員工綁定卡機ip發生錯誤，原因:"+ex.toString());
 		}		
 		return DisableResult.toString();
 	}

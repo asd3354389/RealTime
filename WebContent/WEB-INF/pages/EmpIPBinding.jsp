@@ -77,21 +77,21 @@
 					<div id="WorkshopNoRestInfoListPagination" align="right" style="height: 20;position:absolute; bottom: -20px;right: 0px;">
 					</div>
 				</div>
-				<!-- <div class="right" style="width:20%;height:730px;float:right;border:1px solid #f3f5f6;" >
+				<div class="right" style="width:20%;height:730px;float:right;border:1px solid #f3f5f6;" >
 					<div style="padding:10px 10px;overflow-y:auto;height: 650px;border-bottom: 1px solid #f3f5f6">
-						<table id="deleteId" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
+						<table id="deleteId" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;border-collapse:separate">
 							<thead>
 								<tr>
 									<th colspan='2'>卡機ip列表</th>
 								</tr>
 							</thead>
-							<tbody class='dlTable'">
-							 	
+							<tbody class='dlTable'>
 							</tbody>
 						</table>
 					</div>
+					<button class="deleteIp btn btn-sm btn-primary">刪除</button>
 					<button class="reset btn btn-sm btn-primary">清空</button>
-				</div> -->
+				</div> 
 			</div>
 			<jsp:include page="InsertNewEmpIPBinding.jsp" />
 		</div>

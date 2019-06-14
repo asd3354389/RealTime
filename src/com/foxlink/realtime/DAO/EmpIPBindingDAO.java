@@ -212,22 +212,29 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 				   return false;
 	}
 
-	public boolean DeleteEmpIPBinding(String deviceIP,String emp_id, String updateUser) {
+	public boolean DeleteEmpIPBinding(EmpIpBinding[] empIpBindings, String updateUser) {
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		String sSQL="update DEVICE_EMP_BINDING t set t.enabled = 'N',t.update_userid=? where t.deviceip = ? and t.emp_id = ? and t.enabled = 'Y'";
-		int disableRow=-1;
+		String sSQL="update DEVICE_EMP_BINDING t set t.enabled = 'N',t.update_userid=?,update_time=sysdate where t.deviceip = ? and t.emp_id = ? and t.enabled = 'Y'";
+		int disableRow=0;
 		try {
-			if(deviceIP!=null && emp_id!=null) {
-				disableRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+			if(empIpBindings!=null) {
+					jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
+					
 					@Override
-					public void setValues(PreparedStatement arg0) throws SQLException {
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
 						// TODO Auto-generated method stub
-						arg0.setString(1, updateUser);
-						arg0.setString(2, deviceIP);
-						arg0.setString(3, emp_id);
-					}	
+						ps.setString(1, updateUser);
+						ps.setString(2, empIpBindings[i].getDeviceIP());
+						ps.setString(3, empIpBindings[i].getEmp_id());
+					}
+					
+					@Override
+					public int getBatchSize() {
+						// TODO Auto-generated method stub
+						return empIpBindings.length;
+					}
 				});
 				transactionManager.commit(txStatus);
 			}
@@ -236,7 +243,7 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 			logger.error("Disable WorkshopNoRestInfo is failed",ex);
 			transactionManager.rollback(txStatus);
 		}
-		 if(disableRow > 0) 
+		 if(disableRow == 0) 
 			   return true; 
 		 else
 			 return false;

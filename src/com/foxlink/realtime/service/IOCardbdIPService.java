@@ -90,9 +90,9 @@ public class IOCardbdIPService extends Service<IOCardMachineIP>{
 		return AllDeip;
 	}
 
-	public boolean checkDeviceipDuplicate(String Deviceip) {
+	public boolean checkDeviceipDuplicate(String Deviceip,String WorkShopNo) {
 		// TODO Auto-generated method stub
-		return iOCardbdIPDAO.checkDeviceipDuplicate(Deviceip);
+		return iOCardbdIPDAO.checkDeviceipDuplicate(Deviceip,WorkShopNo);
 	}
 
 	public boolean setIOCardIP(IOCardMachineIP ioCardMachineIP, String updateUser) {
@@ -110,9 +110,9 @@ public class IOCardbdIPService extends Service<IOCardMachineIP>{
 		return iOCardbdIPDAO.UpdateRecord(ioCardMachineIP,updateUser);
 	}
 
-	public boolean DeleteIOCardMaIP(String Deviceip, String updateUser) {
+	public boolean DeleteIOCardMaIP(IOCardMachineIP[] ioCardMachineIP, String updateUser) {
 		// TODO Auto-generated method stub
-		return iOCardbdIPDAO.DeleteIOCardMaIP(Deviceip,updateUser);
+		return iOCardbdIPDAO.DeleteIOCardMaIP(ioCardMachineIP,updateUser);
 	}
 
 	public boolean setWorkShop(String secrecyWS, String updateUser, String status) {
