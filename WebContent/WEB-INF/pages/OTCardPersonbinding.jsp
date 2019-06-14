@@ -61,7 +61,7 @@
 					<h4>離崗卡與費用代碼綁定列表：</h4>
 			</div>
 			<div class="middle">
-				<div class="left" style="width:80%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+				<div class="left" style="width:70%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
 					<table id="Personbinding" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
 						<thead>
 							<tr>
@@ -78,6 +78,21 @@
 					<div id="PersonListPagination" align="right" style="height: 20;position:absolute; bottom: -5px;right: 0px;">
 					</div>
 				</div>
+				<div style="float:right;width:25%;height:730px;border:1px solid #f3f5f6;">
+						<div style="padding:10px 10px;overflow-y:auto;height:650px;border-bottom: 1px solid #f3f5f6">
+						<table id="deleteId" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;border-collapse:separate">
+							<thead>
+								<tr>
+									<th colspan='3'>離崗卡信息列表</th>
+								</tr>
+							</thead>
+							<tbody class='dlTable'>
+							</tbody>
+						</table>
+						</div>
+						<button class="deleteIp btn btn-sm btn-primary">刪除</button>
+						<button class="reset btn btn-sm btn-primary">清空</button>
+					</div>
 			<jsp:include page="InsertBdOTCard.jsp" />
 		</div>
 	</div>

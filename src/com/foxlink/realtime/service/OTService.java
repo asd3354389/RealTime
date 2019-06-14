@@ -6,9 +6,13 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.foxlink.realtime.DAO.OTDAO;
+import com.foxlink.realtime.model.EmpInOTPendingSheet;
 import com.foxlink.realtime.model.OTHourConfirm;
+import com.foxlink.realtime.model.OverTimePending;
 import com.foxlink.realtime.model.OverTimeSheet;
 import com.foxlink.realtime.model.QueryStatus;
+import com.foxlink.realtime.util.CommonUtils;
+import com.google.gson.JsonObject;
 
 public class OTService extends Service<OverTimeSheet> {
 	private static Logger logger=Logger.getLogger(OTService.class);
@@ -123,6 +127,27 @@ public class OTService extends Service<OverTimeSheet> {
 			logger.error("FindAllOTSheets is failed",ex);
 		}
 		return OTSheets;
+	}
+
+
+	public List<String> checkDeptIdExistence() {
+		// TODO Auto-generated method stub
+		return otDAO.FindAllRecordsByDepid();
+	}
+
+	public String updateBonus(String updateUser, OverTimePending[] overTimePending) {
+		// TODO Auto-generated method stub
+		JsonObject resultJson = new JsonObject();
+		int result = otDAO.updateBonus(updateUser,overTimePending);
+		if(result==0){
+			resultJson.addProperty("StatusCode", "200");
+			resultJson.addProperty("Message", "頂崗津貼時數修改成功");
+		}else{
+			resultJson.addProperty("StatusCode", "500");
+			resultJson.addProperty("Message", "頂崗津貼時數修改失敗");
+		}
+		//System.out.println(resultJson.toString());
+		return resultJson.toString();
 	}
 	
 	

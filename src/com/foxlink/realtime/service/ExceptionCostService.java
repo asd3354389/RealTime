@@ -85,6 +85,7 @@ public class ExceptionCostService extends Service<ExceptionCost>{
 		}
 		System.out.println(resultJson.toString());
 		return resultJson.toString();
+		
 	}
 
 	public Page getFindExcePage(int currentPage, String queryCritirea, String queryParam) {
@@ -113,7 +114,7 @@ public class ExceptionCostService extends Service<ExceptionCost>{
 		return exceptionCostDAO.UpdateExceCost(exceptionCost,updateUser);
 	}
 
-	public boolean RelieveExceCost(ExceptionCost exceptionCost, String updateUser) {
+	public boolean RelieveExceCost(ExceptionCost[] exceptionCost, String updateUser) {
 		// TODO Auto-generated method stub
 		return exceptionCostDAO.RelieveExceCost(exceptionCost,updateUser);
 	}

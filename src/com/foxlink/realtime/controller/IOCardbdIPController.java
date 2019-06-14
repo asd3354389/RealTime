@@ -71,29 +71,24 @@ public class IOCardbdIPController {
 		
 		@RequestMapping(value="/checkDeviceip.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 		@ResponseBody 
-		public String checkDeviceipDuplicate(HttpSession session,@RequestParam("Deviceip")String Deviceip){
+		public String checkDeviceipDuplicate(HttpSession session,@RequestParam("Deviceip")String Deviceip,@RequestParam("WorkShopNo")String WorkShopNo){
 			JsonObject checkResult=new JsonObject();	
 			String userDataCostId=(String) session.getAttribute("userDataCostId");
 			try{
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				iOCardbdIPService = (IOCardbdIPService) context.getBean("iOCardbdIPService");
-				if(iOCardbdIPService.checkMachineIPExistence(Deviceip)) {
-					if(iOCardbdIPService.checkDeviceipDuplicate(Deviceip)){
+					if(iOCardbdIPService.checkDeviceipDuplicate(Deviceip,WorkShopNo)){
 						checkResult.addProperty("StatusCode", "200");
-						checkResult.addProperty("Message", "此卡機IP未設置狀態，可以設置此卡機IP!");
+						checkResult.addProperty("Message", "此卡機IP未綁定車間設置狀態，可以設置此卡機IP!");
 					}else{
 						checkResult.addProperty("StatusCode", "500");
-						checkResult.addProperty("Message", "此卡機IP已設置狀態，請更改卡機IP！");
+						checkResult.addProperty("Message", "此卡機IP已綁定車間設置狀態，請更改卡機IP！");
 					}	
-				}else {
-					checkResult.addProperty("StatusCode", "500");
-					checkResult.addProperty("Message", "此卡機IP錯誤或沒有此卡機IP，請更改卡機IP！");
-				}
 			}	
 			catch(Exception ex){
 				logger.error("Check new Deviceip info is failed, due to: ",ex);
 				checkResult.addProperty("StatusCode", "500");
-				checkResult.addProperty("Message", "檢查卡機IP是否設置了狀態發生錯誤，原因："+ex.toString());
+				checkResult.addProperty("Message", "檢查卡機IP是否綁定車間設置了狀態發生錯誤，原因："+ex.toString());
 			}
 			/*System.out.println(checkResult.toString());*/
 			return checkResult.toString();
@@ -176,15 +171,15 @@ public class IOCardbdIPController {
 			return SetResult.toString();
 		}
 		
-		@RequestMapping(value="/deleteIOCardMaIP.do",method=RequestMethod.GET,produces="application/json;charset=utf-8")
+		@RequestMapping(value="/deleteIOCardMaIP.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 		@ResponseBody
-		public String DeleteIOCardMaIP(HttpSession session,@RequestParam("Deviceip")String Deviceip){
+		public String DeleteIOCardMaIP(HttpSession session,@RequestBody IOCardMachineIP[] ioCardMachineIP){
 			JsonObject DisableResult=new JsonObject();
 			try{
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				iOCardbdIPService = (IOCardbdIPService) context.getBean("iOCardbdIPService");
 				String updateUser=(String) session.getAttribute("username");
-				if(iOCardbdIPService.DeleteIOCardMaIP(Deviceip, updateUser)){
+				if(iOCardbdIPService.DeleteIOCardMaIP(ioCardMachineIP, updateUser)){
 					DisableResult.addProperty("StatusCode", "200");
 					DisableResult.addProperty("Message", "卡機IP狀態已失效");
 				}

@@ -40,6 +40,60 @@ $(document).ready(function(){
 		}
 	})
 	
+	$('.reset').on('click',()=>{
+		$('#deleteId .dlTable').find('tr').remove();
+	})
+	
+	$('.deleteIp').on('click',()=>{
+		var size = $('#deleteId .dlTable').children().length;
+		if($('#deleteId .dlTable').children().length==0){
+			alert("無數據可刪除!");
+		}else{
+			var relist =[];
+			$('#deleteId .dlTable').find('tr').each(function(i,e){
+				//				console.log(i);
+								var dltr = {};
+								var child =$(this).children();
+								dltr.Deviceip = child.eq(0).text();
+								dltr.WorkShopNo = child.eq(1).text();
+								relist.push(dltr);
+			})
+			console.log(relist);
+			var results=confirm("確定刪除表格内的"+size+"條綁定訊息 ?");
+			if(results==true){
+				$.ajax({
+					type:'POST',
+					contentType: "application/json",
+					url:'../IOCardBdIP/deleteIOCardMaIP.do',
+					data:JSON.stringify(relist),
+					dataType:'json',
+					error:function(e){
+						alert(e);
+					},
+					success:function(data){
+						 if(data!=null && data!=''){
+							 if(data.StatusCode=="200"){
+								 alert(data.Message);
+								 /*
+								var parentElement=$(this).parent().parent();
+								//刪除，所以將此列從畫面移除
+								parentElement.remove();
+								  */
+								 ShowAllIOCardMaIPList();
+								 $('#deleteId .dlTable').empty();
+							 }
+							 else{
+								 alert(data.Message);
+							 }
+						 }else{
+							 alert('操作失敗!')
+						 }
+					}
+				});
+			}
+		}
+	})
+	
 	$('#setIOCardMaIP').click(function(){
 		button_onclick($('#setIOCardMaIP')[0]);
 		var machine={},errorMessage='';
@@ -53,9 +107,7 @@ $(document).ready(function(){
 			errorMessage+='工號未填寫\n';
 		if(!re.test(machine["Deviceip"])){
 			errorMessage+='卡机IP不符合规范\n';
-		}
-//		checkDeviceipDuplicate(machine["Deviceip"]);
-		
+		}		
 		/*if(machine["WorkShop_Desc"]=='' || machine["WorkShop_Desc"]==null){
 			errorMessage+='未填寫卡機描述 \n';
 		}*/
@@ -65,7 +117,9 @@ $(document).ready(function(){
 		if(machine["Direction"]==="null" || machine["Direction"]=='')
 			errorMessage+='未選擇卡機狀態\n';
 		
-		if(errorMessage==''){
+		checkDeviceipDuplicate(machine["Deviceip"],machine["WorkShopNo"]);
+		
+		if(errorMessage==''&&isUserNameValid){
 			//新增綁定賬號
 			$.ajax({
 				type:'POST',
@@ -150,7 +204,7 @@ $(document).ready(function(){
 		var pageSize=rawData.pageSize;
 		var executeResult=rawData["list"];
 		for(var i=0;i<executeResult.length;i++){
-			var	tableContents='<tr><td>'+executeResult[i]["Deviceip"]+'</td>'+
+			var	tableContents='<tr><td class="touch">'+executeResult[i]["Deviceip"]+'</td>'+
 					'<td>'+executeResult[i]["WorkShopNo"]+'</td>'+
 					'<td style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+executeResult[i]["WorkShop_Desc"]+'</td>'
 					if(executeResult[i]["Direction"]=="I"){
@@ -166,17 +220,48 @@ $(document).ready(function(){
 					}else{
 						tableContents+='<td>'+iS_SPECIAL+'</td>';
 					}
-					tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>';
+					tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"></td>';
 				tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
 					$('#IOCardMaIPTable tbody').append(tableContents);
 		}
 		refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize);
-	/*	console.log(currentPage);
-		console.log(totalRecord);
-		console.log(totalPage);
-		console.log(pageSize);*/
-		/*goPageY(currentPage,totalRecord,totalPage,pageSize);*/
+	
+		$('.touch').click(function(){	
+			$('.cancelBtn').click();
+			var a = $(this).text();
+			var b = $(this).next().text();
+	//		console.log(a,b);
+			var list =[];
+			if($('#deleteId .dlTable').children().length==0){
+				$('#deleteId .dlTable').append('<tr><td>'+a+'</td><td>'+b+'</td></tr>');
+			}else{
+				$('#deleteId .dlTable').find('tr').each(function(i,e){
+	//				console.log(i);
+					var dltr = {};
+					var child =$(this).children();
+					dltr.c = child.eq(0).text();
+					dltr.d = child.eq(1).text();
+					list.push(dltr);
+	//				console.log(list);
+					
+				})
+				var count=0;
+				for(var i=0;i<list.length;i++){
+					if((list[i].c==a)&&(list[i].d==b)){
+						count++;
+					}
+				}
+				if(count==0){
+					$('#deleteId .dlTable').append('<tr><td>'+a+'</td><td>'+b+'</td></tr>')
+				}
+			}
+			$('#deleteId .dlTable').find('tr').each(function(i,e){
+				$(this).click(function(){
+					$(e).remove();
+				})
+			})
+		})
 		
 		$(".editBtn").click(function(){
 			var parentElement = $(this).parent().parent();
@@ -237,7 +322,7 @@ $(document).ready(function(){
 							  if(data!=null && data!=''){
 								  if(data.StatusCode=="200"){
 									  alert(data.Message);
-									  $(parentElement).find('.editBtn,.deleteBtn').show();
+									  $(parentElement).find('.editBtn').show();
 									  $(parentElement).find('td').eq(0).html(User.Deviceip);
 									  $(parentElement).find('td').eq(1).html(User.WorkShopNo);
 									  $(parentElement).find('td').eq(2).html(User.WorkShop_Desc);
@@ -264,7 +349,7 @@ $(document).ready(function(){
 			
 			$('.cancelBtn').click(function(){
 				var parentElement=$(this).parent().parent();
-				$(parentElement).find('.editBtn,.deleteBtn').show();
+				$(parentElement).find('.editBtn').show();
 				$(parentElement).find('td').eq(1).html(WorkShopNo);
 				$(parentElement).find('td').eq(2).html(WorkShop_Desc);
 				$(parentElement).find('td').eq(3).html(Direction);
@@ -272,7 +357,7 @@ $(document).ready(function(){
 			})					
 		})
 		
-		$('.deleteBtn').click(function(){
+		/*$('.deleteBtn').click(function(){
 			var parentElement=$(this).parent().parent();
 			var deleteDeviceip=$(parentElement).find('td').eq(0).text();
 			var results=confirm("確定刪除卡機IP為 "+deleteDeviceip+" 的狀態 ?");
@@ -288,11 +373,11 @@ $(document).ready(function(){
 						 if(data!=null && data!=''){
 							 if(data.StatusCode=="200"){
 								 alert(data.Message);
-								 /*
+								 
 								var parentElement=$(this).parent().parent();
 								//刪除，所以將此列從畫面移除
 								parentElement.remove();
-								  */
+								  
 								 ShowAllIOCardMaIPList();
 							 }
 							 else{
@@ -304,7 +389,7 @@ $(document).ready(function(){
 					}
 				});
 			}
-		});
+		});*/
 	}
 	
 	
@@ -471,13 +556,14 @@ $(document).ready(function(){
 		});   
 	}	
 	
-	 function checkDeviceipDuplicate(Deviceip){
+	 function checkDeviceipDuplicate(Deviceip,WorkShopNo){
 			if(Deviceip!=""){
 				$.ajax({
 					type:'POST',
 					url:'../IOCardBdIP/checkDeviceip.do',
 					data:{
-						Deviceip:Deviceip
+						Deviceip:Deviceip,
+						WorkShopNo:WorkShopNo
 					},
 					async:false,
 					error:function(e){
