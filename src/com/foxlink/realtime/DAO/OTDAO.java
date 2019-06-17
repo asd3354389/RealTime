@@ -395,7 +395,7 @@ public class OTDAO extends DAO<OverTimeSheet> {
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					// TODO Auto-generated method stub
 					ps.setString(1, overTimePending[i].getBonus());
-					ps.setInt(2, overTimePending[i].getID());
+					ps.setString(2, overTimePending[i].getID());
 					ps.setString(3, overTimePending[i].getOverTimeDate());
 				}
 				

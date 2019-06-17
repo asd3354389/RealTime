@@ -1,14 +1,15 @@
 package com.foxlink.realtime.model;
 
 public class OverTimePending {
-	private int ID;
+	private String ID;
 	private String Bonus;
 	private String OverTimeDate;
 
-	public int getID() {
+	
+	public String getID() {
 		return ID;
 	}
-	public void setID(int iD) {
+	public void setID(String iD) {
 		ID = iD;
 	}
 	public String getBonus() {
