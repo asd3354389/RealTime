@@ -259,7 +259,7 @@ $(document).ready(function(){
 	$('.OTHrsSubmitBtn').click(function(){
 		OverTimeType=$('#overtimeType').find('option:selected').val();
 		OverTimeType1=$('#overtimeCal').find('option:selected').val();
-		WorkContent=$('#workcontent').val();
+		WorkContent=$('#workcontent').val().trim();
 		OverTimeCal=$('#overtimeCal').find('option:selected').val();
 		selectedOTEmpIDs=GetOTSubmitEmps();//取得選取的人員id數組
 		var newHour = [];

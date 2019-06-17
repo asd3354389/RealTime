@@ -64,7 +64,7 @@
 			        <a id="addNewIOWorkShopPWOther" role="button" href="#insertIOWorkShopPWOther"class="btn btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 300px;font-size: 14px;"><i class="glyphicon glyphicon-plus"></i>創建台籍人員或供應商信息</a>
 			</div>
 			<div class="middle">
-				<div class="left" style="width:90%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+				<div class="left" style="width:90%;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
 					<table id="IOSpecialWSEmpTable" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
 						<thead>
 							<tr>

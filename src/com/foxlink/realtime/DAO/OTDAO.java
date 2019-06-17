@@ -167,7 +167,7 @@ public class OTDAO extends DAO<OverTimeSheet> {
 		SimpleJdbcCall call=null;
 		Map<String, Object> executeResult=null;
 		try {
-			call=new SimpleJdbcCall(jdbcTemplate).withProcedureName("CAL_PENDING_OVERTIME").
+			call=new SimpleJdbcCall(jdbcTemplate).withProcedureName("CAL_PENDING_OVERTIME_D").
 					declareParameters(new SqlParameter("VCLASS_NO",Types.VARCHAR),
 							new SqlParameter("VRC_NO",Types.VARCHAR),
 							new SqlParameter("VWORK_SHOP_NO",Types.VARCHAR),
