@@ -43,7 +43,7 @@ public class OTService extends Service<OverTimeSheet> {
 		boolean EmpsOTHoursConfirmed=false;
 		try {
 			if(otHourConfirm!=null)
-				EmpsOTHoursConfirmed=otDAO.ConfirmEmpOTInfosByDepid(otHourConfirm,isAbNormal);
+				EmpsOTHoursConfirmed=otDAO.ConfirmEmpOTInfos(otHourConfirm,isAbNormal);
 		}
 		catch(Exception ex) {
 			logger.error("ConfirmEmpsOTHours is failed",ex);
@@ -56,7 +56,7 @@ public class OTService extends Service<OverTimeSheet> {
 		boolean EmpsOTHoursConfirmed=false;
 		try {
 			if(otHourConfirm!=null)
-				EmpsOTHoursConfirmed=otDAO.ConfirmEmpOTInfos(otHourConfirm,isAbNormal);
+				EmpsOTHoursConfirmed=otDAO.ConfirmEmpOTInfosByDepid(otHourConfirm,isAbNormal);
 		}
 		catch(Exception ex) {
 			logger.error("ConfirmEmpsOTHours is failed",ex);

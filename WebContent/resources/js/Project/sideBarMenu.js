@@ -100,6 +100,11 @@
 				"icon" : "icon-nav",
 				"url" : "ExceptionCost/ShowExceptionCost"
 
+			},{
+				"menuname" : "十四休一維護",
+				"icon" : "icon-nav",
+				"url" : "FourteenRO/ShowFourteenRO"
+
 			}]
 		},{
 

@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false,isCardIdValid=false,empmessage='';
 	var reg = new RegExp("^[0-9]{10}$");
-	ShowAllIOSpecialWSEmp();
+	ShowAllFourteenRO();
 	ShowWorkShop();
 	
 	 var CLICKTAG = 0;
@@ -35,47 +35,33 @@ $(document).ready(function(){
 		 $("#workShopOther").selectpicker('refresh');
      
 	});
-	$('#searchIOSpecialWSEmp').click(function(){
+	$('#searchFourteenRO').click(function(){
 		var queryCritirea=$('#queryCritirea option:selected').val();
 		var queryParam=$('#queryParam').val();
 		if(queryParam==""){
-			ShowAllIOSpecialWSEmp();
+			ShowAllFourteenRO();
 		}else{
 			getPersonList(curPage,queryCritirea,queryParam)	
 		}
 	});
 	
 	//設置員工保密車間權限
-	$('#setIOWorkShopPW').click(function(){
+	$('#setFourteenRO').click(function(){
 		
-		 $("#setIOWorkShopPW").attr("disabled", "disabled");
-		 setTimeout(function(){ $("#setIOWorkShopPW").attr("disabled",false); }, 100);
-//		button_onclick($('#setIOWorkShopPW')[0]);
+		 $("#setFourteenRO").attr("disabled", "disabled");
+		 setTimeout(function(){ $("#setFourteenRO").attr("disabled",false); }, 100);
+//		button_onclick($('#setFourteenRO')[0]);
 		var Start =$('#dpick1').val().replace(/\//g,'-');
 		var End =$('#dpick2').val().replace(/\//g,'-');
 //		console.log(Start,End);+
 		var errorMessage='',list=[],WorkShopNoStr;
 
-		var Emp_id=$('#inputUserName').val();
+		var Costid=$('#inputCostid').val();
 		
-		var WorkShopNo = $('#workShop').val();
+		var arr= Costid.split(",");
 		
-		var arr= Emp_id.split(",");
-//		ioWsPw["Emp_id"]=$('#inputUserName').val();
-//		ioWsPw["WorkShopNo"]=$('#workShop option:selected').val();
-//		ioWsPw["Start_Date"]= Start;
-//		ioWsPw["End_Date"]= End;
-//		console.log(ioWsPw);
-		
-		if(Emp_id==null || Emp_id=="")
-			errorMessage+='工號未填寫\n';
-		
-		/*checkEmpidDuplicate(ioWsPw["Emp_id"],ioWsPw["WorkShopNo"]);*/
-		
-		/*if(machine["WorkShop_Desc"]=='' || machine["WorkShop_Desc"]==null){
-			errorMessage+='未填寫卡機描述 \n';
-		}*/
-		
+		if(Costid==null || Costid=="")
+			errorMessage+='費用代碼未填寫\n';
 		
 		if(Start==null || Start=="")
 			errorMessage+='為選擇生效起始日期\n';
@@ -83,43 +69,24 @@ $(document).ready(function(){
 		if(End==null || End=="")
 			errorMessage+='為選擇生效結束日期\n';
 		if (arr.length >0) {
-//			var nary=arr.sort();
-//			for(var i=0;i<arr.length;i++){
-//			if (nary[i].toUpperCase()==nary[i+1].toUpperCase()){
-//			alert("工號不能重複,重複工號："+nary[i]);
-//			
-//			return;
-//			}
-//			}
 			if (isRepeat(arr)) {
-				errorMessage+='工號不能重複\n';
-				//alert("工號不能重複");
+				errorMessage+='費用代碼不能重複\n';
 			}
 			for (var i = 0; i < arr.length; i++) {
 				if (arr[i]==null||arr[i]==""||arr[i]=='') {
 					errorMessage+='未正確填寫工號\n';
 				}else{
-					if(WorkShopNo==null || WorkShopNo==""){
-						errorMessage+='未選擇使用的車間\n';
-					}else{
-					for(var j=0;j<WorkShopNo.length;j++){ 
 								    var ioWsPw={};
-								    ioWsPw["Emp_id"] = arr[i];
-						  			ioWsPw["WorkShopNo"]=WorkShopNo[j];
-						  			ioWsPw["Start_Date"]= Start;
-						  			ioWsPw["End_Date"]= End;
+								    ioWsPw["Costid"] = arr[i];
+						  			ioWsPw["Start_date"]= Start;
+						  			ioWsPw["End_date"]= End;
 						  			list.push(ioWsPw)
-						  			checkEmpidDuplicate(arr[i],ioWsPw["WorkShopNo"]);
 						  			console.log(ioWsPw);
 						  			//checkEmpidDuplicate(arr[i],ioWsPw["WorkShopNo"]);
 						  			//alert(isUserNameValid);
 //						  			if (!isUserNameValid) {
 //						  				empmessage+='工號'+arr[i]+'不存在\n';
 //									}
-						 	
-						}
-					}
-					
 				}
 				
 			}
@@ -131,11 +98,11 @@ $(document).ready(function(){
 			$.ajax({
 				type:'POST',
 				contentType: "application/json",
-				url:'../IOSpecialWSEmp/AddIOSpecialWSEmp.do',
+				url:'../FourteenRO/AddFourteenRO.do',
 				data:JSON.stringify(list),
 				dataType:'json',
 				success:function(data){
-					$('#setIOWorkShopPW').prop("disabled",false);
+					$('#setFourteenRO').prop("disabled",false);
 					 if(data!=null && data!=''){
 						 if(data.StatusCode=="200"){
 							 $('#inputUserName').val('');
@@ -145,8 +112,8 @@ $(document).ready(function(){
 							 $('#workShop').selectpicker('val',['noneSelectedText']);
 							 $("#workShop").selectpicker('refresh');
 							 alert(data.Message);
-							 ShowAllIOSpecialWSEmp();
-							// $("#setIOWorkShopPW").attr("enabled", "enabled");
+							 ShowAllFourteenRO();
+							// $("#setFourteenRO").attr("enabled", "enabled");
 							/* alert(data.Message);			
 							 $('#inputUserName').val('');
 							 $('#inputChineseName').val('');
@@ -160,7 +127,7 @@ $(document).ready(function(){
 						 }
 						 else{
 							 alert(data.Message);
-							// $("#setIOWorkShopPW").attr("enabled", "enabled");
+							// $("#setFourteenRO").attr("enabled", "enabled");
 						 }
 					 }else{
 						 alert('設置保密車間臨時進出權限失敗!');
@@ -183,120 +150,14 @@ $(document).ready(function(){
 			}
 	    }	
 	})
-		 //設置廠商和台籍人員臨時權限
-	$('#setIOWorkShopPWOther').click(function(){
-		
-		 $("#setIOWorkShopPWOther").attr("disabled", "disabled");
-		 setTimeout(function(){ $("#setIOWorkShopPWOther").attr("disabled",false); }, 100);
-//		button_onclick($('#setIOWorkShopPW')[0]);
-		var Start =$('#dpick1Other').val().replace(/\//g,'-');
-		var End =$('#dpick2Other').val().replace(/\//g,'-');
-//		console.log(Start,End);+
-		var errorMessage='',list=[],WorkShopNoStr;
-        var CardId=$('#inputCardId').val();
-		
-		var WorkShopNo = $('#workShopOther').val();
-		
-		var arr= CardId.split(",");
-
-		if(CardId==null || CardId==""){
-				errorMessage+='卡號未填寫\n';
-			}
-//			if(!reg.test(CardId)){
-//				errorMessage+='卡號不符合規格！必須是10位數\n';
-//			}
-			if(Start==null || Start==""){
-				errorMessage+='未選擇生效起始日期\n';
-			}
-				
-			
-			if(End==null || End==""){
-				errorMessage+='未選擇生效結束日期\n';
-			}
-				
-			
-			if ($('#inputRemark').val()==null || $('#inputRemark').val()=="") {
-				errorMessage+='備註未填寫\n';
-			}
-		
-			
-		//console.log(ioWsPw);
-		for (var i = 0; i < arr.length; i++) {
-			if(!reg.test(arr[i])){
-				errorMessage+='卡號不符合規格！必須是10位數\n';
-			}
-			if(WorkShopNo==null || WorkShopNo==""){
-				errorMessage+='未選擇使用的車間\n';
-			}else{
-				for(var j=0;j<WorkShopNo.length;j++){
-					 
-				    var ioWsPw={};
-				    ioWsPw["CardId"] = arr[i];
-		  			ioWsPw["WorkShopNo"]=WorkShopNo[j];
-		  			ioWsPw["Start_Date"]= Start;
-		  			ioWsPw["End_Date"]= End;
-		  			ioWsPw["Remark"]= $('#inputRemark').val();
-		  			list.push(ioWsPw)
-		  			
-		  			checkCardIdDuplicate(CardId,ioWsPw["WorkShopNo"]);
-		  		
-		  		}
-			}
-			 
-		}
-
 	
-		if(errorMessage==''&& isCardIdValid){
-			//新增綁定賬號
-			//alert(ioWsPw["Remark"]);
-			console.log(ioWsPw);
-			//AddIOWorkShopPWOther
-			$.ajax({
-				type:'POST',
-				contentType: "application/json",
-				url:'../IOSpecialWSEmp/AddIOSpecialWSEmpOther.do',
-				data:JSON.stringify(list),
-				dataType:'json',
-				success:function(data){
-					$('#setIOWorkShopPWOther').prop("disabled",false);
-					 if(data!=null && data!=''){
-						 if(data.StatusCode=="200"){
-							 $('#inputCardId').val('');
-							 $('#dpick1Other').val('');
-							 $('#dpick2Other').val('');
-							 $('#inputRemark').val('');
-							 $('#workShopOther').selectpicker('val',['noneSelectedText']);
-							 $("#workShopOther").selectpicker('refresh');
-							 alert(data.Message); 
-							 ShowAllIOSpecialWSEmp();	
-							// $("#setIOWorkShopPWOther").attr("enabled", "enabled");
-						 }
-						 else{
-							 alert(data.Message);
-							 //$("#setIOWorkShopPWOther").attr("enabled", "enabled");
-						 }
-					 }else{
-						 alert('設置車間臨時進出權限失敗!');
-					 }
-				},
-				error:function(e){
-					alert('設置車間臨時進出權限發生錯誤');
-				}
-			});
-		}
-	    else{
-	    	if(errorMessage.length>0 ||errorMessage!='' ){
-		    alert(errorMessage);		
-			event.preventDefault(); //preventDefault() 方法阻止元素发生默认的行为（例如，当点击提交按钮时阻止对表单的提交）。
-	    	}
-	    }	
-	});
+	
 	function checkEmpidDuplicate(Emp_id,WorkShopNo){
 		
 		if(Emp_id!=""){
 			$.ajax({
 				type:'POST',
-				url:'../IOSpecialWSEmp/checkUserName.do',
+				url:'../FourteenRO/checkUserName.do',
 				data:{
 					Emp_id:Emp_id,
 					WorkShopNo:WorkShopNo
@@ -330,7 +191,7 @@ $(document).ready(function(){
 		if(CardId!=""){
 			$.ajax({
 				type:'POST',
-				url:'../IOSpecialWSEmp/checkCardId.do',
+				url:'../FourteenRO/checkCardId.do',
 				data:{
 					CardId:CardId,
 					WorkshopNo:WorkshopNo
@@ -356,10 +217,10 @@ $(document).ready(function(){
 			});
 		}
 	}
-	function ShowAllIOSpecialWSEmp(){
+	function ShowAllFourteenRO(){
 		$.ajax({
 			type:'POST',
-			url:'../IOSpecialWSEmp/ShowAllIOSpecialWSEmp',
+			url:'../FourteenRO/ShowAllFourteenRO',
 			data:{curPage:curPage,queryCritirea:queryCritirea,queryParam:queryParam},
 			error:function(e){
 //				alert('找不到資料');
@@ -375,7 +236,7 @@ $(document).ready(function(){
 					else{
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0)	
-							ShowAllIOSpecialWSEmpTable(rawData);
+							ShowAllFourteenROTable(rawData);
 						else{
 							/*$('.left').css('height','727px');*/
 							alert('暫無保密車間資料');
@@ -386,26 +247,23 @@ $(document).ready(function(){
 		});	
 	}
 	
-	function ShowAllIOSpecialWSEmpTable(rawData){
-		$('#IOSpecialWSEmpTable tbody').empty();
+	function ShowAllFourteenROTable(rawData){
+		$('#FourteenROable tbody').empty();
 		var currentPage=rawData.currentPage;
 		var totalRecord=rawData.totalRecord;
 		var totalPage=rawData.totalPage;
 		var pageSize=rawData.pageSize;
 		var executeResult=rawData["list"];
 		for(var i=0;i<executeResult.length;i++){
-			var	tableContents='<tr><td>'+executeResult[i]["Emp_id"]+'</td>'+
-					'<td>'+executeResult[i]["WorkShopNo"]+'</td>'+
-					'<td>'+executeResult[i]["Start_Date"]+'</td>'+
-					'<td>'+executeResult[i]["End_Date"]+'</td>'+
-					'<td>'+executeResult[i]["CardId"]+'</td>'+
-					'<td>'+executeResult[i]["Remark"]+'</td>'+
+			var	tableContents='<tr><td>'+executeResult[i]["Costid"]+'</td>'+
+					'<td>'+executeResult[i]["Start_date"]+'</td>'+
+					'<td>'+executeResult[i]["End_date"]+'</td>'+
 //					'<td>'+executeResult[i]["Direction"]+'</td>'
 //					'<td>'++'</td>'+
 					'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>';
 				tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
-					$('#IOSpecialWSEmpTable tbody').append(tableContents);
+					$('#FourteenROable tbody').append(tableContents);
 		}
 		refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize);
 	/*	console.log(currentPage);
@@ -416,58 +274,41 @@ $(document).ready(function(){
 		
 		$(".editBtn").click(function(){
 			var parentElement = $(this).parent().parent();
-			var Emp_id=$(parentElement).find('td').eq(0).text();
+			var Costid=$(parentElement).find('td').eq(0).text();
 			
-			var WorkShopNo=$(parentElement).find('td').eq(1).text();
-			/*$(parentElement).find('td').eq(1).html('<select class="changeWorkShopNo input-small"></select>');
-			ShowWorkShopNo('changeWorkShopNo');
-			$('.changeWorkShopNo').val(WorkShopNo);*/
-			var Start_Date=$(parentElement).find('td').eq(2).text();
-			$(parentElement).find('td').eq(2).html("<input id=\"dpick3\" class=\"Wdate\" type=\"text\" name=\"OVERTIMEDATE\" value="+Start_Date+" onfocus=\"WdatePicker({dateFmt:\'yyyy-MM-dd\',minDate:\'%y-\\#{%M-2}-01\',maxDate:\'#F{$dp.$D(\\\'dpick4\\\')}\'})\" autocomplete=\"off\" />");
+			var Start_Date=$(parentElement).find('td').eq(1).text();
+			$(parentElement).find('td').eq(1).html("<input id=\"dpick3\" class=\"Wdate\" type=\"text\" name=\"OVERTIMEDATE\" value="+Start_Date+" onfocus=\"WdatePicker({dateFmt:\'yyyy-MM-dd\',minDate:\'%y-\\#{%M-2}-01\',maxDate:\'#F{$dp.$D(\\\'dpick4\\\')}\'})\" autocomplete=\"off\" />");
 			
-			var End_Date=$(parentElement).find('td').eq(3).text();
-			$(parentElement).find('td').eq(3).html("<input id=\"dpick4\" class=\"Wdate\" type=\"text\" name=\"OVERTIMEDATEEnd\" value="+End_Date+" onfocus=\"WdatePicker({dateFmt:\'yyyy-MM-dd\',minDate:\'#F{$dp.$D(\\\'dpick3\\\')}\'})\" autocomplete=\"off\" />");
+			var End_Date=$(parentElement).find('td').eq(2).text();
+			$(parentElement).find('td').eq(2).html("<input id=\"dpick4\" class=\"Wdate\" type=\"text\" name=\"OVERTIMEDATEEnd\" value="+End_Date+" onfocus=\"WdatePicker({dateFmt:\'yyyy-MM-dd\',minDate:\'#F{$dp.$D(\\\'dpick3\\\')}\'})\" autocomplete=\"off\" />");
 
-			//編輯備註
-			//編輯備註
-			if ($(parentElement).find('td').eq(0).text()==null ||$(parentElement).find('td').eq(0).text()==""||$(parentElement).find('td').eq(0).text()=="null") {
-				
-				var Remark = $(parentElement).find('td').eq(5).text();
-				$(parentElement).find('td').eq(5).html('<input id=\"Remark1\"  type="text" class="changeRemark input-small" maxlength="60" value="'+Remark+'">');
-			}
 			
-//			$(parentElement).children().find('.editBtn .deleteBtn').hide();
-			$(parentElement).find('td').eq(6).append('<a class="confirmBtn btn btn-xs btn-link" role="button">確認</a>'+
+			$(parentElement).find('td').eq(3).append('<a class="confirmBtn btn btn-xs btn-link" role="button">確認</a>'+
 	        		'<a class="cancelBtn btn btn-xs btn-link" role="button">取消</a>');
 			$(parentElement).find('.editBtn,.deleteBtn').hide();
 			$('.confirmBtn').click(function(){
 				var parentElement=$(this).parent().parent();
-				var IOWorkShopPW=new Object(),errorMessage='';
+				var FourteenRO=new Object(),errorMessage='';
 				var Direction=$(parentElement).find('.changeStatus option:selected').eq(0).text();
-				IOWorkShopPW.Emp_id=Emp_id;
-				IOWorkShopPW.WorkShopNo=WorkShopNo;
-				IOWorkShopPW.Start_Date=$(parentElement).find('td').eq(2).find('input').val();
-				IOWorkShopPW.End_Date=$(parentElement).find('td').eq(3).find('input').val();
-				IOWorkShopPW.CardId = $(parentElement).find('td').eq(4).text();
-				IOWorkShopPW.Remark = $("#Remark1").val();
+				FourteenRO.Costid=Costid;
+				FourteenRO.Start_date=$(parentElement).find('td').eq(1).find('input').val();
+				FourteenRO.End_date=$(parentElement).find('td').eq(2).find('input').val();
 
 //				if(IOWorkShopPW.Emp_id==="null" || IOWorkShopPW.Emp_id=='')
 //					errorMessage+='工號未填寫\n';
-				if(IOWorkShopPW.WorkShopNo==="null" || IOWorkShopPW.WorkShopNo=='')
-					errorMessage+='車間名稱未填寫\n';
-				if(IOWorkShopPW.Start_Date==="null" || IOWorkShopPW.Start_Date=='')
+				if(FourteenRO.Costid==="null" || FourteenRO.Costid=='')
+					errorMessage+='費用代碼未填寫\n';
+				if(FourteenRO.Start_date==="null" || FourteenRO.Start_date=='')
 					errorMessage+='生效起始日期未填寫\n';
-				if(IOWorkShopPW.End_Date==="null" || IOWorkShopPW.End_Date=='')
+				if(FourteenRO.End_date==="null" || FourteenRO.End_date=='')
 					errorMessage+='生效結束日期未填寫\n';
-				if(IOWorkShopPW.Remark==="null" || IOWorkShopPW.Remark=='')
-					errorMessage+='備註未填寫\n\n';
 				
 				if(errorMessage==''){	
 					$.ajax({
 						type:'POST',
 						contentType: "application/json",
-						url:'../IOSpecialWSEmp/UpdateIOSpecialWSEmp.do',
-						data:JSON.stringify(IOWorkShopPW),
+						url:'../FourteenRO/UpdateFourteenRO.do',
+						data:JSON.stringify(FourteenRO),
 						dataType:'json',
 						error:function(e){
 							alert(e);
@@ -477,9 +318,8 @@ $(document).ready(function(){
 								  if(data.StatusCode=="200"){
 									  alert(data.Message);
 									  $(parentElement).find('.editBtn,.deleteBtn').show();
-									  $(parentElement).find('td').eq(2).html(IOWorkShopPW.Start_Date);
-									  $(parentElement).find('td').eq(3).html(IOWorkShopPW.End_Date);
-									  $(parentElement).find('td').eq(5).html(IOWorkShopPW.Remark);
+									  $(parentElement).find('td').eq(1).html(FourteenRO.Start_date);
+									  $(parentElement).find('td').eq(2).html(FourteenRO.End_date);
 									  $(parentElement).find('.confirmBtn,.cancelBtn').remove();
 								  }
 								  else{
@@ -502,25 +342,22 @@ $(document).ready(function(){
 			$('.cancelBtn').click(function(){
 				var parentElement=$(this).parent().parent();
 				$(parentElement).find('.editBtn,.deleteBtn').show();
-				$(parentElement).find('td').eq(2).html(Start_Date);
-				$(parentElement).find('td').eq(3).html(End_Date);
-				$(parentElement).find('td').eq(5).html(Remark);
+				$(parentElement).find('td').eq(1).html(Start_Date);
+				$(parentElement).find('td').eq(2).html(End_Date);
 				$(this).parent().find('.confirmBtn,.cancelBtn').remove();
 			})					
 		})
 		
 		$('.deleteBtn').click(function(){
 			var parentElement=$(this).parent().parent();
-			var Emp_id=$(parentElement).find('td').eq(0).text();
-			var WorkShopNo=$(parentElement).find('td').eq(1).text();
-			var deleteCardId = $(parentElement).find('td').eq(4).text();
+			var Costid=$(parentElement).find('td').eq(0).text();
 			//alert("卡号"+deleteCardId);
 			var results=confirm("確定刪除此條數據?");
 			if(results==true){
 				$.ajax({
 					type:'GET',
-					url:'../IOSpecialWSEmp/deleteIOSpecialWSEmp.do',
-					data:{Emp_id:Emp_id,WorkShopNo:WorkShopNo,CardID:deleteCardId},
+					url:'../FourteenRO/deleteFourteenRO.do',
+					data:{Costid:Costid},
 					error:function(e){
 						alert(e);
 					},
@@ -533,7 +370,7 @@ $(document).ready(function(){
 								//刪除，所以將此列從畫面移除
 								parentElement.remove();
 								  */
-								 ShowAllIOSpecialWSEmp();
+								 ShowAllFourteenRO();
 							 }
 							 else{
 								 alert(data.Message);
@@ -550,7 +387,7 @@ $(document).ready(function(){
 	
 	
 	function refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize){
-		$('#IOSpecialWSEmpListPagination').empty();
+		$('#FourteenROListPagination').empty();
 		var paginationElement='頁次：'+currentPage+'/'+totalPage +'&nbsp;每页:&nbsp;'+pageSize+'&nbsp;共&nbsp;'+totalRecord+'&nbsp;條&nbsp;';
 		if(currentPage==1)
 			paginationElement+='<a href ="javascript:return false;">首页</a>';		  
@@ -570,7 +407,7 @@ $(document).ready(function(){
 		else
 			paginationElement+='<a href ="javascript:return false;">下一頁</a>';
 		
-		$('#IOSpecialWSEmpListPagination').append(paginationElement);
+		$('#FourteenROListPagination').append(paginationElement);
 		
 		$('.firstPage').click(function(){
 			curPage=1;
@@ -621,7 +458,7 @@ $(document).ready(function(){
 	function getPersonList(curPage,queryCritirea,queryParam){
 		$.ajax({
 			type:'POST',
-			url:'../IOSpecialWSEmp/ShowAllIOSpecialWSEmp',
+			url:'../FourteenRO/ShowAllFourteenRO',
 			data:{curPage:curPage,queryCritirea:queryCritirea,queryParam:queryParam},
 			error:function(e){
 				alert('找不到資料');
@@ -636,7 +473,7 @@ $(document).ready(function(){
 					else{
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0){
-							ShowAllIOSpecialWSEmpTable(rawData);
+							ShowAllFourteenROTable(rawData);
 							$('#queryParam').val('');
 						}
 						else{
