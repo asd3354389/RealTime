@@ -114,7 +114,7 @@
 						<thead>
 							<tr>	
 							<!-- <input type="checkbox" style="float: left;margin-left: 0px" > -->
-							   	<th>勾選</th>				
+							   	<th><input type="checkbox" id="AllCheck">全選</th>				
 								<th>線組別代碼</th>						
 							</tr>
 						</thead>

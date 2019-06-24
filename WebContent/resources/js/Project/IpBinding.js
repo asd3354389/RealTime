@@ -26,6 +26,30 @@ $(function(){
 				
 		});
 		
+		$('#AllCheck').click(function(){
+			 var checkALL = document.getElementById("AllCheck");
+		      var items = $("#DeptNobinding .spTable").find('input');
+		      checkAllBox(checkALL,items); 
+		})	
+		
+		function checkAllBox(checkALL,items){
+			 if(checkALL.checked==true){
+		            //checked判断是否选中
+		            for(var i=0;i<items.length;i++)
+		            {
+		                var box=items.get(i);
+		                box.checked=true;
+		                
+		            }
+			 }else{
+				 for(var i=0;i<items.length;i++)
+		            {
+		                var box=items.get(i);
+		                box.checked=false;
+		            }
+			 }
+		}
+		
 		$('.reset').on('click',()=>{
 			$('#deleteId .dlTable').find('tr').remove();
 		})	
@@ -59,7 +83,7 @@ $(function(){
 					success:function(data){
 						 if(data!=null && data!=''){
 							 if(data.StatusCode=="200"){
-								 alert(data.Message);
+								 
 								 /*
 								var parentElement=$(this).parent().parent();
 								//刪除，所以將此列從畫面移除
@@ -67,10 +91,12 @@ $(function(){
 								  */
 								 getSelectIpList(curPage,queryCritirea,queryParam);
 								 $('#deleteId .dlTable').empty();
+								 alert(data.Message);
 							 }
 							 else{
-								 alert(data.Message);
+								 
 								 getSelectIpList(curPage,queryCritirea,queryParam);
+								 alert(data.Message);
 							 }
 						 }else{
 							 alert('操作失敗!')
