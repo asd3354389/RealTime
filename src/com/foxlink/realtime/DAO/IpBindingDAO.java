@@ -765,4 +765,41 @@ public class IpBindingDAO extends DAO<IpBinding>{
 					
 				}
 	}
+	public boolean RelieveDeviceIP(IpBinding[] ipBinding, String updateUser) {
+		// TODO Auto-generated method stub
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);
+		String sSQL = "UPDATE SWIPE.DEVICE_DEPT_BINDING  SET ENABLED = 'N' ,UPDATE_USERID = ? WHERE DEVICEIP = ? AND ENABLED = 'Y' AND DEPTID = ?";
+		int disableRow=0;
+		try {
+			  if (ipBinding!=null) {
+				  jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
+						
+						@Override
+						public void setValues(PreparedStatement ps, int i) throws SQLException {
+							// TODO Auto-generated method stub
+							ps.setString(1, updateUser);
+							ps.setString(2, ipBinding[i].getDEVICEIP());
+							ps.setString(3, ipBinding[i].getDEPTID());
+						}
+						
+						@Override
+						public int getBatchSize() {
+							// TODO Auto-generated method stub
+							return ipBinding.length;
+						}
+					});
+				  transactionManager.commit(txStatus);
+			}	
+		} catch (Exception ex) {
+			// TODO: handle exception
+			logger.error("Disable WorkShopExceCostId is failed",ex);
+			transactionManager.rollback(txStatus);
+		}
+		
+		 if(disableRow == 0) 
+			   return true; 
+		 else
+			 return false;
+	}
 }

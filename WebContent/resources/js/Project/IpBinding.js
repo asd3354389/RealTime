@@ -25,6 +25,88 @@ $(function(){
 					
 				
 		});
+		
+		$('#AllCheck').click(function(){
+			 var checkALL = document.getElementById("AllCheck");
+		      var items = $("#DeptNobinding .spTable").find('input');
+		      checkAllBox(checkALL,items); 
+		})	
+		
+		function checkAllBox(checkALL,items){
+			 if(checkALL.checked==true){
+		            //checked判断是否选中
+		            for(var i=0;i<items.length;i++)
+		            {
+		                var box=items.get(i);
+		                box.checked=true;
+		                
+		            }
+			 }else{
+				 for(var i=0;i<items.length;i++)
+		            {
+		                var box=items.get(i);
+		                box.checked=false;
+		            }
+			 }
+		}
+		
+		$('.reset').on('click',()=>{
+			$('#deleteId .dlTable').find('tr').remove();
+		})	
+		
+		$('.deleteIp').on('click',()=>{
+		var size = $('#deleteId .dlTable').children().length;
+		if($('#deleteId .dlTable').children().length==0){
+			alert("無數據可刪除!");
+		}else{
+			var relist =[];
+			$('#deleteId .dlTable').find('tr').each(function(i,e){
+				//				console.log(i);
+								var dltr = {};
+								var child =$(this).children();
+								dltr.DEVICEIP = child.eq(0).text();
+								dltr.DEPTID = child.eq(1).text();
+								relist.push(dltr);
+			})
+			console.log(relist);
+			var results=confirm("確定刪除表格内的"+size+"條綁定訊息 ?");
+			if(results==true){
+				$.ajax({
+					type:'POST',
+					contentType: "application/json",
+					url:'../IpBinding/RelieveDeviceIP',
+					data:JSON.stringify(relist),
+					dataType:'json',
+					error:function(e){
+						alert(e);
+					},
+					success:function(data){
+						 if(data!=null && data!=''){
+							 if(data.StatusCode=="200"){
+								 
+								 /*
+								var parentElement=$(this).parent().parent();
+								//刪除，所以將此列從畫面移除
+								parentElement.remove();
+								  */
+								 getSelectIpList(curPage,queryCritirea,queryParam);
+								 $('#deleteId .dlTable').empty();
+								 alert(data.Message);
+							 }
+							 else{
+								 
+								 getSelectIpList(curPage,queryCritirea,queryParam);
+								 alert(data.Message);
+							 }
+						 }else{
+							 alert('操作失敗!')
+						 }
+					}
+				});
+			}
+		}
+	})
+		
 		//changebdOTMoreIp
 		//點擊綁定多個線組別代碼
 		$('#MorechangebdOT').click(function(){	
@@ -419,14 +501,14 @@ $(function(){
 		var executeResult=rawData["list"];
 		for(var i=0;i<executeResult.length;i++){
 			var	tableContents='<tr>'+
-					'<td>'+executeResult[i]["DEVICEIP"]+'</td>'+
+					'<td class="touch">'+executeResult[i]["DEVICEIP"]+'</td>'+
 					'<td>'+executeResult[i]["DEPTID"]+'</td>';
 					//'<td>'+executeResult[i]["UPDATE_USERID"]+'</td>';
 //					+
 //					'<td>'+obj[i].ENABLED+'</td>';
 			var enabled =executeResult[i]["ENABLED"]=="Y"?'已生效':'';		
 			tableContents+='<td>'+enabled+'</td>'
-		       +'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>'
+		       +'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"></td>'
 				tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
 					$('#Personbinding tbody').append(tableContents);
@@ -434,6 +516,42 @@ $(function(){
 		
 		refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize);
 		//點擊編輯按鈕
+		
+		$('.touch').click(function(){	
+			$('.cancelBtn').click();
+			var a = $(this).text();
+			var b = $(this).next().text();
+	//		console.log(a,b);
+			var list =[];
+			if($('#deleteId .dlTable').children().length==0){
+				$('#deleteId .dlTable').append('<tr><td>'+a+'</td><td>'+b+'</td></tr>');
+			}else{
+				$('#deleteId .dlTable').find('tr').each(function(i,e){
+	//				console.log(i);
+					var dltr = {};
+					var child =$(this).children();
+					dltr.c = child.eq(0).text();
+					dltr.d = child.eq(1).text();
+					list.push(dltr);
+	//				console.log(list);
+					
+				})
+				var count=0;
+				for(var i=0;i<list.length;i++){
+					if((list[i].c==a)&&(list[i].d==b)){
+						count++;
+					}
+				}
+				if(count==0){
+					$('#deleteId .dlTable').append('<tr><td>'+a+'</td><td>'+b+'</td></tr>')
+				}
+			}
+			$('#deleteId .dlTable').find('tr').each(function(i,e){
+				$(this).click(function(){
+					$(e).remove();
+				})
+			})
+		})
 		
 		$(".editBtn").click(function(){
 			
@@ -477,7 +595,7 @@ $(function(){
 							  if(data!=null && data!=''){
 								  if(data.StatusCode=="200"){
 									  alert(data.Message);
-									  $(parentElement).find('.editBtn,.deleteBtn').show();									 
+									  $(parentElement).find('.editBtn').show();									 
 									  $(parentElement).find('td').eq(1).html(Dept_Id);								 
 									  $(parentElement).find('.confirmBtn,.cancelBtn').remove();
 								  }
@@ -502,7 +620,7 @@ $(function(){
 			
 			$('.cancelBtn').click(function(){
 				var parentElement=$(this).parent().parent();
-				$(parentElement).find('.editBtn,.deleteBtn').show();
+				$(parentElement).find('.editBtn').show();
 				$(parentElement).find('td').eq(1).html(DeptId);
 				$(this).parent().find('.confirmBtn,.cancelBtn').remove();
 			})					

@@ -26,10 +26,10 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 	public int getTotalRecord(String queryCritirea, String queryParam, String updateUser, String userDataCostId) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
-    	String sSQL = "select count(*) FROM SWIPE.DEPARTURE_CARD_INFO a ,(select DISTINCT(t.costid) from DEPT_RELATION t";
+    	String sSQL = "select count(*) FROM SWIPE.DEPARTURE_CARD_INFO where enabled='Y'";
     	try {
     		List <Object> queryList=new  ArrayList<Object>();
-    		if(!userDataCostId.equals("ALL")){
+    		/*if(!userDataCostId.equals("ALL")){
     			String strIdArray[] = userDataCostId.split("\\*");
 				StringBuffer idsStr = new StringBuffer();
 				for (int i = 0; i < strIdArray.length; i++) {
@@ -38,26 +38,17 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 					}
 					idsStr.append("'").append(strIdArray[i]).append("'");
 				}
-				sSQL+=" where t.Costid in("+idsStr+")";
-				if(queryCritirea.equals("Depid")){
-					sSQL+=" and t.Depid = ?";  
-				}else if(queryCritirea.equals("Costid")){
-					sSQL+=" and t.Costid = ?";  
-				}
-				else{
-					sSQL+="";
-				}
-			}else {
-				if(queryCritirea.equals("Depid")){
-					sSQL+=" where t.Depid = ?";  
-				}else if(queryCritirea.equals("Costid")){
-					sSQL+=" where t.Costid = ?";  
-				}
-				else{
-					sSQL+="";
-				}
+				sSQL+=" and Costid in("+idsStr+")";
+    		}*/
+			if(queryCritirea.equals("D_CardID")){
+					sSQL+=" and D_CardID = ?";  
+			}else if(queryCritirea.equals("Costid")){
+					sSQL+=" and Costid = ?";  
 			}
-    		sSQL += ")b where a.CostId = b.costid and a.enabled='Y' ";
+			else{
+					sSQL+="";
+			}
+
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
@@ -76,9 +67,10 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 		// TODO Auto-generated method stub
 		List<OTCardBD> AllEmp = null;
 		// TODO Auto-generated method stub
-		String sSQL = "select * from(select c.*,rownum rn from (select a.d_cardid, a.CostId,b.costid CostNo,a.default_workshopno,a.enabled FROM SWIPE.DEPARTURE_CARD_INFO a ,(select DISTINCT(t.costid) from DEPT_RELATION t";
+		String sSQL = "select * from(select c.*,rownum rn from (select a.d_cardid, a.CostId,a.default_workshopno,a.enabled FROM SWIPE.DEPARTURE_CARD_INFO a where a.enabled='Y'";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
+	/*		System.out.println(userDataCostId);
 			if(!userDataCostId.equals("ALL")){
 				String strIdArray[] = userDataCostId.split("\\*");
 				StringBuffer idsStr = new StringBuffer();
@@ -88,28 +80,20 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 					}
 					idsStr.append("'").append(strIdArray[i]).append("'");
 				}
-				sSQL+=" where Costid in("+idsStr+")";
-				 if(queryCritirea.equals("Depid")){
-						sSQL+=" and Depid = ?";  
-					}else if(queryCritirea.equals("Costid")){
-						sSQL+=" and Costid = ?";  
-					}
-					else{
-						sSQL+="";
-					}
-			}else {
-				 if(queryCritirea.equals("Depid")){
-						sSQL+=" where Depid = ?";  
-					}else if(queryCritirea.equals("Costid")){
-						sSQL+=" where Costid = ?";  
-					}
-					else{
-						sSQL+="";
-					}
+				sSQL+=" and a.Costid in("+idsStr+")";
+			}*/
+			if(queryCritirea.equals("D_CardID")){
+					sSQL+=" and a.D_CardID = ?";  
+			}else if(queryCritirea.equals("Costid")){
+					sSQL+=" and a.Costid = ?";  
 			}
+			else{
+					sSQL+="";
+			}
+			
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
-		    sSQL += " order by t.costid)b where a.CostId = b.costid and a.enabled='Y')c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	    
+		    sSQL += ")c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	    
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }

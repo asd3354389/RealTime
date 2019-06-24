@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.foxlink.realtime.model.ExceptionCost;
 import com.foxlink.realtime.model.IOCardMachineIP;
 import com.foxlink.realtime.model.IpBinding;
 import com.foxlink.realtime.model.Page;
+import com.foxlink.realtime.service.ExceptionCostService;
 import com.foxlink.realtime.service.IOCardbdIPService;
 import com.foxlink.realtime.service.IpBindingService;
 import com.foxlink.realtime.service.OTCardbdPersonService;
@@ -121,7 +123,7 @@ public class IpBindingController {
 			
 			return UpdateResult.toString();
 		}
-		//刪除
+	/*	//刪除
 		@RequestMapping(value="/deleteBindingIP.do",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 		@ResponseBody
 		public String DeleteIOCardMaIP(HttpSession session,@RequestParam("Deviceip")String Deviceip,@RequestParam("DeptId")String DeptId){
@@ -146,7 +148,7 @@ public class IpBindingController {
 				DisableResult.addProperty("Message", "電腦IP狀態發生錯誤，原因:"+ex.toString());
 			}		
 			return DisableResult.toString();
-		}
+		}*/
 		
 		//顯示費用代碼
 		@RequestMapping(value="/ShowCostNo",method=RequestMethod.POST,produces="application/json;charset=utf-8")
@@ -165,4 +167,29 @@ public class IpBindingController {
 			ipBindingService = (IpBindingService) context.getBean("ipBindingService");
 	        return ipBindingService.ShowDeptNo(CostId);
 	    }
+		
+		@RequestMapping(value="/RelieveDeviceIP",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		@ResponseBody
+		public String RelieveExceCost(HttpSession session,@RequestBody IpBinding[] ipBinding) {
+			JsonObject DisableResult=new JsonObject();
+			try {
+				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+				String updateUser = (String)session.getAttribute("username");
+				ipBindingService = (IpBindingService) context.getBean("ipBindingService");
+				if(ipBindingService.RelieveDeviceIP(ipBinding, updateUser)){
+						DisableResult.addProperty("StatusCode", "200");
+						DisableResult.addProperty("Message", "卡機IP綁定綫組別代碼已失效");
+				}else{
+						DisableResult.addProperty("StatusCode", "500");
+						DisableResult.addProperty("Message", "解除卡機IP綁定綫組別代碼發生錯誤");
+				}
+				
+		}
+		catch(Exception ex){
+			logger.error("Disable the ExceptionCost info is failed, due to:",ex);
+			DisableResult.addProperty("StatusCode", "500");
+			DisableResult.addProperty("Message", "解除卡機IP綁定綫組別代碼已發生錯誤，原因:"+ex.toString());
+		}		
+		return DisableResult.toString();
+		}
 }
