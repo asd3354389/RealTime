@@ -237,4 +237,11 @@
 	<bean id="exceptionCostService" class="com.foxlink.realtime.service.ExceptionCostService">
 		<property name="exceptionCostDAO" ref="exceptionCostDAO" />
 	</bean>
+	
+	<bean id="fourteenRODAO" class="com.foxlink.realtime.DAO.FourteenRODAO"
+		parent="dAO">
+	</bean>
+	<bean id="fourteenROService" class="com.foxlink.realtime.service.FourteenROService">
+		<property name="fourteenRODAO" ref="fourteenRODAO" />
+	</bean>
 </beans>
