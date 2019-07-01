@@ -24,7 +24,7 @@
 				"icon" : "icon-nav",
 				"url" : "ShowCheckOverTime15min"
 			},{
-				"menuname" : "忘卡人员查询",
+				"menuname" : "全天無刷卡人员查询",
 				"icon" : "icon-nav",
 				"url" : "ShowCheckForgetCard"
 			},{

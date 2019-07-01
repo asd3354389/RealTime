@@ -13,6 +13,7 @@ $(document).ready(function(){
 	var overTimeEmps=new Array();
 	checkPwTime();
 	var checkdepid;
+	var modifyEmpBound=new Array();
 	init();
 	GetHoliday();
 	
@@ -57,11 +58,12 @@ $(document).ready(function(){
 	$('#selectedAllEmps').change(function(){
 		if(this.checked){
 			$('#OTPendingEmpTable tbody tr').each(function(){
+				var id = $(this).children().eq(2).text();
 				var overTimehour = $(this).children().eq(9).text();
 				//var dghour = $(this).children().eq(11).text();
 				var depid=$(this).children().eq(4).text();
 				var dghour;
-				if(checkdepid.indexOf(depid)!=-1){
+				if(modifyEmpBound.indexOf(id)!=-1){
 					  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
 				}else{
 					 dghour = $(this).children().eq(11).text();
@@ -351,7 +353,11 @@ $(document).ready(function(){
 	
 	function ShowPendingEmpList(EmployeeInfos,isInit){
 		var HTMLElement;
-		
+		var PendingEmpsList=new Array();
+		for(var i=0;i<EmployeeInfos.length;i++){
+			PendingEmpsList.push(EmployeeInfos[i].employeeID);
+		}
+		CheckModifyEmp(PendingEmpsList);
 		$('#OTPendingEmpTable tbody').empty();
 		var j=1;
 		for(var i=0;i<EmployeeInfos.length;i++){
@@ -370,6 +376,7 @@ $(document).ready(function(){
 				'<td>0</td>'+
 				'<td></td>'+
 				'<td>0</td>'+
+				'<td></td>'+
 				'<td>未審核</td></tr>';				
 			}
 			else{
@@ -385,7 +392,7 @@ $(document).ready(function(){
 				'<td>'+EmpInfo.overTimeHours+'</td>'+
 				'<td>'+OverTimeTypeText+'</td>';
 				//'<td>'+EmpInfo.bonus+'</td>'+
-				if(checkdepid.indexOf(EmpInfo.deptID)!=-1){
+				if(modifyEmpBound.indexOf(EmpInfo.employeeID)!=-1){
 					HTMLElement+='<td><select><option>'+EmpInfo.bonus+'</option>';
 					if(EmpInfo.bonus!=0){
 						HTMLElement+='<option>0</option></select>';
@@ -528,12 +535,13 @@ $(document).ready(function(){
 		var selectedEmpIDs=new Array();
 		/*將已勾選人員的工號存入Array*/
 		$('#OTPendingEmpTable tbody .selectedEmp:checked').each(function(){
+			var id = $(this).children().eq(2).text();
 			var xhr=$(this).parent().parent();		
 			 var overTimehour = $(xhr).children().eq(9).text();
 			// var dghour = $(xhr).children().eq(11).text();
 			 var depid=$(xhr).children().eq(4).text();
 			 var dghour;
-			 if(checkdepid.indexOf(depid)!=-1){
+			 if(modifyEmpBound.indexOf(id)!=-1){
 				  dghour = $(xhr).children().eq(11).find('option:selected').eq(0).text();
 			 }else{
 				 dghour = $(xhr).children().eq(11).text();
@@ -605,6 +613,27 @@ $(document).ready(function(){
 			success:function(data){	
 				 if(data!=null && data!=''){
 					 checkdepid=data;
+			}else{
+				console.log(123);
+				}
+			}
+		});
+	}
+	
+	function CheckModifyEmp(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmp.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBound=data;
+					 console.log(modifyEmpBound);
 			}else{
 				console.log(123);
 				}

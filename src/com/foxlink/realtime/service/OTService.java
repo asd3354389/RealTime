@@ -12,6 +12,7 @@ import com.foxlink.realtime.model.OverTimePending;
 import com.foxlink.realtime.model.OverTimeSheet;
 import com.foxlink.realtime.model.QueryStatus;
 import com.foxlink.realtime.util.CommonUtils;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class OTService extends Service<OverTimeSheet> {
@@ -148,6 +149,11 @@ public class OTService extends Service<OverTimeSheet> {
 		}
 		//System.out.println(resultJson.toString());
 		return resultJson.toString();
+	}
+
+	public List<String> checkModifyEmp(String[] empList) {
+		// TODO Auto-generated method stub
+		return otDAO.checkModifyEmp(empList);
 	}
 	
 	

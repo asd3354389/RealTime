@@ -450,4 +450,28 @@ public class OverTimeController {
 		String updateUser = (String)session.getAttribute("username");
 		return otService.updateBonus(updateUser,overTimePending);
 	}
+	
+	/*判斷是否有修改頂崗時數權限*/
+	@RequestMapping(value="/checkModifyEmp.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+	public @ResponseBody String checkModifyEmp(@RequestBody String[] empList){
+		String checkResult=null;	
+		OTService otService=null;
+		for(int i = 0;i<empList.length;i++){
+			System.out.println("empList:"+empList[i]);
+		}
+		try{
+			otService=(OTService)context.getBean("OTService");
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			checkResult=gson.toJson(otService.checkModifyEmp(empList));
+		}
+		catch(Exception ex){
+			logger.error("Check new DeptId info is failed, due to: ",ex);
+			JsonObject exception=new JsonObject();
+			exception.addProperty("StatusCode", "500");
+			exception.addProperty("Message", "檢查此部門代碼是否有修改時數權限，原因："+ex.toString());
+			checkResult=exception.toString();
+		}
+		System.out.println(checkResult);
+		return checkResult;
+	}
 }
