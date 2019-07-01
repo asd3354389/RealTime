@@ -20,6 +20,7 @@ import com.foxlink.realtime.model.OverTimeSheet;
 import com.foxlink.realtime.model.objectMapper.OTSheetMapper;
 import com.foxlink.realtime.model.objectMapper.OTSheetNoRCMapper;
 import com.foxlink.realtime.util.CommonUtils;
+import com.google.gson.JsonElement;
 
 import oracle.jdbc.OracleTypes;
 
@@ -412,5 +413,29 @@ public class OTDAO extends DAO<OverTimeSheet> {
 			result=1;
 		}
 		return result;
+	}
+
+	public List<String> checkModifyEmp(String[] empList) {
+		// TODO Auto-generated method stub
+		List<String>AllDept = null;
+		String sSQL="select a.id from csr_employee a,BONUS_DEPT b "
+				+ "where (a.deptid = b.deptid or a.costid = b.costid) and a.isonwork = '0' and b.modify_allowed = 'Y'"
+				+ " and  a.id in (";
+		try {
+			StringBuffer idsStr = new StringBuffer();
+			for (int i = 0; i < empList.length; i++) {
+				if (i > 0) {
+					idsStr.append(",");
+				}
+				idsStr.append("'").append(empList[i]).append("'");
+			}
+			sSQL+=idsStr+")";
+			AllDept=jdbcTemplate.queryForList(sSQL,String.class);
+		} catch (Exception ex) {
+			// TODO: handle exception
+			  logger.error("Find BonusDeptid TotalRecord are failed ",ex);
+    		  ex.printStackTrace();
+		}
+		return AllDept;
 	}
 }
