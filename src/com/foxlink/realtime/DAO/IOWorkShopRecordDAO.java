@@ -100,7 +100,7 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
   			
   			}
  			if(!depId.equals("")){
- 				sSQL+=" and e.depId in(";  
+ 				sSQL+=" and e.deptid in(";  
  				  String [] depIdArray = depId.split(",");
  		            for(int i=0;i<depIdArray.length;i++){
  		            	sSQL+="'"+depIdArray[i].trim()+"'";
@@ -153,7 +153,7 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
 		// TODO Auto-generated method stub
 		List<IOWSRecord> searchRawRecord = null;
 		String sSQL = "select * from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from "
-				+ "(SELECT r.Emp_id,r.D_Cardid,r.WorkShopNo,e.name,e.depid,e.costId,to_char(r.SwipeCardTime,'yyyy-MM-dd HH24:mi:ss') swipeCardTime,r.Direction"
+				+ "(SELECT r.Emp_id,r.D_Cardid,r.WorkShopNo,e.name,e.depid,e.deptid,e.costId,to_char(r.SwipeCardTime,'yyyy-MM-dd HH24:mi:ss') swipeCardTime,r.Direction"
 				+ " FROM SWIPE.RT_ACCESS_CONTROL_RECORD r join SWIPE.csr_employee e on r.Emp_id=e.id where e.isOnwork='0'";
 		try {	
 			 List <Object> queryList=new  ArrayList<Object>();  
@@ -182,7 +182,7 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
   			
   			}
 			if(!depId.equals("")){
-				sSQL+=" and e.depId in(";  
+				sSQL+=" and e.deptid in(";  
 				  String [] depIdArray = depId.split(",");
 		            for(int i=0;i<depIdArray.length;i++){
 		            	sSQL+="'"+depIdArray[i].trim()+"'";
@@ -293,7 +293,7 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
 		// TODO Auto-generated method stub
 		List<IOWSRecord> searchRawRecord = null;
 		String sSQL = "select * from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from "
-				+ "(SELECT r.Emp_id,r.D_Cardid,r.WorkShopNo,'' AS NAME,'' as depid,'' as costId,to_char(r.SwipeCardTime,'yyyy-MM-dd HH24:mi:ss') swipeCardTime,r.Direction"
+				+ "(SELECT r.Emp_id,r.D_Cardid,r.WorkShopNo,'' AS NAME,'' as depid'' as costId,to_char(r.SwipeCardTime,'yyyy-MM-dd HH24:mi:ss') swipeCardTime,r.Direction"
 				+ " FROM SWIPE.RT_ACCESS_CONTROL_RECORD r  where 1=1";
 		try {	
 			 List <Object> queryList=new  ArrayList<Object>();  
