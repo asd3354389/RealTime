@@ -111,7 +111,7 @@ public class ExceptionCostController {
 	
 	@RequestMapping(value="/RelieveExceCost",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String RelieveExceCost(HttpSession session,@RequestBody ExceptionCost exceptionCost) {
+	public String RelieveExceCost(HttpSession session,@RequestBody ExceptionCost[] exceptionCost) {
 		JsonObject DisableResult=new JsonObject();
 		try {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");

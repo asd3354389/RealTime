@@ -69,7 +69,7 @@
 					class="input-sm" >	
 		</div>
 			<div class="middle">
-				<div class="left" style="width:45%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;background-attachment: red;margin-top: 5%;margin-left: -57%" >
+				<div class="left" style="width:40%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;background-attachment: red;margin-top: 5%;margin-left: -57%" >
 					<table id="Personbinding" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed; ">
 						<thead>
 							<tr>								
@@ -91,7 +91,7 @@
 			<jsp:include page="InsertMoreDeptId.jsp"></jsp:include> --%>
 			</div>
 			</div>
-			<div style="float: right;margin-right: 47%;margin-top: 300px;">
+			<div style="float: right;margin-right: 52%;margin-top: 300px;">
 					<!--  <a id="addNewAccountBtn" role="button" href="#insertIpBinding"
 					class="btn btn-primary btn-sm" data-toggle="modal" style="font-size: 14px;">電腦Ip綁定部門代碼</a><br><br>	 -->
 					<!-- <a id="addMoreDeptIdBtn" role="button" href="#InsertMoreDeptId"
@@ -101,7 +101,7 @@
 					<button type="submit" id="MorechangebdOT" class="btn btn-primary"><<綁定</button>
 				 
 			</div>
-			<div style="float: right;margin-top:-23%;margin-right: 34%">
+			<div style="float: right;margin-top:-23%;margin-right: 40%">
 					<h4>線組別代碼列表：</h4>
 					
 					<!-- <a id="addNewAccountBtn" role="button" href="#insertIpBinding"
@@ -109,12 +109,12 @@
 			</div>
 			
 			<div class="middle">
-				<div class="left" style="width:30%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;background-attachment: red;margin-top: -50.5%;margin-left: 56%;overflow: auto;" >
+				<div class="left" style="width:15%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;background-attachment: red;margin-top: -50.5%;margin-left: 50%;overflow: auto;" >
 					<table id="DeptNobinding" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed; ">
 						<thead>
 							<tr>	
 							<!-- <input type="checkbox" style="float: left;margin-left: 0px" > -->
-							   	<th>勾選</th>				
+							   	<th><input type="checkbox" id="AllCheck">全選</th>				
 								<th>線組別代碼</th>						
 							</tr>
 						</thead>
@@ -126,6 +126,22 @@
 				<div style="background: red;position: absolute;top: 50px;right: 450px;">
 				</div>
 			
+			</div>
+			
+			<div style="float:right;width:20%;height:730px;border:1px solid #f3f5f6;position: absolute; bottom: 2%;right: 15%;">
+						<div style="padding:10px 10px;overflow-y:auto;height:650px;border-bottom: 1px solid #f3f5f6">
+						<table id="deleteId" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;border-collapse:separate">
+							<thead>
+								<tr>
+									<th colspan='2'>卡機ip列表</th>
+								</tr>
+							</thead>
+							<tbody class='dlTable'>
+							</tbody>
+						</table>
+						</div>
+						<button class="deleteIp btn btn-sm btn-primary">刪除</button>
+						<button class="reset btn btn-sm btn-primary">清空</button>
 			</div>
 			</div>
 

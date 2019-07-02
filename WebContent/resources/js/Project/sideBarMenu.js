@@ -24,7 +24,7 @@
 				"icon" : "icon-nav",
 				"url" : "ShowCheckOverTime15min"
 			},{
-				"menuname" : "忘卡人员查询",
+				"menuname" : "全天無刷卡人员查询",
 				"icon" : "icon-nav",
 				"url" : "ShowCheckForgetCard"
 			},{
@@ -99,6 +99,11 @@
 				"menuname" : "車間例外費用代碼維護",
 				"icon" : "icon-nav",
 				"url" : "ExceptionCost/ShowExceptionCost"
+
+			},{
+				"menuname" : "十四休一維護",
+				"icon" : "icon-nav",
+				"url" : "FourteenRO/ShowFourteenRO"
 
 			}]
 		},{

@@ -287,7 +287,7 @@ $(document).ready(function() {
 
     function ShowEmployeesInOTSheet(WorkshopNO,LineNo, RC_NO, ClassNo, OTDate, CheckStateArray, isAbnormal,ItemNumber) {
         var checkState = $('#checkState').find('option:selected').val().split(":");
-        var iWidth = 1200;
+        var iWidth = 1300;
         var iHeight = 900;
         var iTop = (window.screen.availHeight - iHeight) / 2;
         var iLeft = (window.screen.availWidth - iWidth) / 2;

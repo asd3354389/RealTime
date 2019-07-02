@@ -165,6 +165,34 @@ public class OTCardbdPersonController {
 		System.out.println(AddResult.toString());
 		return AddResult.toString();
 	}
+	
+	@RequestMapping(value="/checkData.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+	@ResponseBody 
+	public String checkData(HttpSession session,@RequestBody OTCardBD otCardbd){
+		JsonObject checkResult=new JsonObject();	
+		String userDataCostId=(String) session.getAttribute("userDataCostId");
+		System.out.println(otCardbd.getCostId());
+		System.out.println(otCardbd.getD_CardID());
+		System.out.println(otCardbd.getDefault_WorkShop());
+		try{
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
+				if(oTCardbdPersonService.checkData(otCardbd)){
+					checkResult.addProperty("StatusCode", "200");
+					checkResult.addProperty("Message", "此費用代碼在本車間未綁定此離崗卡號，可以綁定此離崗卡號!");
+				}else{
+					checkResult.addProperty("StatusCode", "500");
+					checkResult.addProperty("Message", "此費用代碼在本車間已經綁定此離崗卡號，請重新輸入離崗卡號！");
+				}		
+		}
+		catch(Exception ex){
+			logger.error("Check new Account info is failed, due to: ",ex);
+			checkResult.addProperty("StatusCode", "500");
+			checkResult.addProperty("Message", "檢查費用代碼在本車間是否綁定此離崗卡號發生錯誤，原因："+ex.toString());
+		}
+		System.out.println(checkResult.toString());
+		return checkResult.toString();
+	}
 
 	@RequestMapping(value="/UpdateBdOTCard",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ResponseBody
@@ -193,9 +221,8 @@ public class OTCardbdPersonController {
 	
 	@RequestMapping(value="/RelieveOTCard",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String RelieveOTCard(HttpSession session,@RequestBody OTCardBD otCardbd) {
+	public String RelieveOTCard(HttpSession session,@RequestBody OTCardBD[] otCardbd) {
 		JsonObject DisableResult=new JsonObject();
-		System.out.println(otCardbd.getDeptid());
 		try {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			String updateUser = (String)session.getAttribute("username");

@@ -75,22 +75,39 @@
 					<div id="PersonListPagination" align="right" style="height: 20;position:absolute; bottom: -5px;right: 0px;">
 					</div>
 				</div>
-				<div class="right" style="width:18%;height:730px;float:right;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
-					<h4>設置車間例外費用代碼</h4>
-					<div class="control-group">
-						<div class="controls">
-			      			<label for="WorkShopCost">費用代碼</label>
-			    					<input type="text" class="form-control" id="WorkShopCost" onkeyup="this.value =this.value.replace(/\s/g,'').replace(/[^\d]/g,'').replace(/(\d{4})(?=\d)/g,'$1,');">
-    					</div>
-			    		<div class="controls">
-			      			<label for="workShopNo">車間號</label>
-			    		<!-- 		<select id="workShopNo" name='workShopSecrecy' class="form-control">
-			    						<option value=""></option>
-			    					</select> -->
-			    					 <select id="workShopNo" name="workShopNo" class="selectpicker show-tick" multiple data-live-search="true"></select>  			
-    					</div>
+				<div class="right" style="width:38%;height:730px;float:right;padding:10px 10px;position: relative;" >
+					<div style="float:left;width:48%;height:730px;border:1px solid #f3f5f6;">
+						<div style="padding:10px 10px;overflow-y:auto;height:650px;border-bottom: 1px solid #f3f5f6">
+						<table id="deleteId" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;border-collapse:separate">
+							<thead>
+								<tr>
+									<th colspan='2'>卡機ip列表</th>
+								</tr>
+							</thead>
+							<tbody class='dlTable'>
+							</tbody>
+						</table>
+						</div>
+						<button class="deleteIp btn btn-sm btn-primary">刪除</button>
+						<button class="reset btn btn-sm btn-primary">清空</button>
+					</div>
+					<div style="width:48%;height:730px;float:right;padding:10px 10px;position: relative;border:1px solid #f3f5f6;">
+						<h4>設置車間例外費用代碼</h4>
+						<div class="control-group">
+							<div class="controls">
+				      			<label for="WorkShopCost">費用代碼</label>
+				    					<input type="text" class="form-control" id="WorkShopCost" onkeyup="this.value =this.value.replace(/\s/g,'').replace(/[^\d]/g,'').replace(/(\d{4})(?=\d)/g,'$1,');">
+	    					</div>
+				    		<div class="controls">
+				      			<label for="workShopNo">車間號</label>
+				    		<!-- 		<select id="workShopNo" name='workShopSecrecy' class="form-control">
+				    						<option value=""></option>
+				    					</select> -->
+				    					 <select id="workShopNo" name="workShopNo" class="selectpicker show-tick" multiple data-live-search="true"></select>  			
+	    					</div>
+	  					</div>
+	  					<button type="submit" id="setCostWorkShop" class="btn btn-primary" style="margin-top: 10px;">設置</button>	
   					</div>
-  					<button type="submit" id="setCostWorkShop" class="btn btn-primary" style="margin-top: 10px;">設置</button>	
 				</div>
 		</div>
 	</div>

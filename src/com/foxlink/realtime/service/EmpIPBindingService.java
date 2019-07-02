@@ -144,9 +144,9 @@ public class EmpIPBindingService {
 		}
 	}
 
-	public boolean DeleteEmpIPBinding(String deviceIP,String emp_id, String updateUser) {
+	public boolean DeleteEmpIPBinding(EmpIpBinding[] empIpBindings,String updateUser) {
 		// TODO Auto-generated method stub
-		return empIPBindingDAO.DeleteEmpIPBinding(deviceIP,emp_id, updateUser);
+		return empIPBindingDAO.DeleteEmpIPBinding(empIpBindings, updateUser);
 	}
 
 	public Page getPersonPage(int currentPage, String queryCritirea, String queryParam, String updateUser,

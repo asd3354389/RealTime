@@ -1,6 +1,7 @@
 $(document).ready(function(){
-	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false;
-	ShowAllEmpIPBinding();
+	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false,isCardIdValid=false,empmessage='';
+	var reg = new RegExp("^[0-9]{10}$");
+	ShowAllFourteenRO();
 	ShowWorkShop();
 	
 	 var CLICKTAG = 0;
@@ -14,104 +15,105 @@ $(document).ready(function(){
      }
 	
 	$('#resetSubmit').click(function(){
-		$('#insert_deviceIP').val('');
-	     $('#insert_emp_id').val('');
+ 	    $('#inputUserName').val('');
+     	$('#dpick1').val('');
+     	$('#dpick2').val('');
+     	$('#dpick3').val('');
+     	$('#dpick4').val('');
+     	 $('#workShop').selectpicker('val',['noneSelectedText']);
+		 $("#workShop").selectpicker('refresh');
 	});
-	
-	$('#searchEmpIPBinding').click(function(){
+	//resetSubmitOther
+	$('#resetSubmitOther').click(function(){
+ 	    $('#inputCardId').val('');
+     	$('#dpick1Other').val('');
+     	$('#dpick2Other').val('');
+     	$('#dpick3').val('');
+     	$('#dpick4').val('');
+     	$('#inputRemark').val('');
+     	 $('#workShopOther').selectpicker('val',['noneSelectedText']);
+		 $("#workShopOther").selectpicker('refresh');
+     
+	});
+	$('#searchFourteenRO').click(function(){
 		var queryCritirea=$('#queryCritirea option:selected').val();
 		var queryParam=$('#queryParam').val();
 		if(queryParam==""){
-			ShowAllEmpIPBinding();
+			ShowAllFourteenRO();
 		}else{
 			getPersonList(curPage,queryCritirea,queryParam)	
 		}
 	});
 	
-	$('.reset').on('click',()=>{
-		$('#deleteId .dlTable').find('tr').remove();
-	})
-	
-	
-	
-	$('.deleteIp').on('click',()=>{
-		var size = $('#deleteId .dlTable').children().length;
-		if($('#deleteId .dlTable').children().length==0){
-			alert("無數據可刪除!");
-		}else{
-			var relist =[];
-			$('#deleteId .dlTable').find('tr').each(function(i,e){
-				//				console.log(i);
-								var dltr = {};
-								var child =$(this).children();
-								dltr.deviceIP = child.eq(0).text();
-								dltr.emp_id = child.eq(1).text();
-								relist.push(dltr);
-			})
-//			console.log(relist);
-			var results=confirm("確定刪除表格内的"+size+"條綁定訊息 ?");
-			if(results==true){
-				$.ajax({
-					type:'POST',
-					contentType: "application/json",
-					url:'../EmpIPBinding/deleteEmpIPBinding.do',
-					data:JSON.stringify(relist),
-					dataType:'json',
-					error:function(e){
-						alert(e);
-					},
-					success:function(data){
-						 if(data!=null && data!=''){
-							 if(data.StatusCode=="200"){
-								 alert(data.Message);
-								 /*
-								var parentElement=$(this).parent().parent();
-								//刪除，所以將此列從畫面移除
-								parentElement.remove();
-								  */
-								 ShowAllEmpIPBinding();
-								 $('#deleteId .dlTable').empty();
-							 }
-							 else{
-								 alert(data.Message);
-							 }
-						 }else{
-							 alert('操作失敗!')
-						 }
-					}
-				});
+	//設置員工保密車間權限
+	$('#setFourteenRO').click(function(){
+		
+		 $("#setFourteenRO").attr("disabled", "disabled");
+		 setTimeout(function(){ $("#setFourteenRO").attr("disabled",false); }, 100);
+//		button_onclick($('#setFourteenRO')[0]);
+		var Start =$('#dpick1').val().replace(/\//g,'-');
+		var End =$('#dpick2').val().replace(/\//g,'-');
+//		console.log(Start,End);+
+		var errorMessage='',list=[],WorkShopNoStr;
+
+		var Costid=$('#inputCostid').val();
+		
+		var arr= Costid.split(",");
+		
+		if(Costid==null || Costid=="")
+			errorMessage+='費用代碼未填寫\n';
+		
+		if(Start==null || Start=="")
+			errorMessage+='為選擇生效起始日期\n';
+		
+		if(End==null || End=="")
+			errorMessage+='為選擇生效結束日期\n';
+		if (arr.length >0) {
+			if (isRepeat(arr)) {
+				errorMessage+='費用代碼不能重複\n';
+			}
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i]==null||arr[i]==""||arr[i]=='') {
+					errorMessage+='未正確填寫工號\n';
+				}else{
+								    var ioWsPw={};
+								    ioWsPw["Costid"] = arr[i];
+						  			ioWsPw["Start_date"]= Start;
+						  			ioWsPw["End_date"]= End;
+						  			list.push(ioWsPw)
+						  			console.log(ioWsPw);
+						  			//checkEmpidDuplicate(arr[i],ioWsPw["WorkShopNo"]);
+						  			//alert(isUserNameValid);
+//						  			if (!isUserNameValid) {
+//						  				empmessage+='工號'+arr[i]+'不存在\n';
+//									}
+				}
+				
 			}
 		}
-	})
-	
-	$('#setEmpIPBinding').click(function(){
-		button_onclick($('#setEmpIPBinding')[0]);
-		var EmpIpBinding=new Object(),errorMessage='';
-		EmpIpBinding.deviceIP=$('#insert_deviceIP').val();
-		EmpIpBinding.emp_id=$('#insert_emp_id').val();
-		console.log(EmpIpBinding);
 		
-		if(EmpIpBinding.deviceIP==="null" || EmpIpBinding.deviceIP=='')
-			errorMessage+='車間ip未填寫\n';
-		if(EmpIpBinding.emp_id==="null" || EmpIpBinding.emp_id=='')
-			errorMessage+='未填寫車間ip綁定員工工號\n';
-		
-		if(errorMessage==''){
+		if(errorMessage=='' && empmessage=='' ){
+			//alert("進入方法");
 			//新增綁定賬號
 			$.ajax({
 				type:'POST',
 				contentType: "application/json",
-				url:'../EmpIPBinding/AddEmpIPBinding.do',
-				data:JSON.stringify(EmpIpBinding),
+				url:'../FourteenRO/AddFourteenRO.do',
+				data:JSON.stringify(list),
 				dataType:'json',
 				success:function(data){
-					$('#setIOCardMaIP').prop("disabled",false);
+					$('#setFourteenRO').prop("disabled",false);
 					 if(data!=null && data!=''){
 						 if(data.StatusCode=="200"){
-							 $('#insert_deviceIP').val('');
-						     $('#insert_emp_id').val('');
+							 $('#inputUserName').val('');
+							 $('#workShop').val('');
+							 $('#dpick1').val('');
+							 $('#dpick2').val('');
+							 $('#workShop').selectpicker('val',['noneSelectedText']);
+							 $("#workShop").selectpicker('refresh');
 							 alert(data.Message);
-							 ShowAllEmpIPBinding();
+							 ShowAllFourteenRO();
+							// $("#setFourteenRO").attr("enabled", "enabled");
 							/* alert(data.Message);			
 							 $('#inputUserName').val('');
 							 $('#inputChineseName').val('');
@@ -125,28 +127,100 @@ $(document).ready(function(){
 						 }
 						 else{
 							 alert(data.Message);
+							// $("#setFourteenRO").attr("enabled", "enabled");
 						 }
 					 }else{
-						 alert('新增車間休息時間段失敗!');
+						 alert('設置保密車間臨時進出權限失敗!');
 					 }
 				},
 				error:function(e){
-					alert('新增車間休息時間段發生錯誤');
+					alert('設置保密車間臨時進出權限發生錯誤');
 				}
 			});
-		}
-	    else{
+		}else{
 	    	if(errorMessage.length>0 ||errorMessage!='' ){
 		    alert(errorMessage);		
 			event.preventDefault(); //preventDefault() 方法阻止元素发生默认的行为（例如，当点击提交按钮时阻止对表单的提交）。
+	    	return;
 	    	}
+	    	if (empmessage.length>0 ||empmessage!='') {
+	    		 alert(empmessage);	
+	    		 empmessage = '';
+	  			 event.preventDefault(); //preventDefault() 方法阻止元素发生默认的行为（例如，当点击提交按钮时阻止对表单的提交）。
+			}
 	    }	
 	})
 	
-	function ShowAllEmpIPBinding(){
+	
+	function checkEmpidDuplicate(Emp_id,WorkShopNo){
+		
+		if(Emp_id!=""){
+			$.ajax({
+				type:'POST',
+				url:'../FourteenRO/checkUserName.do',
+				data:{
+					Emp_id:Emp_id,
+					WorkShopNo:WorkShopNo
+				},
+				async:false,
+				error:function(e){
+					alert(e);
+				},
+				success:function(data){	
+					
+					 if(data!=null && data!=''){
+						 if(data.StatusCode==500){
+							 //alert(data.Message);
+							 empmessage = data.Message
+							 isUserNameValid=false;
+						 }
+						 else
+							{
+							 isUserNameValid=true;
+							}
+				}else{
+					 isUserNameValid=false;
+					}
+				}
+			});
+		}
+	}
+	//判斷同一卡號和車間是否有數據
+	function checkCardIdDuplicate(CardId,WorkshopNo){
+		
+		if(CardId!=""){
+			$.ajax({
+				type:'POST',
+				url:'../FourteenRO/checkCardId.do',
+				data:{
+					CardId:CardId,
+					WorkshopNo:WorkshopNo
+				},
+				async:false,
+				error:function(e){
+					alert(e);
+				},
+				success:function(data){	
+					 if(data!=null && data!=''){
+						 if(data.StatusCode==500){
+							 alert(data.Message);
+							 isCardIdValid=false;
+						 }
+						 else
+							{
+							 isCardIdValid=true;
+							}
+				}else{
+					isCardIdValid=false;
+					}
+				}
+			});
+		}
+	}
+	function ShowAllFourteenRO(){
 		$.ajax({
 			type:'POST',
-			url:'../EmpIPBinding/ShowAllEmpIPBinding',
+			url:'../FourteenRO/ShowAllFourteenRO',
 			data:{curPage:curPage,queryCritirea:queryCritirea,queryParam:queryParam},
 			error:function(e){
 //				alert('找不到資料');
@@ -162,10 +236,10 @@ $(document).ready(function(){
 					else{
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0)	
-							ShowAllEmpIPBindingTable(rawData);
+							ShowAllFourteenROTable(rawData);
 						else{
 							/*$('.left').css('height','727px');*/
-							alert('暫無卡機信息資料');
+							alert('暫無保密車間資料');
 						}
 					}
 				}
@@ -173,58 +247,68 @@ $(document).ready(function(){
 		});	
 	}
 	
-	function ShowAllEmpIPBindingTable(rawData){
-		$('#EmpIPBindingTable tbody').empty();
+	function ShowAllFourteenROTable(rawData){
+		$('#FourteenROable tbody').empty();
 		var currentPage=rawData.currentPage;
 		var totalRecord=rawData.totalRecord;
 		var totalPage=rawData.totalPage;
 		var pageSize=rawData.pageSize;
 		var executeResult=rawData["list"];
 		for(var i=0;i<executeResult.length;i++){
-			var	tableContents='<tr><td class="touch">'+executeResult[i]["deviceIP"]+'</td>'+
-					'<td>'+executeResult[i]["emp_id"]+'</td>'+
+			var	tableContents='<tr><td>'+executeResult[i]["Costid"]+'</td>'+
+					'<td>'+executeResult[i]["Start_date"]+'</td>'+
+					'<td>'+executeResult[i]["End_date"]+'</td>'+
 //					'<td>'+executeResult[i]["Direction"]+'</td>'
 //					'<td>'++'</td>'+
-					'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"></td>';
+					'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>';
 				tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
-					$('#EmpIPBindingTable tbody').append(tableContents);
+					$('#FourteenROable tbody').append(tableContents);
 		}
 		refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize);
-		
+	/*	console.log(currentPage);
+		console.log(totalRecord);
+		console.log(totalPage);
+		console.log(pageSize);*/
+		/*goPageY(currentPage,totalRecord,totalPage,pageSize);*/
 		
 		$(".editBtn").click(function(){
 			var parentElement = $(this).parent().parent();
-			var deviceIP=$(parentElement).find('td').eq(0).text();
+			var Costid=$(parentElement).find('td').eq(0).text();
 			
-			var emp_id=$(parentElement).find('td').eq(1).text();
-			$(parentElement).find('td').eq(1).html('<input type="text" value='+emp_id+'>');
+			var Start_Date=$(parentElement).find('td').eq(1).text();
+			$(parentElement).find('td').eq(1).html("<input id=\"dpick3\" class=\"Wdate\" type=\"text\" name=\"OVERTIMEDATE\" value="+Start_Date+" onfocus=\"WdatePicker({dateFmt:\'yyyy-MM-dd\',minDate:\'%y-\\#{%M-2}-01\',maxDate:\'#F{$dp.$D(\\\'dpick4\\\')}\'})\" autocomplete=\"off\" />");
+			
+			var End_Date=$(parentElement).find('td').eq(2).text();
+			$(parentElement).find('td').eq(2).html("<input id=\"dpick4\" class=\"Wdate\" type=\"text\" name=\"OVERTIMEDATEEnd\" value="+End_Date+" onfocus=\"WdatePicker({dateFmt:\'yyyy-MM-dd\',minDate:\'#F{$dp.$D(\\\'dpick3\\\')}\'})\" autocomplete=\"off\" />");
 
-//			$(parentElement).children().find('.editBtn .deleteBtn').hide();
-			$(parentElement).find('td').eq(2).append('<a class="confirmBtn btn btn-xs btn-link" role="button">確認</a>'+
-	        		'<a class="cancelBtn btn btn-xs btn-link" role="button">取消</a>');
-			$(parentElement).find('.editBtn').hide();
 			
+			$(parentElement).find('td').eq(3).append('<a class="confirmBtn btn btn-xs btn-link" role="button">確認</a>'+
+	        		'<a class="cancelBtn btn btn-xs btn-link" role="button">取消</a>');
+			$(parentElement).find('.editBtn,.deleteBtn').hide();
 			$('.confirmBtn').click(function(){
 				var parentElement=$(this).parent().parent();
-				var EmpIpBinding=new Object(),errorMessage='';
+				var FourteenRO=new Object(),errorMessage='';
 				var Direction=$(parentElement).find('.changeStatus option:selected').eq(0).text();
-				EmpIpBinding.deviceIP=deviceIP;
-				EmpIpBinding.emp_id=$(parentElement).find('td').eq(1).find('input').val();
-				EmpIpBinding.oldEmp_id=emp_id;
+				FourteenRO.Costid=Costid;
+				FourteenRO.Start_date=$(parentElement).find('td').eq(1).find('input').val();
+				FourteenRO.End_date=$(parentElement).find('td').eq(2).find('input').val();
+
+//				if(IOWorkShopPW.Emp_id==="null" || IOWorkShopPW.Emp_id=='')
+//					errorMessage+='工號未填寫\n';
+				if(FourteenRO.Costid==="null" || FourteenRO.Costid=='')
+					errorMessage+='費用代碼未填寫\n';
+				if(FourteenRO.Start_date==="null" || FourteenRO.Start_date=='')
+					errorMessage+='生效起始日期未填寫\n';
+				if(FourteenRO.End_date==="null" || FourteenRO.End_date=='')
+					errorMessage+='生效結束日期未填寫\n';
 				
-				if(EmpIpBinding.deviceIP==="null" || EmpIpBinding.deviceIP=='')
-					errorMessage+='車間ip未填寫\n';
-				if(EmpIpBinding.emp_id==="null" || EmpIpBinding.emp_id=='')
-					errorMessage+='對應人員為填寫\n';
-				
-				console.log(EmpIpBinding);
 				if(errorMessage==''){	
 					$.ajax({
 						type:'POST',
 						contentType: "application/json",
-						url:'../EmpIPBinding/UpdateEmpIPBinding.do',
-						data:JSON.stringify(EmpIpBinding),
+						url:'../FourteenRO/UpdateFourteenRO.do',
+						data:JSON.stringify(FourteenRO),
 						dataType:'json',
 						error:function(e){
 							alert(e);
@@ -233,8 +317,9 @@ $(document).ready(function(){
 							  if(data!=null && data!=''){
 								  if(data.StatusCode=="200"){
 									  alert(data.Message);
-									  $(parentElement).find('.editBtn').show();
-									  $(parentElement).find('td').eq(1).html(EmpIpBinding.emp_id);
+									  $(parentElement).find('.editBtn,.deleteBtn').show();
+									  $(parentElement).find('td').eq(1).html(FourteenRO.Start_date);
+									  $(parentElement).find('td').eq(2).html(FourteenRO.End_date);
 									  $(parentElement).find('.confirmBtn,.cancelBtn').remove();
 								  }
 								  else{
@@ -256,59 +341,23 @@ $(document).ready(function(){
 			
 			$('.cancelBtn').click(function(){
 				var parentElement=$(this).parent().parent();
-				$(parentElement).find('.editBtn').show();
-				$(parentElement).find('td').eq(1).html(emp_id);
+				$(parentElement).find('.editBtn,.deleteBtn').show();
+				$(parentElement).find('td').eq(1).html(Start_Date);
+				$(parentElement).find('td').eq(2).html(End_Date);
 				$(this).parent().find('.confirmBtn,.cancelBtn').remove();
 			})					
 		})
 		
-		$('.touch').click(function(){	
-			$('.cancelBtn').click();
-			var a = $(this).text();
-			var b = $(this).next().text();
-			console.log(a,b);
-			var list =[];
-			if($('#deleteId .dlTable').children().length==0){
-				$('#deleteId .dlTable').append('<tr><td>'+a+'</td><td>'+b+'</td></tr>');
-			}else{
-				$('#deleteId .dlTable').find('tr').each(function(i,e){
-	//				console.log(i);
-					var dltr = {};
-					var child =$(this).children();
-					dltr.c = child.eq(0).text();
-					dltr.d = child.eq(1).text();
-					list.push(dltr);
-	//				console.log(list);
-					
-				})
-				var count=0;
-				for(var i=0;i<list.length;i++){
-					if((list[i].c==a)&&(list[i].d==b)){
-						count++;
-					}
-				}
-				if(count==0){
-					$('#deleteId .dlTable').append('<tr><td>'+a+'</td><td>'+b+'</td></tr>')
-				}
-			}
-			$('#deleteId .dlTable').find('tr').each(function(i,e){
-				$(this).click(function(){
-					$(e).remove();
-				})
-			})
-		})
-		
-		
-		/*$('.deleteBtn').click(function(){
+		$('.deleteBtn').click(function(){
 			var parentElement=$(this).parent().parent();
-			deviceIP=$(parentElement).find('td').eq(0).text();
-			emp_id=$(parentElement).find('td').eq(1).text();
-			var results=confirm("確定刪除"+deviceIP+"與"+emp_id+"的綁定訊息 ?");
+			var Costid=$(parentElement).find('td').eq(0).text();
+			//alert("卡号"+deleteCardId);
+			var results=confirm("確定刪除此條數據?");
 			if(results==true){
 				$.ajax({
 					type:'GET',
-					url:'../EmpIPBinding/deleteEmpIPBinding.do',
-					data:{deviceIP:deviceIP,emp_id:emp_id},
+					url:'../FourteenRO/deleteFourteenRO.do',
+					data:{Costid:Costid},
 					error:function(e){
 						alert(e);
 					},
@@ -316,12 +365,12 @@ $(document).ready(function(){
 						 if(data!=null && data!=''){
 							 if(data.StatusCode=="200"){
 								 alert(data.Message);
-								 
+								 /*
 								var parentElement=$(this).parent().parent();
 								//刪除，所以將此列從畫面移除
 								parentElement.remove();
-								  
-								 ShowAllEmpIPBinding();
+								  */
+								 ShowAllFourteenRO();
 							 }
 							 else{
 								 alert(data.Message);
@@ -332,13 +381,13 @@ $(document).ready(function(){
 					}
 				});
 			}
-		});*/
+		});
 	}
 	
 	
 	
 	function refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize){
-		$('#WorkshopNoRestInfoListPagination').empty();
+		$('#FourteenROListPagination').empty();
 		var paginationElement='頁次：'+currentPage+'/'+totalPage +'&nbsp;每页:&nbsp;'+pageSize+'&nbsp;共&nbsp;'+totalRecord+'&nbsp;條&nbsp;';
 		if(currentPage==1)
 			paginationElement+='<a href ="javascript:return false;">首页</a>';		  
@@ -358,7 +407,7 @@ $(document).ready(function(){
 		else
 			paginationElement+='<a href ="javascript:return false;">下一頁</a>';
 		
-		$('#WorkshopNoRestInfoListPagination').append(paginationElement);
+		$('#FourteenROListPagination').append(paginationElement);
 		
 		$('.firstPage').click(function(){
 			curPage=1;
@@ -409,7 +458,7 @@ $(document).ready(function(){
 	function getPersonList(curPage,queryCritirea,queryParam){
 		$.ajax({
 			type:'POST',
-			url:'../EmpIPBinding/ShowEmpIPBindingList',
+			url:'../FourteenRO/ShowAllFourteenRO',
 			data:{curPage:curPage,queryCritirea:queryCritirea,queryParam:queryParam},
 			error:function(e){
 				alert('找不到資料');
@@ -424,7 +473,7 @@ $(document).ready(function(){
 					else{
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0){
-							ShowAllEmpIPBindingTable(rawData);
+							ShowAllFourteenROTable(rawData);
 							$('#queryParam').val('');
 						}
 						else{
@@ -460,6 +509,7 @@ $(document).ready(function(){
 						htmlAppender+='<option value="'+data[i]+'">'+data[i]+'</option>';
 					}
 					 $('#workShop').append(htmlAppender);
+					 $('#workShopOther').append(htmlAppender);
 				/*	 $('#ChangeWorkShop').append(htmlAppender);*/
 				}
 				else{
@@ -497,34 +547,16 @@ $(document).ready(function(){
 			}
 		});   
 	}	
-	
-	 function checkDeviceipDuplicate(Deviceip){
-			if(Deviceip!=""){
-				$.ajax({
-					type:'POST',
-					url:'../IOCardBdIP/checkDeviceip.do',
-					data:{
-						Deviceip:Deviceip
-					},
-					async:false,
-					error:function(e){
-						alert(e);
-					},
-					success:function(data){	
-						 if(data!=null && data!=''){
-							 if(data.StatusCode==500){
-								 alert(data.Message);
-								 isUserNameValid=false;
-							 }
-							 else
-								{
-								 isUserNameValid=true;
-								}
-					}else{
-						 isUserNameValid=false;
-						}
-					}
-				});
-			}
-		}
+	// 验证重复元素，有重复返回true；否则返回false
+	function isRepeat(arr) {
+	    var hash = {};
+	    for(var i in arr) {
+	        if(hash[arr[i].toUpperCase()]) {
+	            return true;
+	        }
+	        // 不存在该元素，则赋值为true，可以赋任意值，相应的修改if判断条件即可
+	        hash[arr[i].toUpperCase()] = true;
+	    }
+	    return false;
+	}
 })

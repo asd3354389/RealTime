@@ -1,19 +1,26 @@
 package com.foxlink.realtime.DAO;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+
+import com.foxlink.realtime.model.EmpInOTPendingSheet;
 import com.foxlink.realtime.model.OTHourConfirm;
+import com.foxlink.realtime.model.OverTimePending;
 import com.foxlink.realtime.model.OverTimeSheet;
 import com.foxlink.realtime.model.objectMapper.OTSheetMapper;
 import com.foxlink.realtime.model.objectMapper.OTSheetNoRCMapper;
 import com.foxlink.realtime.util.CommonUtils;
+import com.google.gson.JsonElement;
 
 import oracle.jdbc.OracleTypes;
 
@@ -161,7 +168,7 @@ public class OTDAO extends DAO<OverTimeSheet> {
 		SimpleJdbcCall call=null;
 		Map<String, Object> executeResult=null;
 		try {
-			call=new SimpleJdbcCall(jdbcTemplate).withProcedureName("CAL_PENDING_OVERTIME").
+			call=new SimpleJdbcCall(jdbcTemplate).withProcedureName("CAL_PENDING_OVERTIME_D").
 					declareParameters(new SqlParameter("VCLASS_NO",Types.VARCHAR),
 							new SqlParameter("VRC_NO",Types.VARCHAR),
 							new SqlParameter("VWORK_SHOP_NO",Types.VARCHAR),
@@ -347,5 +354,88 @@ public class OTDAO extends DAO<OverTimeSheet> {
 			logger.error("FindAllRecords is failed",ex);
 		}
 		return OTSheets;
+	}
+
+	public boolean checkDeptIdExistence(String deptid) {
+		// TODO Auto-generated method stub
+		int totalRecord=-1;
+    	String sSQL = "select count(*) from SWIPE.BONUS_DEPT where deptid =? and Modify_Allowed='Y'";
+    	try {      	
+    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { deptid },Integer.class);	   	
+    	  } catch (Exception ex) {
+    		  ex.printStackTrace();
+    		  }
+    	 if(totalRecord > 0) 
+			   return true; 
+		 else
+			 return false;
+	}
+
+	public List<String> FindAllRecordsByDepid() {
+		// TODO Auto-generated method stub
+		List<String>AllDept = null;
+		String sSQL="select deptid from SWIPE.BONUS_DEPT WHERE Modify_Allowed='Y'";
+		try {
+			AllDept=jdbcTemplate.queryForList(sSQL,String.class);
+		} catch (Exception ex) {
+			// TODO: handle exception
+			  logger.error("Find BonusDeptid TotalRecord are failed ",ex);
+    		  ex.printStackTrace();
+		}
+		return AllDept;
+	}
+
+	public int updateBonus(String updateUser, OverTimePending[] overTimePending) {
+		// TODO Auto-generated method stub
+		String sSQL = "Update SWIPE.NOTES_OVERTIME_STATE SET Bonus = ? where ID = ? and OverTimeDate = ?";
+		int result = 0;
+		try {
+			jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
+				
+				@Override
+				public void setValues(PreparedStatement ps, int i) throws SQLException {
+					// TODO Auto-generated method stub
+					ps.setString(1, overTimePending[i].getBonus());
+					ps.setString(2, overTimePending[i].getID());
+					ps.setString(3, overTimePending[i].getOverTimeDate());
+				}
+				
+				@Override
+				public int getBatchSize() {
+					// TODO Auto-generated method stub
+					return overTimePending.length;
+				}
+			});
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("修改頂崗津貼失敗，原因："+e);
+			e.printStackTrace();
+			result=1;
+		}
+		return result;
+	}
+
+	public List<String> checkModifyEmp(String[] empList) {
+		// TODO Auto-generated method stub
+		List<String>AllDept = null;
+		String sSQL="select a.id from csr_employee a,BONUS_DEPT b "
+				+ "where (a.deptid = b.deptid or a.costid = b.costid) and a.isonwork = '0' and b.modify_allowed = 'Y'"
+				+ " and  a.id in (";
+		try {
+			StringBuffer idsStr = new StringBuffer();
+			for (int i = 0; i < empList.length; i++) {
+				if (i > 0) {
+					idsStr.append(",");
+				}
+				idsStr.append("'").append(empList[i]).append("'");
+			}
+			sSQL+=idsStr+")";
+			AllDept=jdbcTemplate.queryForList(sSQL,String.class);
+		} catch (Exception ex) {
+			// TODO: handle exception
+			  logger.error("Find BonusDeptid TotalRecord are failed ",ex);
+    		  ex.printStackTrace();
+		}
+		return AllDept;
 	}
 }

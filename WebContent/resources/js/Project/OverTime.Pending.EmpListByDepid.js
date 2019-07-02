@@ -11,6 +11,9 @@ $(document).ready(function(){
 	var SDate='2017-12-26',EDate='2017-12-26',ItemNumber='';
 	var currentClassNoInfo;
 	var overTimeEmps=new Array();
+	checkPwTime();
+	var checkdepid;
+	var modifyEmpBound=new Array();
 	init();
 	GetHoliday();
 	
@@ -55,8 +58,16 @@ $(document).ready(function(){
 	$('#selectedAllEmps').change(function(){
 		if(this.checked){
 			$('#OTPendingEmpTable tbody tr').each(function(){
+				var id = $(this).children().eq(2).text();
 				var overTimehour = $(this).children().eq(9).text();
-				var dghour = $(this).children().eq(11).text();
+				//var dghour = $(this).children().eq(11).text();
+				var depid=$(this).children().eq(4).text();
+				var dghour;
+				if(modifyEmpBound.indexOf(id)!=-1){
+					  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+				}else{
+					 dghour = $(this).children().eq(11).text();
+				}		
 				if(overTimehour=="0"&&dghour=="0"){
 					$(this).children().children().eq(0).prop('checked',false);
 					$(this).attr("style", "background-color: white"); 
@@ -216,9 +227,10 @@ $(document).ready(function(){
 	$('.OTHrsSubmitBtn').click(function(){
 		OverTimeType=$('#overtimeType').find('option:selected').val();
 		OverTimeType1=$('#overtimeCal').find('option:selected').val();
-		WorkContent=$('#workcontent').val();
+		WorkContent=$('#workcontent').val().trim();
 		OverTimeCal=$('#overtimeCal').find('option:selected').val();
 		selectedOTEmpIDs=GetOTSubmitEmps();//取得選取的人員id數組
+		var newHour = [];
 	    //SelectedEmps=GetOTSubmitEmps(); //取得選取的人員
 		if(CheckConditionValid()){
 			if (confirm("你确定提交當前選擇人員名單吗？")) {
@@ -260,6 +272,22 @@ $(document).ready(function(){
 				var OTConfirmInfo=new OThourConfirmInfo(ClassNo,RCNO,WorkshopNo,LineNo,OverTimeDate,0,null,null,
 						OverTimeType,OverTimeType1,ItemNumber,SelectedEmps,IsAbnormal,WorkContent);
 				SubmitEmployeeOverTimeInfo2Server(IsAbnormal,OTConfirmInfo);
+				
+				$('#OTPendingEmpTable tbody tr').find('input:checked').each(function(){
+					$(this).each(function(){
+						var xhr =$(this).parent().nextAll('td');
+						var title = xhr.eq(11).text();
+						console.log(title);
+						var data={};
+						if(title=='已修改時數'){
+							data.ID = xhr.eq(1).text();
+							data.OverTimeDate = xhr.eq(6).text();
+							data.Bonus = xhr.eq(10).find('option:selected').text();
+							newHour.push(data);
+						}
+					})
+				})
+				UpdateBonus(newHour);
 			}
 		}
 		//(JSON.stringify(OThourConfirm));
@@ -325,7 +353,11 @@ $(document).ready(function(){
 	
 	function ShowPendingEmpList(EmployeeInfos,isInit){
 		var HTMLElement;
-		
+		var PendingEmpsList=new Array();
+		for(var i=0;i<EmployeeInfos.length;i++){
+			PendingEmpsList.push(EmployeeInfos[i].employeeID);
+		}
+		CheckModifyEmp(PendingEmpsList);
 		$('#OTPendingEmpTable tbody').empty();
 		var j=1;
 		for(var i=0;i<EmployeeInfos.length;i++){
@@ -344,6 +376,7 @@ $(document).ready(function(){
 				'<td>0</td>'+
 				'<td></td>'+
 				'<td>0</td>'+
+				'<td></td>'+
 				'<td>未審核</td></tr>';				
 			}
 			else{
@@ -357,14 +390,39 @@ $(document).ready(function(){
 				'<td>'+EmpInfo.yd+'</td>'+
 				'<td>'+EmpInfo.overTimeInterval+'</td>'+
 				'<td>'+EmpInfo.overTimeHours+'</td>'+
-				'<td>'+OverTimeTypeText+'</td>'+
-				'<td>'+EmpInfo.bonus+'</td>'+
-				'<td>未審核</td></tr>';
+				'<td>'+OverTimeTypeText+'</td>';
+				//'<td>'+EmpInfo.bonus+'</td>'+
+				if(modifyEmpBound.indexOf(EmpInfo.employeeID)!=-1){
+					HTMLElement+='<td><select><option>'+EmpInfo.bonus+'</option>';
+					if(EmpInfo.bonus!=0){
+						HTMLElement+='<option>0</option></select>';
+					}
+					HTMLElement+='</td>';
+				}else{
+					HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
+				}					
+				HTMLElement+='<td>未修改時數</td><td>未審核</td></tr>';
 				
 			}
 			j++;
 			$('#OTPendingEmpTable tbody').append(HTMLElement);			
 		}
+		
+		$('#OTPendingEmpTable tbody tr td').find('select').each(function(){
+			var bonusHour = $(this).find('option:selected').text(); 
+			$(this).change(function(){
+				var newBonus = $(this).find('option:selected').text(); 
+				if(newBonus!=bonusHour){
+					$(this).parent().next().text('已修改時數');
+
+					$(this).parent().next().css('color','red');
+				}else{
+					$(this).parent().next().text('未修改時數');
+
+					$(this).parent().next().css('color','#768399');
+				}
+			})
+		})
 		
 		$('.selectedEmp').click(function(){
 		    if($(this).prop("checked")==true){
@@ -477,9 +535,17 @@ $(document).ready(function(){
 		var selectedEmpIDs=new Array();
 		/*將已勾選人員的工號存入Array*/
 		$('#OTPendingEmpTable tbody .selectedEmp:checked').each(function(){
+			var id = $(this).children().eq(2).text();
 			var xhr=$(this).parent().parent();		
 			 var overTimehour = $(xhr).children().eq(9).text();
-			 var dghour = $(xhr).children().eq(11).text();
+			// var dghour = $(xhr).children().eq(11).text();
+			 var depid=$(xhr).children().eq(4).text();
+			 var dghour;
+			 if(modifyEmpBound.indexOf(id)!=-1){
+				  dghour = $(xhr).children().eq(11).find('option:selected').eq(0).text();
+			 }else{
+				 dghour = $(xhr).children().eq(11).text();
+			 }		
 				if(overTimehour=="0"&&dghour=="0"){
 					  alert("工時小於等於0，有誤，請重新選擇加班人員！");
 				}
@@ -533,6 +599,72 @@ $(document).ready(function(){
 				}
 			}
 	    });
+	}
+	
+	function checkPwTime(){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkdepId.show',
+			data:{},
+			async:false,
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 checkdepid=data;
+			}else{
+				console.log(123);
+				}
+			}
+		});
+	}
+	
+	function CheckModifyEmp(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmp.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBound=data;
+					 console.log(modifyEmpBound);
+			}else{
+				console.log(123);
+				}
+			}
+		});
+	}
+	
+	function UpdateBonus(newHour){
+		$.ajax({
+			type:'POST',
+			contentType: "application/json",
+			url:'../Overtime/updataBonus.show',
+			data:JSON.stringify(newHour),
+			dataType:'json',
+			async:false,
+			error:function(e){
+				alert(e);
+				},
+			success:function(data){
+				  if(data!=null && data!=''){
+					  if(data.StatusCode=="200"){
+ 
+					  }
+					  else{
+						  alert(data.Message);
+					  }
+				  }else{
+					  alert('操作失敗！')
+				  }
+				}
+		})
 	}
 	
 });

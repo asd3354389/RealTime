@@ -169,4 +169,11 @@ public class IpBindingService extends Service<IpBinding> {
 	        System.out.println(result.toString());
 	        return result.toString();
 	}
+
+
+
+	public boolean RelieveDeviceIP(IpBinding[] ipBinding, String updateUser) {
+		// TODO Auto-generated method stub
+		return ipBindingDAO.RelieveDeviceIP(ipBinding,updateUser);
+	}
 }
