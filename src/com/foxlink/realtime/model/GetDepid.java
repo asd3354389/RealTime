@@ -2,17 +2,17 @@ package com.foxlink.realtime.model;
 
 public class GetDepid {
 	private String costid;
-	private String depid;
+	private String deptid;
 	public String getCostid() {
 		return costid;
 	}
 	public void setCostid(String costid) {
 		this.costid = costid;
 	}
-	public String getDepid() {
-		return depid;
+	public String getDeptid() {
+		return deptid;
 	}
-	public void setDepid(String depid) {
-		this.depid = depid;
+	public void setDeptid(String deptid) {
+		this.deptid = deptid;
 	}
 }
