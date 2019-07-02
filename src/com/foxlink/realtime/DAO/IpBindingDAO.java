@@ -680,11 +680,13 @@ public class IpBindingDAO extends DAO<IpBinding>{
 	public List<GetDepid> ShowDeptNo(String CostId) {
 		// TODO Auto-generated method stub
 		List<GetDepid> AllDept = null;
-		String sSQl = "select t.depid from SWIPE.DEPT_RELATION t ";
+		//String sSQl = "select t.depid from SWIPE.DEPT_RELATION t ";
 		try {
-			if(!CostId.equals("ALL")) {
-				sSQl+= " where t.CostId = '"+CostId+"'order by t.depid asc";
-			}
+//			if(!CostId.equals("ALL")) {
+//				sSQl+= " where t.CostId = '"+CostId+"'order by t.depid asc";
+//			}
+			String sSQl = "SELECT DISTINCT DEPTID FROM SWIPE.CSR_EMPLOYEE a,SWIPE.DEPT_RELATION b WHERE a.DEPID = b.DEPID AND b.COSTID = '"+CostId+"'order by a.DEPTID asc";
+
 			AllDept = jdbcTemplate.query(sSQl,new GetDepidMapper());
 			System.out.println(sSQl);
 		} catch (Exception e) {
@@ -692,7 +694,7 @@ public class IpBindingDAO extends DAO<IpBinding>{
 			  logger.error("Find Dept TotalRecord are failed ",e);
     		  e.printStackTrace();
 		}
-		//System.out.println("查詢的部門代碼==========================>"+AllDept);
+		System.out.println("查詢的部門代碼==========================>"+AllDept);
 		return AllDept;
 	}
 	@Override

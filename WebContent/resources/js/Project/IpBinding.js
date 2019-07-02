@@ -921,8 +921,8 @@ $(function(){
 		//DeptNobinding
 		$('#DeptNobinding tbody').empty();
 		for(var i=0;i<obj.length;i++){
-			var	tableContents='<tr><td><input type="checkbox" value='+obj[i].depid+' style="float: left;margin-left: 10px"></td>'+
-			'<td>'+obj[i].depid+'</td>';
+			var	tableContents='<tr><td><input type="checkbox" value='+obj[i].deptid+' style="float: left;margin-left: 10px"></td>'+
+			'<td>'+obj[i].deptid+'</td>';
 			tableContents+='</tr>';
 			
 			$('#DeptNobinding tbody').append(tableContents);
