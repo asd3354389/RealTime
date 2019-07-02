@@ -10,6 +10,19 @@ public class IOWSRecord {
 	private String name;
 	private String depId;
 	private String costId;
+	private String deptId;
+	@Override
+	public String toString() {
+		return "IOWSRecord [Emp_id=" + Emp_id + ", D_Cardid=" + D_Cardid + ", WorkShopNo=" + WorkShopNo
+				+ ", SwipeCardTime=" + SwipeCardTime + ", Direction=" + Direction + ", Record_Status=" + Record_Status
+				+ ", name=" + name + ", depId=" + depId + ", costId=" + costId + ", deptId=" + deptId + "]";
+	}
+	public String getDeptId() {
+		return deptId;
+	}
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
+	}
 	public String getEmp_id() {
 		return Emp_id;
 	}

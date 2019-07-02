@@ -221,7 +221,7 @@ $(document).ready(function(){
 			var	tableContents='<tr><td style="padding: 5px 0px;"><input type="checkbox" value='+executeResult[i]["EmpNo"]+' style="width:100%; height:15px"></td>'+
 					'<td>'+executeResult[i]["EmpNo"]+'</td>'+
 					'<td>'+executeResult[i]["EmpName"]+'</td>'+
-					'<td>'+executeResult[i]["DeptNo"]+'</td>'+
+					'<td>'+executeResult[i]["DEPTID"]+'</td>'+
 					'<td>'+executeResult[i]["CostID"]+'</td>'
 					var Line_Personnel =executeResult[i].Line_Personnel=="Y"?'隨綫':'';		
 				tableContents+='<td>'+Line_Personnel+'</td>'
@@ -249,7 +249,7 @@ $(document).ready(function(){
 			var	tableContents='<tr><td style="padding: 5px 0px;"><input type="checkbox" value='+executeResult[i]["EmpNo"]+' style="width:100%; height:15px"></td>'+
 					'<td>'+executeResult[i]["EmpNo"]+'</td>'+
 					'<td>'+executeResult[i]["EmpName"]+'</td>'+
-					'<td>'+executeResult[i]["DeptNo"]+'</td>'+
+					'<td>'+executeResult[i]["DEPTID"]+'</td>'+
 					'<td>'+executeResult[i]["CostID"]+'</td>'
 				var Line_Personnel =executeResult[i].Line_Personnel=="N"?'非隨綫':'';		
 				tableContents+='<td>'+Line_Personnel+'</td>'

@@ -50,8 +50,8 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			}
 			else if(queryCritirea.equals("Name")){
 				sSQL+=" and Name = ?";  
-			}else if(queryCritirea.equals("Depid")){
-				sSQL+=" and Depid = ?";  
+			}else if(queryCritirea.equals("Deptid")){
+				sSQL+=" and Deptid = ?";  
 			}else if(queryCritirea.equals("Costid")){
 				sSQL+=" and Costid = ?";  
 			}
@@ -79,8 +79,11 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 		// TODO Auto-generated method stub
 		List<Employee> AllEmp = null;
 		// TODO Auto-generated method stub
+//		String sSQL = "select * from (select b.*,rownum rn from "
+//				+ "(select t.id,t.name,t.depid,t.costid,t.job_title,t.job_name,t.line_personnel FROM SWIPE.Csr_Employee t "
+//				+ "where t.isonwork = 0 and t.line_personnel = 'Y'";
 		String sSQL = "select * from (select b.*,rownum rn from "
-				+ "(select t.id,t.name,t.depid,t.costid,t.job_title,t.job_name,t.line_personnel FROM SWIPE.Csr_Employee t "
+				+ "(select t.id,t.name,t.depid,t.deptid,t.costid,t.job_title,t.job_name,t.line_personnel FROM SWIPE.Csr_Employee t "
 				+ "where t.isonwork = 0 and t.line_personnel = 'Y'";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
@@ -100,8 +103,8 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			}
 			else if(queryCritirea.equals("Name")){
 				sSQL+=" and Name = ?";  
-			}else if(queryCritirea.equals("Depid")){
-				sSQL+=" and Depid = ?";  
+			}else if(queryCritirea.equals("Deptid")){
+				sSQL+=" and Deptid = ?";  
 			}else if(queryCritirea.equals("Costid")){
 				sSQL+=" and Costid = ?";  
 			}
@@ -150,8 +153,8 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			}
 			else if(queryCritirea.equals("Name")){
 				sSQL+=" and Name = ?";  
-			}else if(queryCritirea.equals("Depid")){
-				sSQL+=" and Depid = ?";  
+			}else if(queryCritirea.equals("Deptid")){
+				sSQL+=" and Deptid = ?";  
 			}else if(queryCritirea.equals("Costid")){
 				sSQL+=" and Costid = ?";  
 			}
@@ -178,7 +181,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 		List<Employee> AllEmp = null;
 		// TODO Auto-generated method stub
 		String sSQL = "select * from (select b.*,rownum rn from "
-				+ "(select t.id,t.name,t.depid,t.costid,t.job_title,t.job_name,t.line_personnel FROM SWIPE.Csr_Employee t "
+				+ "(select t.id,t.name,t.depid,t.deptid,t.costid,t.job_title,t.job_name,t.line_personnel FROM SWIPE.Csr_Employee t "
 				+ "where t.isonwork = 0 and t.line_personnel = 'N'";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
@@ -198,8 +201,8 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			}
 			else if(queryCritirea.equals("Name")){
 				sSQL+=" and Name = ?";  
-			}else if(queryCritirea.equals("Depid")){
-				sSQL+=" and Depid = ?";  
+			}else if(queryCritirea.equals("Deptid")){
+				sSQL+=" and Deptid = ?";  
 			}else if(queryCritirea.equals("Costid")){
 				sSQL+=" and Costid = ?";  
 			}
