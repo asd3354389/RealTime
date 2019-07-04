@@ -428,11 +428,17 @@ $(document).ready(function(){
 				'<td>'+EmpInfo.overTimeHours+'</td>'+
 				'<td>'+OverTimeTypeText+'</td>';
 				if(modifyEmpBound.indexOf(EmpInfo.employeeID)!=-1){
-					HTMLElement+='<td><select><option>'+EmpInfo.bonus+'</option>';
+					HTMLElement+='<td><select>';
 					if(EmpInfo.bonus!=0){
-						HTMLElement+='<option>0</option></select>';
+						let leng = EmpInfo.bonus/0.5;
+						for(var i=0;i<leng+1;i++){
+							var num = EmpInfo.bonus-(0.5*i)
+							HTMLElement+='<option>'+num+'</option>';
+						}
+					}else{
+						HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
 					}
-					HTMLElement+='</td>';
+					HTMLElement+='</select></td>';
 				}else{
 					HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
 				}					

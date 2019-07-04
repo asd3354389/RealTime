@@ -27,7 +27,7 @@ $(document).ready(function () {
 	                		//$("#depid").find("option").not(":first").remove();
 	                		$("#depid").find("option").remove();
 	                		for (var i = 0; i < data.length; i++) {
-	                			$("#depid").append("<option value='"+data[i].depid+"'>"+data[i].depid+"</option>");	                    	
+	                			$("#depid").append("<option value='"+data[i].deptid+"'>"+data[i].deptid+"</option>");	                    	
 	                		}
 	                		$('#depid').multiselect("destroy").multiselect();	                  
 	                	}

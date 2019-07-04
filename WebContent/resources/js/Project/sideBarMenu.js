@@ -105,6 +105,11 @@
 				"icon" : "icon-nav",
 				"url" : "FourteenRO/ShowFourteenRO"
 
+			},{
+				"menuname" : "班別加班休息時間維護",
+				"icon" : "icon-nav",
+				"url" : "ClassNoRest/ShowClassNoRestInfo"
+
 			}]
 		},{
 
