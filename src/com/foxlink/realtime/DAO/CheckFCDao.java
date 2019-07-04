@@ -39,7 +39,7 @@ public class CheckFCDao extends DAO<QueryForgetCard> {
 	public List<QueryForgetCard> FindRecord(String userDataCostId, int currentPage, int totalRecord,
 			QueryForgetCard queryForgetCard) {
 		String sdate = queryForgetCard.getStartDate();
-		String sql = "select id ,name,depid,costid,  isOnWork, fcDate  from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from (select id ,name,depid,costid,  isOnWork,  '"
+		String sql = "select id ,name,deptid,costid,  isOnWork, fcDate  from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from (select id ,name,deptid,costid,  isOnWork,  '"
 				+ sdate + "' fcDate  from swipe.csr_employee where 1=1";
 		List<QueryForgetCard> forgetCards = null;
 		try {
@@ -59,8 +59,8 @@ public class CheckFCDao extends DAO<QueryForgetCard> {
 					}
 					idsStr.append("'").append(strA[i]).append("'");
 				}
-				sql += " AND costid = ? and depid in (" + idsStr
-						+ ") AND isOnWork = 0 AND id NOT IN (SELECT emp_id FROM swipe.csr_swipecardtime WHERE emp_id IN (SELECT id FROM  swipe.csr_employee WHERE 1 = 1 AND (costid = ?) and depid in ("
+				sql += " AND costid = ? and deptid in (" + idsStr
+						+ ") AND isOnWork = 0 AND id NOT IN (SELECT emp_id FROM swipe.csr_swipecardtime WHERE emp_id IN (SELECT id FROM  swipe.csr_employee WHERE 1 = 1 AND (costid = ?) and deptid in ("
 						+ idsStr
 						+ ") ) AND  to_char(to_date(swipe.csr_swipecardtime.swipe_date,'yyyy-mm-dd'),'yyyy/mm/dd') = ?) ";
 				queryList.add(queryForgetCard.getCostid());
@@ -98,7 +98,7 @@ public class CheckFCDao extends DAO<QueryForgetCard> {
 			}
 			Page page = new Page(currentPage, totalRecord);
 			int endIndex = page.getStartIndex() + page.getPageSize();
-			sql += " order by isOnWork,depid,ID) A ) where rnum > " + page.getStartIndex() + " and rnum <= " + endIndex;
+			sql += " order by isOnWork,deptid,ID) A ) where rnum > " + page.getStartIndex() + " and rnum <= " + endIndex;
 			forgetCards = super.jdbcTemplate.query(sql, queryList.toArray(), new QueryFCMapper());
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -136,8 +136,8 @@ public class CheckFCDao extends DAO<QueryForgetCard> {
 					}
 					idsStr.append("'").append(strA[i]).append("'");
 				}
-				sSql += " AND costid = ? and depid in (" + idsStr
-						+ ") AND isOnWork = 0 AND id NOT IN (SELECT emp_id FROM swipe.csr_swipecardtime WHERE emp_id IN (SELECT id FROM  swipe.csr_employee WHERE 1 = 1 AND (costid = ?) and depid in ("
+				sSql += " AND costid = ? and deptid in (" + idsStr
+						+ ") AND isOnWork = 0 AND id NOT IN (SELECT emp_id FROM swipe.csr_swipecardtime WHERE emp_id IN (SELECT id FROM  swipe.csr_employee WHERE 1 = 1 AND (costid = ?) and deptid in ("
 						+ idsStr
 						+ ") ) AND  to_char(to_date(swipe.csr_swipecardtime.swipe_date,'yyyy-mm-dd'),'yyyy/mm/dd') = ?) ";
 				queryList.add(queryForgetCard.getCostid());
@@ -173,7 +173,7 @@ public class CheckFCDao extends DAO<QueryForgetCard> {
 			} else {
 				sSql += " and costId in('')";
 			}
-			sSql += " ORDER BY isOnWork,depid,ID";
+			sSql += " ORDER BY isOnWork,deptid,ID";
 			totalRecord = jdbcTemplate.queryForObject(sSql, queryList.toArray(), Integer.class);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -184,7 +184,7 @@ public class CheckFCDao extends DAO<QueryForgetCard> {
 	// 查詢所有記錄
 	public List<QueryForgetCard> FindRecords(String userDataCostId, QueryForgetCard queryForgetCard) {
 		String sdate = queryForgetCard.getStartDate();
-		String sql = "select id ,name,depid,costid,  isOnWork,  '" + sdate
+		String sql = "select id ,name,deptid,costid,  isOnWork,  '" + sdate
 				+ "' fcDate  from swipe.csr_employee where 1=1";
 		List<QueryForgetCard> forgetCards = null;
 		try {
@@ -205,8 +205,8 @@ public class CheckFCDao extends DAO<QueryForgetCard> {
 			}
 			// List<String> result=Arrays.asList(StringUtils.split(str,","));
 			if (queryForgetCard.getDepid() != null && queryForgetCard.getDepid() != "") {
-				sql += " AND costid = ? and depid in (" + idsStr
-						+ ") AND isOnWork = 0 AND id NOT IN (SELECT emp_id FROM swipe.csr_swipecardtime WHERE emp_id IN (SELECT id FROM  swipe.csr_employee WHERE 1 = 1 AND (costid = ?) and depid in ("
+				sql += " AND costid = ? and deptid in (" + idsStr
+						+ ") AND isOnWork = 0 AND id NOT IN (SELECT emp_id FROM swipe.csr_swipecardtime WHERE emp_id IN (SELECT id FROM  swipe.csr_employee WHERE 1 = 1 AND (costid = ?) and deptid in ("
 						+ idsStr
 						+ ") ) AND  to_char(to_date(swipe.csr_swipecardtime.swipe_date,'yyyy-mm-dd'),'yyyy/mm/dd') = ?) ";
 				queryList.add(queryForgetCard.getCostid());
@@ -238,7 +238,7 @@ public class CheckFCDao extends DAO<QueryForgetCard> {
 			} else {
 				sql += " and costId in('')";
 			}
-			sql += " order by isOnWork,depid,ID";
+			sql += " order by isOnWork,deptid,ID";
 			forgetCards = jdbcTemplate.query(sql, queryList.toArray(), new QueryFCMapper());
 		} catch (Exception ex) {
 			ex.printStackTrace();
