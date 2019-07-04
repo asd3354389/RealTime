@@ -11,7 +11,8 @@ public class GetDepidMapper implements RowMapper<GetDepid> {
 	public GetDepid mapRow(ResultSet rs, int arg1) throws SQLException {
 		GetDepid depids=new GetDepid();
 		//depid.setCostid(rs.getString("costid"));
-		depids.setDepid(rs.getString("depid"));
+		depids.setDeptid(rs.getString("deptid"));
+		
 		return depids;
 	}
 

@@ -13,7 +13,14 @@ public class Employee {
 	private String Job_Title;
 	private String Job_Name;
 	private String Line_Personnel;
+	private String DEPTID;
 	
+	public String getDEPTID() {
+		return DEPTID;
+	}
+	public void setDEPTID(String dEPTID) {
+		DEPTID = dEPTID;
+	}
 	public String getEmpNo() {
 		return EmpNo;
 	}
@@ -91,7 +98,7 @@ public class Employee {
 		return "Employee [EmpNo=" + EmpNo + ", EmpName=" + EmpName + ", DeptNo=" + DeptNo + ", DeptName=" + DeptName
 				+ ", Direct=" + Direct + ", CardID=" + CardID + ", CostID=" + CostID + ", Permission=" + Permission
 				+ ", IsOnWork=" + IsOnWork + ", Job_Title=" + Job_Title + ", Job_Name=" + Job_Name + ", Line_Personnel="
-				+ Line_Personnel + "]";
+				+ Line_Personnel + ", DEPTID=" + DEPTID + "]";
 	}
 	
 	

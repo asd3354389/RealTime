@@ -22,6 +22,7 @@ public class QueryEmpyloeeMapper implements RowMapper<Employee> {
 		emp.setJob_Title(rs.getString("Job_Title"));
 		emp.setJob_Name(rs.getString("Job_Name"));
 		emp.setLine_Personnel(rs.getString("Line_Personnel"));
+		emp.setDEPTID(rs.getString("deptid"));
 		// TODO Auto-generated method stub
 		return emp;
 	}

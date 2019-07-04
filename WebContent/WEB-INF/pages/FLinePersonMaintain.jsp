@@ -50,7 +50,7 @@
 				查詢條件：<select id="queryCritirea" class="input-small">
 					<option value="Id">工號</option>
 					<option value="Name">姓名</option>
-					<option value="Depid">部門代碼</option>
+					<option value="Deptid">部門代碼</option>
 					<option value="Costid">費用代碼</option>
 				</select> <input type="text" id="queryParam" name="queryParam"
 					class="input-sm"> <input type="button"
