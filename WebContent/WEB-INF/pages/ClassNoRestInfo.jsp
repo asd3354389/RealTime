@@ -21,7 +21,7 @@
 
 <c:url value="/resources/assets/My97DatePicker/WdatePicker.js" var="wdatePickerJS" />
 <c:url value="/resources/assets/js/jquery-1.8.3.min.js" var="assetsJqueryJS" />
-<c:url value="/resources/js/Project/RealTime.Modify.WorkshopNoRestInfo.js?version=${resourceVersion}" var="WorkshopNoRestInfo" /> 
+<c:url value="/resources/js/Project/RealTime.Modify.ClassNoRestInfo.js?version=${resourceVersion}" var="ClassNoRestInfo" />
 <c:url value="/resources/js/jquery/jquery-1.11.3.min.js" var="JqueryJS" />
 <c:url value="/resources/js/bootstrap/bootstrap.min.js" var="bootstrapJS" />
 <c:url value="/resources/js/bootstrap/bootstrap-select.min.js" var="bootstrapSelectJS" />
@@ -31,9 +31,9 @@
 <script src="${wdatePickerJS}" language="javascript" type="text/javascript"></script>
 <script src="${bootstrapSelectJS}" type="text/javascript"></script>
 <script type="text/javascript" src='${AjaxCheckSessionJS}'></script>
-<script src="${WorkshopNoRestInfo}" type="text/javascript"></script>
+<script src="${ClassNoRestInfo}" type="text/javascript"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>維護車間休息時間段</title>
+<title>維護班別加班休息時間段</title>
 </head>
 <body style="position:relative;">
 		<div id="header" class="header-fixed">
@@ -50,41 +50,38 @@
 		<div class="panel-body" style="border: 1px solid #e1e3e6;">
 			<div align="right">
 				查詢條件：<select id="queryCritirea" class="input-small">
-					<option value="workshopno">車間</option>
+					<option value="classNo">班別</option>
 				</select> <input type="text" id="queryParam" name="queryParam"
 					class="input-sm"> <input type="button"
-					id="searchWorkshopNoRestInfo" name="searchWorkshopNoRestInfo"
+					id="searchClassNoRestInfo" name="searchClassNoRestInfo"
 					class="btn btn-sm btn-primary" value="Search">
 			</div>
 			<div>
-					<h4 style="position: relative;">車間休息時間段列表信息：</h4>
-					<a id="addNewIOCardMaIP" role="button" href="#insertIOCardMaIP"class="btn btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 500px;font-size: 14px;"><i class="glyphicon glyphicon-plus"></i>創建新車間休息時間段</a>
+					<h4 style="position: relative;">班別加班休息時間段列表信息：</h4>
+					<a id="addNewClassNo" role="button" href="#replactNewClassNo"class="btn btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 500px;font-size: 14px;"><i class="glyphicon glyphicon-plus"></i>創建新車間休息時間段</a>
 			</div>
 			<div class="middle">
 				<div class="left" style="width:80%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
-					<table id="WorkshopNoRestInfoTable" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
+					<table id="classNoRestInfoTable" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
 						<thead>
 							<tr>
-								<th>車間名稱</th>
-								<th>上午中休開始時間</th>
-								<th>上午中休結束時間</th>
-								<th>下午中休開始時間</th>
-								<th>下午中休結束時間</th>
-								<th>上半夜中休開始時間</th>
-								<th>上半夜中休結束時間</th>
-								<th>下半夜中休開始時間</th>
-								<th>下半夜中休結束時間</th>
+								<th>費用代碼</th>
+								<th>班別</th>
+								<!-- <th>加班休息開始時間一</th>
+								<th>加班休息結束時間一</th> -->
+								<th>加班替換休息開始時間二</th>
+								<th>加班替換休息結束時間二</th>
 								<th></th>
 							</tr>
 						</thead>
 						<tbody class='spTable'>
 						</tbody>
 					</table>
-					<div id="WorkshopNoRestInfoListPagination" align="right" style="height: 20;position:absolute; bottom: -20px;right: 0px;">
+					<div id="ClassNoRestInfoListPagination" align="right" style="height: 20;position:absolute; bottom: -20px;right: 0px;">
 					</div>
 				</div>
 			</div>
-			<jsp:include page="InsertNewWorkshopNoRestInfo.jsp" />
+			<jsp:include page="InsertClassNoRestInfo.jsp" />
 		</div>
 	</div>
 </div>	

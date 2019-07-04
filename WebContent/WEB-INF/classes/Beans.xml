@@ -244,4 +244,11 @@
 	<bean id="fourteenROService" class="com.foxlink.realtime.service.FourteenROService">
 		<property name="fourteenRODAO" ref="fourteenRODAO" />
 	</bean>
+	
+	<bean id="classNoRestDao" class="com.foxlink.realtime.DAO.ClassNoRestDao"
+		parent="dAO">
+	</bean>
+	<bean id="classNoRestService" class="com.foxlink.realtime.service.ClassNoRestService">
+		<property name="classNoRestDao" ref="classNoRestDao" />
+	</bean>
 </beans>
