@@ -37,6 +37,7 @@
 		<intercept-url pattern="/IOWorkShop/ShowIOWorkShopRecord" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
 		<intercept-url pattern="/ExceptionCost/ShowExceptionCost" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
 		<intercept-url pattern="/FourteenRO/**" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
+		<intercept-url pattern="/ClassNoRest/ShowClassNoRestInfo" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
 		<!-- access="hasRole('ROLE_USER','ROLE_ADMIN')"  -->
 
      <!--会话管理 -->   
