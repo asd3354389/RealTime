@@ -396,8 +396,8 @@ $(document).ready(function(){
 					HTMLElement+='<td><select>';
 					if(EmpInfo.bonus!=0){
 						let leng = EmpInfo.bonus/0.5;
-						for(var i=0;i<leng+1;i++){
-							var num = EmpInfo.bonus-(0.5*i)
+						for(var z=0;z<leng+1;z++){
+							var num = EmpInfo.bonus-(0.5*z)
 							HTMLElement+='<option>'+num+'</option>';
 						}
 					}else{
