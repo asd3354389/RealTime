@@ -35,6 +35,7 @@ public class EmpOT15minMapper implements RowMapper<EmpOT15min>{
 		ot15min.setGoWorkAdvance(rs.getInt("goWorkAdvance"));
 		ot15min.setOvertime_start(rs.getString("overtime_start"));
 		ot15min.setOutWorkOvertime(rs.getInt("outWorkOvertime"));
+		ot15min.setDeptid(rs.getString("deptid"));
 		return ot15min;
 	}
 

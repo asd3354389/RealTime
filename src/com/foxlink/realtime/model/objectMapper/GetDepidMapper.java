@@ -13,6 +13,7 @@ public class GetDepidMapper implements RowMapper<GetDepid> {
 		//depid.setCostid(rs.getString("costid"));
 		depids.setDeptid(rs.getString("deptid"));
 		
+		
 		return depids;
 	}
 

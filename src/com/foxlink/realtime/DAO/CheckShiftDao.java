@@ -46,9 +46,9 @@ public class CheckShiftDao extends DAO<QueryShift> {
 	// 分頁查詢
 	@Override
 	public List<QueryShift> FindRecord(String userDataCostId,int currentPage, int totalRecord, QueryShift queryShift) {
-		String sql = "SELECT id ,name ,depid ,costid ,emp_date ,class_no ,update_time ,class_start ,class_end FROM "
+		String sql = "SELECT id ,name ,depid ,deptid,costid ,emp_date ,class_no ,update_time ,class_start ,class_end FROM "
 				+ "(select a.*,rownum as rnum,COUNT (*) OVER () totalPage from "
-				+ "(SELECT emp.id ,emp.name ,emp.depid ,emp.costid ,emp_class.emp_date ,emp_class.class_no ,"
+				+ "(SELECT emp.id ,emp.name ,emp.depid ,emp.deptid,emp.costid ,emp_class.emp_date ,emp_class.class_no ,"
 				+ "emp_class.update_time ,class_no.class_start ,class_no.class_end from swipe.csr_employee emp,"
 				+ "swipe.classno class_no,swipe.emp_class emp_class "
 				+ "WHERE emp.ID = emp_class.ID AND emp_class.class_no = class_no.class_no and emp.isonwork='0'";
@@ -103,7 +103,8 @@ public class CheckShiftDao extends DAO<QueryShift> {
 			}
 			Page page = new Page(currentPage, totalRecord);
 			int endIndex = page.getStartIndex() + page.getPageSize();
-			sql += " order by costId,depid,emp_date ,id) A ) where rnum > " + page.getStartIndex() + " and rnum <= " + endIndex;
+			sql += " order by costId,depid,deptid,emp_date ,id) A ) where rnum > " + page.getStartIndex() + " and rnum <= " + endIndex;
+			System.out.println("查詢語句========>>"+sql);
 			queryShifts = jdbcTemplate.query(sql, queryList.toArray(), new QueryShiftMapper());
 		} catch (Exception ex) {
 			// TODO: handle exception
@@ -172,6 +173,7 @@ public class CheckShiftDao extends DAO<QueryShift> {
 			}else{
 				sSql += " and emp.costId in('')";
 			}
+			System.out.println("查詢總個數語句========>>"+sSql);
 			totalRecord = jdbcTemplate.queryForObject(sSql, queryList.toArray(), Integer.class);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -181,7 +183,7 @@ public class CheckShiftDao extends DAO<QueryShift> {
 
 	// 查詢所有記錄
 	public List<QueryShift> FindRecords(String userDataCostId,QueryShift queryShift) {
-		String sql = "SELECT emp.id ,emp.name ,emp.depid ,emp.costid ,emp_class.emp_date ,emp_class.class_no ,emp_class.update_time ,class_no.class_start ,class_no.class_end from swipe.csr_employee emp,swipe.classno class_no,swipe.emp_class emp_class WHERE emp.ID = emp_class.ID AND emp_class.class_no = class_no.class_no ";
+		String sql = "SELECT emp.id ,emp.name ,emp.depid ,emp.deptid,emp.costid ,emp_class.emp_date ,emp_class.class_no ,emp_class.update_time ,class_no.class_start ,class_no.class_end from swipe.csr_employee emp,swipe.classno class_no,swipe.emp_class emp_class WHERE emp.ID = emp_class.ID AND emp_class.class_no = class_no.class_no ";
 		List<QueryShift> queryShifts = null;
 			try {
 			List<Object> queryList = new ArrayList<Object>();
@@ -231,7 +233,8 @@ public class CheckShiftDao extends DAO<QueryShift> {
 			}else{
 				sql += " and emp.costId in('')";
 			}
-			sql+=" order by emp.costId,emp.depid,emp_class.emp_date ,emp.id";
+			sql+=" order by emp.costId,emp.depid,emp.deptid,emp_class.emp_date ,emp.id";
+			System.out.println("查詢所有記錄語句========>>"+sql);
 			queryShifts = jdbcTemplate.query(sql, queryList.toArray(), new QueryShiftMapper());
 		} catch (Exception ex) {
 			// TODO: handle exception

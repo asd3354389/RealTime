@@ -59,7 +59,7 @@
 						id="span1"> <span>導入員工ID號</span> <input type="file"
 						disabled="true" id="fu1">
 					</span>&nbsp; 此次共導入：<span id="sumId">0</span>個ID<br> 部門代碼: <input
-						type="text" id="deptno" name="depid" autocomplete="off" /> <input type="checkbox"
+						type="text" id="deptno" name="deptid" autocomplete="off" /> <input type="checkbox"
 						id="chk2">&nbsp; <span
 						class="btn btn-primary fileinput-button" disabled="true"
 						id="span3"> <span>導入部門代碼</span> <input type="file"

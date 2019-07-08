@@ -82,7 +82,7 @@ private static Logger logger=Logger.getLogger(DGsubsidyDAO.class);
  			
  			}
  			if(!depId.equals("")){
- 				sSQL+=" and b.depId in(";  
+ 				sSQL+=" and b.deptId in(";  
  				  String [] depIdArray = depId.split(",");
  		            for(int i=0;i<depIdArray.length;i++){
  		            	sSQL+="'"+depIdArray[i]+"'";
@@ -138,7 +138,7 @@ private static Logger logger=Logger.getLogger(DGsubsidyDAO.class);
 		// TODO Auto-generated method stub
 		List<DGsubsidy> searchDGsubsidy = null;
 		String sSQL = "select * from (select e.*,rownum as rnum,COUNT (*) OVER () totalPage from "
-				+ "(SELECT b.ID, b.Name, b.depid,b.costID,a.SwipeCardTime,a.SwipeCardTime2,d.class_start "
+				+ "(SELECT b.ID, b.Name, b.depid,b.deptid,b.costID,a.SwipeCardTime,a.SwipeCardTime2,d.class_start "
 				+ "FROM SWIPE.csr_swipecardtime a join csr_employee b on a.emp_id=b.ID "
 				+ "join SWIPE.emp_class c on b.ID=c.ID "
 				+ "join SWIPE.classno d on c.class_no=d.class_no "
@@ -161,7 +161,7 @@ private static Logger logger=Logger.getLogger(DGsubsidyDAO.class);
 			
 			}
 			if(!depId.equals("")){
-				sSQL+=" and b.depId in(";  
+				sSQL+=" and b.deptId in(";  
 				  String [] depIdArray = depId.split(",");
 		            for(int i=0;i<depIdArray.length;i++){
 		            	sSQL+="'"+depIdArray[i]+"'";
@@ -207,11 +207,11 @@ private static Logger logger=Logger.getLogger(DGsubsidyDAO.class);
 			if(!isShowAll){
 				Page page = new Page(currentPage, totalRecord);	  
 				int endIndex=page.getStartIndex() + page.getPageSize();
-				sSQL += " order by b.depid,b.costID,a.emp_id,a.swipecardtime ) e ) where rnum > "+page.getStartIndex()+" and rnum <= "+ endIndex ;
+				sSQL += " order by b.depid,b.deptid,b.costID,a.emp_id,a.swipecardtime ) e ) where rnum > "+page.getStartIndex()+" and rnum <= "+ endIndex ;
 			}
 		    else
 			{
-				sSQL += " order by b.depid,b.costID,a.emp_id,a.swipecardtime ) e ) where 1=1";
+				sSQL += " order by b.depid,b.deptid,b.costID,a.emp_id,a.swipecardtime ) e ) where 1=1";
 			}    
 		    searchDGsubsidy = jdbcTemplate.query(sSQL,  queryList.toArray(), new DGsubsidyMapper());			    
 		

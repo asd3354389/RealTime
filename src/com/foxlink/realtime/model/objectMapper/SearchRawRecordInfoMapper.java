@@ -12,12 +12,13 @@ public class SearchRawRecordInfoMapper implements RowMapper<SearchRawRecordInfo>
 	public SearchRawRecordInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
 		// TODO Auto-generated method stub
 		SearchRawRecordInfo searchInfo=new SearchRawRecordInfo();
-		searchInfo.setEmpId(rs.getString(1));
-		searchInfo.setName(rs.getString(2));
-		searchInfo.setDepId(rs.getString(3));
-		searchInfo.setCostId(rs.getString(4));
-		searchInfo.setSwipeCardTime(rs.getString(5));
-		searchInfo.setSwipeCardIpAddress(rs.getString(6));
+		searchInfo.setEmpId(rs.getString("empId"));
+		searchInfo.setName(rs.getString("name"));
+		searchInfo.setDepId(rs.getString("depId"));
+		searchInfo.setCostId(rs.getString("costId"));
+		searchInfo.setSwipeCardTime(rs.getString("swipeCardTime"));
+		searchInfo.setSwipeCardIpAddress(rs.getString("swipeCardIpAddress"));
+		searchInfo.setDeptid(rs.getString("deptid"));
 		return searchInfo;
 	}
 

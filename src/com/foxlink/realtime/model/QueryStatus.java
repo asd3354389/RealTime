@@ -14,6 +14,9 @@ public class QueryStatus {
 	private String PRIMARY_ITEM_NO;
 	private String OVERTIMEDATE;
 	private String bonus;
+
+	
+
 	public String getBonus() {
 		return bonus;
 	}
