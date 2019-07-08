@@ -68,7 +68,7 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 	public List<EmpOT15min> FindRecords(String userDataCostId, EmpOT15min t) {
 		// TODO Auto-generated method stub
 		List<EmpOT15min> empList = null;
-		String sql ="SELECT ce.id, ce.Name, ce.costid, ce.depid, ce.depname, cs.class_no, to_char(cs.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') AS SwipeCardTimeg"
+		String sql ="SELECT ce.id, ce.Name, ce.costid, ce.depid, ce.deptid,ce.depname, cs.class_no, to_char(cs.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') AS SwipeCardTimeg"
 				+ " , to_char(cs.SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') AS SwipeCardTimeo, c.class_start, CASE "
 				+ " WHEN (TO_DATE(cs.swipe_date || ' ' || SUBSTR(c.class_start, 1, 2) || ':' || SUBSTR(c.class_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 1 / 96 - cs.swipecardtime) * 24 * 3600 < 0 THEN NULL"
 				+ " ELSE (TO_DATE(cs.swipe_date || ' ' || SUBSTR(c.class_start, 1, 2) || ':' || SUBSTR(c.class_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 1 / 96 - cs.swipecardtime) * 24 * 3600"
@@ -95,7 +95,8 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 				sql += " and ce.id in (" + idsStr + ") ";
 				// queryList.add(querySwipeCard.getId());
 			}
-			String strDepid = t.getDepid();
+			//String strDepid = t.getDepid();
+			String strDepid = t.getDeptid();
 			String strDepidArray[] = strDepid.split(",");
 			StringBuffer depidsStr = new StringBuffer();
 			for (int i = 0; i < strDepidArray.length; i++) {
@@ -104,8 +105,8 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 				}
 				depidsStr.append("'").append(strDepidArray[i]).append("'");
 			}
-			if (t.getDepid() != "") {
-				sql += " and ce.depid in (" + depidsStr + ") ";
+			if (t.getDeptid() != "") {
+				sql += " and ce.deptid in (" + depidsStr + ") ";
 				//queryList.add(querySwipeCard.getDepid());
 			}
 			String strcostid = t.getCostid();
@@ -140,7 +141,7 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 			queryList.add(t.getTimeStart());
 			queryList.add(t.getTimeEnd());
 			
-			sql+=" union SELECT ce.id, ce.Name, ce.costid, ce.depid, ce.depname, cs.class_no, to_char(cs.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') AS SwipeCardTimeg"
+			sql+=" union SELECT ce.id, ce.Name, ce.costid, ce.depid,ce.deptid, ce.depname, cs.class_no, to_char(cs.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') AS SwipeCardTimeg"
 					+ " , to_char(cs.SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') AS SwipeCardTimeo, c.class_start, CASE "
 					+ " WHEN (TO_DATE(cs.swipe_date || ' ' || SUBSTR(c.class_start, 1, 2) || ':' || SUBSTR(c.class_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 1 / 96 - cs.swipecardtime) * 24 * 3600 < 0 THEN NULL"
 					+ " ELSE (TO_DATE(cs.swipe_date || ' ' || SUBSTR(c.class_start, 1, 2) || ':' || SUBSTR(c.class_start, 3, 2) || ':00', 'yyyy-mm-dd hh24:mi:ss') - 1 / 96 - cs.swipecardtime) * 24 * 3600"
@@ -166,7 +167,8 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 				// queryList.add(querySwipeCard.getId());
 			}
 			
-			String strDepid1 = t.getDepid();
+			//String strDepid1 = t.getDepid();
+			String strDepid1 = t.getDeptid();
 			String strDepidArray1[] = strDepid1.split(",");
 			StringBuffer depidsStr1 = new StringBuffer();
 			for (int i = 0; i < strDepidArray1.length; i++) {
@@ -175,8 +177,8 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 				}
 				depidsStr1.append("'").append(strDepidArray1[i]).append("'");
 			}
-			if (t.getDepid() != "") {
-				sql += " and ce.depid in (" + depidsStr1 + ") ";
+			if (t.getDeptid() != "") {
+				sql += " and ce.deptid in (" + depidsStr1 + ") ";
 				//queryList.add(querySwipeCard.getDepid());
 			}
 			
@@ -226,7 +228,7 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 	public List<EmpOT15min> FindRecordsHistory(String userDataCostId, EmpOT15min t) {
 		// TODO Auto-generated method stub
 		List<EmpOT15min> empList = null;
-		String sql = "SELECT EMP.ID,EMP.Name,EMP.costID,EMP.Depid,Emp.Depname,CLO.Class_No,to_char(EMT.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') swipecardtimeg,to_char(EMT.SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') swipecardtimeo,CLO.Class_Start,TO_CHAR((TO_NUMBER ((SUBSTR (CLO.class_start, 1, 2))) * 3600 "
+		String sql = "SELECT EMP.ID,EMP.Name,EMP.costID,EMP.Depid,EMP.Deptid,Emp.Depname,CLO.Class_No,to_char(EMT.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') swipecardtimeg,to_char(EMT.SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') swipecardtimeo,CLO.Class_Start,TO_CHAR((TO_NUMBER ((SUBSTR (CLO.class_start, 1, 2))) * 3600 "
 				+ "+ TO_NUMBER ((SUBSTR (CLO.class_start, 3, 2))) * 60 - 900) - (    TO_NUMBER ((SUBSTR (TO_CHAR (EMT.SwipeCardTime, 'hh24:mi:ss'),1,2)))* 3600+ TO_NUMBER  "
 				+ "((SUBSTR (TO_CHAR (EMT.SwipeCardTime, 'hh24:mi:ss'), 4,2)))* 60+ TO_NUMBER ((SUBSTR (TO_CHAR (EMT.SwipeCardTime, 'hh24:mi:ss'), 7, 2))))) goWorkAdvance,CLO.Class_End as overtime_start, "
 				+ "'' AS outWorkOvertime, TO_CHAR (EMT.SwipeCardTime, 'yyyy-mm-dd') AS 班別日期 FROM CSR_SWIPECARDTIME_MS EMT, CSR_EMPLOYEE EMP,EMP_CLASS_MS EMCLO,classno CLO "
@@ -249,7 +251,8 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 				sql += " and EMP.id in (" + idsStr + ") ";
 				// queryList.add(querySwipeCard.getId());
 			}
-			String strDepid = t.getDepid();
+			//String strDepid = t.getDepid();
+			String strDepid = t.getDeptid();
 			String strDepidArray[] = strDepid.split(",");
 			StringBuffer depidsStr = new StringBuffer();
 			for (int i = 0; i < strDepidArray.length; i++) {
@@ -258,8 +261,8 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 				}
 				depidsStr.append("'").append(strDepidArray[i]).append("'");
 			}
-			if (t.getDepid() != "") {
-				sql += " and EMP.depid in (" + depidsStr + ") ";
+			if (t.getDeptid() != "") {
+				sql += " and EMP.deptid in (" + depidsStr + ") ";
 				//queryList.add(querySwipeCard.getDepid());
 			}
 			String strcostid = t.getCostid();
@@ -294,7 +297,7 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 				queryList.add(t.getTimeStart());
 			}
 			
-			sql += "UNION ALL SELECT EMP.ID,EMP.Name,EMP.costID,EMP.Depid,Emp.Depname,CLO.Class_No,to_char(EMT.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') swipecardtimeg,to_char(EMT.SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') swipecardtimeo,CLO.Class_Start,'' AS goWorkAdvance,CLO.Class_End as overtime_start, TO_CHAR((TO_NUMBER((SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'),1,2))) * 3600 + TO_NUMBER ((SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'),4,2))) * 60 + TO_NUMBER((SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'),7,2)))) - (TO_NUMBER ((SUBSTR (CLO.overtime_start, 1, 2))) * 3600+ TO_NUMBER ((SUBSTR (CLO.overtime_start, 3, 2))) * 60+ 8100)) outWorkOvertime,TO_CHAR (EMT.SwipeCardTime2, 'yyyy-mm-dd') 班別日期 FROM CSR_SWIPECARDTIME_MS  EMT,CSR_employee EMP,EMP_CLASS_MS EMCLO,classno CLO WHERE 1 = 1 AND EMT.EMP_ID = EMP.ID AND EMP.ID = EMCLO.ID AND EMT.Shift = 'D' AND TO_CHAR (EMT.SwipeCardTime2, 'yyyy-mm-dd') =? AND EMCLO.emp_date = TO_DATE (?, 'yyyy-mm-dd') AND EMCLO.class_no = CLO.class_no AND TO_NUMBER ((SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'), 1, 2))) * 3600 + TO_NUMBER ( (SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'), 4, 2))) * 60 + TO_NUMBER ((SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'), 7, 2))) >TO_NUMBER ((SUBSTR (CLO.overtime_start, 1, 2))) * 3600 + TO_NUMBER ((SUBSTR (CLO.overtime_start, 3, 2))) * 60 + 8100";
+			sql += "UNION ALL SELECT EMP.ID,EMP.Name,EMP.costID,EMP.Depid,EMP.Deptid,Emp.Depname,CLO.Class_No,to_char(EMT.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') swipecardtimeg,to_char(EMT.SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') swipecardtimeo,CLO.Class_Start,'' AS goWorkAdvance,CLO.Class_End as overtime_start, TO_CHAR((TO_NUMBER((SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'),1,2))) * 3600 + TO_NUMBER ((SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'),4,2))) * 60 + TO_NUMBER((SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'),7,2)))) - (TO_NUMBER ((SUBSTR (CLO.overtime_start, 1, 2))) * 3600+ TO_NUMBER ((SUBSTR (CLO.overtime_start, 3, 2))) * 60+ 8100)) outWorkOvertime,TO_CHAR (EMT.SwipeCardTime2, 'yyyy-mm-dd') 班別日期 FROM CSR_SWIPECARDTIME_MS  EMT,CSR_employee EMP,EMP_CLASS_MS EMCLO,classno CLO WHERE 1 = 1 AND EMT.EMP_ID = EMP.ID AND EMP.ID = EMCLO.ID AND EMT.Shift = 'D' AND TO_CHAR (EMT.SwipeCardTime2, 'yyyy-mm-dd') =? AND EMCLO.emp_date = TO_DATE (?, 'yyyy-mm-dd') AND EMCLO.class_no = CLO.class_no AND TO_NUMBER ((SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'), 1, 2))) * 3600 + TO_NUMBER ( (SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'), 4, 2))) * 60 + TO_NUMBER ((SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'), 7, 2))) >TO_NUMBER ((SUBSTR (CLO.overtime_start, 1, 2))) * 3600 + TO_NUMBER ((SUBSTR (CLO.overtime_start, 3, 2))) * 60 + 8100";
 			String strId1 = t.getId();
 			String strIdArray1[] = strId1.split(",");
 			StringBuffer idsStr1 = new StringBuffer();
@@ -309,7 +312,8 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 				// queryList.add(querySwipeCard.getId());
 			}
 			
-			String strDepid1 = t.getDepid();
+			//String strDepid1 = t.getDepid();
+			String strDepid1 = t.getDeptid();
 			String strDepidArray1[] = strDepid1.split(",");
 			StringBuffer depidsStr1 = new StringBuffer();
 			for (int i = 0; i < strDepidArray1.length; i++) {
@@ -318,8 +322,8 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 				}
 				depidsStr1.append("'").append(strDepidArray1[i]).append("'");
 			}
-			if (t.getDepid() != "") {
-				sql += " and EMP.depid in (" + depidsStr1 + ") ";
+			if (t.getDeptid() != "") {
+				sql += " and EMP.deptid in (" + depidsStr1 + ") ";
 				//queryList.add(querySwipeCard.getDepid());
 			}
 			
@@ -355,7 +359,7 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 				queryList.add(t.getTimeStart());
 			}
 			
-			sql += "UNION ALL SELECT EMP.ID,EMP.Name,EMP.costID,EMP.Depid,Emp.Depname,CLO.Class_No,to_char(EMT.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') swipecardtimeg,to_char(EMT.SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') swipecardtimeo,CLO.Class_Start,''AS goWorkAdvance,CLO.Class_End as overtime_start, "
+			sql += "UNION ALL SELECT EMP.ID,EMP.Name,EMP.costID,EMP.Depid,EMP.Deptid,Emp.Depname,CLO.Class_No,to_char(EMT.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') swipecardtimeg,to_char(EMT.SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') swipecardtimeo,CLO.Class_Start,''AS goWorkAdvance,CLO.Class_End as overtime_start, "
 					+ "TO_CHAR((TO_NUMBER((SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'), 1,2)))* 3600+TO_NUMBER ((SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'), 4,2)))* 60 "
 					+ "+ TO_NUMBER ((SUBSTR (TO_CHAR (EMT.SwipeCardTime2, 'hh24:mi:ss'),7,2))))- (  TO_NUMBER ((SUBSTR (CLO.overtime_start, 1, 2))) * 3600+ TO_NUMBER ((SUBSTR (CLO.overtime_start, 3, 2))) * 60 "
 					+ "+ 8100))outWorkOvertime,TO_CHAR (EMT.SwipeCardTime2 - 1, 'yyyy-mm-dd') 班別日期 FROM CSR_SWIPECARDTIME_MS EMT,CSR_employee EMP,EMP_CLASS_MS EMCLO,classno CLO "
@@ -377,7 +381,8 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 				// queryList.add(querySwipeCard.getId());
 			}
 			
-			String strDepid2 = t.getDepid();
+			//String strDepid2 = t.getDepid();
+			String strDepid2 = t.getDeptid();
 			String strDepidArray2[] = strDepid2.split(",");
 			StringBuffer depidsStr2 = new StringBuffer();
 			for (int i = 0; i < strDepidArray2.length; i++) {
@@ -386,8 +391,8 @@ public class OT15minDAO extends DAO<EmpOT15min>{
 				}
 				depidsStr2.append("'").append(strDepidArray2[i]).append("'");
 			}
-			if (t.getDepid() != "") {
-				sql += " and EMP.depid in (" + depidsStr2 + ") ";
+			if (t.getDeptid() != "") {
+				sql += " and EMP.deptid in (" + depidsStr2 + ") ";
 				//queryList.add(querySwipeCard.getDepid());
 			}
 			

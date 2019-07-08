@@ -201,6 +201,7 @@ $(document).ready(function(){
 	}
 	
 	function ShowSearchRawRecordTable(rawData,isShowAll){
+		
 		$('#rawRecordTable tbody').empty();
 		var currentPage=rawData.currentPage;
 		var totalRecord=rawData.totalRecord;
@@ -211,15 +212,16 @@ $(document).ready(function(){
 			$('#searchRawRecordCounts').html("記錄數: "+totalRecord+" 條");;
 		}
 		var executeResult=rawData["list"];
+		console.log(executeResult);
 		for(var i=0;i<executeResult.length;i++){
-			var	tableContents='<tr><td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["empId"]+'</td>'+
-					'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["name"]+'</td>'+
-					'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["depId"]+'</td>'+
-					'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["costId"]+'</td>'+
-					'<td>'+executeResult[i]["swipeCardTime"]+'</td>'+
-					'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["swipeCardIpAddress"]+'</td></tr>';
-					$('#rawRecordTable tbody').append(tableContents);
-		}	
+			   var tableContents='<tr><td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["empId"]+'</td>'+
+			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["name"]+'</td>'+
+			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["deptid"]+'</td>'+
+			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["costId"]+'</td>'+
+			     '<td>'+executeResult[i]["swipeCardTime"]+'</td>'+
+			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["swipeCardIpAddress"]+'</td></tr>';
+			     $('#rawRecordTable tbody').append(tableContents);
+			  } 
 		if(!isShowAll){
 			refreshRawRecordInfoPagination(currentPage,totalRecord,totalPage,pageSize);
 		}

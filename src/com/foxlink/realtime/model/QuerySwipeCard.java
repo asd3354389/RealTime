@@ -14,6 +14,13 @@ private String SwipeCardTime2;
 private String TimeStart;
 private String TimeEnd;
 private String swipe_date;
+private String deptid;
+public String getDeptid() {
+	return deptid;
+}
+public void setDeptid(String deptid) {
+	this.deptid = deptid;
+}
 public String getEmp_id() {
 	return emp_id;
 }
