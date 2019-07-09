@@ -14,9 +14,15 @@ public class QueryStatus {
 	private String PRIMARY_ITEM_NO;
 	private String OVERTIMEDATE;
 	private String bonus;
-
+	private String deptid;
 	
 
+	public String getDeptid() {
+		return deptid;
+	}
+	public void setDeptid(String deptid) {
+		this.deptid = deptid;
+	}
 	public String getBonus() {
 		return bonus;
 	}
