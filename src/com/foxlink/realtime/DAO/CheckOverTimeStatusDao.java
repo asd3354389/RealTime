@@ -88,7 +88,7 @@ public class CheckOverTimeStatusDao extends DAO<QueryStatus> {
 		// id=?";
 		// String sql = "SELECT id,name,costid,depid,direct from
 		// notes_overtime_state where id=?";
-		String sql = "SELECT id,NAME,Depid,costID,Direct,overtimedate,Shift,WorkContent,overtimeHours,overtimeType,overtimeInterval,application_person,application_id, NOTESSTATES,Reason,BackTime,Workshopno,BONUS from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from (SELECT id,NAME,Depid,costID,Direct,overtimedate,Shift,WorkContent,overtimeHours,overtimeType,overtimeInterval,application_person,application_id, NOTESSTATES,Reason,BackTime,Workshopno,BONUS FROM SWIPE.notes_overtime_state WHERE 1=1 ";
+		String sql = "SELECT id,NAME,Depid,deptid,costID,Direct,overtimedate,Shift,WorkContent,overtimeHours,overtimeType,overtimeInterval,application_person,application_id, NOTESSTATES,Reason,BackTime,Workshopno,BONUS from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from (SELECT n.id,n.NAME,c.deptid,n.Depid,n.costID,n.Direct,n.overtimedate,n.Shift,n.WorkContent,n.overtimeHours,n.overtimeType,n.overtimeInterval,n.application_person,n.application_id, n.NOTESSTATES,n.Reason,n.BackTime,n.Workshopno,n.BONUS FROM SWIPE.notes_overtime_state n,SWIPE.CSR_EMPLOYEE c WHERE 1=1 AND n. ID = c. ID ";
 		List<QueryStatus> queryStatus = null;
 		try {
 			List<Object> queryList = new ArrayList<Object>();
@@ -102,7 +102,7 @@ public class CheckOverTimeStatusDao extends DAO<QueryStatus> {
 				idsStr.append("'").append(strIdArray[i]).append("'");
 			}
 			if (queryEmpStatus.getId() != "") {
-				sql += " and ID in (" + idsStr + ")";
+				sql += " and n.ID in (" + idsStr + ")";
 				// queryList.add(idsStr);
 			}
 			String strcostid = queryEmpStatus.getCostId();
@@ -115,7 +115,7 @@ public class CheckOverTimeStatusDao extends DAO<QueryStatus> {
 				costidsStr.append("'").append(strCostidArray[i]).append("'");
 			}
 			if (queryEmpStatus.getCostId() != "" && queryEmpStatus.getCostId() != null) {
-				sql += " and costID in (" + costidsStr + ") ";
+				sql += " and n.costID in (" + costidsStr + ") ";
 				// queryList.add(queryEmpStatus.getCostId());
 			}
 			if (queryEmpStatus.getOVERTIMEDATE() != "" && queryEmpStatus.getOVERTIMEDATEEnd() != "") {
@@ -125,7 +125,7 @@ public class CheckOverTimeStatusDao extends DAO<QueryStatus> {
 			}
 			if (userDataCostId != null && userDataCostId != "") {
 				if (!userDataCostId.equals("ALL")) {
-					sql += " and costId in(";
+					sql += " and n.costId in(";
 					String[] userDataCostArray = userDataCostId.split("\\*");
 					for (int i = 0; i < userDataCostArray.length; i++) {
 						sql += "'" + userDataCostArray[i] + "'";
@@ -136,14 +136,15 @@ public class CheckOverTimeStatusDao extends DAO<QueryStatus> {
 					}
 				}
 			}else{
-				sql += " and costId in('')";
+				sql += " and n.costId in('')";
 			}
 			Page page = new Page(currentPage, totalRecord);
 			int endIndex = page.getStartIndex() + page.getPageSize();
-			sql += " order by Depid,overtimedate ,id) A ) where rnum > " + page.getStartIndex() + " and rnum <= " + endIndex;
+			sql += " order by n.Depid,c.deptid,n.overtimedate ,n.id) A ) where rnum > " + page.getStartIndex() + " and rnum <= " + endIndex;
 			// sql += " order by overtimedate ) A ) where rnum > "+0+" and rnum
 			// <= "+ 2 ;
 			queryStatus = jdbcTemplate.query(sql, queryList.toArray(), new QueryOTMapper());
+			System.out.println("查询记录sql======>"+sql);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -157,7 +158,7 @@ public class CheckOverTimeStatusDao extends DAO<QueryStatus> {
 		// String sql = "SELECT id,name,costid,depid,direct from
 		// notes_overtime_state where id=?";
 		//String sql = "SELECT id,NAME,Depid,costID,Direct,overtimedate,Shift,WorkContent,overtimeHours,overtimeType,overtimeInterval,application_person,application_id, NOTESSTATES,Reason,BackTime,Workshopno from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from (SELECT id,NAME,Depid,costID,Direct,overTimeDate,Shift,WorkContent,overtimeHours,overtimeType,overtimeInterval,application_person,application_id, NOTESSTATES,Reason,BackTime,Workshopno FROM notes_overtime_state WHERE 1=1 ";
-		String sql = "SELECT id,NAME,Depid,costID,Direct,overtimedate,Shift,WorkContent,overtimeHours,overtimeType,overtimeInterval,application_person,application_id, NOTESSTATES ,Reason,BackTime,Workshopno,BONUS  FROM SWIPE.notes_overtime_state WHERE 1=1 ";
+		String sql = "SELECT n.id,n.NAME,n.Depid,c.deptid,n.costID,n.Direct,n.overtimedate,n.Shift,n.WorkContent,n.overtimeHours,n.overtimeType,n.overtimeInterval,n.application_person,n.application_id, n.NOTESSTATES ,n.Reason,n.BackTime,n.Workshopno,n.BONUS  FROM SWIPE.notes_overtime_state n,SWIPE.CSR_EMPLOYEE c WHERE 1=1 AND n. ID = c. ID ";
 		List<QueryStatus> queryStatus = null;
 		try {
 			List<Object> queryList = new ArrayList<Object>();
@@ -171,7 +172,7 @@ public class CheckOverTimeStatusDao extends DAO<QueryStatus> {
 				idsStr.append("'").append(strIdArray[i]).append("'");
 			}
 			if (queryEmpStatus.getId() != "") {
-				sql += " and ID in (" + idsStr + ")";
+				sql += " and n.ID in (" + idsStr + ")";
 				// queryList.add(idsStr);
 			}
 			String strcostid = queryEmpStatus.getCostId();
@@ -184,7 +185,7 @@ public class CheckOverTimeStatusDao extends DAO<QueryStatus> {
 				costidsStr.append("'").append(strCostidArray[i]).append("'");
 			}
 			if (queryEmpStatus.getCostId() != "" && queryEmpStatus.getCostId() != null) {
-				sql += " and costID in (" + costidsStr + ") ";
+				sql += " and n.costID in (" + costidsStr + ") ";
 				// queryList.add(queryEmpStatus.getCostId());
 			}
 			if (queryEmpStatus.getOVERTIMEDATE() != "" && queryEmpStatus.getOVERTIMEDATEEnd() != "") {
@@ -194,7 +195,7 @@ public class CheckOverTimeStatusDao extends DAO<QueryStatus> {
 			}
 			if (userDataCostId != null && userDataCostId != "") {
 				if (!userDataCostId.equals("ALL")) {
-					sql += " and costId in(";
+					sql += " and n.costId in(";
 					String[] userDataCostArray = userDataCostId.split("\\*");
 					for (int i = 0; i < userDataCostArray.length; i++) {
 						sql += "'" + userDataCostArray[i] + "'";
@@ -205,10 +206,10 @@ public class CheckOverTimeStatusDao extends DAO<QueryStatus> {
 					}
 				}
 			}else{
-				sql += " and costId in('')";
+				sql += " and n.costId in('')";
 			}
 
-			sql += " order by Depid,overtimedate ,id ";
+			sql += " order by n.Depid,c.deptid,n.overtimedate ,n.id ";
 			// sql += " order by overtimedate ) A ) where rnum > "+0+" and rnum
 			// <= "+ 2 ;
 			queryStatus = jdbcTemplate.query(sql, queryList.toArray(), new QueryOTMapper());
