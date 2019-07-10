@@ -69,6 +69,14 @@
 			<div title="欢迎使用" style="padding: 20px; overflow: hidden;" id="home">
 				<h1>歡迎來到加班自動拋轉系統</h1>
 				<h1 style="color:red;">根據人資規定，所有刷卡記錄只允許查詢近三個月的記錄</h1>
+				<div>
+				<a style="font-size: 50px;color: blue;" href="./resources/ppt/實時工時系統USERGUIDE.pptx" download="實時工時系統USERGUIDE.pptx"  target="_blank">實時工時SOP下載</a>
+				</div>
+				<div>
+				<a style="font-size: 50px;color: blue;" href="./resources/ppt/實時工時車間門禁管理.pptx" download="實時工時車間門禁管理.pptx"  target="_blank">車間門禁管理SOP下載</a>
+				</div>
+			    
+			 <!-- ./resources/ppt/實時工時系統USERGUIDE.pptx -->
 			</div>
 		</div>
 	</div>
