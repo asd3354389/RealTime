@@ -13,7 +13,8 @@ $(document).ready(function(){
 	var overTimeEmps=new Array();
 	checkPwTime();
 	var checkdepid;
-	var modifyEmpBound=new Array();
+	var modifyEmpBoundA=new Array();
+	var modifyEmpBoundB=new Array();
 	init();
 	GetHoliday();
 	
@@ -357,7 +358,8 @@ $(document).ready(function(){
 		for(var i=0;i<EmployeeInfos.length;i++){
 			PendingEmpsList.push(EmployeeInfos[i].employeeID);
 		}
-		CheckModifyEmp(PendingEmpsList);
+		CheckModifyEmpA(PendingEmpsList);
+		CheckModifyEmpB(PendingEmpsList);
 		$('#OTPendingEmpTable tbody').empty();
 		var j=1;
 		for(var i=0;i<EmployeeInfos.length;i++){
@@ -392,10 +394,11 @@ $(document).ready(function(){
 				'<td>'+EmpInfo.overTimeHours+'</td>'+
 				'<td>'+OverTimeTypeText+'</td>';
 				//'<td>'+EmpInfo.bonus+'</td>'+
-				if(modifyEmpBound.indexOf(EmpInfo.employeeID)!=-1){
+				if(modifyEmpBoundB.indexOf(EmpInfo.employeeID)!=-1){
 					HTMLElement+='<td><select>';
 					if(EmpInfo.bonus!=0){
-						let leng = EmpInfo.bonus/0.5;
+						let leng = Number(EmpInfo.bonus)/0.5;
+						//console.log(leng);
 						for(var z=0;z<leng+1;z++){
 							var num = EmpInfo.bonus-(0.5*z)
 							HTMLElement+='<option>'+num+'</option>';
@@ -404,8 +407,26 @@ $(document).ready(function(){
 						HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
 					}
 					HTMLElement+='</select></td>';
+				}else if (modifyEmpBoundA.indexOf(EmpInfo.employeeID)!=-1) {
+					HTMLElement+='<td><select>';
+					if(EmpInfo.bonus!=0){
+						let leng = Number(EmpInfo.bonus)+1;
+						//console.log(leng);
+						var num;
+						for(var k=0;k<leng;k++){
+							if(k==0){
+								 num = EmpInfo.bonus;
+							}else{
+								 num = Math.round(EmpInfo.bonus)-k
+							}					
+							HTMLElement+='<option>'+num+'</option>';
+						}
+					}else{
+						HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+					}
+					HTMLElement+='</select></td>';
 				}else{
-					HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
+					HTMLElement+='<td>'+EmpInfo.bonus+'</td>'; 
 				}					
 				HTMLElement+='<td>未修改時數</td><td>未審核</td></tr>';
 				
@@ -626,10 +647,10 @@ $(document).ready(function(){
 		});
 	}
 	
-	function CheckModifyEmp(PendingEmpsList){
+	function CheckModifyEmpA(PendingEmpsList){
 		$.ajax({
 			type:'POST',
-			url:'../Overtime/checkModifyEmp.do',
+			url:'../Overtime/checkModifyEmpA.do',
 			data:JSON.stringify(PendingEmpsList),
 			async:false,
 			contentType:'application/json',
@@ -638,8 +659,29 @@ $(document).ready(function(){
 			},
 			success:function(data){	
 				 if(data!=null && data!=''){
-					 modifyEmpBound=data;
-					 console.log(modifyEmpBound);
+					 modifyEmpBoundA=data;
+					 console.log(modifyEmpBoundA);
+			}else{
+				console.log(123);
+				}
+			}
+		});
+	}
+	
+	function CheckModifyEmpB(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmpB.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBoundB=data;
+					 console.log(modifyEmpBoundB);
 			}else{
 				console.log(123);
 				}

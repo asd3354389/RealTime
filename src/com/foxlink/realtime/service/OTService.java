@@ -151,9 +151,14 @@ public class OTService extends Service<OverTimeSheet> {
 		return resultJson.toString();
 	}
 
-	public List<String> checkModifyEmp(String[] empList) {
+	public List<String> checkModifyEmpA(String[] empList) {
 		// TODO Auto-generated method stub
-		return otDAO.checkModifyEmp(empList);
+		return otDAO.checkModifyEmpA(empList);
+	}
+
+	public List<String> checkModifyEmpB(String[] empList) {
+		// TODO Auto-generated method stub
+		return otDAO.checkModifyEmpB(empList);
 	}
 	
 	
