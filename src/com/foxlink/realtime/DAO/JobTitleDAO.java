@@ -105,8 +105,8 @@ public class JobTitleDAO extends DAO<Emp> {
 			}
 			else if(queryCritirea.equals("Name")){
 				sSQL+=" and Name = ?";  
-			}else if(queryCritirea.equals("Depid")){
-				sSQL+=" and Depid = ?";  
+			}else if(queryCritirea.equals("Deptid")){
+				sSQL+=" and Deptid = ?";  
 			}else if(queryCritirea.equals("Costid")){
 				sSQL+=" and Costid = ?";  
 			}
@@ -143,7 +143,7 @@ public class JobTitleDAO extends DAO<Emp> {
 		List<Emp> AllEmp = null;
 		// TODO Auto-generated method stub
 		String sSQL = "select * from (select b.*,rownum rn from "
-				+ "(select t.id,t.name,t.depid,t.costid,t.job_title,t.job_name FROM SWIPE.Csr_Employee t "
+				+ "(select t.id,t.name,t.depid,t.deptid,t.costid,t.job_title,t.job_name FROM SWIPE.Csr_Employee t "
 				+ "where t.isonwork = 0 ";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
@@ -157,8 +157,8 @@ public class JobTitleDAO extends DAO<Emp> {
 			}
 			else if(queryCritirea.equals("Name")){
 				sSQL+=" and Name = ?";  
-			}else if(queryCritirea.equals("Depid")){
-				sSQL+=" and Depid = ?";  
+			}else if(queryCritirea.equals("Deptid")){
+				sSQL+=" and Deptid = ?";  
 			}else if(queryCritirea.equals("Costid")){
 				sSQL+=" and Costid = ?";  
 			}

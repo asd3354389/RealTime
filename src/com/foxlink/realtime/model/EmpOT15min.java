@@ -22,6 +22,19 @@ public class EmpOT15min {
 	private int outWorkOvertime;
 	private String swipecardtimeg;
 	private String swipecardtimeo;
+	private String deptid;
+	public String getDeptid() {
+		return deptid;
+	}
+
+
+
+	public void setDeptid(String deptid) {
+		this.deptid = deptid;
+	}
+
+
+
 	public String getSwipecardtimeg() {
 		return swipecardtimeg;
 	}
@@ -200,8 +213,8 @@ public class EmpOT15min {
 		return "EmpOT15min [id=" + id + ", Name=" + Name + ", costid=" + costid + ", depid=" + depid + ", depname="
 				+ depname + ", class_no=" + class_no + ", class_start=" + class_start + ", goWorkAdvance="
 				+ goWorkAdvance + ", overtime_start=" + overtime_start + ", outWorkOvertime=" + outWorkOvertime
-				+ ", swipecardtimeg=" + swipecardtimeg + ", swipecardtimeo=" + swipecardtimeo + ", TimeStart="
-				+ TimeStart + ", TimeEnd=" + TimeEnd + "]";
+				+ ", swipecardtimeg=" + swipecardtimeg + ", swipecardtimeo=" + swipecardtimeo + ", deptid=" + deptid
+				+ ", TimeStart=" + TimeStart + ", TimeEnd=" + TimeEnd + "]";
 	}
 
 

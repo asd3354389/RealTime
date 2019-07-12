@@ -102,12 +102,15 @@
 						<th>加班時數</th>
 						<th>加班類型</th>
 						<th>加班時段</th>
-						<th>頂崗時數</th>
 						<th>助理姓名</th>
 						<th>助理工號</th>
-						<th>NOTES狀態</th>
-						<th>NOTES回饋原因</th>
-						<th>NOTES回饋時間</th>
+						<th>NOTES加班狀態</th>
+						<th>NOTES加班回饋原因</th>
+						<th>NOTES加班回饋時間</th>
+						<th>頂崗時數</th>
+						<th>NOTES頂崗狀態</th>
+						<th>NOTES頂崗回饋原因</th>
+						<th>NOTES頂崗回饋時間</th>
 						<th>車間</th>
 						<th></th>
 					</tr>

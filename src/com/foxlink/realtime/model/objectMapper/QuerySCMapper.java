@@ -21,6 +21,7 @@ public class QuerySCMapper implements RowMapper<QuerySwipeCard> {
 		querySwipeCard.setSwipeCardTime2(rs.getString("SwipeCardTime2"));
 		querySwipeCard.setWorkshopNo(rs.getString("WorkshopNo"));
 		querySwipeCard.setSwipe_date(rs.getString("swipe_date"));
+		querySwipeCard.setDeptid(rs.getString("deptid") );
 		/*querySwipeCard.setTimeStart(rs.getString("TimeStart"));
 		querySwipeCard.setTimeEnd(rs.getString("TimeEnd"));*/
 		return querySwipeCard;

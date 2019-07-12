@@ -48,7 +48,7 @@ public class CheckSCDao extends DAO<QuerySwipeCard> {
 	@Override
 	public List<QuerySwipeCard> FindRecord(String userDataCostId,int currentPage, int totalRecord, QuerySwipeCard querySwipeCard) {
 		//String sql = " SELECT ID,NAME,depid ,costID ,SwipeCardTime ,SwipeCardTime2 ,WorkshopNo FROM (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from (SELECT emp.ID,emp.NAME,emp.depid ,emp.costID ,cardtime.SwipeCardTime ,cardtime.SwipeCardTime2 ,cardtime.WorkshopNo from swipe.csr_employee emp, swipe.csr_swipecardtime cardtime WHERE emp.id = cardtime.emp_id ";
-		String sql = " SELECT ID,NAME,depid ,costID ,to_char(SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') SwipeCardTime ,to_char(SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') SwipeCardTime2,WorkshopNo,swipe_date FROM (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from (SELECT emp.ID,emp.NAME,emp.depid ,emp.costID ,cardtime.SwipeCardTime ,cardtime.SwipeCardTime2 ,cardtime.WorkshopNo,cardtime.swipe_date from swipe.csr_employee emp, swipe.csr_swipecardtime cardtime WHERE emp.id = cardtime.emp_id ";
+		String sql = " SELECT ID,NAME,depid,deptid,costID ,to_char(SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') SwipeCardTime ,to_char(SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') SwipeCardTime2,WorkshopNo,swipe_date FROM (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from (SELECT emp.ID,emp.NAME,emp.depid ,emp.costID ,emp.deptid,cardtime.SwipeCardTime ,cardtime.SwipeCardTime2 ,cardtime.WorkshopNo,cardtime.swipe_date from swipe.csr_employee emp, swipe.csr_swipecardtime cardtime WHERE emp.id = cardtime.emp_id ";
 		List<QuerySwipeCard> querySwipeCards = null;
 		try {
 			List<Object> queryList = new ArrayList<Object>();
@@ -65,7 +65,8 @@ public class CheckSCDao extends DAO<QuerySwipeCard> {
 				sql += " and emp.id in (" + idsStr + ") ";
 				// queryList.add(querySwipeCard.getId());
 			}
-			String strDepid = querySwipeCard.getDepid();
+			//String strDepid = querySwipeCard.getDepid();
+			String strDepid = querySwipeCard.getDeptid();
 			String strDepidArray[] = strDepid.split(",");
 			StringBuffer depidsStr = new StringBuffer();
 			for (int i = 0; i < strDepidArray.length; i++) {
@@ -74,8 +75,8 @@ public class CheckSCDao extends DAO<QuerySwipeCard> {
 				}
 				depidsStr.append("'").append(strDepidArray[i]).append("'");
 			}
-			if (querySwipeCard.getDepid() != "") {
-				sql += " and emp.depid in (" + depidsStr + ") ";
+			if (querySwipeCard.getDeptid() != "") {
+				sql += " and emp.deptid in (" + depidsStr + ") ";
 				//queryList.add(querySwipeCard.getDepid());
 			}
 			String strcostid = querySwipeCard.getCostid();
@@ -112,7 +113,9 @@ public class CheckSCDao extends DAO<QuerySwipeCard> {
 			}
 			Page page = new Page(currentPage, totalRecord);
 			int endIndex = page.getStartIndex() + page.getPageSize();
-			sql += " order by emp.depid,emp.id,swipe_date) A ) where rnum > " + page.getStartIndex() + " and rnum <= " + endIndex;
+//			sql += " order by emp.depid,emp.id,swipe_date) A ) where rnum > " + page.getStartIndex() + " and rnum <= " + endIndex;
+			sql += " order by emp.deptid,emp.id,swipe_date) A ) where rnum > " + page.getStartIndex() + " and rnum <= " + endIndex;
+			System.out.println("分頁查詢=============>>"+sql);
 			querySwipeCards = jdbcTemplate.query(sql, queryList.toArray(), new QuerySCMapper());
 
 		} catch (Exception ex) {
@@ -131,6 +134,7 @@ public class CheckSCDao extends DAO<QuerySwipeCard> {
 	@Override
 	public int getTotalRecords(String userDataCostId,QuerySwipeCard querySwipeCard) {
 		int totalRecord = -1;
+		System.out.println("查詢模型==============>>"+querySwipeCard.getDeptid());
 		String sSql = " SELECT count(*) FROM swipe.csr_employee emp, swipe.csr_swipecardtime cardtime WHERE emp.id = cardtime.emp_id ";
 
 		try {
@@ -148,7 +152,8 @@ public class CheckSCDao extends DAO<QuerySwipeCard> {
 				sSql += " and emp.id in (" + idsStr + ") ";
 				// queryList.add(querySwipeCard.getId());
 			}
-			String strDepid = querySwipeCard.getDepid();
+			//String strDepid = querySwipeCard.getDepid();
+			String strDepid = querySwipeCard.getDeptid();
 			String strDepidArray[] = strDepid.split(",");
 			StringBuffer depidsStr = new StringBuffer();
 			for (int i = 0; i < strDepidArray.length; i++) {
@@ -157,8 +162,8 @@ public class CheckSCDao extends DAO<QuerySwipeCard> {
 				}
 				depidsStr.append("'").append(strDepidArray[i]).append("'");
 			}
-			if (querySwipeCard.getDepid() != "") {
-				sSql += " and emp.depid in (" + depidsStr + ") ";
+			if (querySwipeCard.getDeptid() != "") {
+				sSql += " and emp.deptid in (" + depidsStr + ") ";
 				//queryList.add(querySwipeCard.getDepid());
 			}
 			String strcostid = querySwipeCard.getCostid();
@@ -193,6 +198,8 @@ public class CheckSCDao extends DAO<QuerySwipeCard> {
 			}else{
 				sSql += " and costId in('')";
 			}
+			
+			System.out.println("查詢總記錄數==============>>"+sSql);
 			totalRecord = jdbcTemplate.queryForObject(sSql, queryList.toArray(), Integer.class);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -203,7 +210,7 @@ public class CheckSCDao extends DAO<QuerySwipeCard> {
 	// 查詢總記錄
 	public List<QuerySwipeCard> FindRecords(String userDataCostId,QuerySwipeCard querySwipeCard) {
 		//String sql = "SELECT emp.ID,emp.NAME,emp.depid ,emp.costID ,cardtime.SwipeCardTime ,cardtime.SwipeCardTime2 ,cardtime.WorkshopNo from swipe.csr_employee emp, swipe.csr_swipecardtime cardtime WHERE emp.id = cardtime.emp_id ";
-		String sql = "SELECT emp.ID,emp.NAME,emp.depid ,emp.costID ,to_char(cardtime.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') SwipeCardTime ,to_char(cardtime.SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') SwipeCardTime2   ,cardtime.WorkshopNo,cardtime.swipe_date from swipe.csr_employee emp, swipe.csr_swipecardtime cardtime WHERE emp.id = cardtime.emp_id ";
+		String sql = "SELECT emp.ID,emp.NAME,emp.depid ,emp.deptid,emp.costID ,to_char(cardtime.SwipeCardTime, 'yyyy-mm-dd hh24:mi:ss') SwipeCardTime ,to_char(cardtime.SwipeCardTime2, 'yyyy-mm-dd hh24:mi:ss') SwipeCardTime2   ,cardtime.WorkshopNo,cardtime.swipe_date from swipe.csr_employee emp, swipe.csr_swipecardtime cardtime WHERE emp.id = cardtime.emp_id ";
 		List<QuerySwipeCard> querySwipeCards = null;
 		try {
 			List<Object> queryList = new ArrayList<Object>();
@@ -220,7 +227,8 @@ public class CheckSCDao extends DAO<QuerySwipeCard> {
 				sql += " and emp.id in (" + idsStr + ") ";
 				// queryList.add(querySwipeCard.getId());
 			}
-			String strDepid = querySwipeCard.getDepid();
+			//String strDepid = querySwipeCard.getDepid();
+			String strDepid = querySwipeCard.getDeptid();
 			String strDepidArray[] = strDepid.split(",");
 			StringBuffer depidsStr = new StringBuffer();
 			for (int i = 0; i < strDepidArray.length; i++) {
@@ -229,8 +237,8 @@ public class CheckSCDao extends DAO<QuerySwipeCard> {
 				}
 				depidsStr.append("'").append(strDepidArray[i]).append("'");
 			}
-			if (querySwipeCard.getDepid() != "") {
-				sql += " and emp.depid in (" + depidsStr + ") ";
+			if (querySwipeCard.getDeptid() != "") {
+				sql += " and emp.deptid in (" + depidsStr + ") ";
 				//queryList.add(querySwipeCard.getDepid());
 			}
 			String strcostid = querySwipeCard.getCostid();
@@ -266,7 +274,9 @@ public class CheckSCDao extends DAO<QuerySwipeCard> {
 			}else{
 				sql += " and emp.costId in('')";
 			}
-			sql+=" order by emp.depid, emp.id,cardtime.swipe_date";
+//			sql+=" order by emp.depid, emp.id,cardtime.swipe_date";
+			sql+=" order by emp.deptid, emp.id,cardtime.swipe_date";
+			System.out.println("查詢語句==========================>>"+sql);
 			querySwipeCards = jdbcTemplate.query(sql, queryList.toArray(), new QuerySCMapper());
 
 		} catch (Exception ex) {

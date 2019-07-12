@@ -10,18 +10,34 @@ public class SearchRawRecordInfo  implements Serializable {
 	private String costId;
 	private String swipeCardTime;
 	private String swipeCardIpAddress;
-	
+	private String deptid;
+	@Override
+	public String toString() {
+		return "SearchRawRecordInfo [empId=" + empId + ", name=" + name + ", depId=" + depId + ", costId=" + costId
+				+ ", swipeCardTime=" + swipeCardTime + ", swipeCardIpAddress=" + swipeCardIpAddress + ", deptid="
+				+ deptid + "]";
+	}
+
+	public String getDeptid() {
+		return deptid;
+	}
+
+	public void setDeptid(String deptid) {
+		this.deptid = deptid;
+	}
+
 	public SearchRawRecordInfo() {
 		
 	}
 	
-	public SearchRawRecordInfo(String empId,String name,String depId,String costId,String swipeCardTime,String swipeCardIpAddress) {
+	public SearchRawRecordInfo(String empId,String name,String depId,String costId,String swipeCardTime,String swipeCardIpAddress,String deptid) {
 		this.setEmpId(empId);
 		this.setName(name);
 		this.setDepId(depId);
 		this.setCostId(costId);
 		this.setSwipeCardTime(swipeCardTime);
 		this.setSwipeCardIpAddress(swipeCardIpAddress);
+		this.setDeptid(deptid);
 	}
 
 	public String getEmpId() {

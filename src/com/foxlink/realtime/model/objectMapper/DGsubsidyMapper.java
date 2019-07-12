@@ -12,13 +12,14 @@ public class DGsubsidyMapper  implements RowMapper<DGsubsidy> {
 	public DGsubsidy mapRow(ResultSet rs, int arg1) throws SQLException {
 		// TODO Auto-generated method stub
 		DGsubsidy dgsubsidy =new DGsubsidy();
-		dgsubsidy.setEmpId(rs.getString(1));
-		dgsubsidy.setName(rs.getString(2));
-		dgsubsidy.setDepId(rs.getString(3));
-		dgsubsidy.setCostId(rs.getString(4));
-		dgsubsidy.setSwipeCardTime(rs.getString(5));
-		dgsubsidy.setSwipeCardTime2(rs.getString(6));
-		dgsubsidy.setClassStart(rs.getString(7));
+		dgsubsidy.setEmpId(rs.getString("ID"));
+		dgsubsidy.setName(rs.getString("Name"));
+		dgsubsidy.setDepId(rs.getString("depid"));
+		dgsubsidy.setCostId(rs.getString("costID"));
+		dgsubsidy.setSwipeCardTime(rs.getString("SwipeCardTime"));
+		dgsubsidy.setSwipeCardTime2(rs.getString("SwipeCardTime2"));
+		dgsubsidy.setClass_Start(rs.getString("class_start"));
+		dgsubsidy.setDeptId(rs.getString("deptid"));
 		return dgsubsidy;
 	}
 }
