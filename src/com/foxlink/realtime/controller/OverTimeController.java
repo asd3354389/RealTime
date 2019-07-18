@@ -451,6 +451,30 @@ public class OverTimeController {
 		return otService.updateBonus(updateUser,overTimePending);
 	}
 	
+	/*判断是否在頂崗代碼裏面*/
+	@RequestMapping(value="/checkModifyEmpBonusA.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+	public @ResponseBody String checkModifyEmpBonusA(@RequestBody String[] empList){
+		String checkResult=null;	
+		OTService otService=null;
+		for(int i = 0;i<empList.length;i++){
+			System.out.println("empList:"+empList[i]);
+		}
+		try{
+			otService=(OTService)context.getBean("OTService");
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			checkResult=gson.toJson(otService.checkModifyEmpBonusA(empList));
+		}
+		catch(Exception ex){
+			logger.error("Check new DeptId info is failed, due to: ",ex);
+			JsonObject exception=new JsonObject();
+			exception.addProperty("StatusCode", "500");
+			exception.addProperty("Message", "檢查此部門代碼是否在頂崗津貼代碼裏面，原因："+ex.toString());
+			checkResult=exception.toString();
+		}
+		System.out.println(checkResult);
+		return checkResult;
+	}
+	
 	/*判斷是否有修改頂崗時數權限*/
 	@RequestMapping(value="/checkModifyEmpA.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 	public @ResponseBody String checkModifyEmpA(@RequestBody String[] empList){
@@ -492,6 +516,29 @@ public class OverTimeController {
 			JsonObject exception=new JsonObject();
 			exception.addProperty("StatusCode", "500");
 			exception.addProperty("Message", "檢查此部門代碼是否有修改時數權限，原因："+ex.toString());
+			checkResult=exception.toString();
+		}
+		System.out.println(checkResult);
+		return checkResult;
+	}
+	
+	@RequestMapping(value="/checkModifyEmpBonusB.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+	public @ResponseBody String checkModifyEmpBonusB(@RequestBody String[] empList){
+		String checkResult=null;	
+		OTService otService=null;
+		for(int i = 0;i<empList.length;i++){
+			System.out.println("empList:"+empList[i]);
+		}
+		try{
+			otService=(OTService)context.getBean("OTService");
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			checkResult=gson.toJson(otService.checkModifyEmpBonusB(empList));
+		}
+		catch(Exception ex){
+			logger.error("Check new DeptId info is failed, due to: ",ex);
+			JsonObject exception=new JsonObject();
+			exception.addProperty("StatusCode", "500");
+			exception.addProperty("Message", "檢查此部門代碼是否在頂崗津貼代碼裏面，原因："+ex.toString());
 			checkResult=exception.toString();
 		}
 		System.out.println(checkResult);

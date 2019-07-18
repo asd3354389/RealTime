@@ -15,6 +15,10 @@ $(document).ready(function(){
 	var checkdepid;
 	var modifyEmpBoundA=new Array();
 	var modifyEmpBoundB=new Array();
+	var modifyEmpBonusA=new Array();
+	var modifyEmpBonusB=new Array();
+/*	var modifyEmpBoundA=new Array();
+	var modifyEmpBoundB=new Array();*/
 	init();
 	GetHoliday();
 	
@@ -64,11 +68,24 @@ $(document).ready(function(){
 				//var dghour = $(this).children().eq(11).text();
 				var depid=$(this).children().eq(4).text();
 				var dghour;
-				if(modifyEmpBound.indexOf(id)!=-1){
+				if(IsAbnormal==1){
+					if(modifyEmpBoundA.indexOf(id)!=-1||modifyEmpBoundB.indexOf(id)!=-1){
+						  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+					}else{
+						 dghour = $(this).children().eq(11).text();
+					}		
+				}else{
+					if(modifyEmpBoundA.indexOf(id)!=-1||modifyEmpBoundB.indexOf(id)!=-1){
+						  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+					}else{
+						 dghour = $(this).children().eq(11).text();
+					}		
+				}
+				/*if(modifyEmpBoundA.indexOf(id)!=-1||modifyEmpBoundB.indexOf(id)!=-1){
 					  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
 				}else{
 					 dghour = $(this).children().eq(11).text();
-				}		
+				}	*/
 				if(overTimehour=="0"&&dghour=="0"){
 					$(this).children().children().eq(0).prop('checked',false);
 					$(this).attr("style", "background-color: white"); 
@@ -360,6 +377,8 @@ $(document).ready(function(){
 		}
 		CheckModifyEmpA(PendingEmpsList);
 		CheckModifyEmpB(PendingEmpsList);
+		CheckModifyAEmpA(PendingEmpsList);
+		CheckModifyAEmpB(PendingEmpsList);
 		$('#OTPendingEmpTable tbody').empty();
 		var j=1;
 		for(var i=0;i<EmployeeInfos.length;i++){
@@ -394,10 +413,10 @@ $(document).ready(function(){
 				'<td>'+EmpInfo.overTimeHours+'</td>'+
 				'<td>'+OverTimeTypeText+'</td>';
 				//'<td>'+EmpInfo.bonus+'</td>'+
-				if(modifyEmpBoundB.indexOf(EmpInfo.employeeID)!=-1){
-					HTMLElement+='<td><select>';
+	/*			if(modifyEmpBoundB.indexOf(EmpInfo.employeeID)!=-1){
+					/*HTMLElement+='<td><select>';
 					if(EmpInfo.bonus!=0){
-						let leng = Number(EmpInfo.bonus)/0.5;
+						var leng = Number(EmpInfo.bonus)/0.5;
 						//console.log(leng);
 						for(var z=0;z<leng+1;z++){
 							var num = EmpInfo.bonus-(0.5*z)
@@ -407,10 +426,31 @@ $(document).ready(function(){
 						HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
 					}
 					HTMLElement+='</select></td>';
+					
+					
+					
+					if(IsAbnormal==0){
+						HTMLElement+='<td><select>';
+						if(EmpInfo.bonus!=0){
+							var leng = Number(EmpInfo.bonus)/0.5;
+							for(var z=0;z<leng+1;z++){
+								var num = EmpInfo.bonus-(0.5*z)
+								HTMLElement+='<option>'+num+'</option>';
+							}
+						}else{
+							HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+						}
+						HTMLElement+='</select></td>';
+					}else{
+						HTMLElement+='<td><select>';
+						HTMLElement+='<option>1</option><option>0.5</option>';
+						HTMLElement+='<option selected>'+EmpInfo.bonus+'</option>'
+						HTMLElement+='</select></td>';
+					}
 				}else if (modifyEmpBoundA.indexOf(EmpInfo.employeeID)!=-1) {
-					HTMLElement+='<td><select>';
+					/*HTMLElement+='<td><select>';
 					if(EmpInfo.bonus!=0){
-						let leng = Number(EmpInfo.bonus)+1;
+						var leng = Number(EmpInfo.bonus)+1;
 						//console.log(leng);
 						var num;
 						for(var k=0;k<leng;k++){
@@ -424,10 +464,91 @@ $(document).ready(function(){
 					}else{
 						HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
 					}
-					HTMLElement+='</select></td>';
+					HTMLElement+='</select></td>'; 
+					
+					  
+					if(IsAbnormal==0){
+						HTMLElement+='<td><select>';	
+						if(EmpInfo.bonus!=0){
+							var leng = Number(EmpInfo.bonus)+1;
+							//console.log('leng时数 '+leng);
+							var num;
+							for(var k=0;k<leng;k++){		
+								if(k==0){
+									 num = EmpInfo.bonus;
+								}else{
+									 num = Math.round(EmpInfo.bonus)-k
+								}					
+								HTMLElement+='<option>'+num+'</option>';
+							}
+						}else{
+							HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+						}
+						HTMLElement+='</select></td>';
+					}else{
+						HTMLElement+='<td><select>';
+						HTMLElement+='<option>2</option><option>1.5</option><option>1</option><option>0.5</option>';
+						HTMLElement+='<option selected>'+EmpInfo.bonus+'</option>'
+						HTMLElement+='</select></td>';
+					}	
 				}else{
 					HTMLElement+='<td>'+EmpInfo.bonus+'</td>'; 
-				}					
+				}								                                            */
+				
+				if(modifyEmpBonusB.indexOf(EmpInfo.employeeID)!=-1){
+					
+					if(IsAbnormal==1){
+						HTMLElement+='<td><select>';
+						HTMLElement+='<option>1</option><option>0.5</option>';
+						HTMLElement+='<option selected>'+EmpInfo.bonus+'</option>'
+						HTMLElement+='</select></td>';
+					}else{
+						if(modifyEmpBoundB.indexOf(EmpInfo.employeeID)!=-1){
+							HTMLElement+='<td><select>';
+							if(EmpInfo.bonus!=0){
+								var leng = Number(EmpInfo.bonus)/0.5;
+								for(var z=0;z<leng+1;z++){
+									var num = EmpInfo.bonus-(0.5*z)
+									HTMLElement+='<option>'+num+'</option>';
+								}
+							}else{
+								HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+							}
+							HTMLElement+='</select></td>';
+						}
+					}
+				}else if(modifyEmpBonusA.indexOf(EmpInfo.employeeID)!=-1) {
+					if(IsAbnormal==1){
+						HTMLElement+='<td><select>';
+						HTMLElement+='<option>2</option><option>1.5</option><option>1</option><option>0.5</option>';
+						HTMLElement+='<option selected>'+EmpInfo.bonus+'</option>'
+						HTMLElement+='</select></td>';
+					}else{
+						if(modifyEmpBoundA.indexOf(EmpInfo.employeeID)!=-1){
+							HTMLElement+='<td><select>';	
+							if(EmpInfo.bonus!=0){
+								var leng = Number(EmpInfo.bonus)+1;
+								//console.log('leng时数 '+leng);
+								var num;
+								for(var k=0;k<leng;k++){		
+									if(k==0){
+										 num = EmpInfo.bonus;
+									}else{
+										 num = Math.round(EmpInfo.bonus)-k
+									}					
+									HTMLElement+='<option>'+num+'</option>';
+								}
+							}else{
+								HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+							}
+							HTMLElement+='</select></td>';
+						}
+					}
+				}else{
+					HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
+				}
+				
+				
 				HTMLElement+='<td>未修改時數</td><td>未審核</td></tr>';
 				
 			}
@@ -568,11 +689,24 @@ $(document).ready(function(){
 			// var dghour = $(xhr).children().eq(11).text();
 			 var depid=$(xhr).children().eq(4).text();
 			 var dghour;
-			 if(modifyEmpBound.indexOf(id)!=-1){
+			 if(IsAbnormal==1){
+					if(modifyEmpBonusA.indexOf(id)!=-1||modifyEmpBonusB.indexOf(id)!=-1){
+						  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+					}else{
+						 dghour = $(this).children().eq(11).text();
+					}		
+				}else{
+					if(modifyEmpBoundA.indexOf(id)!=-1||modifyEmpBoundB.indexOf(id)!=-1){
+						  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+					}else{
+						 dghour = $(this).children().eq(11).text();
+					}		
+				}
+			/* if(modifyEmpBoundA.indexOf(id)!=-1||modifyEmpBoundB.indexOf(id)!=-1){
 				  dghour = $(xhr).children().eq(11).find('option:selected').eq(0).text();
 			 }else{
 				 dghour = $(xhr).children().eq(11).text();
-			 }		
+			 }		*/
 				if(overTimehour=="0"&&dghour=="0"){
 					  alert("工時小於等於0，有誤，請重新選擇加班人員！");
 				}
@@ -647,7 +781,7 @@ $(document).ready(function(){
 		});
 	}
 	
-	function CheckModifyEmpA(PendingEmpsList){
+/*	function CheckModifyEmpA(PendingEmpsList){
 		$.ajax({
 			type:'POST',
 			url:'../Overtime/checkModifyEmpA.do',
@@ -684,6 +818,90 @@ $(document).ready(function(){
 					 console.log(modifyEmpBoundB);
 			}else{
 				console.log(123);
+				}
+			}
+		});
+	}*/
+
+	function CheckModifyEmpA(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmpBonusA.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBonusA=data;
+					 console.log(modifyEmpBonusA);
+			}else{
+				console.log(123);
+				}
+			}
+		});
+	}
+	
+	function CheckModifyAEmpA(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmpA.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBoundA=data;
+					 console.log(modifyEmpBoundA);
+			}else{
+				console.log(456);
+				}
+			}
+		});
+	}
+	
+	function CheckModifyEmpB(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmpBonusB.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBonusB=data;
+					 console.log(modifyEmpBonusB);
+			}else{
+				console.log(789);
+				}
+			}
+		});
+	}
+	
+	function CheckModifyAEmpB(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmpB.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBoundB=data;
+					 console.log(modifyEmpBoundB);
+			}else{
+				console.log(012);
 				}
 			}
 		});

@@ -462,4 +462,52 @@ public class OTDAO extends DAO<OverTimeSheet> {
 		}
 		return AllDept;
 	}
+
+	public List<String> checkModifyEmpBonusA(String[] empList) {
+		// TODO Auto-generated method stub
+		List<String>AllDept = null;
+		String sSQL="select a.id from csr_employee a,BONUS_DEPT b "
+				+ "where (a.deptid = b.deptid or a.costid = b.costid) and a.isonwork = '0' and b.bonus_rule='A'"
+				+ " and  a.id in (";
+		try {
+			StringBuffer idsStr = new StringBuffer();
+			for (int i = 0; i < empList.length; i++) {
+				if (i > 0) {
+					idsStr.append(",");
+				}
+				idsStr.append("'").append(empList[i]).append("'");
+			}
+			sSQL+=idsStr+")";
+			AllDept=jdbcTemplate.queryForList(sSQL,String.class);
+		} catch (Exception ex) {
+			// TODO: handle exception
+			  logger.error("Find BonusDeptid TotalRecord are failed ",ex);
+    		  ex.printStackTrace();
+		}
+		return AllDept;
+	}
+	
+	public List<String> checkModifyEmpBonusB(String[] empList) {
+		// TODO Auto-generated method stub
+		List<String>AllDept = null;
+		String sSQL="select a.id from csr_employee a,BONUS_DEPT b "
+				+ "where (a.deptid = b.deptid or a.costid = b.costid) and a.isonwork = '0' and b.bonus_rule='B'"
+				+ " and  a.id in (";
+		try {
+			StringBuffer idsStr = new StringBuffer();
+			for (int i = 0; i < empList.length; i++) {
+				if (i > 0) {
+					idsStr.append(",");
+				}
+				idsStr.append("'").append(empList[i]).append("'");
+			}
+			sSQL+=idsStr+")";
+			AllDept=jdbcTemplate.queryForList(sSQL,String.class);
+		} catch (Exception ex) {
+			// TODO: handle exception
+			  logger.error("Find BonusDeptid TotalRecord are failed ",ex);
+    		  ex.printStackTrace();
+		}
+		return AllDept;
+	}
 }
