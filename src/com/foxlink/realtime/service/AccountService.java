@@ -97,6 +97,21 @@ public class AccountService extends Service<User> {
 		return accountDAO.GetLoginInfo(userName);
 	}
 	
+	public String GetLoginRole(String userName) {
+		List<String> roleList = accountDAO.GetLoginRole(userName);
+		String Role = null;
+		if(roleList != null){
+			for (String string : roleList) {
+				if(string.equals("ROLE_ADMIN")){
+					Role = "ROLE_ADMIN";
+				}else if(string.equals("ROLE_TXADLOW")&&Role==null){
+					Role = "ROLE_TXADLOW";
+				}
+			}
+		}
+		return Role;
+	}
+	
 	public boolean UpdateAccountPassWord(User updateRecord) {
 		// TODO Auto-generated method stub
 		return accountDAO.UpdateAccountPassWord(updateRecord);
