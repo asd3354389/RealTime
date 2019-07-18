@@ -75,7 +75,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 	}
 
 	public List<IOWorkShopPW> FindAllRecords(int currentPage, int totalRecord, String queryCritirea,
-			String queryParam, String updateUser, String userDataCostId) {
+			String queryParam, String updateUser, String userDataCostId, String accessRole) {
 		// TODO Auto-generated method stub
 		List<IOWorkShopPW> IOWorkShopPW = null;
 		// TODO Auto-generated method stub
@@ -91,6 +91,13 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 			}else if (queryCritirea.equals("CardId")){
 				sSQL+=" and CardId = ?";  
 			}
+			
+			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
+			
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
 		    sSQL += "order by t.workshopno,t.emp_id)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+" " ;
@@ -106,7 +113,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 		return IOWorkShopPW;
 	}
 
-	public int getTotalRecord(String queryCritirea, String queryParam, String updateUser, String userDataCostId) {
+	public int getTotalRecord(String queryCritirea, String queryParam, String updateUser, String userDataCostId, String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) from RT_SPECIAL_AREA_CONTROL t where t.enabled = 'Y' ";
@@ -119,7 +126,12 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 			}else if (queryCritirea.equals("CardId")){
 				sSQL+=" and CardId = ?";  
 			}
-				
+			
+			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
 			
 			if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
@@ -199,11 +211,16 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 					 return false;
 	}
 
-	public boolean checkUserNameDuplicate(String Emp_id, String workShopNo) {
+	public boolean checkUserNameDuplicate(String Emp_id, String workShopNo, String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.RT_SPECIAL_AREA_CONTROL where Emp_id=upper(?) and workShopNo = ? and ENABLED='Y'";
     	try {    	    	
+    		if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
     		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { Emp_id,workShopNo },Integer.class);	   	
     	  } catch (Exception ex) {
     		  logger.error("Check IOSpecialWSEmp checkUserNameDuplicate are failed ",ex);
@@ -216,12 +233,17 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 			 return true;
 	}
 	//判斷同一卡號和車間是否有數據
-		public boolean checkCardIdDuplicate(String CardId, String workshopNo) {
+		public boolean checkCardIdDuplicate(String CardId, String workshopNo, String accessRole) {
 			// TODO Auto-generated method stub
 			int totalRecord=-1;
 	    	String sSQL = "select count(*) FROM SWIPE.RT_SPECIAL_AREA_CONTROL where CardId=? and workshopno = ? and ENABLED='Y'";
 	    	System.out.println(" 查詢語句"+sSQL+"卡號"+CardId+"車間號"+workshopNo);
 	    	try {    	    	
+	    		if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 	    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { CardId,workshopNo },Integer.class);	   	
 	    	  } catch (Exception ex) {
 	    		  ex.printStackTrace();
@@ -265,7 +287,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 //				else
 //				   return false;
 //	}
-	public boolean UpdateRecord(IOWorkShopPW ioWorkShopPW, String updateUser) {
+	public boolean UpdateRecord(IOWorkShopPW ioWorkShopPW, String updateUser, String accessRole) {
 		// TODO Auto-generated method stub
 		int updateRow=-1;
 		txDef = new DefaultTransactionDefinition();
@@ -280,6 +302,12 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 			if (ioWorkShopPW.getEmp_id() == null||ioWorkShopPW.getEmp_id() == "" ||ioWorkShopPW.getEmp_id().equals("null")) {
 				System.out.println("=====================>>>>>>進入方法");
 				sSQL += "WHERE CardId=? and Enabled='Y' and WorkShopNo=?";
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
+				
 				//if(ioWorkShopPW!=null) {
 					updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 						@Override
@@ -299,6 +327,11 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 				//}	
 			}else {
 				sSQL += "WHERE Emp_id=? and Enabled='Y' and WorkShopNo=?";
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				//if(ioWorkShopPW!=null) {
 					updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 						@Override
@@ -329,7 +362,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 				   return false;
 	}
 	//DeleteIOWorkShopPW
-	public boolean DeleteIOWorkShopPW(String emp_id, String workShopNo, String updateUser,String CardID) {
+	public boolean DeleteIOWorkShopPW(String emp_id, String workShopNo, String updateUser,String CardID, String accessRole) {
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
@@ -339,6 +372,11 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 		try {
 			if(emp_id.equals("null")||emp_id.equals("")||emp_id==null) {
 				sSQL += "WHERE CardId=? AND Enabled='Y' AND WORKSHOPNO =?";
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				disableRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement arg0) throws SQLException {
@@ -353,6 +391,11 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 				
 			}else {
 				sSQL += "WHERE Emp_id=? AND Enabled='Y' AND WORKSHOPNO =?";
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				disableRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement arg0) throws SQLException {
@@ -406,18 +449,18 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 //			 return false;
 //	}
 	//員工進出車間權限
-		public boolean addIOSpecialWSEmp(IOWorkShopPW[] ioWorkShopPW, String updateUser) {
+		public boolean addIOSpecialWSEmp(IOWorkShopPW[] ioWorkShopPW, String updateUser, String accessRole) {
 			// TODO Auto-generated method stub
 
 			int createRow=0;
 
 			//先刪除之前的
-			DeleteSettingMessage(ioWorkShopPW);
+			DeleteSettingMessage(ioWorkShopPW,accessRole);
 
 			txDef = new DefaultTransactionDefinition();
 			txStatus = transactionManager.getTransaction(txDef);
 			
-			String sSQL="INSERT INTO SWIPE.RT_SPECIAL_AREA_CONTROL (Emp_id,WorkShopNo,Start_Date,End_Date,Update_UserId,CardId,Remark) VALUES(upper(?),?,?,?,?,?,?)";
+			String sSQL="INSERT INTO SWIPE.RT_SPECIAL_AREA_CONTROL (Emp_id,WorkShopNo,Start_Date,End_Date,Update_UserId,CardId,Remark,bu) VALUES(upper(?),?,?,?,?,?,?,?)";
 			try {
 				if(ioWorkShopPW!=null) {
 
@@ -434,6 +477,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 							ps.setString(5, updateUser);
 							ps.setString(6, ioWorkShopPW[i].getCardId());
 							ps.setString(7, ioWorkShopPW[i].getRemark());
+							ps.setString(8, accessRole);
 						}
 						
 						@Override
@@ -458,15 +502,15 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 		}
 		
 		//臺干和廠商保密車間權限 addIOSpecialWSEmpOther
-		public boolean addIOSpecialWSEmpOther(IOWorkShopPW[] ioWorkShopPW, String updateUser) {
+		public boolean addIOSpecialWSEmpOther(IOWorkShopPW[] ioWorkShopPW, String updateUser, String accessRole) {
 			// TODO Auto-generated method stub
 			int createRow=0;
 			 System.out.println("進入方法----------=======================>");
 			txDef = new DefaultTransactionDefinition();
 			txStatus = transactionManager.getTransaction(txDef);
 			//先刪除之前的
-			DeleteSettingMessageCard(ioWorkShopPW);
-			String sSQL="INSERT INTO SWIPE.RT_SPECIAL_AREA_CONTROL (Emp_id,WorkShopNo,Start_Date,End_Date,Update_UserId,CardId,Remark) VALUES(upper(?),?,?,?,?,?,?)";
+			DeleteSettingMessageCard(ioWorkShopPW,accessRole);
+			String sSQL="INSERT INTO SWIPE.RT_SPECIAL_AREA_CONTROL (Emp_id,WorkShopNo,Start_Date,End_Date,Update_UserId,CardId,Remark,bu) VALUES(upper(?),?,?,?,?,?,?,?)";
 			try {
 				if(ioWorkShopPW!=null) {
 
@@ -482,6 +526,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 							ps.setString(5, updateUser);
 							ps.setString(6, ioWorkShopPW[i].getCardId());
 							ps.setString(7, ioWorkShopPW[i].getRemark());
+							ps.setString(8, accessRole);
 						}
 						@Override
 						public int getBatchSize() {
@@ -505,7 +550,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 		}
 		}
 		//刪除員工信息
-		private void DeleteSettingMessage(IOWorkShopPW[] ioWorkShopPW) {
+		private void DeleteSettingMessage(IOWorkShopPW[] ioWorkShopPW,String accessRole) {
 
 			// TODO Auto-generated method stub	
 					int updateRow=-1;		
@@ -514,7 +559,12 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 					System.out.println("批量删除==========>>>>>>>>>>"+sSQL);
 					//IOWorkShopPW ioWorkShopPW2 = null;
 					try {
-//						
+//						if(accessRole!=null&&!accessRole.equals("")){
+						if(accessRole!=null&&!accessRole.equals("")){
+							if(!accessRole.equals("ALL")){
+								sSQL+=" and bu = '"+accessRole+"' "; 
+							}
+						}
 								System.out.println("刪除員工信息=========="+sSQL);
 								jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
 									
@@ -541,7 +591,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 					}
 		}
 		//刪除卡號信息
-		private void DeleteSettingMessageCard(IOWorkShopPW[] ioWorkShopPW) {
+		private void DeleteSettingMessageCard(IOWorkShopPW[] ioWorkShopPW, String accessRole) {
 
 			// TODO Auto-generated method stub	
 					int updateRow=-1;		
@@ -550,6 +600,11 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 					System.out.println("批量删除==========>>>>>>>>>>"+sSQL);
 					
 					try {
+						if(accessRole!=null&&!accessRole.equals("")){
+							if(!accessRole.equals("ALL")){
+								sSQL+=" and bu = '"+accessRole+"' "; 
+							}
+						}
 
 								System.out.println("刪除員工信息=========="+sSQL);
 							
