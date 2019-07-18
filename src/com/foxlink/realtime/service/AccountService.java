@@ -103,9 +103,14 @@ public class AccountService extends Service<User> {
 		if(roleList != null){
 			for (String string : roleList) {
 				if(string.equals("ROLE_ADMIN")){
-					Role = "ROLE_ADMIN";
+					Role = "ALL";
+					break;
 				}else if(string.equals("ROLE_TXADLOW")&&Role==null){
-					Role = "ROLE_TXADLOW";
+					Role = "TX";
+				}else if(string.equals("ROLE_ZJADLOW")&&Role==null){
+					Role = "ZJ";
+				}else if(string.equals("ROLE_LJADLOW")&&Role==null){
+					Role = "LJ";
 				}
 			}
 		}

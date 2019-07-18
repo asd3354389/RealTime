@@ -80,7 +80,7 @@ public class LoginController implements ServletContextAware {
 		   if(GetLoginInfo()!=null){
 			   session.setAttribute("userDataCostId", GetLoginInfo().get("COSTID"));
 			   session.setAttribute("assistantId", GetLoginInfo().get("ASSISTANT_ID"));
-			   session.setAttribute("userRole", GetLoginInfo().get("ROLE"));
+			   session.setAttribute("accessRole", GetLoginInfo().get("ROLE"));
 		   }
 	        return "index";  
 	    } 
