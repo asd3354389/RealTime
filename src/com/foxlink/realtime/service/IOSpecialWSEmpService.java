@@ -21,19 +21,19 @@ public class IOSpecialWSEmpService {
 		this.iOSpecialWSEmpDAO = iOSpecialWSEmpDAO;
 	}
 	public Page getworkshopNoRestPage(int currentPage, String queryCritirea, String queryParam, String updateUser,
-			String userDataCostId) {
+			String userDataCostId, String accessRole) {
 		// TODO Auto-generated method stub
-		int totalRecord = iOSpecialWSEmpDAO.getTotalRecord(queryCritirea, queryParam, updateUser, userDataCostId);
+		int totalRecord = iOSpecialWSEmpDAO.getTotalRecord(queryCritirea, queryParam, updateUser, userDataCostId,accessRole);
 		Page page = new Page(currentPage, totalRecord);
 		// Page page = accountDAO.getPage(pageNum, User.class, totalRecord);
 		return page;
 	}
 	public List<IOWorkShopPW> FindQueryRecord(String updateUser, int currentPage, String queryCritirea, String queryParam,
-			String userDataCostId) {
+			String userDataCostId, String accessRole) {
 		List<IOWorkShopPW> AllIOSpecialWSEmp = null;
 		try{
-			int totalRecord = iOSpecialWSEmpDAO.getTotalRecord(queryCritirea, queryParam,updateUser, userDataCostId);
-			AllIOSpecialWSEmp = iOSpecialWSEmpDAO.FindAllRecords(currentPage, totalRecord, queryCritirea, queryParam,updateUser, userDataCostId);
+			int totalRecord = iOSpecialWSEmpDAO.getTotalRecord(queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
+			AllIOSpecialWSEmp = iOSpecialWSEmpDAO.FindAllRecords(currentPage, totalRecord, queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
 			System.out.println(AllIOSpecialWSEmp);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -42,7 +42,7 @@ public class IOSpecialWSEmpService {
 		return AllIOSpecialWSEmp;
 	}
 	//員工保密車間權限
-		public boolean addIOSpecialWSEmp(IOWorkShopPW[] ioWorkShopPW, String updateUser) {
+		public boolean addIOSpecialWSEmp(IOWorkShopPW[] ioWorkShopPW, String updateUser, String accessRole) {
 			// TODO Auto-generated method stub
 
 //			boolean isaddEmp = true;
@@ -53,14 +53,14 @@ public class IOSpecialWSEmpService {
 //					isaddEmp = false;
 //				}
 //			}
-			return iOSpecialWSEmpDAO.addIOSpecialWSEmp(ioWorkShopPW,updateUser);
+			return iOSpecialWSEmpDAO.addIOSpecialWSEmp(ioWorkShopPW,updateUser,accessRole);
 			//return isaddEmp;
 		}
 	//臺干和廠商保密車間權限  addIOSpecialWSEmpOther
-		public boolean addIOSpecialWSEmpOther(IOWorkShopPW[] ioWorkShopPW, String updateUser) {
+		public boolean addIOSpecialWSEmpOther(IOWorkShopPW[] ioWorkShopPW, String updateUser, String accessRole) {
 			// TODO Auto-generated method stub
 
-			return iOSpecialWSEmpDAO.addIOSpecialWSEmpOther(ioWorkShopPW,updateUser);
+			return iOSpecialWSEmpDAO.addIOSpecialWSEmpOther(ioWorkShopPW,updateUser,accessRole);
 		}
 //	public String addIOSpecialWSEmp(IOWorkShopPW[] ioWorkShopPW, String updateUser) {
 //		// TODO Auto-generated method stub
@@ -105,24 +105,24 @@ public class IOSpecialWSEmpService {
 		// TODO Auto-generated method stub
 		return iOSpecialWSEmpDAO.checkEmpIdExistence(Emp_id);
 	}
-	public boolean checkUserNameDuplicate(String Emp_id, String workShopNo) {
+	public boolean checkUserNameDuplicate(String Emp_id, String workShopNo, String accessRole) {
 		// TODO Auto-generated method stub
-		return iOSpecialWSEmpDAO.checkUserNameDuplicate(Emp_id,workShopNo);
+		return iOSpecialWSEmpDAO.checkUserNameDuplicate(Emp_id,workShopNo,accessRole);
 	}
 	
 	//checkCardIdDuplicate
-		public boolean checkCardIdDuplicate(String CardId, String workshopNo) {
+		public boolean checkCardIdDuplicate(String CardId, String workshopNo, String accessRole) {
 			// TODO Auto-generated method stub
-			return iOSpecialWSEmpDAO.checkCardIdDuplicate(CardId,workshopNo);
+			return iOSpecialWSEmpDAO.checkCardIdDuplicate(CardId,workshopNo,accessRole);
 		}
-	public boolean UpdateRecord(IOWorkShopPW ioWorkShopPW, String updateUser) {
+	public boolean UpdateRecord(IOWorkShopPW ioWorkShopPW, String updateUser, String accessRole) {
 		// TODO Auto-generated method stub
-		return iOSpecialWSEmpDAO.UpdateRecord(ioWorkShopPW,updateUser);
+		return iOSpecialWSEmpDAO.UpdateRecord(ioWorkShopPW,updateUser,accessRole);
 	}
 	//String emp_id, String updateUser,String CardID,String WorkShopNo
-	public boolean DeleteIOWorkShopPW(String emp_id, String workShopNo, String updateUser,String CardID) {
+	public boolean DeleteIOWorkShopPW(String emp_id, String workShopNo, String updateUser,String CardID, String accessRole) {
 		// TODO Auto-generated method stub
-		return iOSpecialWSEmpDAO.DeleteIOWorkShopPW(emp_id,workShopNo,updateUser,CardID);
+		return iOSpecialWSEmpDAO.DeleteIOWorkShopPW(emp_id,workShopNo,updateUser,CardID,accessRole);
 	}
 	
 }

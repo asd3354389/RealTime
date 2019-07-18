@@ -47,10 +47,11 @@ public class IOSpecialWSEmpController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			String updateUser=(String) session.getAttribute("username");
 			String userDataCostId=(String) session.getAttribute("userDataCostId");
+			String accessRole=(String) session.getAttribute("accessRole");
 			iOSpecialWSEmpService = (IOSpecialWSEmpService) context.getBean("iOSpecialWSEmpService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			Page page = iOSpecialWSEmpService.getworkshopNoRestPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
-			page.setList(iOSpecialWSEmpService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
+			Page page = iOSpecialWSEmpService.getworkshopNoRestPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId,accessRole);
+			page.setList(iOSpecialWSEmpService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId,accessRole));
 			DisableResult = gson.toJson(page);
 		}catch(Exception ex){
 			logger.error(ex);
@@ -68,11 +69,12 @@ public class IOSpecialWSEmpController {
 	public String checkUserNameDuplicate(HttpSession session,@RequestParam("Emp_id")String Emp_id,@RequestParam("WorkShopNo")String WorkShopNo){
 		JsonObject checkResult=new JsonObject();	
 		String userDataCostId=(String) session.getAttribute("userDataCostId");
+		String accessRole=(String) session.getAttribute("accessRole");
 		try{
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			iOSpecialWSEmpService = (IOSpecialWSEmpService) context.getBean("iOSpecialWSEmpService");
 			if(iOSpecialWSEmpService.checkEmpIdExistence(Emp_id)) {
-				if(iOSpecialWSEmpService.checkUserNameDuplicate(Emp_id,WorkShopNo)){
+				if(iOSpecialWSEmpService.checkUserNameDuplicate(Emp_id,WorkShopNo,accessRole)){
 					checkResult.addProperty("StatusCode", "200");
 					checkResult.addProperty("Message", "此工號未設置臨時權限，可以新增此賬號!");
 				}else{
@@ -99,11 +101,12 @@ public class IOSpecialWSEmpController {
 			public String checkCardIdDuplicate(HttpSession session,@RequestParam("CardId")String CardId,@RequestParam("WorkshopNo")String WorkshopNo){
 				JsonObject checkResult=new JsonObject();	
 				String userDataCostId=(String) session.getAttribute("userDataCostId");
+				String accessRole=(String) session.getAttribute("accessRole");
 				try{
 					ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 					iOSpecialWSEmpService = (IOSpecialWSEmpService) context.getBean("iOSpecialWSEmpService");
 					System.out.println("進入查詢同一卡號=======================>>>>>>>>>>");
-						if(iOSpecialWSEmpService.checkCardIdDuplicate(CardId,WorkshopNo)){
+						if(iOSpecialWSEmpService.checkCardIdDuplicate(CardId,WorkshopNo,accessRole)){
 							checkResult.addProperty("StatusCode", "200");
 							checkResult.addProperty("Message", "此卡號未設置臨時權限，可以新增此賬號!");
 						}else{
@@ -129,10 +132,10 @@ public class IOSpecialWSEmpController {
 
 		try{
 			String updateUser=(String) session.getAttribute("username");
-
+			String accessRole=(String) session.getAttribute("accessRole");
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			iOSpecialWSEmpService = (IOSpecialWSEmpService) context.getBean("iOSpecialWSEmpService");
-			if (iOSpecialWSEmpService.addIOSpecialWSEmp(ioWorkShopPW,updateUser)) {
+			if (iOSpecialWSEmpService.addIOSpecialWSEmp(ioWorkShopPW,updateUser,accessRole)) {
 				AddResult.addProperty("StatusCode", "200");
 				AddResult.addProperty("Message", "保密車間臨時權限設置成功");
 			} else {
@@ -157,10 +160,10 @@ public class IOSpecialWSEmpController {
 
 			try{
 				String updateUser=(String) session.getAttribute("username");
-
+				String accessRole=(String) session.getAttribute("accessRole");
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				iOSpecialWSEmpService = (IOSpecialWSEmpService) context.getBean("iOSpecialWSEmpService");
-				if (iOSpecialWSEmpService.addIOSpecialWSEmpOther(ioWorkShopPW,updateUser)) {
+				if (iOSpecialWSEmpService.addIOSpecialWSEmpOther(ioWorkShopPW,updateUser,accessRole)) {
 					AddResult.addProperty("StatusCode", "200");
 					AddResult.addProperty("Message", "保密車間臨時權限設置成功");
 				} else {
@@ -185,7 +188,8 @@ public class IOSpecialWSEmpController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			iOSpecialWSEmpService = (IOSpecialWSEmpService) context.getBean("iOSpecialWSEmpService");
 			String updateUser=(String) session.getAttribute("username");
-			if(iOSpecialWSEmpService.UpdateRecord(ioWorkShopPW,updateUser)){
+			String accessRole=(String) session.getAttribute("accessRole");
+			if(iOSpecialWSEmpService.UpdateRecord(ioWorkShopPW,updateUser,accessRole)){
 				UpdateResult.addProperty("StatusCode", "200");
 				UpdateResult.addProperty("Message", "更新保密車間臨時權限成功");
 			}
@@ -210,8 +214,9 @@ public class IOSpecialWSEmpController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			iOSpecialWSEmpService = (IOSpecialWSEmpService) context.getBean("iOSpecialWSEmpService");
 			String updateUser=(String) session.getAttribute("username");
+			String accessRole=(String) session.getAttribute("accessRole");
 			System.out.println("卡號========="+CardID);
-			if(iOSpecialWSEmpService.DeleteIOWorkShopPW(Emp_id,WorkShopNo, updateUser,CardID)){
+			if(iOSpecialWSEmpService.DeleteIOWorkShopPW(Emp_id,WorkShopNo, updateUser,CardID,accessRole)){
 				DisableResult.addProperty("StatusCode", "200");
 				DisableResult.addProperty("Message", "保密車間進出臨時權限已失效");
 			}
