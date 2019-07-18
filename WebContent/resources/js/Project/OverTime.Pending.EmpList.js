@@ -13,7 +13,10 @@ $(document).ready(function(){
 	var overTimeEmps=new Array();
 	checkPwTime();
 	var checkdepid;
-	var modifyEmpBound=new Array();
+	var modifyEmpBoundA=new Array();
+	var modifyEmpBoundB=new Array();
+	var modifyEmpBonusA=new Array();
+	var modifyEmpBonusB=new Array();
 	init();
 	GetHoliday();
 	
@@ -63,11 +66,19 @@ $(document).ready(function(){
 				//var dghour = $(this).children().eq(11).text();
 				var depid=$(this).children().eq(4).text();
 				var dghour;
-				if(modifyEmpBound.indexOf(id)!=-1){
-					  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
-				}else{
-					 dghour = $(this).children().eq(11).text();
-				}		
+				 if(IsAbnormal==1){
+						if(modifyEmpBonusA.indexOf(id)!=-1||modifyEmpBonusB.indexOf(id)!=-1){
+							  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+						}else{
+							 dghour = $(this).children().eq(11).text();
+						}		
+					}else{
+						if(modifyEmpBoundA.indexOf(id)!=-1||modifyEmpBoundB.indexOf(id)!=-1){
+							  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+						}else{
+							 dghour = $(this).children().eq(11).text();
+						}		
+					}
 				if(overTimehour=="0"&&dghour=="0"){
 					$(this).children().children().eq(0).prop('checked',false);
 					$(this).attr("style", "background-color: white"); 
@@ -96,11 +107,19 @@ $(document).ready(function(){
 				//var dghour = $(this).children().eq(11).text();
 				var depid=$(this).children().eq(4).text();
 				var dghour;
-				if(modifyEmpBound.indexOf(id)!=-1){
-					  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
-				}else{
-					 dghour = $(this).children().eq(11).text();
-				}	
+				 if(IsAbnormal==1){
+						if(modifyEmpBonusA.indexOf(id)!=-1||modifyEmpBonusB.indexOf(id)!=-1){
+							  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+						}else{
+							 dghour = $(this).children().eq(11).text();
+						}		
+					}else{
+						if(modifyEmpBoundA.indexOf(id)!=-1||modifyEmpBoundB.indexOf(id)!=-1){
+							  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+						}else{
+							 dghour = $(this).children().eq(11).text();
+						}		
+					}
 				if(directType=="I"){
 					if(overTimehour=="0"&&dghour=="0"){
 						$(this).children().children().eq(0).prop('checked',false);
@@ -393,7 +412,10 @@ $(document).ready(function(){
 		for(var i=0;i<EmployeeInfos.length;i++){
 			PendingEmpsList.push(EmployeeInfos[i].employeeID);
 		}
-		CheckModifyEmp(PendingEmpsList);
+		CheckModifyEmpA(PendingEmpsList);
+		CheckModifyEmpB(PendingEmpsList);
+		CheckModifyAEmpA(PendingEmpsList);
+		CheckModifyAEmpB(PendingEmpsList);
 		$('#OTPendingEmpTable tbody').empty();
 		var j=1;
 		for(var i=0;i<EmployeeInfos.length;i++){
@@ -427,21 +449,118 @@ $(document).ready(function(){
 				'<td>'+EmpInfo.overTimeInterval+'</td>'+
 				'<td>'+EmpInfo.overTimeHours+'</td>'+
 				'<td>'+OverTimeTypeText+'</td>';
-				if(modifyEmpBound.indexOf(EmpInfo.employeeID)!=-1){
-					HTMLElement+='<td><select>';
-					if(EmpInfo.bonus!=0){
-						let leng = EmpInfo.bonus/0.5;
-						for(var i=0;i<leng+1;i++){
-							var num = EmpInfo.bonus-(0.5*i)
-							HTMLElement+='<option>'+num+'</option>';
-						}
+				//console.log('时数为 '+EmpInfo.bonus);
+				//判断人员是属于顶岗津贴A类还是B类或者是其他
+				if(modifyEmpBonusB.indexOf(EmpInfo.employeeID)!=-1){
+					//判断是忘卡还是不忘卡页面
+					if(IsAbnormal==1){
+						HTMLElement+='<td><select>';
+						HTMLElement+='<option>1</option><option>0.5</option>';
+						HTMLElement+='<option selected>'+EmpInfo.bonus+'</option>'
+						HTMLElement+='</select></td>';
 					}else{
-						HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+						//判断人员是否是B类可以有权限修改顶岗时数
+						if(modifyEmpBoundB.indexOf(EmpInfo.employeeID)!=-1){
+							HTMLElement+='<td><select>';
+							if(EmpInfo.bonus!=0){
+								var leng = Number(EmpInfo.bonus)/0.5;
+								for(var z=0;z<leng+1;z++){
+									var num = EmpInfo.bonus-(0.5*z);
+									HTMLElement+='<option>'+num+'</option>';
+								}
+							}else{
+								HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+							}
+							console.log('xxxx');
+							HTMLElement+='</select></td>';
+						}else{
+							HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
+						}
 					}
-					HTMLElement+='</select></td>';
+					//判断人员是属于顶岗津贴A类还是B类或者是其他
+				}else if(modifyEmpBonusA.indexOf(EmpInfo.employeeID)!=-1) {
+					//判断是忘卡还是不忘卡页面
+					if(IsAbnormal==1){
+						HTMLElement+='<td><select>';
+						HTMLElement+='<option>2</option><option>1.5</option><option>1</option><option>0.5</option>';
+						HTMLElement+='<option selected>'+EmpInfo.bonus+'</option>'
+						HTMLElement+='</select></td>';
+					}else{
+						//判断人员是否是B类可以有权限修改顶岗时数
+						if(modifyEmpBoundA.indexOf(EmpInfo.employeeID)!=-1){
+							HTMLElement+='<td><select>';	
+							if(EmpInfo.bonus!=0){
+								var leng = Number(EmpInfo.bonus)+1;
+								//console.log('leng时数 '+leng);
+								var num;
+								for(var k=0;k<leng;k++){		
+									if(k==0){
+										 num = EmpInfo.bonus;
+									}else{
+										 num = Math.round(EmpInfo.bonus)-k
+									}					
+									HTMLElement+='<option>'+num+'</option>';
+								}
+							}else{
+								HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+							}
+							HTMLElement+='</select></td>';
+						}else{
+							HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
+						}
+						
+					}
 				}else{
 					HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
-				}					
+				}
+				/*if(modifyEmpBoundB.indexOf(EmpInfo.employeeID)!=-1){
+					if(IsAbnormal==0){
+						HTMLElement+='<td><select>';
+						if(EmpInfo.bonus!=0){
+							var leng = Number(EmpInfo.bonus)/0.5;
+							for(var z=0;z<leng+1;z++){
+								var num = EmpInfo.bonus-(0.5*z)
+								HTMLElement+='<option>'+num+'</option>';
+							}
+						}else{
+							HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+						}
+						HTMLElement+='</select></td>';
+					}else{
+						HTMLElement+='<td><select>';
+						HTMLElement+='<option>1</option><option>0.5</option>';
+						HTMLElement+='<option selected>'+EmpInfo.bonus+'</option>'
+						HTMLElement+='</select></td>';
+					}
+					
+				}else if (modifyEmpBoundA.indexOf(EmpInfo.employeeID)!=-1) {
+					if(IsAbnormal==0){
+						HTMLElement+='<td><select>';	
+						if(EmpInfo.bonus!=0){
+							var leng = Number(EmpInfo.bonus)+1;
+							//console.log('leng时数 '+leng);
+							var num;
+							for(var k=0;k<leng;k++){		
+								if(k==0){
+									 num = EmpInfo.bonus;
+								}else{
+									 num = Math.round(EmpInfo.bonus)-k
+								}					
+								HTMLElement+='<option>'+num+'</option>';
+							}
+						}else{
+							HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+						}
+						HTMLElement+='</select></td>';
+					}else{
+						HTMLElement+='<td><select>';
+						HTMLElement+='<option>2</option><option>1.5</option><option>1</option><option>0.5</option>';
+						HTMLElement+='<option selected>'+EmpInfo.bonus+'</option>'
+						HTMLElement+='</select></td>';
+					}	
+				}else{
+					HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
+				}					*/
 				HTMLElement+='<td>未修改時數</td><td>未審核</td></tr>';
 				
 			}
@@ -583,11 +702,19 @@ $(document).ready(function(){
 			 var overTimehour = $(xhr).children().eq(9).text();
 			 var depid=$(xhr).children().eq(4).text();
 			 var dghour;
-			 if(modifyEmpBound.indexOf(id)!=-1){
-				  dghour = $(xhr).children().eq(11).find('option:selected').eq(0).text();
-			 }else{
-				 dghour = $(xhr).children().eq(11).text();
-			 }		
+			 if(IsAbnormal==1){
+					if(modifyEmpBonusA.indexOf(id)!=-1||modifyEmpBonusB.indexOf(id)!=-1){
+						  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+					}else{
+						 dghour = $(this).children().eq(11).text();
+					}		
+				}else{
+					if(modifyEmpBoundA.indexOf(id)!=-1||modifyEmpBoundB.indexOf(id)!=-1){
+						  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+					}else{
+						 dghour = $(this).children().eq(11).text();
+					}		
+				}
 	//		 console.log(dghour);
 				if(overTimehour=="0"&&dghour=="0"){
 					  alert("工時和頂崗津貼小於等於0，有誤，請重新選擇加班人員！");
@@ -663,10 +790,11 @@ $(document).ready(function(){
 			});
 		}
 	
-	function CheckModifyEmp(PendingEmpsList){
+	
+	function CheckModifyEmpA(PendingEmpsList){
 		$.ajax({
 			type:'POST',
-			url:'../Overtime/checkModifyEmp.do',
+			url:'../Overtime/checkModifyEmpBonusA.do',
 			data:JSON.stringify(PendingEmpsList),
 			async:false,
 			contentType:'application/json',
@@ -675,9 +803,73 @@ $(document).ready(function(){
 			},
 			success:function(data){	
 				 if(data!=null && data!=''){
-					 modifyEmpBound=data;
+					 modifyEmpBonusA=data;
+					 console.log(modifyEmpBonusA);
 			}else{
 				console.log(123);
+				}
+			}
+		});
+	}
+	
+	function CheckModifyAEmpA(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmpA.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBoundA=data;
+					 console.log(modifyEmpBoundA);
+			}else{
+				console.log(456);
+				}
+			}
+		});
+	}
+	
+	function CheckModifyEmpB(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmpBonusB.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBonusB=data;
+					 console.log(modifyEmpBonusB);
+			}else{
+				console.log(789);
+				}
+			}
+		});
+	}
+	
+	function CheckModifyAEmpB(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmpB.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBoundB=data;
+					 console.log(modifyEmpBoundB);
+			}else{
+				console.log(012);
 				}
 			}
 		});

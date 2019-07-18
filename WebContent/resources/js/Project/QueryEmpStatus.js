@@ -115,6 +115,20 @@ $(document)
 																	noteStates="生成加班單異常";
 																	break;
 																}
+																var bonusState=data[i].NOTESSTATES_B;
+																var bonusStates="";
+																switch (bonusState) {
+																case 0:
+																	bonusStates="未生成頂崗津貼單";
+																	
+																	break;
+																case 1:
+																	bonusStates="已生成頂崗津貼單";
+																	break;
+																case 2:
+																	bonusStates="生成頂崗津貼單異常";
+																	break;
+																}
 																tableBodyElement += '<tr><td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 																		+ data[i].id
 																		+ '</td>'
@@ -149,9 +163,6 @@ $(document)
 																		+ data[i].OVERTIMEINTERVAL
 																		+ '</td>'
 																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
-																		+ data[i].bonus
-																		+ '</td>'
-																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 																		+ data[i].APPLICATION_PERSON
 																		+ '</td>'
 																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
@@ -166,6 +177,19 @@ $(document)
 																		+ '</td>'
 																		+ '<td>'
 																		+ data[i].BACKTIME
+																		+ '</td>'
+																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
+																		+ data[i].bonus
+																		+ '</td>'
+																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
+																		/*+ data[i].NOTESSTATES*/
+																		+ bonusStates
+																		+ '</td>'
+																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
+																		+ data[i].REASON_B
+																		+ '</td>'
+																		+ '<td>'
+																		+ data[i].BACKTIME_B
 																		+ '</td>'
 																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 																		+ data[i].WORKSHOPNO
@@ -489,6 +513,20 @@ $(document)
 									noteStates="生成加班單異常";
 									break;
 								} 
+								var bonusState=queryResult[i].NOTESSTATES_B;
+								var bonusStates="";
+								switch (bonusState) {
+								case 0:
+									bonusStates="未生成頂崗津貼單";
+									
+									break;
+								case 1:
+									bonusStates="已生成頂崗津貼單";
+									break;
+								case 2:
+									bonusStates="生成頂崗津貼單異常";
+									break;
+								}
 								tableBodyElement += '<tr><td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 										+ queryResult[i].id + '</td>' + '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 										+ queryResult[i].name + '</td>'
@@ -507,8 +545,6 @@ $(document)
 										+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 										+ queryResult[i].OVERTIMEINTERVAL
 										+ '</td>' + '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
-										+ queryResult[i].bonus
-										+ '</td>'+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 										+ queryResult[i].APPLICATION_PERSON
 										+ '</td>' + '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 										+ queryResult[i].APPLICATION_ID
@@ -517,6 +553,13 @@ $(document)
 										+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">' + queryResult[i].REASON
 										+ '</td>' + '<td>'
 										+ queryResult[i].BACKTIME + '</td>'
+										+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
+										+ queryResult[i].bonus
+										+ '</td>'+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
+										+ bonusStates + '</td>'
+										+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">' + queryResult[i].REASON_B
+										+ '</td>' + '<td>'
+										+ queryResult[i].BACKTIME_B + '</td>'
 										+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">' + queryResult[i].WORKSHOPNO
 										+ '</td></tr>';
 							}

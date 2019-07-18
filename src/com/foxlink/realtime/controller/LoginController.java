@@ -80,6 +80,7 @@ public class LoginController implements ServletContextAware {
 		   if(GetLoginInfo()!=null){
 			   session.setAttribute("userDataCostId", GetLoginInfo().get("COSTID"));
 			   session.setAttribute("assistantId", GetLoginInfo().get("ASSISTANT_ID"));
+			   session.setAttribute("accessRole", GetLoginInfo().get("ROLE"));
 		   }
 	        return "index";  
 	    } 
@@ -115,6 +116,7 @@ public class LoginController implements ServletContextAware {
 		 ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 		 accountService = (AccountService) context.getBean("accountService"); 
 		 selectUsers = accountService.GetLoginInfo(GetPrincipal());
+		 selectUsers.put("ROLE", accountService.GetLoginRole(GetPrincipal()));
 		 return selectUsers;
 	 }
 		

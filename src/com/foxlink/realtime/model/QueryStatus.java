@@ -64,6 +64,10 @@ public class QueryStatus {
 	private int NOTESSTATES;
 	private Date UPDATE_TIME;
 	private Date BACKTIME;
+	
+	private String REASON_B;
+	private int NOTESSTATES_B;
+	private Date BACKTIME_B;
 
 	public String getName() {
 		return name;
@@ -211,5 +215,24 @@ public class QueryStatus {
 	public void setId(String id) {
 		this.id = id;
 	}
+	public String getREASON_B() {
+		return REASON_B;
+	}
+	public void setREASON_B(String rEASON_B) {
+		REASON_B = rEASON_B;
+	}
+	public int getNOTESSTATES_B() {
+		return NOTESSTATES_B;
+	}
+	public void setNOTESSTATES_B(int nOTESSTATES_B) {
+		NOTESSTATES_B = nOTESSTATES_B;
+	}
+	public Date getBACKTIME_B() {
+		return BACKTIME_B;
+	}
+	public void setBACKTIME_B(Date bACKTIME_B) {
+		BACKTIME_B = bACKTIME_B;
+	}
+	
 	
 }
