@@ -450,34 +450,43 @@ $(document).ready(function(){
 				'<td>'+EmpInfo.overTimeHours+'</td>'+
 				'<td>'+OverTimeTypeText+'</td>';
 				//console.log('时数为 '+EmpInfo.bonus);
+				//判断人员是属于顶岗津贴A类还是B类或者是其他
 				if(modifyEmpBonusB.indexOf(EmpInfo.employeeID)!=-1){
+					//判断是忘卡还是不忘卡页面
 					if(IsAbnormal==1){
 						HTMLElement+='<td><select>';
 						HTMLElement+='<option>1</option><option>0.5</option>';
 						HTMLElement+='<option selected>'+EmpInfo.bonus+'</option>'
 						HTMLElement+='</select></td>';
 					}else{
+						//判断人员是否是B类可以有权限修改顶岗时数
 						if(modifyEmpBoundB.indexOf(EmpInfo.employeeID)!=-1){
 							HTMLElement+='<td><select>';
 							if(EmpInfo.bonus!=0){
 								var leng = Number(EmpInfo.bonus)/0.5;
 								for(var z=0;z<leng+1;z++){
-									var num = EmpInfo.bonus-(0.5*z)
+									var num = EmpInfo.bonus-(0.5*z);
 									HTMLElement+='<option>'+num+'</option>';
 								}
 							}else{
 								HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
 							}
+							console.log('xxxx');
 							HTMLElement+='</select></td>';
+						}else{
+							HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
 						}
 					}
+					//判断人员是属于顶岗津贴A类还是B类或者是其他
 				}else if(modifyEmpBonusA.indexOf(EmpInfo.employeeID)!=-1) {
+					//判断是忘卡还是不忘卡页面
 					if(IsAbnormal==1){
 						HTMLElement+='<td><select>';
 						HTMLElement+='<option>2</option><option>1.5</option><option>1</option><option>0.5</option>';
 						HTMLElement+='<option selected>'+EmpInfo.bonus+'</option>'
 						HTMLElement+='</select></td>';
 					}else{
+						//判断人员是否是B类可以有权限修改顶岗时数
 						if(modifyEmpBoundA.indexOf(EmpInfo.employeeID)!=-1){
 							HTMLElement+='<td><select>';	
 							if(EmpInfo.bonus!=0){
@@ -496,7 +505,10 @@ $(document).ready(function(){
 								HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
 							}
 							HTMLElement+='</select></td>';
+						}else{
+							HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
 						}
+						
 					}
 				}else{
 					HTMLElement+='<td>'+EmpInfo.bonus+'</td>';

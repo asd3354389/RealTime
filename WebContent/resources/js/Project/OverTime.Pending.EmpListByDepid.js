@@ -515,6 +515,8 @@ $(document).ready(function(){
 								HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
 							}
 							HTMLElement+='</select></td>';
+						}else{
+							HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
 						}
 					}
 				}else if(modifyEmpBonusA.indexOf(EmpInfo.employeeID)!=-1) {
@@ -542,6 +544,8 @@ $(document).ready(function(){
 								HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
 							}
 							HTMLElement+='</select></td>';
+						}else{
+							HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
 						}
 					}
 				}else{
