@@ -22,33 +22,33 @@ public class ClassNoRestService {
 		this.classNoRestDao = classNoRestDao;
 	}
 	public Page getclassNoRestPage(int currentPage, String queryCritirea, String queryParam, String updateUser,
-			String userDataCostId) {
+			String userDataCostId,String accessRole) {
 		// TODO Auto-generated method stub
-		int totalRecord = classNoRestDao.getTotalRecord(queryCritirea, queryParam, updateUser, userDataCostId);
+		int totalRecord = classNoRestDao.getTotalRecord(queryCritirea, queryParam, updateUser, userDataCostId,accessRole);
 		Page page = new Page(currentPage, totalRecord);
 		// Page page = accountDAO.getPage(pageNum, User.class, totalRecord);
 		return page;
 	}
 	public List<ClassNoRestInfo> FindQueryRecord(String updateUser, int currentPage, String queryCritirea, String queryParam,
-			String userDataCostId) {
+			String userDataCostId,String accessRole) {
 		// TODO Auto-generated method stub
 		List<ClassNoRestInfo> AllworkshopNoRestInfo = null;
 		try{
-			int totalRecord = classNoRestDao.getTotalRecord(queryCritirea, queryParam,updateUser, userDataCostId);
-			AllworkshopNoRestInfo = classNoRestDao.FindAllRecords(currentPage, totalRecord, queryCritirea, queryParam,updateUser, userDataCostId);
+			int totalRecord = classNoRestDao.getTotalRecord(queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
+			AllworkshopNoRestInfo = classNoRestDao.FindAllRecords(currentPage, totalRecord, queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
 		}catch(Exception e){
 			e.printStackTrace();
 			logger.error("Find JobTitle Record is failed ",e);
 		}
 		return AllworkshopNoRestInfo;
 	}
-	public boolean UpdateRecord(ClassNoRestInfo classNoRestInfo, String updateUser) {
+	public boolean UpdateRecord(ClassNoRestInfo classNoRestInfo, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
-		return classNoRestDao.UpdateRecord(classNoRestInfo,updateUser);
+		return classNoRestDao.UpdateRecord(classNoRestInfo,updateUser,accessRole);
 	}
-	public boolean DeleteClassNoRest(String costId, String class_No, String updateUser) {
+	public boolean DeleteClassNoRest(String costId, String class_No, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
-		return classNoRestDao.DeleteClassNoRest(costId,class_No,updateUser);
+		return classNoRestDao.DeleteClassNoRest(costId,class_No,updateUser,accessRole);
 	}
 	public List<String> FindClassNo() {
 		// TODO Auto-generated method stub
@@ -69,7 +69,7 @@ public class ClassNoRestService {
 	        System.out.println(result.toString());
 	        return result.toString();
 	}
-	public String setClassNoRestInfo(ClassNoRestInfo[] classNoRestInfo, String updateUser) {
+	public String setClassNoRestInfo(ClassNoRestInfo[] classNoRestInfo, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		JsonObject AddResult=new JsonObject();
 		/*if(classNoRestDao.checkRepeat(classNoRestInfo)){
@@ -86,7 +86,7 @@ public class ClassNoRestService {
 		}
 		return AddResult;*/
 		
-		int result = classNoRestDao.insertClassNoRestInfo(classNoRestInfo, updateUser);
+		int result = classNoRestDao.insertClassNoRestInfo(classNoRestInfo, updateUser,accessRole);
 		if (classNoRestInfo!=null) {
 			if(result==0){
 				AddResult.addProperty("StatusCode", "200");

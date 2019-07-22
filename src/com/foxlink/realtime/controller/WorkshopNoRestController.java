@@ -48,10 +48,11 @@ public class WorkshopNoRestController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			String updateUser=(String) session.getAttribute("username");
 			String userDataCostId=(String) session.getAttribute("userDataCostId");
+			String accessRole=(String) session.getAttribute("accessRole");
 			workshopNoRestService = (WorkshopNoRestService) context.getBean("workshopNoRestService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			Page page = workshopNoRestService.getworkshopNoRestPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
-			page.setList(workshopNoRestService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
+			Page page = workshopNoRestService.getworkshopNoRestPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId,accessRole);
+			page.setList(workshopNoRestService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId,accessRole));
 			DisableResult = gson.toJson(page);
 		}catch(Exception ex){
 			logger.error(ex);
@@ -73,7 +74,8 @@ public class WorkshopNoRestController {
 //			otCardbd.setUpdate_UserId(updateUser);
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			workshopNoRestService = (WorkshopNoRestService) context.getBean("workshopNoRestService");
-			AddResult = workshopNoRestService.setWorkShopNoRestInfo(workshopNoRestInfo,updateUser);
+			String accessRole=(String) session.getAttribute("accessRole");
+			AddResult = workshopNoRestService.setWorkShopNoRestInfo(workshopNoRestInfo,updateUser,accessRole);
 		}
 		catch(Exception ex){
 			logger.error("Adding the new IOCardMaIP info is failed, due to: ",ex);
@@ -92,7 +94,8 @@ public class WorkshopNoRestController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			workshopNoRestService = (WorkshopNoRestService) context.getBean("workshopNoRestService");
 			String updateUser=(String) session.getAttribute("username");
-			if(workshopNoRestService.UpdateRecord(workshopNoRestInfo,updateUser)){
+			String accessRole=(String) session.getAttribute("accessRole");
+			if(workshopNoRestService.UpdateRecord(workshopNoRestInfo,updateUser,accessRole)){
 				UpdateResult.addProperty("StatusCode", "200");
 				UpdateResult.addProperty("Message", "更新車間休息時間段成功");
 			}
@@ -128,9 +131,10 @@ public class WorkshopNoRestController {
 			String updateUser = (String)session.getAttribute("username");
 			String userDataCostId=(String) session.getAttribute("userDataCostId");
 			workshopNoRestService = (WorkshopNoRestService)context.getBean("workshopNoRestService");
+			String accessRole=(String) session.getAttribute("accessRole");
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			Page page = workshopNoRestService.getPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
-			page.setList(workshopNoRestService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
+			Page page = workshopNoRestService.getPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId,accessRole);
+			page.setList(workshopNoRestService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId,accessRole));
 			System.out.println(gson.toJson(page));
 			JsonResult = gson.toJson(page);
 		} catch (Exception e) {
@@ -152,7 +156,8 @@ public class WorkshopNoRestController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			workshopNoRestService = (WorkshopNoRestService) context.getBean("workshopNoRestService");
 			String updateUser=(String) session.getAttribute("username");
-			if(workshopNoRestService.DeleteWorkshopNoRest(workshopNo, updateUser)){
+			String accessRole=(String) session.getAttribute("accessRole");
+			if(workshopNoRestService.DeleteWorkshopNoRest(workshopNo, updateUser,accessRole)){
 				DisableResult.addProperty("StatusCode", "200");
 				DisableResult.addProperty("Message", "車間休息信息已失效");
 			}

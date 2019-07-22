@@ -10,6 +10,7 @@ public class WorkshopNoRestInfo {
 	private String rest_end3;
 	private String rest_start4;
 	private String rest_end4;
+	
 	public String getWorkshopno() {
 		return workshopno;
 	}

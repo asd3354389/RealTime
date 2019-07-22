@@ -53,9 +53,10 @@ public class IOCardbdIPController {
 				String updateUser = (String)session.getAttribute("username");
 				String userDataCostId=(String) session.getAttribute("userDataCostId");
 				iOCardbdIPService = (IOCardbdIPService)context.getBean("iOCardbdIPService");
+				String accessRole=(String) session.getAttribute("accessRole");
 				Gson gson = new GsonBuilder().serializeNulls().create();
-				Page page = iOCardbdIPService.getPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
-				page.setList(iOCardbdIPService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
+				Page page = iOCardbdIPService.getPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId,accessRole);
+				page.setList(iOCardbdIPService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId,accessRole));
 				System.out.println(gson.toJson(page));
 				JsonResult = gson.toJson(page);
 			} catch (Exception e) {
@@ -77,7 +78,8 @@ public class IOCardbdIPController {
 			try{
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				iOCardbdIPService = (IOCardbdIPService) context.getBean("iOCardbdIPService");
-					if(iOCardbdIPService.checkDeviceipDuplicate(Deviceip,WorkShopNo)){
+				String accessRole=(String) session.getAttribute("accessRole");
+					if(iOCardbdIPService.checkDeviceipDuplicate(Deviceip,WorkShopNo,accessRole)){
 						checkResult.addProperty("StatusCode", "200");
 						checkResult.addProperty("Message", "此卡機IP未綁定車間設置狀態，可以設置此卡機IP!");
 					}else{
@@ -103,7 +105,8 @@ public class IOCardbdIPController {
 //				otCardbd.setUpdate_UserId(updateUser);
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				iOCardbdIPService = (IOCardbdIPService) context.getBean("iOCardbdIPService");
-				if(iOCardbdIPService.setIOCardIP(ioCardMachineIP,updateUser)){
+				String accessRole=(String) session.getAttribute("accessRole");
+				if(iOCardbdIPService.setIOCardIP(ioCardMachineIP,updateUser,accessRole)){
 					AddResult.addProperty("StatusCode", "200");
 					AddResult.addProperty("Message", "卡機IP狀態設置成功");
 				}
@@ -129,7 +132,8 @@ public class IOCardbdIPController {
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				iOCardbdIPService = (IOCardbdIPService) context.getBean("iOCardbdIPService");
 				String updateUser=(String) session.getAttribute("username");
-				if(iOCardbdIPService.UpdateRecord(ioCardMachineIP,updateUser)){
+				String accessRole=(String) session.getAttribute("accessRole");
+				if(iOCardbdIPService.UpdateRecord(ioCardMachineIP,updateUser,accessRole)){
 					UpdateResult.addProperty("StatusCode", "200");
 					UpdateResult.addProperty("Message", "更新卡機IP狀態成功");
 				}
@@ -154,7 +158,8 @@ public class IOCardbdIPController {
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				iOCardbdIPService = (IOCardbdIPService) context.getBean("iOCardbdIPService");
 				String updateUser=(String) session.getAttribute("username");
-				if(iOCardbdIPService.setWorkShop(SecrecyWS,Status,updateUser)){
+				String accessRole=(String) session.getAttribute("accessRole");
+				if(iOCardbdIPService.setWorkShop(SecrecyWS,Status,updateUser,accessRole)){
 					SetResult.addProperty("StatusCode", "200");
 					SetResult.addProperty("Message", "設置保密車閒成功");
 				}
@@ -179,7 +184,8 @@ public class IOCardbdIPController {
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				iOCardbdIPService = (IOCardbdIPService) context.getBean("iOCardbdIPService");
 				String updateUser=(String) session.getAttribute("username");
-				if(iOCardbdIPService.DeleteIOCardMaIP(ioCardMachineIP, updateUser)){
+				String accessRole=(String) session.getAttribute("accessRole");
+				if(iOCardbdIPService.DeleteIOCardMaIP(ioCardMachineIP, updateUser,accessRole)){
 					DisableResult.addProperty("StatusCode", "200");
 					DisableResult.addProperty("Message", "卡機IP狀態已失效");
 				}
