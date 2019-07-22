@@ -69,7 +69,7 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
 	}
 
 	public int getTotalRecord(String userDataCostId, String empId, String workShopNo,String depId, String costId, String startDate,
-			String endDate, String recordStatus) {
+			String endDate, String recordStatus, String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_CONTROL_RECORD r join csr_employee e on r.Emp_id=e.id where e.isOnwork='0'";
@@ -138,6 +138,12 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
   		                	sSQL+=") ";				
  		               }
  			}
+ 			
+ 			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
  			 
  			
  		   totalRecord = jdbcTemplate.queryForObject(sSQL, queryList.toArray(), Integer.class);
@@ -149,7 +155,7 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
 	}
 
 	public List<IOWSRecord> FindSearchRawRecords(String userDataCostId, int currentPage, int totalRecord, String empId,String workShopNo,
-			String depId, String costId, String startDate, String endDate, String recordStatus, Boolean isShowAll) {
+			String depId, String costId, String startDate, String endDate, String recordStatus, Boolean isShowAll, String accessRole) {
 		// TODO Auto-generated method stub
 		List<IOWSRecord> searchRawRecord = null;
 		String sSQL = "select * from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from "
@@ -222,6 +228,12 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
  		               }
  			}
 			
+			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
+			
 			
 			if(!isShowAll){
 				Page page = new Page(currentPage, totalRecord);	  
@@ -243,7 +255,7 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
 	}
 
 	public int getTotalOtherRecord(String userDataCostId, String workShopNo, String startDate, String endDate,
-			String recordStatus) {
+			String recordStatus, String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_CONTROL_RECORD r  where 1=1";
@@ -278,6 +290,12 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
   		                	sSQL+=") ";				
  		               }
  			}
+ 			
+ 			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
  			 
  			
  		   totalRecord = jdbcTemplate.queryForObject(sSQL, queryList.toArray(), Integer.class);
@@ -289,7 +307,7 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
 	}
 
 	public List<IOWSRecord> FindSearchOtherRawRecords(String userDataCostId, int currentPage, int totalRecord,
-			String workShopNo, String startDate, String endDate, String recordStatus, Boolean isShowAll) {
+			String workShopNo, String startDate, String endDate, String recordStatus, Boolean isShowAll, String accessRole) {
 		// TODO Auto-generated method stub
 		List<IOWSRecord> searchRawRecord = null;
 		String sSQL = "select * from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from "
@@ -329,6 +347,12 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
  		                
  		               }
  			}
+			
+			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
 			
 			if(!isShowAll){
 				Page page = new Page(currentPage, totalRecord);	  
