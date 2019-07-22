@@ -243,17 +243,22 @@ public class WorkshopNoRestDao extends DAO<WorkshopNoRestInfo>{
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		String sSQL="update WORKSHOPNO_REST_INFO t set t.enabled = 'N',t.update_userid = ? where t.workshopno = ? and t.enabled='Y' and bu = ?";
+		String sSQL="update WORKSHOPNO_REST_INFO t set t.enabled = 'N',t.update_userid = ? where t.workshopno = ? and t.enabled='Y'";
 		int disableRow=-1;
 		try {
 			if(workshopNo!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				disableRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement arg0) throws SQLException {
 						// TODO Auto-generated method stub
 						arg0.setString(1, updateUser);
 						arg0.setString(2, workshopNo);
-						arg0.setString(3, accessRole);
+						
 					}	
 				});
 				transactionManager.commit(txStatus);
