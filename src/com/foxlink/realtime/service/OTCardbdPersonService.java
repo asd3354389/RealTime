@@ -24,22 +24,22 @@ public class OTCardbdPersonService extends Service<Emp>{
 	}
 	
 	public Page getPersonPage(int currentPage, String queryCritirea, String queryParam, String updateUser,
-			String userDataCostId) {
+			String userDataCostId,String accessRole) {
 		// TODO Auto-generated method stub
-		int totalRecord = oTCardbdPersonDAO.getTotalRecord(queryCritirea, queryParam, updateUser, userDataCostId);
+		int totalRecord = oTCardbdPersonDAO.getTotalRecord(queryCritirea, queryParam, updateUser, userDataCostId,accessRole);
 		Page page = new Page(currentPage, totalRecord);
 		// Page page = accountDAO.getPage(pageNum, User.class, totalRecord);
 		return page;
 	}
 
 	public List<OTCardBD> FindQueryRecord(String updateUser, int currentPage, String queryCritirea, String queryParam,
-			String userDataCostId) {
+			String userDataCostId,String accessRole) {
 		// TODO Auto-generated method stub
 		List<OTCardBD> AllEmp = null;
 		try{
-			int totalRecord = oTCardbdPersonDAO.getTotalRecord(queryCritirea, queryParam,updateUser, userDataCostId);
+			int totalRecord = oTCardbdPersonDAO.getTotalRecord(queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
 			/*System.out.println(totalRecord);*/
-			AllEmp = oTCardbdPersonDAO.FindAllRecord(currentPage,totalRecord, queryCritirea, queryParam,updateUser, userDataCostId);
+			AllEmp = oTCardbdPersonDAO.FindAllRecord(currentPage,totalRecord, queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
 		}catch(Exception e){
 			e.printStackTrace();
 			logger.error("Find PersonList Record is failed ",e);
@@ -121,9 +121,9 @@ public class OTCardbdPersonService extends Service<Emp>{
 		return oTCardbdPersonDAO.checkUserNameDuplicate(CostId);
 	}
 
-	public boolean OTCardbd(OTCardBD otCardbd) {
+	public boolean OTCardbd(OTCardBD otCardbd,String accessRole) {
 		// TODO Auto-generated method stub
-		return oTCardbdPersonDAO.OTCardbdPerson(otCardbd);
+		return oTCardbdPersonDAO.OTCardbdPerson(otCardbd,accessRole);
 	}
 
 	@Override
@@ -137,14 +137,14 @@ public class OTCardbdPersonService extends Service<Emp>{
 		return oTCardbdPersonDAO.checkEmpIdExistence(EmpId,userDataCostId);
 	}
 
-	public boolean UpdateBdOTCard(OTCardBD otCardbd, String updateUser) {
+	public boolean UpdateBdOTCard(OTCardBD otCardbd, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
-		return oTCardbdPersonDAO.UpdateBdOTCard(otCardbd,updateUser);
+		return oTCardbdPersonDAO.UpdateBdOTCard(otCardbd,updateUser,accessRole);
 	}
 
-	public boolean RelieveOTCard(OTCardBD[] otCardbd, String updateUser) {
+	public boolean RelieveOTCard(OTCardBD[] otCardbd, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
-		return oTCardbdPersonDAO.RelieveOTCard(otCardbd,updateUser);
+		return oTCardbdPersonDAO.RelieveOTCard(otCardbd,updateUser,accessRole);
 	}
 
 	public String ShowDeptNo(String CostId) {
@@ -163,19 +163,19 @@ public class OTCardbdPersonService extends Service<Emp>{
 	        return result.toString();
 	}
 
-	public boolean OTCardNbdPerson(OTCardBD[] otCardbd, String updateUser) {
+	public boolean OTCardNbdPerson(OTCardBD[] otCardbd, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
-		return oTCardbdPersonDAO.OTCardNbdPerson(otCardbd,updateUser);
+		return oTCardbdPersonDAO.OTCardNbdPerson(otCardbd,updateUser,accessRole);
 	}
 
-	public boolean checkDcardDuplicate(String CostId, String D_CardId) {
+	public boolean checkDcardDuplicate(String CostId, String D_CardId,String accessRole) {
 		// TODO Auto-generated method stub
-		return oTCardbdPersonDAO.checkDcardDuplicate(CostId,D_CardId);
+		return oTCardbdPersonDAO.checkDcardDuplicate(CostId,D_CardId,accessRole);
 	}
 
-	public boolean checkData(OTCardBD otCardbd) {
+	public boolean checkData(OTCardBD otCardbd,String accessRole) {
 		// TODO Auto-generated method stub
-		return oTCardbdPersonDAO.checkData(otCardbd);
+		return oTCardbdPersonDAO.checkData(otCardbd,accessRole);
 	}
 
 

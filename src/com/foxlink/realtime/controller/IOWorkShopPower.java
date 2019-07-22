@@ -52,10 +52,11 @@ public class IOWorkShopPower {
 			String updateUser = (String)session.getAttribute("username");
 			String userDataCostId=(String) session.getAttribute("userDataCostId");
 			iOWorkShopPowerService = (IOWorkShopPowerService)context.getBean("iOWorkShopPowerService");
+			String accessRole=(String) session.getAttribute("accessRole");
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			Page page = iOWorkShopPowerService.getPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
-			page.setList(iOWorkShopPowerService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
-			System.out.println(iOWorkShopPowerService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
+			Page page = iOWorkShopPowerService.getPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId,accessRole);
+			page.setList(iOWorkShopPowerService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId,accessRole));
+			System.out.println(iOWorkShopPowerService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId,accessRole));
 			JsonResult = gson.toJson(page);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -76,8 +77,9 @@ public class IOWorkShopPower {
 		try{
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			iOWorkShopPowerService = (IOWorkShopPowerService) context.getBean("iOWorkShopPowerService");
+			String accessRole=(String) session.getAttribute("accessRole");
 			if(iOWorkShopPowerService.checkEmpIdExistence(Emp_id)) {
-				if(iOWorkShopPowerService.checkUserNameDuplicate(Emp_id,WorkshopNo)){
+				if(iOWorkShopPowerService.checkUserNameDuplicate(Emp_id,WorkshopNo,accessRole)){
 					checkResult.addProperty("StatusCode", "200");
 					checkResult.addProperty("Message", "此工號未設置臨時權限，可以新增此賬號!");
 				}else{
@@ -107,8 +109,9 @@ public class IOWorkShopPower {
 			try{
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				iOWorkShopPowerService = (IOWorkShopPowerService) context.getBean("iOWorkShopPowerService");
+				String accessRole=(String) session.getAttribute("accessRole");
 				System.out.println("進入查詢同一卡號=======================>>>>>>>>>>");
-					if(iOWorkShopPowerService.checkCardIdDuplicate(CardId,WorkshopNo)){
+					if(iOWorkShopPowerService.checkCardIdDuplicate(CardId,WorkshopNo,accessRole)){
 						checkResult.addProperty("StatusCode", "200");
 						checkResult.addProperty("Message", "此卡號未設置臨時權限，可以新增此賬號!");
 					}else{
@@ -137,7 +140,8 @@ public class IOWorkShopPower {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			System.out.println("數據信息===========>>>>>>"+ioWorkShopPW);
 			iOWorkShopPowerService = (IOWorkShopPowerService) context.getBean("iOWorkShopPowerService");
-			if(iOWorkShopPowerService.addIOWorkShopPW(ioWorkShopPW,updateUser)){
+			String accessRole=(String) session.getAttribute("accessRole");
+			if(iOWorkShopPowerService.addIOWorkShopPW(ioWorkShopPW,updateUser,accessRole)){
 				for (int i = 0; i < ioWorkShopPW.length; i++) {
 					AddResult.addProperty("StatusCode", "200");
 					AddResult.addProperty("Message", "工號"+ioWorkShopPW[i].getEmp_id()+"車間為"+ioWorkShopPW[i].getWorkShopNo()+"進出臨時權限設置成功");
@@ -167,7 +171,8 @@ public class IOWorkShopPower {
 //			otCardbd.setUpdate_UserId(updateUser);
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			iOWorkShopPowerService = (IOWorkShopPowerService) context.getBean("iOWorkShopPowerService");
-			if(iOWorkShopPowerService.addIOWorkShopPWOther(ioWorkShopPW,updateUser)){
+			String accessRole=(String) session.getAttribute("accessRole");
+			if(iOWorkShopPowerService.addIOWorkShopPWOther(ioWorkShopPW,updateUser,accessRole)){
 				AddResult.addProperty("StatusCode", "200");
 				AddResult.addProperty("Message", "車間進出臨時權限設置成功");
 			}
@@ -192,8 +197,9 @@ public class IOWorkShopPower {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			iOWorkShopPowerService = (IOWorkShopPowerService) context.getBean("iOWorkShopPowerService");
 			String updateUser=(String) session.getAttribute("username");
+			String accessRole=(String) session.getAttribute("accessRole");
 			System.out.println("数据信息============="+ioWorkShopPW);
-			if(iOWorkShopPowerService.UpdateRecord(ioWorkShopPW,updateUser)){
+			if(iOWorkShopPowerService.UpdateRecord(ioWorkShopPW,updateUser,accessRole)){
 				UpdateResult.addProperty("StatusCode", "200");
 				UpdateResult.addProperty("Message", "更新臨時權限成功");
 			}
@@ -218,7 +224,8 @@ public class IOWorkShopPower {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			iOWorkShopPowerService = (IOWorkShopPowerService) context.getBean("iOWorkShopPowerService");
 			String updateUser=(String) session.getAttribute("username");
-			if(iOWorkShopPowerService.DeleteIOWorkShopPW(Emp_id, updateUser,CardID,WorkShopNo)){
+			String accessRole=(String) session.getAttribute("accessRole");
+			if(iOWorkShopPowerService.DeleteIOWorkShopPW(Emp_id, updateUser,CardID,WorkShopNo,accessRole)){
 				DisableResult.addProperty("StatusCode", "200");
 				DisableResult.addProperty("Message", "車間進出臨時權限已失效");
 			}

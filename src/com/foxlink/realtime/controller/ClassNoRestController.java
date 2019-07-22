@@ -52,9 +52,10 @@ public class ClassNoRestController {
 			String updateUser=(String) session.getAttribute("username");
 			String userDataCostId=(String) session.getAttribute("userDataCostId");
 			classNoRestService = (ClassNoRestService) context.getBean("classNoRestService");
+			String accessRole=(String) session.getAttribute("accessRole");
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			Page page = classNoRestService.getclassNoRestPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
-			page.setList(classNoRestService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
+			Page page = classNoRestService.getclassNoRestPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId,accessRole);
+			page.setList(classNoRestService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId,accessRole));
 			DisableResult = gson.toJson(page);
 		}catch(Exception ex){
 			logger.error(ex);
@@ -72,8 +73,9 @@ public class ClassNoRestController {
 		String updateUser=(String) session.getAttribute("username");
 //		otCardbd.setUpdate_UserId(updateUser);
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
-		classNoRestService = (ClassNoRestService) context.getBean("classNoRestService");	
-		return classNoRestService.setClassNoRestInfo(classNoRestInfo, updateUser);
+		classNoRestService = (ClassNoRestService) context.getBean("classNoRestService");
+		String accessRole=(String) session.getAttribute("accessRole");
+		return classNoRestService.setClassNoRestInfo(classNoRestInfo, updateUser,accessRole);
 	}
 	
 	@RequestMapping(value="/UpdateClassNoRest.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
@@ -84,7 +86,8 @@ public class ClassNoRestController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			classNoRestService = (ClassNoRestService) context.getBean("classNoRestService");
 			String updateUser=(String) session.getAttribute("username");
-			if(classNoRestService.UpdateRecord(classNoRestInfo,updateUser)){
+			String accessRole=(String) session.getAttribute("accessRole");
+			if(classNoRestService.UpdateRecord(classNoRestInfo,updateUser,accessRole)){
 				UpdateResult.addProperty("StatusCode", "200");
 				UpdateResult.addProperty("Message", "更新班別加班休息時間段成功");
 			}
@@ -109,7 +112,8 @@ public class ClassNoRestController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			classNoRestService = (ClassNoRestService) context.getBean("classNoRestService");
 			String updateUser=(String) session.getAttribute("username");
-			if(classNoRestService.DeleteClassNoRest(CostId,Class_No,updateUser)){
+			String accessRole=(String) session.getAttribute("accessRole");
+			if(classNoRestService.DeleteClassNoRest(CostId,Class_No,updateUser,accessRole)){
 				DisableResult.addProperty("StatusCode", "200");
 				DisableResult.addProperty("Message", "班別加班休息時間段信息已失效");
 			}

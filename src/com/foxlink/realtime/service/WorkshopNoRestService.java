@@ -17,33 +17,33 @@ public class WorkshopNoRestService {
 		this.workshopNoRestDao = workshopNoRestDao;
 	}
 	public Page getworkshopNoRestPage(int currentPage, String queryCritirea, String queryParam, String updateUser,
-			String userDataCostId) {
-		int totalRecord = workshopNoRestDao.getTotalRecord(queryCritirea, queryParam, updateUser, userDataCostId);
+			String userDataCostId,String accessRole) {
+		int totalRecord = workshopNoRestDao.getTotalRecord(queryCritirea, queryParam, updateUser, userDataCostId,accessRole);
 		Page page = new Page(currentPage, totalRecord);
 		// Page page = accountDAO.getPage(pageNum, User.class, totalRecord);
 		return page;
 	}
 	public List<WorkshopNoRestInfo> FindQueryRecord(String updateUser, int currentPage, String queryCritirea, String queryParam,
-			String userDataCostId) {
+			String userDataCostId,String accessRole) {
 		List<WorkshopNoRestInfo> AllworkshopNoRestInfo = null;
 		try{
-			int totalRecord = workshopNoRestDao.getTotalRecord(queryCritirea, queryParam,updateUser, userDataCostId);
-			AllworkshopNoRestInfo = workshopNoRestDao.FindAllRecords(currentPage, totalRecord, queryCritirea, queryParam,updateUser, userDataCostId);
+			int totalRecord = workshopNoRestDao.getTotalRecord(queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
+			AllworkshopNoRestInfo = workshopNoRestDao.FindAllRecords(currentPage, totalRecord, queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
 		}catch(Exception e){
 			e.printStackTrace();
 			logger.error("Find JobTitle Record is failed ",e);
 		}
 		return AllworkshopNoRestInfo;
 	}
-	public boolean UpdateRecord(WorkshopNoRestInfo workshopNoRestInfo, String updateUser) {
+	public boolean UpdateRecord(WorkshopNoRestInfo workshopNoRestInfo, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
-		return workshopNoRestDao.UpdateRecord(workshopNoRestInfo,updateUser);
+		return workshopNoRestDao.UpdateRecord(workshopNoRestInfo,updateUser,accessRole);
 	}
-	public JsonObject setWorkShopNoRestInfo(WorkshopNoRestInfo workshopNoRestInfo, String updateUser) {
+	public JsonObject setWorkShopNoRestInfo(WorkshopNoRestInfo workshopNoRestInfo, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		JsonObject AddResult=new JsonObject();
-		if(workshopNoRestDao.checkRepeat(workshopNoRestInfo)){
-			if(workshopNoRestDao.insertWorkShopNoRestInfo(workshopNoRestInfo,updateUser)){
+		if(workshopNoRestDao.checkRepeat(workshopNoRestInfo,accessRole)){
+			if(workshopNoRestDao.insertWorkShopNoRestInfo(workshopNoRestInfo,updateUser,accessRole)){
 				AddResult.addProperty("StatusCode", "200");
 				AddResult.addProperty("Message", "新增車間休息時間段成功");
 			}else{
@@ -57,15 +57,15 @@ public class WorkshopNoRestService {
 		return AddResult;
 	}
 	public Page getPersonPage(int currentPage, String queryCritirea, String queryParam, String updateUser,
-			String userDataCostId) {
+			String userDataCostId,String accessRole) {
 		// TODO Auto-generated method stub
-		int totalRecord = workshopNoRestDao.getTotalRecord(queryCritirea, queryParam, updateUser, userDataCostId);
+		int totalRecord = workshopNoRestDao.getTotalRecord(queryCritirea, queryParam, updateUser, userDataCostId,accessRole);
 		Page page = new Page(currentPage, totalRecord);
 		// Page page = accountDAO.getPage(pageNum, User.class, totalRecord);
 		return page;
 	}
-	public boolean DeleteWorkshopNoRest(String workshopNo, String updateUser) {
+	public boolean DeleteWorkshopNoRest(String workshopNo, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
-		return workshopNoRestDao.DeleteWorkshopNoRest(workshopNo,updateUser);
+		return workshopNoRestDao.DeleteWorkshopNoRest(workshopNo,updateUser,accessRole);
 	}
 }

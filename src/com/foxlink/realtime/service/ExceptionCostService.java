@@ -67,10 +67,10 @@ public class ExceptionCostService extends Service<ExceptionCost>{
 		return null;
 	}
 
-	public String addExceptionCost(ExceptionCost[] exceptionCost, String updateUser) {
+	public String addExceptionCost(ExceptionCost[] exceptionCost, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		JsonObject resultJson = new JsonObject();
-		int result = exceptionCostDAO.addExceptionCost(exceptionCost, updateUser);
+		int result = exceptionCostDAO.addExceptionCost(exceptionCost, updateUser,accessRole);
 		if (exceptionCost!=null) {
 			if(result==0){
 				resultJson.addProperty("StatusCode", "200");
@@ -88,7 +88,7 @@ public class ExceptionCostService extends Service<ExceptionCost>{
 		
 	}
 
-	public Page getFindExcePage(int currentPage, String queryCritirea, String queryParam) {
+	public Page getFindExcePage(int currentPage, String queryCritirea, String queryParam,String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord = exceptionCostDAO.getTotalRecord(queryCritirea, queryParam);
 		Page page = new Page(currentPage, totalRecord);
@@ -96,12 +96,12 @@ public class ExceptionCostService extends Service<ExceptionCost>{
 		return page;
 	}
 
-	public List<ExceptionCost> FindQueryExce(int currentPage, String queryCritirea, String queryParam) {
+	public List<ExceptionCost> FindQueryExce(int currentPage, String queryCritirea, String queryParam,String accessRole) {
 		// TODO Auto-generated method stub
 		List<ExceptionCost> AllExce = null;
 		try{
-			int totalRecord = exceptionCostDAO.getTotalRecord(queryCritirea, queryParam);
-			AllExce = exceptionCostDAO.FindAllExceps(currentPage,totalRecord, queryCritirea, queryParam);
+			int totalRecord = exceptionCostDAO.getTotalRecord(queryCritirea, queryParam,accessRole);
+			AllExce = exceptionCostDAO.FindAllExceps(currentPage,totalRecord, queryCritirea, queryParam,accessRole);
 		}catch(Exception e){
 			e.printStackTrace();
 			logger.error("Find ExceptionCost Record is failed ",e);
@@ -109,24 +109,24 @@ public class ExceptionCostService extends Service<ExceptionCost>{
 		return AllExce;
 	}
 
-	public boolean UpdateExceCost(ExceptionCost exceptionCost, String updateUser) {
+	public boolean UpdateExceCost(ExceptionCost exceptionCost, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
-		return exceptionCostDAO.UpdateExceCost(exceptionCost,updateUser);
+		return exceptionCostDAO.UpdateExceCost(exceptionCost,updateUser,accessRole);
 	}
 
-	public boolean RelieveExceCost(ExceptionCost[] exceptionCost, String updateUser) {
+	public boolean RelieveExceCost(ExceptionCost[] exceptionCost, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
-		return exceptionCostDAO.RelieveExceCost(exceptionCost,updateUser);
+		return exceptionCostDAO.RelieveExceCost(exceptionCost,updateUser,accessRole);
 	}
 
-	public boolean checkExceCost(String CostId) {
+	public boolean checkExceCost(String CostId,String accessRole) {
 		// TODO Auto-generated method stub
-		return exceptionCostDAO.checkExceCost(CostId);
+		return exceptionCostDAO.checkExceCost(CostId,accessRole);
 	}
 
-	public boolean checkWorkShopCost(String CostId, String WorkShopNo) {
+	public boolean checkWorkShopCost(String CostId, String WorkShopNo,String accessRole) {
 		// TODO Auto-generated method stub
-		return exceptionCostDAO.checkWorkShopCost(CostId,WorkShopNo);
+		return exceptionCostDAO.checkWorkShopCost(CostId,WorkShopNo,accessRole);
 	}
 
 }

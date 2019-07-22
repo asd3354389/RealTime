@@ -78,7 +78,7 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 		return 0;
 	}
 
-	public int getTotalRecord(String queryCritirea, String queryParam, String updateUser, String userDataCostId) {
+	public int getTotalRecord(String queryCritirea, String queryParam, String updateUser, String userDataCostId,String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.COSTID_CLASS_SUB_RESTTIME t where t.enabled = 'Y' ";
@@ -86,6 +86,11 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
     		List <Object> queryList=new ArrayList<Object>();
 			if(queryCritirea.equals("classNo")){
 				sSQL+=" and Class_No = ?";  
+			}
+			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
 			}
 			if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
@@ -100,7 +105,7 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 	}
 
 	public List<ClassNoRestInfo> FindAllRecords(int currentPage, int totalRecord, String queryCritirea,
-			String queryParam, String updateUser, String userDataCostId) {
+			String queryParam, String updateUser, String userDataCostId,String accessRole) {
 		// TODO Auto-generated method stub
 		List<ClassNoRestInfo> classNoRestInfo = null;
 		String sSQL = "select * from (select b.*,rownum rn from "
@@ -110,6 +115,11 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 			List <Object> queryList=new ArrayList<Object>();
 			if(queryCritirea.equals("classNo")){
 				sSQL+=" and CLASS_NO = ?";  
+			}
+			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
@@ -127,13 +137,13 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 		return classNoRestInfo;
 	}
 
-	public boolean UpdateRecord(ClassNoRestInfo classNoRestInfo, String updateUser) {
+	public boolean UpdateRecord(ClassNoRestInfo classNoRestInfo, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		int updateRow=-1,updateRole=-1;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
 		String sSQL="update COSTID_CLASS_SUB_RESTTIME t set t.SUB_REST_START2 = ?,t.SUB_REST_END2 = ?,t.update_userid = ?,t.update_time=sysdate "
-				+ "where t.COSTID=? and t.CLASS_NO=? and t.enabled = 'Y'";
+				+ "where t.COSTID=? and t.CLASS_NO=? and t.enabled = 'Y' and bu =?";
 		try {
 			if(classNoRestInfo!=null) {
 				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
@@ -145,6 +155,7 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 						arg0.setString(3, updateUser);
 						arg0.setString(4, classNoRestInfo.getCostId());
 						arg0.setString(5, classNoRestInfo.getClass_No());
+						arg0.setString(6, accessRole);
 					}	
 				});
 				transactionManager.commit(txStatus);
@@ -160,11 +171,11 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 				   return false;
 	}
 
-	public boolean DeleteClassNoRest(String costId, String class_No, String updateUser) {
+	public boolean DeleteClassNoRest(String costId, String class_No, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		String sSQL="update COSTID_CLASS_SUB_RESTTIME t set t.enabled = 'N',t.update_userid = ? where t.COSTID = ? and t.CLASS_NO = ? and t.enabled='Y'";
+		String sSQL="update COSTID_CLASS_SUB_RESTTIME t set t.enabled = 'N',t.update_userid = ? where t.COSTID = ? and t.CLASS_NO = ? and t.enabled='Y' and bu=?";
 		int disableRow=-1;
 		try {
 			if(class_No!=null&&class_No!=null) {
@@ -175,6 +186,7 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 						arg0.setString(1, updateUser);
 						arg0.setString(2, costId);
 						arg0.setString(3, class_No);
+						arg0.setString(4, accessRole);
 					}	
 				});
 				transactionManager.commit(txStatus);
@@ -272,11 +284,11 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 	}*/
 	
 	
-	public void deleteExcep(ClassNoRestInfo[] classNoRestInfo,String updateUser) {
+	public void deleteExcep(ClassNoRestInfo[] classNoRestInfo,String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		
 		
-		String sSQL = "update SWIPE.COSTID_CLASS_SUB_RESTTIME SET Enabled='N',Update_Time=sysdate,Update_UserId=? where COSTID = ? and CLASS_NO = ? and enabled='Y'";
+		String sSQL = "update SWIPE.COSTID_CLASS_SUB_RESTTIME SET Enabled='N',Update_Time=sysdate,Update_UserId=? where COSTID = ? and CLASS_NO = ? and enabled='Y' and bu =?";
 		try {
 			
 				jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
@@ -287,6 +299,7 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 						ps.setString(1, updateUser);
 						ps.setString(2, classNoRestInfo[i].getCostId());
 						ps.setString(3, classNoRestInfo[i].getClass_No());
+						ps.setString(4, accessRole);
 					}
 					
 					@Override
@@ -304,15 +317,15 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 		}
 	}
 
-	public int insertClassNoRestInfo(ClassNoRestInfo[] classNoRestInfo, String updateUser) {
+	public int insertClassNoRestInfo(ClassNoRestInfo[] classNoRestInfo, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		int createRow=0;
 
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		deleteExcep(classNoRestInfo,updateUser);
-		String sSQL="insert into COSTID_CLASS_SUB_RESTTIME(COSTID,CLASS_NO,SUB_REST_START2,SUB_REST_END2,UPDATE_TIME,UPDATE_USERID,Enabled) "
-				+ "values(?,?,?,?,sysdate,?,'Y')";;
+		deleteExcep(classNoRestInfo,updateUser,accessRole);
+		String sSQL="insert into COSTID_CLASS_SUB_RESTTIME(COSTID,CLASS_NO,SUB_REST_START2,SUB_REST_END2,UPDATE_TIME,UPDATE_USERID,Enabled,BU) "
+				+ "values(?,?,?,?,sysdate,?,'Y',?)";;
 		try {
 			if(classNoRestInfo!=null) {
 				
@@ -327,6 +340,7 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 					ps.setString(3, classNoRestInfo[i].getRest_Start_S());
 					ps.setString(4, classNoRestInfo[i].getRest_End_S());
 					ps.setString(5, updateUser);
+					ps.setString(6, accessRole);
 				}
 				
 				@Override
