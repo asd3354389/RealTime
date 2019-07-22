@@ -143,9 +143,14 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
 		String sSQL="update COSTID_CLASS_SUB_RESTTIME t set t.SUB_REST_START2 = ?,t.SUB_REST_END2 = ?,t.update_userid = ?,t.update_time=sysdate "
-				+ "where t.COSTID=? and t.CLASS_NO=? and t.enabled = 'Y' and bu =?";
+				+ "where t.COSTID=? and t.CLASS_NO=? and t.enabled = 'Y' ";
 		try {
 			if(classNoRestInfo!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement arg0) throws SQLException {
@@ -155,7 +160,7 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 						arg0.setString(3, updateUser);
 						arg0.setString(4, classNoRestInfo.getCostId());
 						arg0.setString(5, classNoRestInfo.getClass_No());
-						arg0.setString(6, accessRole);
+						
 					}	
 				});
 				transactionManager.commit(txStatus);
@@ -175,10 +180,15 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		String sSQL="update COSTID_CLASS_SUB_RESTTIME t set t.enabled = 'N',t.update_userid = ? where t.COSTID = ? and t.CLASS_NO = ? and t.enabled='Y' and bu=?";
+		String sSQL="update COSTID_CLASS_SUB_RESTTIME t set t.enabled = 'N',t.update_userid = ? where t.COSTID = ? and t.CLASS_NO = ? and t.enabled='Y'";
 		int disableRow=-1;
 		try {
 			if(class_No!=null&&class_No!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				disableRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement arg0) throws SQLException {
@@ -186,7 +196,7 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 						arg0.setString(1, updateUser);
 						arg0.setString(2, costId);
 						arg0.setString(3, class_No);
-						arg0.setString(4, accessRole);
+						
 					}	
 				});
 				transactionManager.commit(txStatus);
@@ -288,9 +298,13 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 		// TODO Auto-generated method stub
 		
 		
-		String sSQL = "update SWIPE.COSTID_CLASS_SUB_RESTTIME SET Enabled='N',Update_Time=sysdate,Update_UserId=? where COSTID = ? and CLASS_NO = ? and enabled='Y' and bu =?";
+		String sSQL = "update SWIPE.COSTID_CLASS_SUB_RESTTIME SET Enabled='N',Update_Time=sysdate,Update_UserId=? where COSTID = ? and CLASS_NO = ? and enabled='Y'";
 		try {
-			
+			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
 				jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
 					
 					@Override
@@ -299,7 +313,7 @@ public class ClassNoRestDao extends DAO<ClassNoRestInfo> {
 						ps.setString(1, updateUser);
 						ps.setString(2, classNoRestInfo[i].getCostId());
 						ps.setString(3, classNoRestInfo[i].getClass_No());
-						ps.setString(4, accessRole);
+						
 					}
 					
 					@Override

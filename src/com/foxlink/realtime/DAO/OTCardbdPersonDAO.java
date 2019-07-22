@@ -267,9 +267,14 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 		int updateRow=-1;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
-		String sSQL = "update SWIPE.DEPARTURE_CARD_INFO set D_CardId =?,Default_WorkShopNo=?,update_time = sysdate,Update_UserId=? where enabled='Y' and CostId =? and D_CardId=? and bu=?";
+		String sSQL = "update SWIPE.DEPARTURE_CARD_INFO set D_CardId =?,Default_WorkShopNo=?,update_time = sysdate,Update_UserId=? where enabled='Y' and CostId =? and D_CardId=?";
 		try {
 			if(otCardbd!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement ps) throws SQLException {
@@ -279,7 +284,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 						ps.setString(3, updateUser);
 						ps.setString(4, otCardbd.getCostId());
 						ps.setString(5, otCardbd.getO_CardID());
-						ps.setString(6, accessRole);
+						
 					}	
 				});
 				transactionManager.commit(txStatus);
@@ -300,9 +305,14 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 		int updateRow=0;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
-		String sSQL = "delete from SWIPE.DEPARTURE_CARD_INFO where enabled='Y' and CostId =? and D_CardId=? and bu =?";
+		String sSQL = "delete from SWIPE.DEPARTURE_CARD_INFO where enabled='Y' and CostId =? and D_CardId=?";
 		try {
 			if(otCardbd!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
 					
 					@Override
@@ -310,7 +320,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 						// TODO Auto-generated method stub
 						ps.setString(1, otCardbd[i].getCostId());
 						ps.setString(2, otCardbd[i].getD_CardID());
-						ps.setString(3, accessRole);
+						
 					}
 					
 					@Override

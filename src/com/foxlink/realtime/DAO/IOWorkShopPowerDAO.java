@@ -358,7 +358,12 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 		try {
 			if (ioWorkShopPW.getEmp_id() == null||ioWorkShopPW.getEmp_id() == "" ||ioWorkShopPW.getEmp_id().equals("null")) {
 				System.out.println("=====================>>>>>>進入方法");
-				sSQL += "WHERE CardId=? and Enabled='Y' and WorkShopNo=? and bu=?";
+				sSQL += "WHERE CardId=? and Enabled='Y' and WorkShopNo=?";
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				//if(ioWorkShopPW!=null) {
 					updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 						@Override
@@ -370,7 +375,7 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 							arg0.setString(4, ioWorkShopPW.getRemark());
 							arg0.setString(5, ioWorkShopPW.getCardId());
 							arg0.setString(6, ioWorkShopPW.getWorkShopNo());
-							arg0.setString(7, accessRole);
+							
 						}	
 					});
 					System.out.print(sSQL);
@@ -378,7 +383,12 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 				
 				//}	
 			}else {
-				sSQL += "WHERE Emp_id=? and Enabled='Y' and WorkShopNo=? and bu=?";
+				sSQL += "WHERE Emp_id=? and Enabled='Y' and WorkShopNo=?";
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				//if(ioWorkShopPW!=null) {
 					updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 						@Override
@@ -390,7 +400,7 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 							arg0.setString(4, ioWorkShopPW.getRemark());
 							arg0.setString(5, ioWorkShopPW.getEmp_id());
 							arg0.setString(6, ioWorkShopPW.getWorkShopNo());
-							arg0.setString(7, accessRole);
+							
 						}	
 					});
 					System.out.print(sSQL);
@@ -419,7 +429,12 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 		System.out.println("工号========="+emp_id+"卡号==========="+CardID);
 		try {
 			if(emp_id.equals("null")||emp_id.equals("")||emp_id==null) {
-				sSQL += "WHERE CardId=? AND Enabled='Y' AND WORKSHOPNO = ? and bu=?";
+				sSQL += "WHERE CardId=? AND Enabled='Y' AND WORKSHOPNO = ? ";
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				disableRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement arg0) throws SQLException {
@@ -427,14 +442,19 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 						arg0.setString(1, updateUser);
 						arg0.setString(2, CardID);
 						arg0.setString(3, WorkShopNo);
-						arg0.setString(4, accessRole);
+						
 					}	
 				});
 				System.out.print(sSQL);
 				transactionManager.commit(txStatus);
 				
 			}else {
-				sSQL += "WHERE Emp_id=? AND Enabled='Y' AND WORKSHOPNO = ? and bu=?";
+				sSQL += "WHERE Emp_id=? AND Enabled='Y' AND WORKSHOPNO = ? ";
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				disableRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement arg0) throws SQLException {
@@ -442,7 +462,7 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 						arg0.setString(1, updateUser);
 						arg0.setString(2, emp_id);
 						arg0.setString(3, WorkShopNo);
-						arg0.setString(4, accessRole);
+						
 					}	
 				});
 				System.out.print(sSQL);
@@ -465,11 +485,17 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 		// TODO Auto-generated method stub	
 				int updateRow=-1;		
 				//String sSQL = "DELETE FROM SWIPE.RT_ACCESS_USER_TEMP WHERE EMP_ID = ? AND WORKSHOPNO = ?";
-				String sSQL = "DELETE FROM SWIPE.RT_ACCESS_USER_TEMP WHERE EMP_ID = ? AND WORKSHOPNO = ? and bu=?";
+				String sSQL = "DELETE FROM SWIPE.RT_ACCESS_USER_TEMP WHERE EMP_ID = ? AND WORKSHOPNO = ? ";
 				System.out.println("批量删除==========>>>>>>>>>>"+sSQL);
 				//IOWorkShopPW ioWorkShopPW2 = null;
 				try {
 //					
+					
+					if(accessRole!=null&&!accessRole.equals("")){
+						if(!accessRole.equals("ALL")){
+							sSQL+=" and bu = '"+accessRole+"' "; 
+						}
+					}
 							System.out.println("刪除員工信息=========="+sSQL);
 							jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
 								
@@ -478,7 +504,7 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 									// TODO Auto-generated method stub
 									ps.setString(1, ioWorkShopPW[i].getEmp_id());
 									ps.setString(2, ioWorkShopPW[i].getWorkShopNo());	
-									ps.setString(3, accessRole);	
+									
 								}
 								
 								@Override
@@ -502,11 +528,17 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 		// TODO Auto-generated method stub	
 				int updateRow=-1;		
 				
-				String sSQL = "DELETE FROM SWIPE.RT_ACCESS_USER_TEMP WHERE CARDID = ? AND WORKSHOPNO = ? and bu=?";
+				String sSQL = "DELETE FROM SWIPE.RT_ACCESS_USER_TEMP WHERE CARDID = ? AND WORKSHOPNO = ? ";
 				System.out.println("批量删除==========>>>>>>>>>>"+sSQL);
 				
 				try {
 
+					
+					if(accessRole!=null&&!accessRole.equals("")){
+						if(!accessRole.equals("ALL")){
+							sSQL+=" and bu = '"+accessRole+"' "; 
+						}
+					}
 							System.out.println("刪除員工信息=========="+sSQL);
 						
 							
@@ -517,7 +549,7 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 									// TODO Auto-generated method stub
 									ps.setString(1, ioWorkShopPW[i].getCardId());
 									ps.setString(2, ioWorkShopPW[i].getWorkShopNo());	
-									ps.setString(3, accessRole);
+									
 								}
 								
 								@Override

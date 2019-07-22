@@ -273,9 +273,14 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 		int updateRow=-1,updateRole=-1;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
-		String sSQL="UPDATE SWIPE.RT_DEVICE_INFO SET WorkShopNo=?,WorkShop_Desc=?,Direction=?,Update_Userid=? WHERE Deviceip=? and Enabled='Y' and bu=?";
+		String sSQL="UPDATE SWIPE.RT_DEVICE_INFO SET WorkShopNo=?,WorkShop_Desc=?,Direction=?,Update_Userid=? WHERE Deviceip=? and Enabled='Y'";
 		try {
 			if(ioCardMachineIP!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement arg0) throws SQLException {
@@ -285,7 +290,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 						arg0.setString(3, ioCardMachineIP.getDirection());
 						arg0.setString(4, updateUser);
 						arg0.setString(5, ioCardMachineIP.getDeviceip());
-						arg0.setString(6, accessRole);
+						
 					}	
 				});
 				transactionManager.commit(txStatus);
@@ -305,10 +310,15 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		String sSQL="update SWIPE.RT_DEVICE_INFO set ENABLED='N',Update_Userid=? WHERE Deviceip=? AND Enabled='Y' and bu=?";
+		String sSQL="update SWIPE.RT_DEVICE_INFO set ENABLED='N',Update_Userid=? WHERE Deviceip=? AND Enabled='Y'";
 		int disableRow=0;
 		try {
 			if(ioCardMachineIP!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
 					
 					@Override
@@ -316,7 +326,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 						// TODO Auto-generated method stub
 						ps.setString(1, updateUser);
 						ps.setString(2, ioCardMachineIP[i].getDeviceip());
-						ps.setString(3, accessRole);
+						
 					}
 					
 					@Override
@@ -343,9 +353,14 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 		int updateRow=-1,updateRole=-1;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
-		String sSQL="UPDATE SWIPE.RT_DEVICE_INFO SET IS_SPECIAL=?,Update_Userid=? WHERE WorkShopNo=? and Enabled='Y' and bu=?";
+		String sSQL="UPDATE SWIPE.RT_DEVICE_INFO SET IS_SPECIAL=?,Update_Userid=? WHERE WorkShopNo=? and Enabled='Y'";
 		try {
 			if(secrecyWS!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement arg0) throws SQLException {
@@ -353,7 +368,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 						arg0.setString(1, status);
 						arg0.setString(2, updateUser);
 						arg0.setString(3, secrecyWS);
-						arg0.setString(4, accessRole);	
+						
 					}	
 				});
 				transactionManager.commit(txStatus);
