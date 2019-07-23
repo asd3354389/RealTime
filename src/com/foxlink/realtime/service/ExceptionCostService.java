@@ -90,7 +90,7 @@ public class ExceptionCostService extends Service<ExceptionCost>{
 
 	public Page getFindExcePage(int currentPage, String queryCritirea, String queryParam,String accessRole) {
 		// TODO Auto-generated method stub
-		int totalRecord = exceptionCostDAO.getTotalRecord(queryCritirea, queryParam);
+		int totalRecord = exceptionCostDAO.getTotalRecord(queryCritirea, queryParam,accessRole);
 		Page page = new Page(currentPage, totalRecord);
 		// Page page = accountDAO.getPage(pageNum, User.class, totalRecord);
 		return page;

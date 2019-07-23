@@ -162,7 +162,7 @@ public class FLinePersonMtController {
 			String userDataCostId=(String) session.getAttribute("userDataCostId");
 			fLinePersonMtService = (FLinePersonMtService)context.getBean("fLinePersonMtService");
 			/*System.out.println(status);*/
-			System.out.println(fLinePersonMtService.getAllPersonCondition(updateUser,userDataCostId,status,queryCritirea,queryParam));
+			//System.out.println(fLinePersonMtService.getAllPersonCondition(updateUser,userDataCostId,status,queryCritirea,queryParam));
 			
 		
 		return fLinePersonMtService.getAllPersonCondition(updateUser,userDataCostId,status,queryCritirea,queryParam);
