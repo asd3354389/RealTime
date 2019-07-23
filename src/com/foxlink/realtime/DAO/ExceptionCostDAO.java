@@ -173,6 +173,7 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 		    	queryList.add(queryParam);
 		    }
 
+		 System.out.println("总条数======>>"+sSQL);
 		 totalRecord = jdbcTemplate.queryForObject(sSQL, queryList.toArray(), Integer.class);	
 		
     	  } catch (Exception ex) {
