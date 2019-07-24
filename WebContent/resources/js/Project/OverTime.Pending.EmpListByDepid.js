@@ -280,17 +280,6 @@ $(document).ready(function(){
 						break;
 					}
 				}
-				if(OTBoolean){
-					alert('加班提報成功，視窗將關閉');
-        			window.open('', '_self', '');
-        			window.close();
-				}else{
-					alert(OTResult);
-				}
-				var OTConfirmInfo=new OThourConfirmInfo(ClassNo,RCNO,WorkshopNo,LineNo,OverTimeDate,0,null,null,
-						OverTimeType,OverTimeType1,ItemNumber,SelectedEmps,IsAbnormal,WorkContent);
-				SubmitEmployeeOverTimeInfo2Server(IsAbnormal,OTConfirmInfo);
-				
 				$('#OTPendingEmpTable tbody tr').find('input:checked').each(function(){
 					$(this).each(function(){
 						var xhr =$(this).parent().nextAll('td');
@@ -306,6 +295,32 @@ $(document).ready(function(){
 					})
 				})
 				UpdateBonus(newHour);
+				if(OTBoolean){
+					alert('加班提報成功，視窗將關閉');
+        			window.open('', '_self', '');
+        			window.close();
+				}else{
+					alert(OTResult);
+				}
+				var OTConfirmInfo=new OThourConfirmInfo(ClassNo,RCNO,WorkshopNo,LineNo,OverTimeDate,0,null,null,
+						OverTimeType,OverTimeType1,ItemNumber,SelectedEmps,IsAbnormal,WorkContent);
+				SubmitEmployeeOverTimeInfo2Server(IsAbnormal,OTConfirmInfo);
+				
+	/*			$('#OTPendingEmpTable tbody tr').find('input:checked').each(function(){
+					$(this).each(function(){
+						var xhr =$(this).parent().nextAll('td');
+						var title = xhr.eq(11).text();
+						console.log(title);
+						var data={};
+						if(title=='已修改時數'){
+							data.ID = xhr.eq(1).text();
+							data.OverTimeDate = xhr.eq(6).text();
+							data.Bonus = xhr.eq(10).find('option:selected').text();
+							newHour.push(data);
+						}
+					})
+				})
+				UpdateBonus(newHour);*/
 			}
 		}
 		//(JSON.stringify(OThourConfirm));
