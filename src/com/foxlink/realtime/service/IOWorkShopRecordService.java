@@ -57,20 +57,20 @@ public class IOWorkShopRecordService extends Service<IOWSRecord>{
 	}
 
 	public Page getRawRecordPage(String userDataCostId, int currentPage, String empId,String workShopNo, String depId, String costId,
-			String startDate, String endDate, String recordStatus) {
+			String startDate, String endDate, String recordStatus, String accessRole) {
 		// TODO Auto-generated method stub
-		  int totalRecord = iOWorkShopRecordDAO.getTotalRecord(userDataCostId,empId,workShopNo, depId, costId, startDate, endDate, recordStatus);	      
+		  int totalRecord = iOWorkShopRecordDAO.getTotalRecord(userDataCostId,empId,workShopNo, depId, costId, startDate, endDate, recordStatus,accessRole);	      
 	        Page page = new Page(currentPage, totalRecord);
 	        return page;
 	}
 
 	public List<IOWSRecord> FindSearchRawRecords(String userDataCostId, int currentPage, String empId,String workShopNo,String depId, String costId,
-			String startDate, String endDate, String recordStatus, Boolean isShowAll) {
+			String startDate, String endDate, String recordStatus, Boolean isShowAll, String accessRole) {
 		// TODO Auto-generated method stub
 		List<IOWSRecord>searchRawRecord=null;
 		try {
-			int totalRecord = iOWorkShopRecordDAO.getTotalRecord(userDataCostId,empId,workShopNo,depId,costId,startDate,endDate,recordStatus);	     
-			searchRawRecord = iOWorkShopRecordDAO.FindSearchRawRecords(userDataCostId,currentPage,totalRecord, empId,workShopNo,depId,costId,startDate,endDate,recordStatus,isShowAll);					  
+			int totalRecord = iOWorkShopRecordDAO.getTotalRecord(userDataCostId,empId,workShopNo,depId,costId,startDate,endDate,recordStatus,accessRole);	     
+			searchRawRecord = iOWorkShopRecordDAO.FindSearchRawRecords(userDataCostId,currentPage,totalRecord, empId,workShopNo,depId,costId,startDate,endDate,recordStatus,isShowAll,accessRole);					  
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,20 +80,20 @@ public class IOWorkShopRecordService extends Service<IOWSRecord>{
 	}
 
 	public Page getRawRecordOtherPage(String userDataCostId, int currentPage, String workShopNo, String startDate,
-			String endDate, String recordStatus) {
+			String endDate, String recordStatus, String accessRole) {
 		// TODO Auto-generated method stub
-		 int totalRecord = iOWorkShopRecordDAO.getTotalOtherRecord(userDataCostId,workShopNo,startDate, endDate, recordStatus);	      
+		 int totalRecord = iOWorkShopRecordDAO.getTotalOtherRecord(userDataCostId,workShopNo,startDate, endDate, recordStatus,accessRole);	      
 	        Page page = new Page(currentPage, totalRecord);
 	        return page;
 	}
 
 	public List<IOWSRecord> FindSearchOtherRawRecords(String userDataCostId, int currentPage, String workShopNo, String startDate,
-			String endDate, String recordStatus, Boolean isShowAll) {
+			String endDate, String recordStatus, Boolean isShowAll, String accessRole) {
 		// TODO Auto-generated method stub
 		List<IOWSRecord>searchRawRecord=null;
 		try {
-			int totalRecord = iOWorkShopRecordDAO.getTotalOtherRecord(userDataCostId,workShopNo,startDate,endDate,recordStatus);	     
-			searchRawRecord = iOWorkShopRecordDAO.FindSearchOtherRawRecords(userDataCostId,currentPage,totalRecord,workShopNo,startDate,endDate,recordStatus,isShowAll);					  
+			int totalRecord = iOWorkShopRecordDAO.getTotalOtherRecord(userDataCostId,workShopNo,startDate,endDate,recordStatus,accessRole);	     
+			searchRawRecord = iOWorkShopRecordDAO.FindSearchOtherRawRecords(userDataCostId,currentPage,totalRecord,workShopNo,startDate,endDate,recordStatus,isShowAll,accessRole);					  
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

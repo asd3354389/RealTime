@@ -71,14 +71,14 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 		return 0;
 	}
 
-	public int addExceptionCost(ExceptionCost[] exceptionCost, String updateUser) {
+	public int addExceptionCost(ExceptionCost[] exceptionCost, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		int createRow=0;
 
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		deleteExcep(exceptionCost,updateUser);
-		String sSQL="INSERT INTO SWIPE.RT_ACCESS_CONTROL_EXCEPTION (WorkShopNo,CostId,Update_UserId) VALUES(?,?,?)";
+		deleteExcep(exceptionCost,updateUser,accessRole);
+		String sSQL="INSERT INTO SWIPE.RT_ACCESS_CONTROL_EXCEPTION (WorkShopNo,CostId,Update_UserId,BU) VALUES(?,?,?,?)";
 		try {
 			if(exceptionCost!=null) {
 				
@@ -91,6 +91,7 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 					ps.setString(1,exceptionCost[i].getWorkShopNo());
 					ps.setString(2, exceptionCost[i].getCostId());
 					ps.setString(3, updateUser);
+					ps.setString(4, accessRole);
 				}
 				
 				@Override
@@ -111,13 +112,17 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 		return createRow;
 	}
 
-	public void deleteExcep(ExceptionCost[] exceptionCost,String updateUser) {
+	public void deleteExcep(ExceptionCost[] exceptionCost,String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		
 		
 		String sSQL = "update SWIPE.RT_ACCESS_CONTROL_EXCEPTION SET Enabled='N',Update_Time=sysdate,Update_UserId=? where WorkShopNo=? and Costid=? and Enabled='Y'";
 		try {
-			
+			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
 				jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
 					
 					@Override
@@ -126,6 +131,7 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 						ps.setString(1, updateUser);
 						ps.setString(2, exceptionCost[i].getWorkShopNo());
 						ps.setString(3, exceptionCost[i].getCostId());
+						
 					}
 					
 					@Override
@@ -143,7 +149,7 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 		}
 	}
 
-	public int getTotalRecord(String queryCritirea, String queryParam) {
+	public int getTotalRecord(String queryCritirea, String queryParam,String  accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_CONTROL_EXCEPTION t where t.Enabled='Y'";
@@ -158,10 +164,16 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 			else{
 				sSQL+="";
 			}
+    		if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
 
+		 System.out.println("总条数======>>"+sSQL);
 		 totalRecord = jdbcTemplate.queryForObject(sSQL, queryList.toArray(), Integer.class);	
 		
     	  } catch (Exception ex) {
@@ -172,7 +184,7 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 	}
 
 	public List<ExceptionCost> FindAllExceps(int currentPage, int totalRecord, String queryCritirea,
-			String queryParam) {
+			String queryParam,String accessRole) {
 		// TODO Auto-generated method stub
 		List<ExceptionCost> AllExce = null;
 		// TODO Auto-generated method stub
@@ -188,6 +200,11 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 			}
 			else{
 				sSQL+="";
+			}
+    		if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
@@ -207,14 +224,19 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 		return AllExce;
 	}
 
-	public boolean UpdateExceCost(ExceptionCost exceptionCost, String updateUser) {
+	public boolean UpdateExceCost(ExceptionCost exceptionCost, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		int updateRow=-1;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
-		String sSQL = "update SWIPE.RT_ACCESS_CONTROL_EXCEPTION set CostId=?,update_time = sysdate,Update_UserId=? where enabled='Y' and CostId =? and WorkShopNo=?";
+		String sSQL = "update SWIPE.RT_ACCESS_CONTROL_EXCEPTION set CostId=?,update_time = sysdate,Update_UserId=? where enabled='Y' and CostId =? and WorkShopNo=? ";
 		try {
 			if(exceptionCost!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement ps) throws SQLException {
@@ -224,6 +246,7 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 						ps.setString(2, updateUser);
 						ps.setString(3, exceptionCost.getO_CostId());
 						ps.setString(4, exceptionCost.getO_WorkShopNo());
+						
 					}	
 				});
 				transactionManager.commit(txStatus);
@@ -239,14 +262,20 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 				   return false;
 	}
 	
-	public boolean RelieveExceCost(ExceptionCost[] exceptionCost,String updateUser) {
+	public boolean RelieveExceCost(ExceptionCost[] exceptionCost,String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		String sSQL = "Update SWIPE.RT_ACCESS_CONTROL_EXCEPTION SET Enabled='N',Update_Time=sysdate,Update_UserId=? where WorkShopNo=? and Costid=? and Enabled='Y'";
+		String sSQL = "Update SWIPE.RT_ACCESS_CONTROL_EXCEPTION SET Enabled='N',Update_Time=sysdate,Update_UserId=? where WorkShopNo=? and Costid=? and Enabled='Y' ";
 		int disableRow=0;
 		try {
 			  if (exceptionCost!=null) {
+				  
+				  if(accessRole!=null&&!accessRole.equals("")){
+						if(!accessRole.equals("ALL")){
+							sSQL+=" and bu = '"+accessRole+"' "; 
+						}
+					}
 				  jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
 						
 						@Override
@@ -255,6 +284,7 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 							ps.setString(1, updateUser);
 							ps.setString(2, exceptionCost[i].getWorkShopNo());
 							ps.setString(3, exceptionCost[i].getCostId());
+							
 						}
 						
 						@Override
@@ -306,11 +336,12 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 				   return false;
 	}*/
 
-	public boolean checkExceCost(String CostId) {
+	public boolean checkExceCost(String CostId,String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.DEPT_RELATION where CostId=? ";
-    	try {    	    	
+    	try {    	    
+    		
     		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { CostId },Integer.class);	   	
     	  } catch (Exception ex) {
     		  ex.printStackTrace();
@@ -322,11 +353,16 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 			 return false;
 	}
 
-	public boolean checkWorkShopCost(String CostId, String WorkShopNo) {
+	public boolean checkWorkShopCost(String CostId, String WorkShopNo,String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.RT_ACCESS_CONTROL_EXCEPTION where CostId=? and WorkShopNo=? and Enabled='Y'";
-    	try {    	    	
+    	try {    	 
+    		if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
     		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { CostId,WorkShopNo },Integer.class);	   	
     	  } catch (Exception ex) {
     		  ex.printStackTrace();
@@ -353,5 +389,13 @@ public class ExceptionCostDAO extends DAO<ExceptionCost>{
 		 else
 			 return false;
 	}
+
+	@Override
+	public int getTotalRecord(String queryCritirea, String queryParam) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
 
 }

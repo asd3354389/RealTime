@@ -1,5 +1,7 @@
 package com.foxlink.realtime.controller;
 
+
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -42,9 +44,10 @@ public class ExceptionCostController {
 //			otCardbd.setUpdate_UserId(updateUser);
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			exceptionCostService = (ExceptionCostService) context.getBean("exceptionCostService");
-
+			String accessRole=(String) session.getAttribute("accessRole");
 			
-			return exceptionCostService.addExceptionCost(exceptionCost, updateUser);
+
+			return exceptionCostService.addExceptionCost(exceptionCost, updateUser,accessRole);
 	}
 	
 	@RequestMapping(value="/ShowExceptionList",method=RequestMethod.GET,produces="application/json;charset=utf-8")
@@ -66,9 +69,10 @@ public class ExceptionCostController {
 			String userDataCostId="ALL";
 			System.out.println(userDataCostId);*/
 			exceptionCostService = (ExceptionCostService)context.getBean("exceptionCostService");
+			String accessRole=(String) session.getAttribute("accessRole");
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			Page page = exceptionCostService.getFindExcePage(currentPage,queryCritirea, queryParam);
-			page.setList(exceptionCostService.FindQueryExce(currentPage, queryCritirea,queryParam));
+			Page page = exceptionCostService.getFindExcePage(currentPage,queryCritirea, queryParam,accessRole);
+			page.setList(exceptionCostService.FindQueryExce(currentPage, queryCritirea,queryParam,accessRole));
 			/*System.out.println(gson.toJson(page));*/
 			System.out.println(gson.toJson(page));
 			JsonResult = gson.toJson(page);
@@ -92,7 +96,8 @@ public class ExceptionCostController {
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 		String updateUser = (String)session.getAttribute("username");
 		exceptionCostService = (ExceptionCostService) context.getBean("exceptionCostService");
-		if(exceptionCostService.UpdateExceCost(exceptionCost,updateUser)){
+		String accessRole=(String) session.getAttribute("accessRole");
+		if(exceptionCostService.UpdateExceCost(exceptionCost,updateUser,accessRole)){
 			UpdateResult.addProperty("StatusCode", "200");
 			UpdateResult.addProperty("Message", "更改車間例外費用代碼成功");
 		}
@@ -117,7 +122,8 @@ public class ExceptionCostController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			String updateUser = (String)session.getAttribute("username");
 			exceptionCostService = (ExceptionCostService) context.getBean("exceptionCostService");
-			if(exceptionCostService.RelieveExceCost(exceptionCost, updateUser)){
+			String accessRole=(String) session.getAttribute("accessRole");
+			if(exceptionCostService.RelieveExceCost(exceptionCost, updateUser,accessRole)){
 					DisableResult.addProperty("StatusCode", "200");
 					DisableResult.addProperty("Message", "例外費用代碼已失效");
 			}else{
@@ -142,7 +148,8 @@ public class ExceptionCostController {
 		try{
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			exceptionCostService = (ExceptionCostService) context.getBean("exceptionCostService");
-			if(exceptionCostService.checkExceCost(CostId)){
+			String accessRole=(String) session.getAttribute("accessRole");
+			if(exceptionCostService.checkExceCost(CostId,accessRole)){
 				checkResult.addProperty("StatusCode", "200");
 				checkResult.addProperty("Message", "此費用代碼存在！");
 			}
@@ -168,7 +175,8 @@ public class ExceptionCostController {
 		try{
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			exceptionCostService = (ExceptionCostService) context.getBean("exceptionCostService");
-			if(exceptionCostService.checkWorkShopCost(CostId,WorkShopNo)){
+			String accessRole=(String) session.getAttribute("accessRole");
+			if(exceptionCostService.checkWorkShopCost(CostId,WorkShopNo,accessRole)){
 				checkResult.addProperty("StatusCode", "200");
 				checkResult.addProperty("Message", "此費用代碼綁定例外車間已存在！");
 			}

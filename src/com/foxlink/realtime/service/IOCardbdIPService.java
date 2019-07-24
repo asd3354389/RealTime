@@ -67,22 +67,22 @@ public class IOCardbdIPService extends Service<IOCardMachineIP>{
 	}
 
 	public Page getPersonPage(int currentPage, String queryCritirea, String queryParam, String updateUser,
-			String userDataCostId) {
+			String userDataCostId,String accessRole) {
 		// TODO Auto-generated method stub
-		int totalRecord = iOCardbdIPDAO.getTotalRecord(queryCritirea, queryParam, updateUser, userDataCostId);
+		int totalRecord = iOCardbdIPDAO.getTotalRecord(queryCritirea, queryParam, updateUser, userDataCostId,accessRole);
 		Page page = new Page(currentPage, totalRecord);
 		// Page page = accountDAO.getPage(pageNum, User.class, totalRecord);
 		return page;
 	}
 
 	public List<IOCardMachineIP> FindQueryRecord(String updateUser, int currentPage, String queryCritirea, String queryParam,
-			String userDataCostId) {
+			String userDataCostId,String accessRole) {
 		// TODO Auto-generated method stub
 		List<IOCardMachineIP> AllDeip = null;
 		try{
-			int totalRecord = iOCardbdIPDAO.getTotalRecord(queryCritirea, queryParam,updateUser, userDataCostId);
+			int totalRecord = iOCardbdIPDAO.getTotalRecord(queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
 			/*System.out.println(totalRecord);*/
-			AllDeip = iOCardbdIPDAO.FindAllRecord(currentPage,totalRecord, queryCritirea, queryParam,updateUser, userDataCostId);
+			AllDeip = iOCardbdIPDAO.FindAllRecord(currentPage,totalRecord, queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
 		}catch(Exception e){
 			e.printStackTrace();
 			logger.error("Find IOCardIPList Record is failed ",e);
@@ -90,14 +90,14 @@ public class IOCardbdIPService extends Service<IOCardMachineIP>{
 		return AllDeip;
 	}
 
-	public boolean checkDeviceipDuplicate(String Deviceip,String WorkShopNo) {
+	public boolean checkDeviceipDuplicate(String Deviceip,String WorkShopNo,String accessRole) {
 		// TODO Auto-generated method stub
-		return iOCardbdIPDAO.checkDeviceipDuplicate(Deviceip,WorkShopNo);
+		return iOCardbdIPDAO.checkDeviceipDuplicate(Deviceip,WorkShopNo,accessRole);
 	}
 
-	public boolean setIOCardIP(IOCardMachineIP ioCardMachineIP, String updateUser) {
+	public boolean setIOCardIP(IOCardMachineIP ioCardMachineIP, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
-		return iOCardbdIPDAO.setIOCardIP(ioCardMachineIP,updateUser);
+		return iOCardbdIPDAO.setIOCardIP(ioCardMachineIP,updateUser,accessRole);
 	}
 
 	public boolean checkMachineIPExistence(String Deviceip) {
@@ -105,18 +105,20 @@ public class IOCardbdIPService extends Service<IOCardMachineIP>{
 		return iOCardbdIPDAO.checkMachineIPExistence(Deviceip);
 	}
 
-	public boolean UpdateRecord(IOCardMachineIP ioCardMachineIP, String updateUser) {
+	public boolean UpdateRecord(IOCardMachineIP ioCardMachineIP, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
-		return iOCardbdIPDAO.UpdateRecord(ioCardMachineIP,updateUser);
+		return iOCardbdIPDAO.UpdateRecord(ioCardMachineIP,updateUser,accessRole);
 	}
 
-	public boolean DeleteIOCardMaIP(IOCardMachineIP[] ioCardMachineIP, String updateUser) {
+	public boolean DeleteIOCardMaIP(IOCardMachineIP[] ioCardMachineIP, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
-		return iOCardbdIPDAO.DeleteIOCardMaIP(ioCardMachineIP,updateUser);
+		return iOCardbdIPDAO.DeleteIOCardMaIP(ioCardMachineIP,updateUser,accessRole);
 	}
 
-	public boolean setWorkShop(String secrecyWS, String updateUser, String status) {
+	public boolean setWorkShop(String secrecyWS, String updateUser, String status,String accessRole) {
 		// TODO Auto-generated method stub
-		return iOCardbdIPDAO.setWorkShop(secrecyWS,status,updateUser);
+		return iOCardbdIPDAO.setWorkShop(secrecyWS,status,updateUser,accessRole);
 	}
+
+	
 }

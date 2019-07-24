@@ -51,9 +51,10 @@ public class OTCardbdPersonController {
 			String updateUser = (String)session.getAttribute("username");
 			String userDataCostId="ALL";
 			oTCardbdPersonService = (OTCardbdPersonService)context.getBean("oTCardbdPersonService");
+			String accessRole=(String) session.getAttribute("accessRole");
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			Page page = oTCardbdPersonService.getPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
-			page.setList(oTCardbdPersonService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
+			Page page = oTCardbdPersonService.getPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId,accessRole);
+			page.setList(oTCardbdPersonService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId,accessRole));
 			System.out.println(gson.toJson(page));
 			JsonResult = gson.toJson(page);
 		} catch (Exception e) {
@@ -114,10 +115,11 @@ public class OTCardbdPersonController {
 		try{
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
+			String accessRole=(String) session.getAttribute("accessRole");
 			System.out.println(CostId);
 			System.out.println(D_CardId);
 			if(oTCardbdPersonService.checkUserNameDuplicate(CostId)) {
-				if(oTCardbdPersonService.checkDcardDuplicate(CostId,D_CardId)){
+				if(oTCardbdPersonService.checkDcardDuplicate(CostId,D_CardId,accessRole)){
 					checkResult.addProperty("StatusCode", "200");
 					checkResult.addProperty("Message", "此費用代碼未綁定此離崗卡號，可以綁定此離崗卡號!");
 				}else{
@@ -148,7 +150,8 @@ public class OTCardbdPersonController {
 			otCardbd.setUpdate_UserId(updateUser);
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
-			if(oTCardbdPersonService.OTCardbd(otCardbd)){
+			String accessRole=(String) session.getAttribute("accessRole");
+			if(oTCardbdPersonService.OTCardbd(otCardbd,accessRole)){
 				AddResult.addProperty("StatusCode", "200");
 				AddResult.addProperty("Message", "離崗卡與費用代碼綁定成功");
 			}
@@ -177,7 +180,8 @@ public class OTCardbdPersonController {
 		try{
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
-				if(oTCardbdPersonService.checkData(otCardbd)){
+			String accessRole=(String) session.getAttribute("accessRole");
+				if(oTCardbdPersonService.checkData(otCardbd,accessRole)){
 					checkResult.addProperty("StatusCode", "200");
 					checkResult.addProperty("Message", "此費用代碼在本車間未綁定此離崗卡號，可以綁定此離崗卡號!");
 				}else{
@@ -202,7 +206,8 @@ public class OTCardbdPersonController {
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 		String updateUser = (String)session.getAttribute("username");
 		oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
-		if(oTCardbdPersonService.UpdateBdOTCard(otCardbd,updateUser)){
+		String accessRole=(String) session.getAttribute("accessRole");
+		if(oTCardbdPersonService.UpdateBdOTCard(otCardbd,updateUser,accessRole)){
 			UpdateResult.addProperty("StatusCode", "200");
 			UpdateResult.addProperty("Message", "更改離崗卡成功");
 		}
@@ -227,8 +232,9 @@ public class OTCardbdPersonController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			String updateUser = (String)session.getAttribute("username");
 			oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
-			if(oTCardbdPersonService.RelieveOTCard(otCardbd, updateUser)){
-				if(oTCardbdPersonService.OTCardNbdPerson(otCardbd, updateUser)) {
+			String accessRole=(String) session.getAttribute("accessRole");
+			if(oTCardbdPersonService.RelieveOTCard(otCardbd, updateUser,accessRole)){
+				if(oTCardbdPersonService.OTCardNbdPerson(otCardbd, updateUser,accessRole)) {
 					DisableResult.addProperty("StatusCode", "200");
 					DisableResult.addProperty("Message", "離崗卡綁定已失效");
 				}else{

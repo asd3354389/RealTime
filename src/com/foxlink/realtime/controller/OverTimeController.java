@@ -456,9 +456,6 @@ public class OverTimeController {
 	public @ResponseBody String checkModifyEmpBonusA(@RequestBody String[] empList){
 		String checkResult=null;	
 		OTService otService=null;
-		for(int i = 0;i<empList.length;i++){
-			System.out.println("empList:"+empList[i]);
-		}
 		try{
 			otService=(OTService)context.getBean("OTService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
@@ -471,7 +468,6 @@ public class OverTimeController {
 			exception.addProperty("Message", "檢查此部門代碼是否在頂崗津貼代碼裏面，原因："+ex.toString());
 			checkResult=exception.toString();
 		}
-		System.out.println(checkResult);
 		return checkResult;
 	}
 	
@@ -480,9 +476,6 @@ public class OverTimeController {
 	public @ResponseBody String checkModifyEmpA(@RequestBody String[] empList){
 		String checkResult=null;	
 		OTService otService=null;
-		for(int i = 0;i<empList.length;i++){
-			System.out.println("empList:"+empList[i]);
-		}
 		try{
 			otService=(OTService)context.getBean("OTService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
@@ -495,7 +488,6 @@ public class OverTimeController {
 			exception.addProperty("Message", "檢查此部門代碼是否有修改時數權限，原因："+ex.toString());
 			checkResult=exception.toString();
 		}
-		System.out.println(checkResult);
 		return checkResult;
 	}
 	
@@ -503,9 +495,6 @@ public class OverTimeController {
 	public @ResponseBody String checkModifyEmpB(@RequestBody String[] empList){
 		String checkResult=null;	
 		OTService otService=null;
-		for(int i = 0;i<empList.length;i++){
-			System.out.println("empList:"+empList[i]);
-		}
 		try{
 			otService=(OTService)context.getBean("OTService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
@@ -518,7 +507,6 @@ public class OverTimeController {
 			exception.addProperty("Message", "檢查此部門代碼是否有修改時數權限，原因："+ex.toString());
 			checkResult=exception.toString();
 		}
-		System.out.println(checkResult);
 		return checkResult;
 	}
 	
@@ -526,9 +514,6 @@ public class OverTimeController {
 	public @ResponseBody String checkModifyEmpBonusB(@RequestBody String[] empList){
 		String checkResult=null;	
 		OTService otService=null;
-		for(int i = 0;i<empList.length;i++){
-			System.out.println("empList:"+empList[i]);
-		}
 		try{
 			otService=(OTService)context.getBean("OTService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
@@ -541,7 +526,6 @@ public class OverTimeController {
 			exception.addProperty("Message", "檢查此部門代碼是否在頂崗津貼代碼裏面，原因："+ex.toString());
 			checkResult=exception.toString();
 		}
-		System.out.println(checkResult);
 		return checkResult;
 	}
 }

@@ -74,7 +74,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 		return 0;
 	}
 
-	public int getTotalRecord(String queryCritirea, String queryParam, String updateUser, String userDataCostId) {
+	public int getTotalRecord(String queryCritirea, String queryParam, String updateUser, String userDataCostId,String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.RT_DEVICE_INFO where Enabled='Y'";
@@ -104,7 +104,11 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 			else{
 				sSQL+="";
 			}
- 
+    		if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
@@ -119,7 +123,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 	}
 
 	public List<IOCardMachineIP> FindAllRecord(int currentPage, int totalRecord, String queryCritirea,
-			String queryParam, String updateUser, String userDataCostId) {
+			String queryParam, String updateUser, String userDataCostId,String accessRole) {
 		// TODO Auto-generated method stub
 		List<IOCardMachineIP> AllEmp = null;
 		// TODO Auto-generated method stub
@@ -150,9 +154,14 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 			else{
 				sSQL+="";
 			}
+    		if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
-		    sSQL += ")c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	    
+		    sSQL += "  order by Deviceip asc)c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	    
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
@@ -166,11 +175,16 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 		return AllEmp;
 	}
 
-	public boolean checkDeviceipDuplicate(String Deviceip,String WorkShopNo) {
+	public boolean checkDeviceipDuplicate(String Deviceip,String WorkShopNo,String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.RT_DEVICE_INFO where Deviceip=? and ENABLED='Y'";
-    	try {    	    	
+    	try {    	   
+    		if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
     		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { Deviceip },Integer.class);	   	
     	  } catch (Exception ex) {
     		  ex.printStackTrace();
@@ -182,7 +196,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 			 return true;
 	}
 
-	public boolean setIOCardIP(IOCardMachineIP ioCardMachineIP, String updateUser) {
+	public boolean setIOCardIP(IOCardMachineIP ioCardMachineIP, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		int createRow=-1;
 
@@ -190,9 +204,9 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 		txStatus = transactionManager.getTransaction(txDef);
 		String sSQL="";
 		if(checkSecrecyWS(ioCardMachineIP.getWorkShopNo())) {
-			sSQL+="INSERT INTO SWIPE.RT_DEVICE_INFO (Deviceip,WorkShopNo,WorkShop_Desc,Direction,Update_UserId,IS_SPECIAL) VALUES(?,?,?,?,?,'Y')";
+			sSQL+="INSERT INTO SWIPE.RT_DEVICE_INFO (Deviceip,WorkShopNo,WorkShop_Desc,Direction,Update_UserId,IS_SPECIAL,BU) VALUES(?,?,?,?,?,'Y',?)";
 		}else {
-			sSQL+="INSERT INTO SWIPE.RT_DEVICE_INFO (Deviceip,WorkShopNo,WorkShop_Desc,Direction,Update_UserId,IS_SPECIAL) VALUES(?,?,?,?,?,'N')";
+			sSQL+="INSERT INTO SWIPE.RT_DEVICE_INFO (Deviceip,WorkShopNo,WorkShop_Desc,Direction,Update_UserId,IS_SPECIAL,BU) VALUES(?,?,?,?,?,'N',?)";
 		}
 		
 		try {
@@ -206,6 +220,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 						arg0.setString(3, ioCardMachineIP.getWorkShop_Desc());
 						arg0.setString(4, ioCardMachineIP.getDirection());
 						arg0.setString(5, updateUser);
+						arg0.setString(6, accessRole);
 					}	
 				});
 				transactionManager.commit(txStatus);
@@ -253,7 +268,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 			 return false;
 	}
 
-	public boolean UpdateRecord(IOCardMachineIP ioCardMachineIP, String updateUser) {
+	public boolean UpdateRecord(IOCardMachineIP ioCardMachineIP, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		int updateRow=-1,updateRole=-1;
 		txDef = new DefaultTransactionDefinition();
@@ -261,6 +276,11 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 		String sSQL="UPDATE SWIPE.RT_DEVICE_INFO SET WorkShopNo=?,WorkShop_Desc=?,Direction=?,Update_Userid=? WHERE Deviceip=? and Enabled='Y'";
 		try {
 			if(ioCardMachineIP!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement arg0) throws SQLException {
@@ -270,6 +290,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 						arg0.setString(3, ioCardMachineIP.getDirection());
 						arg0.setString(4, updateUser);
 						arg0.setString(5, ioCardMachineIP.getDeviceip());
+						
 					}	
 				});
 				transactionManager.commit(txStatus);
@@ -285,7 +306,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 				   return false;
 	}
 
-	public boolean DeleteIOCardMaIP(IOCardMachineIP[] ioCardMachineIP, String updateUser) {
+	public boolean DeleteIOCardMaIP(IOCardMachineIP[] ioCardMachineIP, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
@@ -293,6 +314,11 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 		int disableRow=0;
 		try {
 			if(ioCardMachineIP!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
 					
 					@Override
@@ -300,6 +326,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 						// TODO Auto-generated method stub
 						ps.setString(1, updateUser);
 						ps.setString(2, ioCardMachineIP[i].getDeviceip());
+						
 					}
 					
 					@Override
@@ -321,7 +348,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 			 return false;
 	}
 
-	public boolean setWorkShop(String secrecyWS, String updateUser, String status) {
+	public boolean setWorkShop(String secrecyWS, String updateUser, String status,String accessRole) {
 		// TODO Auto-generated method stub
 		int updateRow=-1,updateRole=-1;
 		txDef = new DefaultTransactionDefinition();
@@ -329,13 +356,19 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 		String sSQL="UPDATE SWIPE.RT_DEVICE_INFO SET IS_SPECIAL=?,Update_Userid=? WHERE WorkShopNo=? and Enabled='Y'";
 		try {
 			if(secrecyWS!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement arg0) throws SQLException {
 						// TODO Auto-generated method stub
 						arg0.setString(1, status);
 						arg0.setString(2, updateUser);
-						arg0.setString(3, secrecyWS);	
+						arg0.setString(3, secrecyWS);
+						
 					}	
 				});
 				transactionManager.commit(txStatus);

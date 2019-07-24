@@ -23,7 +23,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 	
 
 	
-	public int getTotalRecord(String queryCritirea, String queryParam, String updateUser, String userDataCostId) {
+	public int getTotalRecord(String queryCritirea, String queryParam, String updateUser, String userDataCostId,String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.DEPARTURE_CARD_INFO where enabled='Y'";
@@ -48,7 +48,11 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 			else{
 					sSQL+="";
 			}
-
+			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
@@ -63,7 +67,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 	}
 
 	public List<OTCardBD> FindAllRecord(int currentPage, int totalRecord, String queryCritirea, String queryParam,
-			String updateUser, String userDataCostId) {
+			String updateUser, String userDataCostId,String accessRole) {
 		// TODO Auto-generated method stub
 		List<OTCardBD> AllEmp = null;
 		// TODO Auto-generated method stub
@@ -90,7 +94,11 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 			else{
 					sSQL+="";
 			}
-			
+			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
 		    sSQL += ")c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	    
@@ -193,14 +201,14 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 			 return true;
 	}*/
 
-	public boolean OTCardbdPerson(OTCardBD otCardbd) {
+	public boolean OTCardbdPerson(OTCardBD otCardbd,String accessRole) {
 		// TODO Auto-generated method stub
 		int createRow=-1;
 
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
 		
-		String sSQL="INSERT INTO SWIPE.DEPARTURE_CARD_INFO (D_CardId,CostId,Default_WorkShopNo,Update_UserId) VALUES(?,?,?,?)";
+		String sSQL="INSERT INTO SWIPE.DEPARTURE_CARD_INFO (D_CardId,CostId,Default_WorkShopNo,Update_UserId,BU) VALUES(?,?,?,?,?)";
 		try {
 			if(otCardbd!=null) {
 		      createRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
@@ -211,6 +219,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 						arg0.setString(2, otCardbd.getCostId());
 						arg0.setString(3, otCardbd.getDefault_WorkShop());
 						arg0.setString(4,otCardbd.getUpdate_UserId());
+						arg0.setString(5,accessRole);
 					}	
 				});
 				transactionManager.commit(txStatus);
@@ -253,7 +262,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 			 return false;
 	}
 
-	public boolean UpdateBdOTCard(OTCardBD otCardbd, String updateUser) {
+	public boolean UpdateBdOTCard(OTCardBD otCardbd, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		int updateRow=-1;
 		txDef = new DefaultTransactionDefinition();
@@ -261,6 +270,11 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 		String sSQL = "update SWIPE.DEPARTURE_CARD_INFO set D_CardId =?,Default_WorkShopNo=?,update_time = sysdate,Update_UserId=? where enabled='Y' and CostId =? and D_CardId=?";
 		try {
 			if(otCardbd!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement ps) throws SQLException {
@@ -270,6 +284,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 						ps.setString(3, updateUser);
 						ps.setString(4, otCardbd.getCostId());
 						ps.setString(5, otCardbd.getO_CardID());
+						
 					}	
 				});
 				transactionManager.commit(txStatus);
@@ -285,7 +300,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 				   return false;
 	}
 	
-	public boolean RelieveOTCard(OTCardBD[] otCardbd, String updateUser) {
+	public boolean RelieveOTCard(OTCardBD[] otCardbd, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub	
 		int updateRow=0;
 		txDef = new DefaultTransactionDefinition();
@@ -293,6 +308,11 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 		String sSQL = "delete from SWIPE.DEPARTURE_CARD_INFO where enabled='Y' and CostId =? and D_CardId=?";
 		try {
 			if(otCardbd!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
 					
 					@Override
@@ -300,6 +320,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 						// TODO Auto-generated method stub
 						ps.setString(1, otCardbd[i].getCostId());
 						ps.setString(2, otCardbd[i].getD_CardID());
+						
 					}
 					
 					@Override
@@ -321,14 +342,14 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 				   return false;
 	}
 	
-	public boolean OTCardNbdPerson(OTCardBD[] otCardbd,String updateUser) {
+	public boolean OTCardNbdPerson(OTCardBD[] otCardbd,String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		int result=0;
 
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
 		
-		String sSQL="INSERT INTO SWIPE.DEPARTURE_CARD_INFO_HT (D_CardId,CostId,Default_WorkShopNo,Update_UserId,enabled) VALUES(?,?,?,?,'N')";
+		String sSQL="INSERT INTO SWIPE.DEPARTURE_CARD_INFO_HT (D_CardId,CostId,Default_WorkShopNo,Update_UserId,enabled,BU) VALUES(?,?,?,?,'N',?)";
 		try {
 			
 			jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
@@ -340,6 +361,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 					ps.setString(2, otCardbd[i].getCostId());
 					ps.setString(3, otCardbd[i].getDefault_WorkShop());
 					ps.setString(4, updateUser);
+					ps.setString(5, accessRole);
 				}
 				
 				@Override
@@ -378,11 +400,17 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 		return AllDept;
 	}
 
-	public boolean checkDcardDuplicate(String CostId, String D_CardId) {
+	public boolean checkDcardDuplicate(String CostId, String D_CardId,String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.DEPARTURE_CARD_INFO where CostId=? and D_CardId=?";
-    	try {    	    	
+    	try {    	    
+    		
+    		if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
     		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { CostId,D_CardId},Integer.class);	   	
     	  } catch (Exception ex) {
     		  ex.printStackTrace();
@@ -394,11 +422,16 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 			 return true;
 	}
 
-	public boolean checkData(OTCardBD otCardbd) {
+	public boolean checkData(OTCardBD otCardbd,String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.DEPARTURE_CARD_INFO where CostId=? and D_CardId=? and Default_WorkShopNo=? and Enabled = 'Y'";
     	try {    	    	
+    		if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
     		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { otCardbd.getCostId(),otCardbd.getD_CardID(),otCardbd.getDefault_WorkShop()},Integer.class);	   	
     	  } catch (Exception ex) {
     		  ex.printStackTrace();

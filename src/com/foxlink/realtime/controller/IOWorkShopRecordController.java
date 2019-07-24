@@ -36,6 +36,7 @@ public class IOWorkShopRecordController {
 		String jsonResults="";
 		try{
 			String userDataCostId=(String) session.getAttribute("userDataCostId");
+			String accessRole=(String) session.getAttribute("accessRole");
 	//		String assistantId=(String) session.getAttribute("assistantId");
 			if (userDataCostId != null && userDataCostId != "") {
 				int currentPage = 1;
@@ -50,14 +51,14 @@ public class IOWorkShopRecordController {
 				if(!recordStatus.equals("41")) {
 					System.out.println(123);
 					Page page = iOWorkShopRecordService.getRawRecordPage(userDataCostId,currentPage, empId,workShopNo, depId, costId, startDate, endDate,
-							recordStatus);
+							recordStatus,accessRole);
 					page.setList(iOWorkShopRecordService.FindSearchRawRecords(userDataCostId,currentPage, empId,workShopNo, depId, costId, startDate,
-							endDate, recordStatus, isShowAll));
+							endDate, recordStatus, isShowAll,accessRole));
 					jsonResults = gson.toJson(page);
 				}else {
 					System.out.println(456);
-					Page page = iOWorkShopRecordService.getRawRecordOtherPage(userDataCostId,currentPage,workShopNo, startDate, endDate,recordStatus);
-					page.setList(iOWorkShopRecordService.FindSearchOtherRawRecords(userDataCostId,currentPage,workShopNo, startDate,endDate, recordStatus, isShowAll));
+					Page page = iOWorkShopRecordService.getRawRecordOtherPage(userDataCostId,currentPage,workShopNo, startDate, endDate,recordStatus,accessRole);
+					page.setList(iOWorkShopRecordService.FindSearchOtherRawRecords(userDataCostId,currentPage,workShopNo, startDate,endDate, recordStatus, isShowAll,accessRole));
 					jsonResults = gson.toJson(page);
 				}	
 			}

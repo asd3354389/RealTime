@@ -75,13 +75,18 @@ public class WorkshopNoRestDao extends DAO<WorkshopNoRestInfo>{
 		return 0;
 	}
 
-	public int getTotalRecord(String queryCritirea, String queryParam, String updateUser, String userDataCostId) {
+	public int getTotalRecord(String queryCritirea, String queryParam, String updateUser, String userDataCostId,String accessRole) {
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.WORKSHOPNO_REST_INFO t where t.enabled = 'Y' ";
     	try {
     		List <Object> queryList=new  ArrayList<Object>();
 			if(queryCritirea.equals("workshopno")){
 				sSQL+=" and workshopno = ?";  
+			}
+			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
 			}
 			if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
@@ -96,7 +101,7 @@ public class WorkshopNoRestDao extends DAO<WorkshopNoRestInfo>{
 	}
 
 	public List<WorkshopNoRestInfo> FindAllRecords(int currentPage, int totalRecord, String queryCritirea,
-			String queryParam, String updateUser, String userDataCostId) {
+			String queryParam, String updateUser, String userDataCostId,String accessRole) {
 		List<WorkshopNoRestInfo> workshopNoRestInfo = null;
 		// TODO Auto-generated method stub
 		String sSQL = "select * from (select b.*,rownum rn from "
@@ -106,6 +111,11 @@ public class WorkshopNoRestDao extends DAO<WorkshopNoRestInfo>{
 			List <Object> queryList=new  ArrayList<Object>();
 			if(queryCritirea.equals("workshopno")){
 				sSQL+=" and workshopno = ?";  
+			}
+			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
@@ -122,7 +132,7 @@ public class WorkshopNoRestDao extends DAO<WorkshopNoRestInfo>{
 		return workshopNoRestInfo;
 	}
 
-	public boolean UpdateRecord(WorkshopNoRestInfo workshopNoRestInfo, String updateUser) {
+	public boolean UpdateRecord(WorkshopNoRestInfo workshopNoRestInfo, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		int updateRow=-1,updateRole=-1;
 		txDef = new DefaultTransactionDefinition();
@@ -130,6 +140,11 @@ public class WorkshopNoRestDao extends DAO<WorkshopNoRestInfo>{
 		String sSQL="update WORKSHOPNO_REST_INFO t set t.rest_start1 = ?,t.rest_end1 = ?,t.rest_start2 = ?,t.rest_end2 = ?,t.rest_start3 = ?,t.rest_end3 = ?,"
 				+ "t.rest_start4 = ?,t.rest_end4 = ?,t.update_userid = ?,t.update_time=sysdate "
 				+ "where t.workshopno = ? and t.enabled = 'Y'";
+		if(accessRole!=null&&!accessRole.equals("")){
+			if(!accessRole.equals("ALL")){
+				sSQL+=" and bu = '"+accessRole+"' "; 
+			}
+		}
 		try {
 			if(workshopNoRestInfo!=null) {
 				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
@@ -161,11 +176,17 @@ public class WorkshopNoRestDao extends DAO<WorkshopNoRestInfo>{
 				   return false;
 	}
 
-	public boolean checkRepeat(WorkshopNoRestInfo workshopNoRestInfo) {
+	public boolean checkRepeat(WorkshopNoRestInfo workshopNoRestInfo,String accessRole) {
 		// TODO Auto-generated method stub
 		String sSQL="select count(*) from WORKSHOPNO_REST_INFO t where t.workshopno = ? and t.enabled = 'Y'";
 		int updateRow=-1;
 		try{
+			
+			if(accessRole!=null&&!accessRole.equals("")){
+				if(!accessRole.equals("ALL")){
+					sSQL+=" and bu = '"+accessRole+"' "; 
+				}
+			}
 			List <Object> queryList=new  ArrayList<Object>();
 			queryList.add(workshopNoRestInfo.getWorkshopno());
 			updateRow = jdbcTemplate.queryForObject(sSQL, queryList.toArray(), Integer.class);
@@ -179,10 +200,10 @@ public class WorkshopNoRestDao extends DAO<WorkshopNoRestInfo>{
 			   return true;
 	}
 
-	public boolean insertWorkShopNoRestInfo(WorkshopNoRestInfo workshopNoRestInfo, String updateUser) {
+	public boolean insertWorkShopNoRestInfo(WorkshopNoRestInfo workshopNoRestInfo, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
-		String sSQL="insert into WORKSHOPNO_REST_INFO(WORKSHOPNO,REST_START1,REST_END1,REST_START2,REST_END2,REST_START3,REST_END3,REST_START4,REST_END4,UPDATE_USERID,UPDATE_TIME,Enabled) "
-				+ "values(?,?,?,?,?,?,?,?,?,?,sysdate,'Y')";
+		String sSQL="insert into WORKSHOPNO_REST_INFO(WORKSHOPNO,REST_START1,REST_END1,REST_START2,REST_END2,REST_START3,REST_END3,REST_START4,REST_END4,UPDATE_USERID,UPDATE_TIME,Enabled,BU) "
+				+ "values(?,?,?,?,?,?,?,?,?,?,sysdate,'Y',?)";
 		int insertRow=-1;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
@@ -202,6 +223,7 @@ public class WorkshopNoRestDao extends DAO<WorkshopNoRestInfo>{
 						arg0.setString(8, workshopNoRestInfo.getRest_start4());
 						arg0.setString(9, workshopNoRestInfo.getRest_end4());
 						arg0.setString(10, updateUser);
+						arg0.setString(11, accessRole);
 					}	
 				});
 				transactionManager.commit(txStatus);
@@ -217,7 +239,7 @@ public class WorkshopNoRestDao extends DAO<WorkshopNoRestInfo>{
 				   return false;
 	}
 
-	public boolean DeleteWorkshopNoRest(String workshopNo, String updateUser) {
+	public boolean DeleteWorkshopNoRest(String workshopNo, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
@@ -225,12 +247,18 @@ public class WorkshopNoRestDao extends DAO<WorkshopNoRestInfo>{
 		int disableRow=-1;
 		try {
 			if(workshopNo!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
 				disableRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement arg0) throws SQLException {
 						// TODO Auto-generated method stub
 						arg0.setString(1, updateUser);
 						arg0.setString(2, workshopNo);
+						
 					}	
 				});
 				transactionManager.commit(txStatus);
