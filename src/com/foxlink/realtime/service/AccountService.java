@@ -99,7 +99,7 @@ public class AccountService extends Service<User> {
 	
 	public String GetLoginRole(String userName) {
 		List<String> roleList = accountDAO.GetLoginRole(userName);
-		String Role = null;
+		String Role = "";
 		if(roleList != null){
 			for (String string : roleList) {
 				if(string.equals("ROLE_ADMIN")){
@@ -113,6 +113,9 @@ public class AccountService extends Service<User> {
 					Role = "LJ";
 				}
 			}
+		}
+		if(Role==null||Role.equals("")){
+			Role="NOACCESS";
 		}
 		return Role;
 	}

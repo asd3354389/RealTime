@@ -161,7 +161,7 @@ public class IOCardbdIPDAO extends DAO<IOCardMachineIP> {
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
-		    sSQL += ")c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	    
+		    sSQL += "  order by Deviceip asc)c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	    
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }

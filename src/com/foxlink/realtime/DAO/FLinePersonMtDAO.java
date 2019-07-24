@@ -28,13 +28,13 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 		this.fLinePersonMtDAO = fLinePersonMtDAO;
 	}
 */
-	public int getTotalRecordY(String queryCritirea, String queryParam, String updateUser, String userDataCostId) {
+	public int getTotalRecordY(String queryCritirea, String queryParam, String updateUser, String userDataCostId, String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.Csr_Employee t where t.isonwork = 0 and t.line_personnel='Y' ";
     	try {
     		List <Object> queryList=new  ArrayList<Object>();
-    		if(!userDataCostId.equals("ALL")){
+    		/*if(!userDataCostId.equals("ALL")){
     			String strIdArray[] = userDataCostId.split("\\*");
 				StringBuffer idsStr = new StringBuffer();
 				for (int i = 0; i < strIdArray.length; i++) {
@@ -44,7 +44,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 					idsStr.append("'").append(strIdArray[i]).append("'");
 				}
 				sSQL+=" and Costid in("+idsStr+")";
-			}
+			}*/
     		if(queryCritirea.equals("Id")){
 				sSQL+=" and Id = ?";  
 			}
@@ -58,7 +58,14 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			else{
 				sSQL+="";
 			}
-    		sSQL+="and SUBSTR (t.depname, 1, 2) = '通訊'";
+    		if(!accessRole.equals("ALL")){
+    			if(accessRole.equals("TX"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '通訊' ";
+    			else if(accessRole.equals("LJ"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '零件' ";
+    			else if(accessRole.equals("ZJ"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '組件' ";
+    		}
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
@@ -73,7 +80,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 	}
 
 	public List<Employee> FindAllRecordsY(int currentPage, int totalRecord, String queryCritirea, String queryParam,
-			String updateUser, String userDataCostId) {
+			String updateUser, String userDataCostId, String accessRole) {
 		System.out.println(queryCritirea);
 		System.out.println(queryParam);
 		// TODO Auto-generated method stub
@@ -87,7 +94,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 				+ "where t.isonwork = 0 and t.line_personnel = 'Y'";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
-			if(!userDataCostId.equals("ALL")){
+			/*if(!userDataCostId.equals("ALL")){
 				String strIdArray[] = userDataCostId.split("\\*");
 				StringBuffer idsStr = new StringBuffer();
 				for (int i = 0; i < strIdArray.length; i++) {
@@ -97,7 +104,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 					idsStr.append("'").append(strIdArray[i]).append("'");
 				}
 				sSQL+=" and Costid in("+idsStr+")";
-			}
+			}*/
     		if(queryCritirea.equals("Id")){
 				sSQL+=" and Id = ?";  
 			}
@@ -113,7 +120,15 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
-		    sSQL += "and SUBSTR (t.depname, 1, 2) = '通訊' order by t.id,t.costid)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+" " ;
+			if(!accessRole.equals("ALL")){
+    			if(accessRole.equals("TX"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '通訊' ";
+    			else if(accessRole.equals("LJ"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '零件' ";
+    			else if(accessRole.equals("ZJ"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '組件' ";
+    		}
+		    sSQL += " order by t.id,t.costid)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+" " ;
 		   /* where rn>"+page.getStartIndex()+" and rn<="+endIndex+"*/
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
@@ -131,13 +146,13 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 
 
 
-	public int getTotalRecordN(String queryCritirea, String queryParam, String updateUser, String userDataCostId) {
+	public int getTotalRecordN(String queryCritirea, String queryParam, String updateUser, String userDataCostId, String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord=-1;
     	String sSQL = "select count(*) FROM SWIPE.Csr_Employee t where t.isonwork = 0 and t.line_personnel='N' ";
     	try {
     		List <Object> queryList=new  ArrayList<Object>();
-    		if(!userDataCostId.equals("ALL")){
+    		/*if(!userDataCostId.equals("ALL")){
     			String strIdArray[] = userDataCostId.split("\\*");
 				StringBuffer idsStr = new StringBuffer();
 				for (int i = 0; i < strIdArray.length; i++) {
@@ -147,7 +162,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 					idsStr.append("'").append(strIdArray[i]).append("'");
 				}
 				sSQL+=" and Costid in("+idsStr+")";
-			}
+			}*/
     		if(queryCritirea.equals("Id")){
 				sSQL+=" and Id = ?";  
 			}
@@ -161,7 +176,14 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			else{
 				sSQL+="";
 			}
-    		sSQL+="and SUBSTR (t.depname, 1, 2) = '通訊'";
+    		if(!accessRole.equals("ALL")){
+    			if(accessRole.equals("TX"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '通訊' ";
+    			else if(accessRole.equals("LJ"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '零件' ";
+    			else if(accessRole.equals("ZJ"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '組件' ";
+    		}
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
@@ -176,7 +198,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 	}
 
 	public List<Employee> FindAllRecordsN(int currentPage, int totalRecord, String queryCritirea, String queryParam,
-			String updateUser, String userDataCostId) {
+			String updateUser, String userDataCostId, String accessRole) {
 		// TODO Auto-generated method stub
 		List<Employee> AllEmp = null;
 		// TODO Auto-generated method stub
@@ -211,7 +233,15 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
-		    sSQL += "and SUBSTR (t.depname, 1, 2) = '通訊' order by t.id,t.costid)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	    
+			if(!accessRole.equals("ALL")){
+    			if(accessRole.equals("TX"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '通訊' ";
+    			else if(accessRole.equals("LJ"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '零件' ";
+    			else if(accessRole.equals("ZJ"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '組件' ";
+    		}
+		    sSQL += " order by t.id,t.costid)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	    
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }
@@ -350,7 +380,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 		return AllEmp;
 	}
 
-	public int getToPerson( String updateUser, String userDataCostId, String status) {
+	public int getToPerson( String updateUser, String userDataCostId, String status, String accessRole) {
 		// TODO Auto-generated method stub
 		int result = -1;
 		// TODO Auto-generated method stub
@@ -381,7 +411,14 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 			else{
 				sSQL+="";
 			}
-		  sSQL+="and SUBSTR (t.depname, 1, 2) = '通訊'";
+			if(!accessRole.equals("ALL")){
+    			if(accessRole.equals("TX"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '通訊' ";
+    			else if(accessRole.equals("LJ"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '零件' ";
+    			else if(accessRole.equals("ZJ"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '組件' ";
+    		}
 		  result = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 			
 			@Override
@@ -399,7 +436,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 	}
 
 	public int getToPersonCondition(String updateUser, String userDataCostId, String status, String queryCritirea,
-			String queryParam) {
+			String queryParam, String accessRole) {
 		// TODO Auto-generated method stub
 		int result = -1;
 		// TODO Auto-generated method stub
@@ -415,7 +452,7 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 		}
 		
 		try {
-			if(!userDataCostId.equals("ALL")){
+			/*if(!userDataCostId.equals("ALL")){
 				String strIdArray[] = userDataCostId.split("\\*");
 				StringBuffer idsStr = new StringBuffer();
 				for (int i = 0; i < strIdArray.length; i++) {
@@ -426,21 +463,28 @@ public class FLinePersonMtDAO extends DAO<Employee> {
 				}
 				System.out.println(idsStr);
 				sSQL+=" and Costid in("+idsStr+")";
-			}
+			}*/
     		if(queryCritirea.equals("Id")){
 				sSQL+=" and Id = ?";  
 			}
 			else if(queryCritirea.equals("Name")){
 				sSQL+=" and Name = ?";  
-			}else if(queryCritirea.equals("Depid")){
-				sSQL+=" and Depid = ?";  
+			}else if(queryCritirea.equals("Deptid")){
+				sSQL+=" and Deptid = ?";  
 			}else if(queryCritirea.equals("Costid")){
 				sSQL+=" and Costid = ?";  
 			}
 			else{
 				sSQL+="";
 			}
-    		sSQL+="and SUBSTR (t.depname, 1, 2) = '通訊'";
+    		if(!accessRole.equals("ALL")){
+    			if(accessRole.equals("TX"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '通訊' ";
+    			else if(accessRole.equals("LJ"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '零件' ";
+    			else if(accessRole.equals("ZJ"))
+    				sSQL+=" and SUBSTR (t.depname, 1, 2) = '組件' ";
+    		}
 		  result = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 			
 			@Override

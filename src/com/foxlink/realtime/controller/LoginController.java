@@ -116,7 +116,13 @@ public class LoginController implements ServletContextAware {
 		 ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 		 accountService = (AccountService) context.getBean("accountService"); 
 		 selectUsers = accountService.GetLoginInfo(GetPrincipal());
-		 selectUsers.put("ROLE", accountService.GetLoginRole(GetPrincipal()));
+		 if(selectUsers!=null){
+			 if(accountService.GetLoginRole(GetPrincipal())!=null){
+				 selectUsers.put("ROLE", accountService.GetLoginRole(GetPrincipal()));
+			 }else{
+				 selectUsers.put("ROLE", "NOACCESS");
+			 }
+		 }
 		 return selectUsers;
 	 }
 		
