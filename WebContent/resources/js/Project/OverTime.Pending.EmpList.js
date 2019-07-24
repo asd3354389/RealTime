@@ -362,8 +362,8 @@ $(document).ready(function(){
 		if(WorkContent==""){
 			alertMessage+='請填寫加班內容\n'
 		}
-		else if(WorkContent.length>100){
-			alertMessage+='填寫加班內容不得超過100個字\n'
+		else if(WorkContent.length>70){
+			alertMessage+='填寫加班內容不得超過70個字\n'
 		}
 		
 		if(selectedOTEmpIDs.length=="0"){

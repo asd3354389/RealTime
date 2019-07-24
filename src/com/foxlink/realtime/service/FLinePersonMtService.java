@@ -22,12 +22,12 @@ public class FLinePersonMtService extends Service<Employee> {
 	
 
 
-	public List<Employee> FindQueryRecordY(String updateUser, int currentPage, String queryCritirea, String queryParam,String userDataCostId) {
+	public List<Employee> FindQueryRecordY(String updateUser, int currentPage, String queryCritirea, String queryParam,String userDataCostId, String accessRole) {
 		// TODO Auto-generated method stub
 		List<Employee> AllEmp = null;
 		try{
-			int totalRecord = fLinePersonMtDAO.getTotalRecordY(queryCritirea, queryParam,updateUser, userDataCostId);
-			AllEmp = fLinePersonMtDAO.FindAllRecordsY(currentPage,totalRecord, queryCritirea, queryParam,updateUser, userDataCostId);
+			int totalRecord = fLinePersonMtDAO.getTotalRecordY(queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
+			AllEmp = fLinePersonMtDAO.FindAllRecordsY(currentPage,totalRecord, queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
 		}catch(Exception e){
 			e.printStackTrace();
 			logger.error("Find FLinePersonMtDAOY Record is failed ",e);
@@ -35,30 +35,30 @@ public class FLinePersonMtService extends Service<Employee> {
 		return AllEmp;
 	}
 
-	public Page getFindPersonPageY(int currentPage, String queryCritirea, String queryParam, String updateUser, String userDataCostId) {
+	public Page getFindPersonPageY(int currentPage, String queryCritirea, String queryParam, String updateUser, String userDataCostId, String accessRole) {
 		// TODO Auto-generated method stub
-		int totalRecord = fLinePersonMtDAO.getTotalRecordY(queryCritirea, queryParam, updateUser, userDataCostId);
+		int totalRecord = fLinePersonMtDAO.getTotalRecordY(queryCritirea, queryParam, updateUser, userDataCostId,accessRole);
 		Page page = new Page(currentPage, totalRecord);
 		// Page page = accountDAO.getPage(pageNum, User.class, totalRecord);
 		return page;
 	}
 
 	public Page getFindPersonPageN(int currentPage, String queryCritirea, String queryParam, String updateUser,
-			String userDataCostId) {
+			String userDataCostId, String accessRole) {
 		// TODO Auto-generated method stub
-		int totalRecord = fLinePersonMtDAO.getTotalRecordN(queryCritirea, queryParam, updateUser, userDataCostId);
+		int totalRecord = fLinePersonMtDAO.getTotalRecordN(queryCritirea, queryParam, updateUser, userDataCostId,accessRole);
 		Page page = new Page(currentPage, totalRecord);
 		// Page page = accountDAO.getPage(pageNum, User.class, totalRecord);
 		return page;
 	}
 
 	public List<Employee> FindQueryRecordN(String updateUser, int currentPage, String queryCritirea, String queryParam,
-			String userDataCostId) {
+			String userDataCostId, String accessRole) {
 		// TODO Auto-generated method stub
 		List<Employee> AllEmp = null;
 		try{
-			int totalRecord = fLinePersonMtDAO.getTotalRecordN(queryCritirea, queryParam,updateUser, userDataCostId);
-			AllEmp = fLinePersonMtDAO.FindAllRecordsN(currentPage,totalRecord, queryCritirea, queryParam,updateUser, userDataCostId);
+			int totalRecord = fLinePersonMtDAO.getTotalRecordN(queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
+			AllEmp = fLinePersonMtDAO.FindAllRecordsN(currentPage,totalRecord, queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
 		}catch(Exception e){
 			e.printStackTrace();
 			logger.error("Find FLinePersonMtDAOY Record is failed ",e);
@@ -87,7 +87,7 @@ public class FLinePersonMtService extends Service<Employee> {
 	}
 
 	public Page getFindPersonPage(int currentPage, String queryCritirea, String queryParam, String updateUser,
-			String userDataCostId) {
+			String userDataCostId, String accessRole) {
 		// TODO Auto-generated method stub
 		int totalRecord = fLinePersonMtDAO.getTotalRecord(queryCritirea, queryParam, updateUser, userDataCostId);
 		Page page = new Page(currentPage, totalRecord);
@@ -96,17 +96,17 @@ public class FLinePersonMtService extends Service<Employee> {
 	}
 
 	public List FindQueryRecord(String updateUser, int currentPage, String queryCritirea, String queryParam,
-			String userDataCostId) {
+			String userDataCostId, String accessRole) {
 		// TODO Auto-generated method stub
 		List<Employee> AllEmp = null;
 		try{
 			int totalRecord = fLinePersonMtDAO.getTotalRecord(queryCritirea, queryParam,updateUser, userDataCostId);
 			System.out.println(totalRecord);
 			if (totalRecord>0) {
-				AllEmp = fLinePersonMtDAO.FindAllRecordsY(currentPage,totalRecord, queryCritirea, queryParam,updateUser, userDataCostId);
+				AllEmp = fLinePersonMtDAO.FindAllRecordsY(currentPage,totalRecord, queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
 			} else {
 				System.out.println(123);
-				AllEmp = fLinePersonMtDAO.FindAllRecordsN(currentPage,totalRecord, queryCritirea, queryParam,updateUser, userDataCostId);
+				AllEmp = fLinePersonMtDAO.FindAllRecordsN(currentPage,totalRecord, queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
 			}
 			
 		}catch(Exception e){
@@ -117,11 +117,11 @@ public class FLinePersonMtService extends Service<Employee> {
 	}
 
 	public List FindQueryRecords(String updateUser, int currentPage, String queryCritirea, String queryParam,
-			String userDataCostId) {
+			String userDataCostId, String accessRole) {
 		// TODO Auto-generated method stub
 		List<Employee> AllEmp = null;
 		try{
-			int totalRecord = fLinePersonMtDAO.getTotalRecordN(queryCritirea, queryParam,updateUser, userDataCostId);
+			int totalRecord = fLinePersonMtDAO.getTotalRecordN(queryCritirea, queryParam,updateUser, userDataCostId,accessRole);
 			AllEmp = fLinePersonMtDAO.FindAllRecord(currentPage,totalRecord, queryCritirea, queryParam,updateUser, userDataCostId);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -130,11 +130,11 @@ public class FLinePersonMtService extends Service<Employee> {
 		return AllEmp;
 	}
 
-	public String getAllPerson(String updateUser, String userDataCostId, String status) {
+	public String getAllPerson(String updateUser, String userDataCostId, String status, String accessRole) {
 		// TODO Auto-generated method stub
 		JsonObject resultJson = new JsonObject();
-		int result = fLinePersonMtDAO.getToPerson( updateUser, userDataCostId,status);
-			if(result==0){
+		int result = fLinePersonMtDAO.getToPerson( updateUser, userDataCostId,status,accessRole);
+			if(result!=0){
 				resultJson.addProperty("StatusCode", "200");
 				resultJson.addProperty("Message", "隨綫狀態修改成功");
 			}else{
@@ -146,10 +146,10 @@ public class FLinePersonMtService extends Service<Employee> {
 	}
 
 	public String getAllPersonCondition(String updateUser, String userDataCostId, String status, String queryCritirea,
-			String queryParam) {
+			String queryParam, String accessRole) {
 		JsonObject resultJson = new JsonObject();
-		int result = fLinePersonMtDAO.getToPersonCondition( updateUser, userDataCostId,status,queryCritirea,queryParam);
-			if(result==0){
+		int result = fLinePersonMtDAO.getToPersonCondition( updateUser, userDataCostId,status,queryCritirea,queryParam,accessRole);
+			if(result!=0){
 				resultJson.addProperty("StatusCode", "200");
 				resultJson.addProperty("Message", "隨綫狀態修改成功");
 			}else{

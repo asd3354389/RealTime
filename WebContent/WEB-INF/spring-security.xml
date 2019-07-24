@@ -25,7 +25,7 @@
 		<intercept-url pattern="/JobTitle/ShowAllJobTitle" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
 		<intercept-url pattern="/LineMapping/ShowAllLineMapping" access="hasAnyRole('ROLE_ADMIN','ROLE_LINEMAPPING')" />
 		<intercept-url pattern="/ShowCheckOverTime15min" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
-		<intercept-url pattern="/FlinePerson/ShowFlinePersonMaintain" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT','ROLE_ZJADLOW','ROLE_LJADLOW')" />
+		<intercept-url pattern="/FlinePerson/ShowFlinePersonMaintain" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW','ROLE_ZJADLOW','ROLE_LJADLOW')" />
 		<intercept-url pattern="/OTCardPerson/ShowOTCardbdPerson" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW','ROLE_ZJADLOW','ROLE_LJADLOW')" />
 		<intercept-url pattern="/IpBinding/ShowIpBinding" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
 		<intercept-url pattern="/EmpIPBinding/ShowEmpIPBinding" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />

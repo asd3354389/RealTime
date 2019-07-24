@@ -49,11 +49,12 @@ public class FLinePersonMtController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			String updateUser = (String)session.getAttribute("username");
 			String userDataCostId="ALL";
+			String accessRole=(String) session.getAttribute("accessRole");
 			System.out.println(userDataCostId);
 			fLinePersonMtService = (FLinePersonMtService)context.getBean("fLinePersonMtService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			Page page = fLinePersonMtService.getFindPersonPageY(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
-			page.setList(fLinePersonMtService.FindQueryRecordY(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
+			Page page = fLinePersonMtService.getFindPersonPageY(currentPage,queryCritirea, queryParam,updateUser,userDataCostId,accessRole);
+			page.setList(fLinePersonMtService.FindQueryRecordY(updateUser, currentPage, queryCritirea,queryParam,userDataCostId,accessRole));
 			/*System.out.println(gson.toJson(page));*/
 			System.out.println(gson.toJson(page));
 			JsonResult = gson.toJson(page);
@@ -86,10 +87,11 @@ public class FLinePersonMtController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			String updateUser = (String)session.getAttribute("username");
 			String userDataCostId="ALL";
+			String accessRole=(String) session.getAttribute("accessRole");
 			fLinePersonMtService = (FLinePersonMtService)context.getBean("fLinePersonMtService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			Page page = fLinePersonMtService.getFindPersonPageN(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
-			page.setList(fLinePersonMtService.FindQueryRecordN(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
+			Page page = fLinePersonMtService.getFindPersonPageN(currentPage,queryCritirea, queryParam,updateUser,userDataCostId,accessRole);
+			page.setList(fLinePersonMtService.FindQueryRecordN(updateUser, currentPage, queryCritirea,queryParam,userDataCostId,accessRole));
 			/*System.out.println(gson.toJson(page));*/
 			JsonResult = gson.toJson(page);
 		} catch (Exception e) {
@@ -121,10 +123,11 @@ public class FLinePersonMtController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			String updateUser = (String)session.getAttribute("username");
 			String userDataCostId="ALL";
+			String accessRole=(String) session.getAttribute("accessRole");
 			fLinePersonMtService = (FLinePersonMtService)context.getBean("fLinePersonMtService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			Page page = fLinePersonMtService.getFindPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
-			page.setList(fLinePersonMtService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
+			Page page = fLinePersonMtService.getFindPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId,accessRole);
+			page.setList(fLinePersonMtService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId,accessRole));
 		/*	System.out.println(gson.toJson(page));*/
 			JsonResult = gson.toJson(page);
 		} catch (Exception e) {
@@ -146,11 +149,12 @@ public class FLinePersonMtController {
 			String updateUser = (String)session.getAttribute("username");
 			String userDataCostId=(String) session.getAttribute("userDataCostId");
 			fLinePersonMtService = (FLinePersonMtService)context.getBean("fLinePersonMtService");
+			String accessRole=(String) session.getAttribute("accessRole");
 			/*System.out.println(status);*/
-			System.out.println(fLinePersonMtService.getAllPerson(updateUser,userDataCostId,status));
+			//System.out.println(fLinePersonMtService.getAllPerson(updateUser,userDataCostId,status));
 			
 		
-		return fLinePersonMtService.getAllPerson(updateUser,userDataCostId,status);
+		return fLinePersonMtService.getAllPerson(updateUser,userDataCostId,status,accessRole);
 		
 	}
 	
@@ -161,11 +165,12 @@ public class FLinePersonMtController {
 			String updateUser = (String)session.getAttribute("username");
 			String userDataCostId=(String) session.getAttribute("userDataCostId");
 			fLinePersonMtService = (FLinePersonMtService)context.getBean("fLinePersonMtService");
+			String accessRole=(String) session.getAttribute("accessRole");
 			/*System.out.println(status);*/
 			//System.out.println(fLinePersonMtService.getAllPersonCondition(updateUser,userDataCostId,status,queryCritirea,queryParam));
 			
 		
-		return fLinePersonMtService.getAllPersonCondition(updateUser,userDataCostId,status,queryCritirea,queryParam);
+		return fLinePersonMtService.getAllPersonCondition(updateUser,userDataCostId,status,queryCritirea,queryParam,accessRole);
 		
 	}
 	
