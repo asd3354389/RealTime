@@ -171,7 +171,7 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
-		    sSQL += ")c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	  
+		    sSQL += " order by Emp_id,WorkShopNo,Cardid)c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+"" ;	  
 		    System.out.println("列表顯示數據+================================>>>>>"+sSQL);
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
