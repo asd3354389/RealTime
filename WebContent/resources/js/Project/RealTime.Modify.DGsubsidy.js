@@ -210,7 +210,7 @@ $(document).ready(function(){
 			
 			var goWorkTimeStr=executeResult[i]["SwipeCardTime"];
 			var endWorkTimeStr=executeResult[i]["SwipeCardTime2"];
-			var classStartTimeStr=goWorkTimeStr.substr(0, 10)+' '+executeResult[i]["ClassStart"].substr(0, 2)+':'+ executeResult[i]["ClassStart"].substr(2, 2);
+			var classStartTimeStr=goWorkTimeStr.substr(0, 10)+' '+executeResult[i]["Class_Start"].substr(0, 2)+':'+ executeResult[i]["Class_Start"].substr(2, 2);
 			var goWorkTime = new Date(Date.parse(goWorkTimeStr.replace(/-/g,   "/"))); 
 			var goWorkoldTime = (new Date(goWorkTimeStr.replace(".0",   ""))).getTime();
 			var goWorkcurTime = new Date(goWorkoldTime).format("yyyy-MM-dd hh:mm");
@@ -230,7 +230,7 @@ $(document).ready(function(){
 			var overplus = subOnWorkTime-10;
 			var	tableContents='<tr><td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["EmpId"]+'</td>'+
 			'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["Name"]+'</td>'+
-			'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["DepId"]+'</td>'+
+			'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["DeptId"]+'</td>'+
 			'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["CostId"]+'</td>'+
 			'<td>'+goWorkcurTime+'</td>'+
 			'<td>'+endWorkcurTime+'</td>'+

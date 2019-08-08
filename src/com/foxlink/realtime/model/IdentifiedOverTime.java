@@ -12,7 +12,14 @@ public class IdentifiedOverTime {
 	private int OverTimeType;
 	private int NoteStates;
 	private String Reason;
+	private String Bonus;
 	
+	public String getBonus() {
+		return Bonus;
+	}
+	public void setBonus(String bonus) {
+		Bonus = bonus;
+	}
 	public String getId() {
 		return Id;
 	}
@@ -79,4 +86,13 @@ public class IdentifiedOverTime {
 	public void setReason(String reason) {
 		Reason = reason;
 	}
+	@Override
+	public String toString() {
+		return "IdentifiedOverTime [Id=" + Id + ", Name=" + Name + ", DepID=" + DepID + ", CostID=" + CostID
+				+ ", Direct=" + Direct + ", OverTimeDate=" + OverTimeDate + ", OverTimeInterval=" + OverTimeInterval
+				+ ", OverTimeHours=" + OverTimeHours + ", OverTimeType=" + OverTimeType + ", NoteStates=" + NoteStates
+				+ ", Reason=" + Reason + ", Bonus=" + Bonus + "]";
+	}
+	
+	
 }

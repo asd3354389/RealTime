@@ -72,10 +72,11 @@ $(document).ready(function(){
 		findJobInfoList("A");
 		findJobInfoList("D");
 		var executeResult=rawData["list"];
+		console.log(rawData["list"]);
 		for(var i=0;i<executeResult.length;i++){
 			var	tableContents='<tr><td>'+executeResult[i]["EmpNo"]+'</td>'+
 					'<td>'+executeResult[i]["EmpName"]+'</td>'+
-					'<td>'+executeResult[i]["DeptNo"]+'</td>'+
+					'<td>'+executeResult[i]["deptid"]+'</td>'+
 					'<td>'+executeResult[i]["CostID"]+'</td>';
 					if(executeResult[i]["Job_Title"] === null || executeResult[i]["Job_Title"] === ''){
 						tableContents+='<td>無職務</td>'

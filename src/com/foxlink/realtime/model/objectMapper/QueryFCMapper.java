@@ -16,7 +16,7 @@ public class QueryFCMapper implements RowMapper<QueryForgetCard> {
 		queryForgetCard.setFcDate(rs.getString("FcDate"));
 		//queryForgetCard.setStartDate(rs.getString("startDate"));
 		queryForgetCard.setId(rs.getString("id"));
-		queryForgetCard.setDepid(rs.getString("depid"));
+		queryForgetCard.setDepid(rs.getString("deptid"));
 		queryForgetCard.setName(rs.getString("name"));
 		queryForgetCard.setIsonwork(rs.getString("isonwork"));
 		return queryForgetCard;

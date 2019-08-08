@@ -25,6 +25,18 @@
 		<intercept-url pattern="/JobTitle/ShowAllJobTitle" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
 		<intercept-url pattern="/LineMapping/ShowAllLineMapping" access="hasAnyRole('ROLE_ADMIN','ROLE_LINEMAPPING')" />
 		<intercept-url pattern="/ShowCheckOverTime15min" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
+		<intercept-url pattern="/FlinePerson/ShowFlinePersonMaintain" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW','ROLE_ZJADLOW','ROLE_LJADLOW')" />
+		<intercept-url pattern="/OTCardPerson/ShowOTCardbdPerson" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW','ROLE_ZJADLOW','ROLE_LJADLOW')" />
+		<intercept-url pattern="/IpBinding/ShowIpBinding" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
+		<intercept-url pattern="/EmpIPBinding/ShowEmpIPBinding" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
+		<intercept-url pattern="/IOCardBdIP/ShowIOCardbdIP" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW','ROLE_ZJADLOW','ROLE_LJADLOW')" />
+		<intercept-url pattern="/IOWorkShopPower/ShowIOWorkShopPwList" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW','ROLE_ZJADLOW','ROLE_LJADLOW')" />
+		<intercept-url pattern="/IOSpecialWSEmp/ShowIOSpecialWSEmp" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW','ROLE_ZJADLOW','ROLE_LJADLOW')" />
+		<intercept-url pattern="/WorkShopNoRest/ShowWorkshopNoRestInfo" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW','ROLE_ZJADLOW','ROLE_LJADLOW')" />
+		<intercept-url pattern="/IOWorkShop/ShowIOWorkShopRecord" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT','ROLE_ZJADLOW','ROLE_LJADLOW')" />
+		<intercept-url pattern="/ExceptionCost/ShowExceptionCost" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW','ROLE_ZJADLOW','ROLE_LJADLOW')" />
+		<intercept-url pattern="/FourteenRO/**" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
+		<intercept-url pattern="/ClassNoRest/ShowClassNoRestInfo" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW','ROLE_ZJADLOW','ROLE_LJADLOW')" />
 		<!-- access="hasRole('ROLE_USER','ROLE_ADMIN')"  -->
 
      <!--会话管理 -->   
@@ -46,7 +58,7 @@
 			 login-processing-url="/Login" 
 			username-parameter="username"
 			password-parameter="password" />
-		<logout logout-success-url="/Login?logout"  />
+		<logout logout-success-url="/Login?logout" invalidate-session="true" />
 		
 
 		<!-- enable csrf protection -->

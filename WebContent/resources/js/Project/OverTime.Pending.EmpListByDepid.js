@@ -11,6 +11,14 @@ $(document).ready(function(){
 	var SDate='2017-12-26',EDate='2017-12-26',ItemNumber='';
 	var currentClassNoInfo;
 	var overTimeEmps=new Array();
+	checkPwTime();
+	var checkdepid;
+	var modifyEmpBoundA=new Array();
+	var modifyEmpBoundB=new Array();
+	var modifyEmpBonusA=new Array();
+	var modifyEmpBonusB=new Array();
+/*	var modifyEmpBoundA=new Array();
+	var modifyEmpBoundB=new Array();*/
 	init();
 	GetHoliday();
 	
@@ -55,8 +63,30 @@ $(document).ready(function(){
 	$('#selectedAllEmps').change(function(){
 		if(this.checked){
 			$('#OTPendingEmpTable tbody tr').each(function(){
+				var id = $(this).children().eq(2).text();
 				var overTimehour = $(this).children().eq(9).text();
-				if(overTimehour=="0"){
+				//var dghour = $(this).children().eq(11).text();
+				var depid=$(this).children().eq(4).text();
+				var dghour;
+				if(IsAbnormal==1){
+					if(modifyEmpBoundA.indexOf(id)!=-1||modifyEmpBoundB.indexOf(id)!=-1){
+						  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+					}else{
+						 dghour = $(this).children().eq(11).text();
+					}		
+				}else{
+					if(modifyEmpBoundA.indexOf(id)!=-1||modifyEmpBoundB.indexOf(id)!=-1){
+						  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+					}else{
+						 dghour = $(this).children().eq(11).text();
+					}		
+				}
+				/*if(modifyEmpBoundA.indexOf(id)!=-1||modifyEmpBoundB.indexOf(id)!=-1){
+					  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+				}else{
+					 dghour = $(this).children().eq(11).text();
+				}	*/
+				if(overTimehour=="0"&&dghour=="0"){
 					$(this).children().children().eq(0).prop('checked',false);
 					$(this).attr("style", "background-color: white"); 
 				}else{
@@ -90,6 +120,12 @@ $(document).ready(function(){
 		weekday[5]="星期五";
 		weekday[6]="星期六";
 		if(HolidayType == "N"){
+			var vdate = OverTimeDate.replace(/-/g, '/');
+			var monthDate = new Date(vdate);
+			var OTDate = ""+(monthDate.getMonth()+1)+monthDate.getDate();
+			if(OTDate=="38"){
+				alert("今天為婦女節，加班一在實時系統提報，若要提報加班三，請用聯絡單提報");
+			}
 			if(weekday[selectOverTimeDate.getDay()]=="星期日" || weekday[selectOverTimeDate.getDay()]=="星期六"){
 				if(OverTimeCal=="2"){
 					GetCalOverTimeFromServer(WorkshopNo,LineNo,RCNO,ClassNo,OverTimeDate,
@@ -102,7 +138,7 @@ $(document).ready(function(){
 			}
 			else{
 				if(OverTimeCal=="2"){
-					alert("報加班的日期為"+weekday[selectOverTimeDate.getDay()]+",正常班不允許選假日班時間類型，如果為調班，加班二的部分請用聯絡單作業！")
+					alert("報加班的日期為"+weekday[selectOverTimeDate.getDay()]+",正常班不允許選假日班時間類型，如果為調班，加班二的部分請用聯絡單作業！！！")
 					/*if (confirm("報加班的日期為"+weekday[selectOverTimeDate.getDay()]+",您確定報假日班嗎？")) {
 						GetCalOverTimeFromServer(WorkshopNo,LineNo,RCNO,ClassNo,OverTimeDate,
 							OverTimeCal,ItemNumber,IsAbnormal);
@@ -209,9 +245,10 @@ $(document).ready(function(){
 	$('.OTHrsSubmitBtn').click(function(){
 		OverTimeType=$('#overtimeType').find('option:selected').val();
 		OverTimeType1=$('#overtimeCal').find('option:selected').val();
-		WorkContent=$('#workcontent').val();
+		WorkContent=$('#workcontent').val().trim();
 		OverTimeCal=$('#overtimeCal').find('option:selected').val();
 		selectedOTEmpIDs=GetOTSubmitEmps();//取得選取的人員id數組
+		var newHour = [];
 	    //SelectedEmps=GetOTSubmitEmps(); //取得選取的人員
 		if(CheckConditionValid()){
 			if (confirm("你确定提交當前選擇人員名單吗？")) {
@@ -243,6 +280,21 @@ $(document).ready(function(){
 						break;
 					}
 				}
+				$('#OTPendingEmpTable tbody tr').find('input:checked').each(function(){
+					$(this).each(function(){
+						var xhr =$(this).parent().nextAll('td');
+						var title = xhr.eq(11).text();
+						console.log(title);
+						var data={};
+						if(title=='已修改時數'){
+							data.ID = xhr.eq(1).text();
+							data.OverTimeDate = xhr.eq(6).text();
+							data.Bonus = xhr.eq(10).find('option:selected').text();
+							newHour.push(data);
+						}
+					})
+				})
+				UpdateBonus(newHour);
 				if(OTBoolean){
 					alert('加班提報成功，視窗將關閉');
         			window.open('', '_self', '');
@@ -253,6 +305,22 @@ $(document).ready(function(){
 				var OTConfirmInfo=new OThourConfirmInfo(ClassNo,RCNO,WorkshopNo,LineNo,OverTimeDate,0,null,null,
 						OverTimeType,OverTimeType1,ItemNumber,SelectedEmps,IsAbnormal,WorkContent);
 				SubmitEmployeeOverTimeInfo2Server(IsAbnormal,OTConfirmInfo);
+				
+	/*			$('#OTPendingEmpTable tbody tr').find('input:checked').each(function(){
+					$(this).each(function(){
+						var xhr =$(this).parent().nextAll('td');
+						var title = xhr.eq(11).text();
+						console.log(title);
+						var data={};
+						if(title=='已修改時數'){
+							data.ID = xhr.eq(1).text();
+							data.OverTimeDate = xhr.eq(6).text();
+							data.Bonus = xhr.eq(10).find('option:selected').text();
+							newHour.push(data);
+						}
+					})
+				})
+				UpdateBonus(newHour);*/
 			}
 		}
 		//(JSON.stringify(OThourConfirm));
@@ -272,8 +340,8 @@ $(document).ready(function(){
 		if(WorkContent==""){
 			alertMessage+='請填寫加班內容\n'
 		}
-		else if(WorkContent.length>100){
-			alertMessage+='填寫加班內容不得超過100個字\n'
+		else if(WorkContent.length>70){
+			alertMessage+='填寫加班內容不得超過70個字\n'
 		}
 		
 		if(selectedOTEmpIDs.length=="0"){
@@ -318,7 +386,14 @@ $(document).ready(function(){
 	
 	function ShowPendingEmpList(EmployeeInfos,isInit){
 		var HTMLElement;
-		
+		var PendingEmpsList=new Array();
+		for(var i=0;i<EmployeeInfos.length;i++){
+			PendingEmpsList.push(EmployeeInfos[i].employeeID);
+		}
+		CheckModifyEmpA(PendingEmpsList);
+		CheckModifyEmpB(PendingEmpsList);
+		CheckModifyAEmpA(PendingEmpsList);
+		CheckModifyAEmpB(PendingEmpsList);
 		$('#OTPendingEmpTable tbody').empty();
 		var j=1;
 		for(var i=0;i<EmployeeInfos.length;i++){
@@ -336,6 +411,8 @@ $(document).ready(function(){
 				'<td></td>'+
 				'<td>0</td>'+
 				'<td></td>'+
+				'<td>0</td>'+
+				'<td></td>'+
 				'<td>未審核</td></tr>';				
 			}
 			else{
@@ -349,13 +426,170 @@ $(document).ready(function(){
 				'<td>'+EmpInfo.yd+'</td>'+
 				'<td>'+EmpInfo.overTimeInterval+'</td>'+
 				'<td>'+EmpInfo.overTimeHours+'</td>'+
-				'<td>'+OverTimeTypeText+'</td>'+
-				'<td>未審核</td></tr>';
+				'<td>'+OverTimeTypeText+'</td>';
+				//'<td>'+EmpInfo.bonus+'</td>'+
+	/*			if(modifyEmpBoundB.indexOf(EmpInfo.employeeID)!=-1){
+					/*HTMLElement+='<td><select>';
+					if(EmpInfo.bonus!=0){
+						var leng = Number(EmpInfo.bonus)/0.5;
+						//console.log(leng);
+						for(var z=0;z<leng+1;z++){
+							var num = EmpInfo.bonus-(0.5*z)
+							HTMLElement+='<option>'+num+'</option>';
+						}
+					}else{
+						HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+					}
+					HTMLElement+='</select></td>';
+					
+					
+					
+					if(IsAbnormal==0){
+						HTMLElement+='<td><select>';
+						if(EmpInfo.bonus!=0){
+							var leng = Number(EmpInfo.bonus)/0.5;
+							for(var z=0;z<leng+1;z++){
+								var num = EmpInfo.bonus-(0.5*z)
+								HTMLElement+='<option>'+num+'</option>';
+							}
+						}else{
+							HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+						}
+						HTMLElement+='</select></td>';
+					}else{
+						HTMLElement+='<td><select>';
+						HTMLElement+='<option>1</option><option>0.5</option>';
+						HTMLElement+='<option selected>'+EmpInfo.bonus+'</option>'
+						HTMLElement+='</select></td>';
+					}
+				}else if (modifyEmpBoundA.indexOf(EmpInfo.employeeID)!=-1) {
+					/*HTMLElement+='<td><select>';
+					if(EmpInfo.bonus!=0){
+						var leng = Number(EmpInfo.bonus)+1;
+						//console.log(leng);
+						var num;
+						for(var k=0;k<leng;k++){
+							if(k==0){
+								 num = EmpInfo.bonus;
+							}else{
+								 num = Math.round(EmpInfo.bonus)-k
+							}					
+							HTMLElement+='<option>'+num+'</option>';
+						}
+					}else{
+						HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+					}
+					HTMLElement+='</select></td>'; 
+					
+					  
+					if(IsAbnormal==0){
+						HTMLElement+='<td><select>';	
+						if(EmpInfo.bonus!=0){
+							var leng = Number(EmpInfo.bonus)+1;
+							//console.log('leng时数 '+leng);
+							var num;
+							for(var k=0;k<leng;k++){		
+								if(k==0){
+									 num = EmpInfo.bonus;
+								}else{
+									 num = Math.round(EmpInfo.bonus)-k
+								}					
+								HTMLElement+='<option>'+num+'</option>';
+							}
+						}else{
+							HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+						}
+						HTMLElement+='</select></td>';
+					}else{
+						HTMLElement+='<td><select>';
+						HTMLElement+='<option>2</option><option>1.5</option><option>1</option><option>0.5</option>';
+						HTMLElement+='<option selected>'+EmpInfo.bonus+'</option>'
+						HTMLElement+='</select></td>';
+					}	
+				}else{
+					HTMLElement+='<td>'+EmpInfo.bonus+'</td>'; 
+				}								                                            */
+				
+				if(modifyEmpBonusB.indexOf(EmpInfo.employeeID)!=-1){
+					
+					if(IsAbnormal==1){
+						HTMLElement+='<td><select>';
+						HTMLElement+='<option>1</option><option>0.5</option>';
+						HTMLElement+='<option selected>'+EmpInfo.bonus+'</option>'
+						HTMLElement+='</select></td>';
+					}else{
+						if(modifyEmpBoundB.indexOf(EmpInfo.employeeID)!=-1){
+							HTMLElement+='<td><select>';
+							if(EmpInfo.bonus!=0){
+								var leng = Number(EmpInfo.bonus)/0.5;
+								for(var z=0;z<leng+1;z++){
+									var num = EmpInfo.bonus-(0.5*z)
+									HTMLElement+='<option>'+num+'</option>';
+								}
+							}else{
+								HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+							}
+							HTMLElement+='</select></td>';
+						}else{
+							HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
+						}
+					}
+				}else if(modifyEmpBonusA.indexOf(EmpInfo.employeeID)!=-1) {
+					if(IsAbnormal==1){
+						HTMLElement+='<td><select>';
+						HTMLElement+='<option>2</option><option>1.5</option><option>1</option><option>0.5</option>';
+						HTMLElement+='<option selected>'+EmpInfo.bonus+'</option>'
+						HTMLElement+='</select></td>';
+					}else{
+						if(modifyEmpBoundA.indexOf(EmpInfo.employeeID)!=-1){
+							HTMLElement+='<td><select>';	
+							if(EmpInfo.bonus!=0){
+								var leng = Number(EmpInfo.bonus)+1;
+								//console.log('leng时数 '+leng);
+								var num;
+								for(var k=0;k<leng;k++){		
+									if(k==0){
+										 num = EmpInfo.bonus;
+									}else{
+										 num = Math.round(EmpInfo.bonus)-k
+									}					
+									HTMLElement+='<option>'+num+'</option>';
+								}
+							}else{
+								HTMLElement+='<option>'+EmpInfo.bonus+'</option>';
+							}
+							HTMLElement+='</select></td>';
+						}else{
+							HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
+						}
+					}
+				}else{
+					HTMLElement+='<td>'+EmpInfo.bonus+'</td>';
+				}
+				
+				
+				HTMLElement+='<td>未修改時數</td><td>未審核</td></tr>';
 				
 			}
 			j++;
 			$('#OTPendingEmpTable tbody').append(HTMLElement);			
 		}
+		
+		$('#OTPendingEmpTable tbody tr td').find('select').each(function(){
+			var bonusHour = $(this).find('option:selected').text(); 
+			$(this).change(function(){
+				var newBonus = $(this).find('option:selected').text(); 
+				if(newBonus!=bonusHour){
+					$(this).parent().next().text('已修改時數');
+
+					$(this).parent().next().css('color','red');
+				}else{
+					$(this).parent().next().text('未修改時數');
+
+					$(this).parent().next().css('color','#768399');
+				}
+			})
+		})
 		
 		$('.selectedEmp').click(function(){
 		    if($(this).prop("checked")==true){
@@ -453,7 +687,8 @@ $(document).ready(function(){
 					result[i]["OnDutyTime"],
 					result[i]["OffDutyTime"],
 					result[i]["OverTimeInterval"],
-					result[i]["OverTimeHour"]);
+					result[i]["OverTimeHour"],
+					result[i]["BONUS"]);
 			overTimeEmps.push(OTEmpInfo);
 		}
 	}
@@ -467,9 +702,31 @@ $(document).ready(function(){
 		var selectedEmpIDs=new Array();
 		/*將已勾選人員的工號存入Array*/
 		$('#OTPendingEmpTable tbody .selectedEmp:checked').each(function(){
+			var id = $(this).children().eq(2).text();
 			var xhr=$(this).parent().parent();		
 			 var overTimehour = $(xhr).children().eq(9).text();
-				if(overTimehour=="0"){
+			// var dghour = $(xhr).children().eq(11).text();
+			 var depid=$(xhr).children().eq(4).text();
+			 var dghour;
+			 if(IsAbnormal==1){
+					if(modifyEmpBonusA.indexOf(id)!=-1||modifyEmpBonusB.indexOf(id)!=-1){
+						  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+					}else{
+						 dghour = $(this).children().eq(11).text();
+					}		
+				}else{
+					if(modifyEmpBoundA.indexOf(id)!=-1||modifyEmpBoundB.indexOf(id)!=-1){
+						  dghour = $(this).children().eq(11).find('option:selected').eq(0).text();
+					}else{
+						 dghour = $(this).children().eq(11).text();
+					}		
+				}
+			/* if(modifyEmpBoundA.indexOf(id)!=-1||modifyEmpBoundB.indexOf(id)!=-1){
+				  dghour = $(xhr).children().eq(11).find('option:selected').eq(0).text();
+			 }else{
+				 dghour = $(xhr).children().eq(11).text();
+			 }		*/
+				if(overTimehour=="0"&&dghour=="0"){
 					  alert("工時小於等於0，有誤，請重新選擇加班人員！");
 				}
 				else{
@@ -522,6 +779,177 @@ $(document).ready(function(){
 				}
 			}
 	    });
+	}
+	
+	function checkPwTime(){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkdepId.show',
+			data:{},
+			async:false,
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 checkdepid=data;
+			}else{
+				console.log(123);
+				}
+			}
+		});
+	}
+	
+/*	function CheckModifyEmpA(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmpA.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBoundA=data;
+					 console.log(modifyEmpBoundA);
+			}else{
+				console.log(123);
+				}
+			}
+		});
+	}
+	
+	function CheckModifyEmpB(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmpB.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBoundB=data;
+					 console.log(modifyEmpBoundB);
+			}else{
+				console.log(123);
+				}
+			}
+		});
+	}*/
+
+	function CheckModifyEmpA(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmpBonusA.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBonusA=data;
+					 console.log(modifyEmpBonusA);
+			}else{
+				console.log(123);
+				}
+			}
+		});
+	}
+	
+	function CheckModifyAEmpA(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmpA.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBoundA=data;
+					 console.log(modifyEmpBoundA);
+			}else{
+				console.log(456);
+				}
+			}
+		});
+	}
+	
+	function CheckModifyEmpB(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmpBonusB.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBonusB=data;
+					 console.log(modifyEmpBonusB);
+			}else{
+				console.log(789);
+				}
+			}
+		});
+	}
+	
+	function CheckModifyAEmpB(PendingEmpsList){
+		$.ajax({
+			type:'POST',
+			url:'../Overtime/checkModifyEmpB.do',
+			data:JSON.stringify(PendingEmpsList),
+			async:false,
+			contentType:'application/json',
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){	
+				 if(data!=null && data!=''){
+					 modifyEmpBoundB=data;
+					 console.log(modifyEmpBoundB);
+			}else{
+				console.log(012);
+				}
+			}
+		});
+	}
+	
+	function UpdateBonus(newHour){
+		$.ajax({
+			type:'POST',
+			contentType: "application/json",
+			url:'../Overtime/updataBonus.show',
+			data:JSON.stringify(newHour),
+			dataType:'json',
+			async:false,
+			error:function(e){
+				alert(e);
+				},
+			success:function(data){
+				  if(data!=null && data!=''){
+					  if(data.StatusCode=="200"){
+ 
+					  }
+					  else{
+						  alert(data.Message);
+					  }
+				  }else{
+					  alert('操作失敗！')
+				  }
+				}
+		})
 	}
 	
 });

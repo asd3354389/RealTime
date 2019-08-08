@@ -10,9 +10,17 @@ public class DGsubsidy  implements Serializable {
 	private String CostId;
 	private String SwipeCardTime;
 	private String SwipeCardTime2;
-	private String ClassStart;
-	
-    public DGsubsidy() {
+	private String Class_Start;
+	private String DeptId;
+    public String getDeptId() {
+		return DeptId;
+	}
+
+	public void setDeptId(String deptId) {
+		DeptId = deptId;
+	}
+
+	public DGsubsidy() {
 		
 	}
 	
@@ -23,7 +31,7 @@ public class DGsubsidy  implements Serializable {
 		this.setCostId(costId);
 		this.setSwipeCardTime(swipeCardTime);
 		this.setSwipeCardTime2(swipeCardTime2);
-		this.setClassStart(classStart);
+		this.setClass_Start(classStart);
 	}
 
 	public String getEmpId() {
@@ -74,12 +82,14 @@ public class DGsubsidy  implements Serializable {
 		SwipeCardTime2 = swipeCardTime2;
 	}
 
-	public String getClassStart() {
-		return ClassStart;
+	public String getClass_Start() {
+		return Class_Start;
 	}
 
-	public void setClassStart(String classStart) {
-		ClassStart = classStart;
+	public void setClass_Start(String class_Start) {
+		Class_Start = class_Start;
 	}
+
+	
 
 }

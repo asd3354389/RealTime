@@ -38,7 +38,7 @@
   		</div>
   		
   		<div class="control-group">
-    		<label class="control-label" for="RTLINE">事實系統對應的產線名稱</label>
+    		<label class="control-label" for="RTLINE">實時系統對應的產線名稱</label>
     		<div class="controls">
       			<select id="RTLINE" class="RTLINE" name="RTLINE">     				
       			</select>

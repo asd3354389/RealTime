@@ -67,7 +67,8 @@ $(document)
 										}*/
 
 										var ssDate = $("#dpick1").val();
-										if (ssDate == "") {
+										var eeDate = $("#dpick2").val();
+										if (ssDate == "" || eeDate == "") {
 											alert("請選擇查詢日期")
 											return;
 										} /*else if (((ssDate && eeDate) != ""
@@ -106,7 +107,7 @@ $(document)
 																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">' 
 																		+ data[i].costid + '</td>' 
 																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
-																		+ data[i].depid + '</td>'
+																		+ data[i].deptid + '</td>'
 																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 																		+ data[i].depname + '</td>'
 																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
@@ -197,7 +198,7 @@ $(document)
 																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">' 
 																		+ data[i].costid + '</td>' 
 																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
-																		+ data[i].depid + '</td>'
+																		+ data[i].deptid + '</td>'
 																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 																		+ data[i].depname + '</td>'
 																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
@@ -527,7 +528,7 @@ $(document)
 								tableBodyElement += '<tr><td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 										+ queryResult[i].id + '</td>' + '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 										+ queryResult[i].name + '</td>'
-										+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">' + queryResult[i].depid
+										+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">' + queryResult[i].deptid
 										+ '</td>' + '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 										+ queryResult[i].costid + '</td>'
 										+ '<td>' + queryResult[i].swipe_date

@@ -18,6 +18,7 @@ public class QueryEMPMapper implements RowMapper<Emp>{
 		emp.setCostID(rs.getString("costid"));
 		emp.setJob_Title(rs.getString("Job_Title"));
 		emp.setJob_Name(rs.getString("Job_Name"));
+		emp.setDeptid(rs.getString("deptid"));
 		// TODO Auto-generated method stub
 		return emp;
 	}

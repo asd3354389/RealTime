@@ -182,7 +182,7 @@ public class AccountDAO extends DAO<User> {
 		int updateRow=-1,updateRole=-1;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
-		String sSQL="UPDATE SWIPE.USER_DATA SET Assistant_Id=?,CostId=?,Phone_Tel=?,Update_User=? WHERE UserName=?";
+		String sSQL="UPDATE SWIPE.USER_DATA SET Assistant_Id=?,CostId=?,Phone_Tel=?,Update_User=?,Departmentcode=? WHERE UserName=?";
 		try {
 			if(updateRecord!=null) {
 				String sSQLrole="UPDATE USER_Roles SET ROLE=?,Update_User=? WHERE UserName=?";
@@ -203,7 +203,8 @@ public class AccountDAO extends DAO<User> {
 						arg0.setString(2, updateRecord.getCOSTID());
 						arg0.setString(3, updateRecord.getPHONE_TEL());
 						arg0.setString(4, updateRecord.getUPDATE_USER());
-						arg0.setString(5, updateRecord.getUSERNAME());
+						arg0.setString(5, updateRecord.getDEPARTMENTCODE());
+						arg0.setString(6, updateRecord.getUSERNAME());
 					}	
 				});
 				transactionManager.commit(txStatus);
@@ -353,6 +354,25 @@ public class AccountDAO extends DAO<User> {
 	public int getTotalRecords(String userDataCostId, User t) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	public List<String> GetLoginRole(String userName) {
+		// TODO Auto-generated method stub
+		List<String>  selectUsers = null;
+		String sSQL = " select role from user_roles where username=?";
+		try {		
+			selectUsers= jdbcTemplate.queryForList(sSQL, new Object[]{userName},String.class); 
+			/***
+			 * spring jdbc 的queryForMap() 或者queryForObject().
+			 * 这两个函数查询数据库的时候只能查询一条数据 而且 必须在数据库中有一条符合条件的数据。
+			 * 如果没有符合查询条件的数据或者查询出多条数据都会报 Incorrect result size 错误.
+			 */
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			//ex.printStackTrace();
+			//logger.error("Search User Infos is failed",ex);
+			return null;
+		}
+		return selectUsers;
 	}
 	
 

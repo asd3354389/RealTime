@@ -26,6 +26,7 @@ public class CalOvertimeMapper implements RowMapper<EmpInOTPendingSheet> {
 		overTime.setOffDutyTime(desiredFormat.format(rs.getTimestamp("SWIPECARDTIME2")));
 		overTime.setOverTimeHour(rs.getString("OVERTIMEHOUR"));
 		overTime.setOverTimeInterval(rs.getString("OVERTIMEINTERVAL"));
+		overTime.setBONUS(rs.getString("BONUS"));
 		return overTime;
 	}
 	

@@ -29,6 +29,11 @@ public class QueryOTMapper implements RowMapper<QueryStatus>{
 		queryStatus.setREASON(rs.getString("REASON"));
 		queryStatus.setBACKTIME(rs.getDate("BACKTIME"));
 		queryStatus.setWORKSHOPNO(rs.getString("WORKSHOPNO"));
+		queryStatus.setBonus(rs.getString("BONUS"));
+		queryStatus.setNOTESSTATES_B(rs.getInt("NOTESSTATES_B"));
+		queryStatus.setREASON_B(rs.getString("REASON_B"));
+		queryStatus.setBACKTIME_B(rs.getDate("BACKTIME_B"));
+		queryStatus.setDeptid(rs.getString("deptid"));
 	
 		return queryStatus;
 	}
