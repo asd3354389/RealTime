@@ -251,4 +251,11 @@
 	<bean id="classNoRestService" class="com.foxlink.realtime.service.ClassNoRestService">
 		<property name="classNoRestDao" ref="classNoRestDao" />
 	</bean>
+	
+	<bean id="workShopStatusDAO" class="com.foxlink.realtime.DAO.WorkShopStatusDAO"
+		parent="dAO">
+	</bean>
+	<bean id="workShopStatusService" class="com.foxlink.realtime.service.WorkShopStatusService">
+		<property name="workShopStatusDAO" ref="workShopStatusDAO" />
+	</bean>
 </beans>

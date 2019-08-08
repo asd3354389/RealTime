@@ -106,6 +106,11 @@
 				"url" : "FourteenRO/ShowFourteenRO"
 
 			},{
+				"menuname" : "車間綫體維護",
+				"icon" : "icon-nav",
+				"url" : "WorkShopStatus/ShowWorkShopStatus"
+
+			},{
 				"menuname" : "班別加班休息時間維護",
 				"icon" : "icon-nav",
 				"url" : "ClassNoRest/ShowClassNoRestInfo"
