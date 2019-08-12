@@ -13,11 +13,13 @@
 <c:url value="/resources/assets/css/plugins.css" var="pluginsCSS" />
 <c:url value="/resources/assets/css/main.css" var="mainCSS" />
 <c:url value="/resources/css/bootstrap/bootstrap-select.min.css" var="bootstrapSelectCSS" />
+<c:url value="/resources/assets/css/other.css" var="otherCSS" />
 <link href="${iconsCSS}" rel="stylesheet">
 <link href="${bootstrapCSS}" rel="stylesheet">
 <link href="${pluginsCSS}" rel="stylesheet">
 <link href="${mainCSS}" rel="stylesheet">
 <link href="${bootstrapSelectCSS}" rel="stylesheet">
+<link href="${otherCSS}" rel="stylesheet">
 
 <c:url value="/resources/assets/js/jquery-1.8.3.min.js" var="assetsJqueryJS" />
 <c:url value="/resources/js/Project/RealTime.Modify.WorkShopStatus.js?version=${resourceVersion}" var="modifyWorkShopStatus" /> 
@@ -35,15 +37,15 @@
 </head>
 <body style="position:relative;">
 		<div id="header" class="header-fixed">
-		<div class="navbar">
+		<div class="navbar" id='nav-other'>
 			<a class="navbar-brand" href="Login"> <i
 				class="im-windows8 text-logo-element animated bounceIn"></i> <span
-				class="text-logo">FOX</span><span class="text-slogan">LINK</span>
+				class="text-logo">FOX</span><span class="text-slogan" id='font-other'>LINK</span>
 			</a>
 		</div>
 		<!-- Start .header-inner -->
 	</div>
-<div class="container-fluid"  style="margin: 50px 10% 0 0;">
+<div class="container-fluid" id='content-other' style="margin: 50px 10% 0 0;">
 	<div style="top: 55px; margin-left: 10px">
 		<div class="panel-body" style="border: 1px solid #e1e3e6;">
 			<div align="right">

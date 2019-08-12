@@ -63,7 +63,7 @@ public class WorkShopStatusDAO extends DAO<WorkShopStatus> {
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
-		    sSQL += "order by t.WorkShopNo)c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+" " ;
+		    sSQL += "order by t.WorkShopNo,t.lineNo)c) where rn>"+page.getStartIndex()+" and rn<="+endIndex+" " ;
 		   /* where rn>"+page.getStartIndex()+" and rn<="+endIndex+"*/
 		  if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);

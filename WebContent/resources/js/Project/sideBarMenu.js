@@ -106,11 +106,6 @@
 				"url" : "FourteenRO/ShowFourteenRO"
 
 			},{
-				"menuname" : "車間綫體維護",
-				"icon" : "icon-nav",
-				"url" : "WorkShopStatus/ShowWorkShopStatus"
-
-			},{
 				"menuname" : "班別加班休息時間維護",
 				"icon" : "icon-nav",
 				"url" : "ClassNoRest/ShowClassNoRestInfo"
@@ -119,6 +114,17 @@
 		},{
 
 			"menuid" : "56",
+			"icon" : "icon-sys",
+			"menuname" : "綫體狀態維護",
+			"menus" : [{
+				"menuname" : "車間綫體維護",
+				"icon" : "icon-nav",
+				"url" : "WorkShopStatus/ShowWorkShopStatus"
+
+			}]
+		},{
+
+			"menuid" : "57",
 			"icon" : "icon-sys",
 			"menuname" : "系統信息管理",
 			"menus" : [ {
@@ -134,7 +140,7 @@
 				"icon" : "icon-nav",
 				"url" : "WorkShop/ShowAllWorkShop"
 			}]
-		} ]
+		}]
 	};
 
 	$(function() {
