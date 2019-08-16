@@ -121,6 +121,11 @@
 				"icon" : "icon-nav",
 				"url" : "WorkShopStatus/ShowWorkShopStatus"
 
+			},{
+				"menuname" : "車間員工權限維護",
+				"icon" : "icon-nav",
+				"url" : "EmpPrivilege/ShowEmpPrivilege"
+
 			}]
 		},{
 

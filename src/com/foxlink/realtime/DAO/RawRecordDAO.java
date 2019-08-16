@@ -222,9 +222,7 @@ private static Logger logger=Logger.getLogger(RawRecordDAO.class);
 			{
 				sSQL += " order by e.costID,e.depid,e.deptid,r.id,r.swipecardtime ) a ) where 1=1";
 			}
-		    	    System.out.println("刷卡記錄=======>>"+sSQL);
 		    searchRawRecord = jdbcTemplate.query(sSQL,  queryList.toArray(), new SearchRawRecordInfoMapper());			    
-		    System.out.println("查詢的數據"+searchRawRecord);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.error("Search RawRecords Record is failed",ex);

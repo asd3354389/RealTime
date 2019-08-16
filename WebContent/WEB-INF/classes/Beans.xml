@@ -258,4 +258,11 @@
 	<bean id="workShopStatusService" class="com.foxlink.realtime.service.WorkShopStatusService">
 		<property name="workShopStatusDAO" ref="workShopStatusDAO" />
 	</bean>
+	
+	<bean id="empPrivilegeDAO" class="com.foxlink.realtime.DAO.EmpPrivilegeDAO"
+		parent="dAO">
+	</bean>
+	<bean id="empPrivilegeService" class="com.foxlink.realtime.service.EmpPrivilegeService">
+		<property name="empPrivilegeDAO" ref="empPrivilegeDAO" />
+	</bean>
 </beans>
