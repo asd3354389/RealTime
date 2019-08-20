@@ -134,7 +134,7 @@ public class EmpPrivilegeDAO extends DAO<EmpPrivilege>{
 	public int addEmpPrivilege(List<String> existIdList, String privilege, String updateUser){
 		// TODO Auto-generated method stub
 		int createRow=0;
-		String DSQL = "update EMP_PRIVILEGE_LEVEL t set t.enabled = 'N' where t.id = ? and t.enabled = 'Y' ";
+		String DSQL = "update EMP_PRIVILEGE_LEVEL t set t.enabled = 'N',t.Update_Time=sysdate,t.Update_Userid=? where t.id = ? and t.enabled = 'Y' ";
 		String ISQL = "insert into EMP_PRIVILEGE_LEVEL(id,Privilege_Level,Update_Time,Update_Userid,Enabled) values(?,?,sysdate,?,'Y') ";
 		try{
 			txDef = new DefaultTransactionDefinition();
@@ -144,7 +144,8 @@ public class EmpPrivilegeDAO extends DAO<EmpPrivilege>{
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					// TODO Auto-generated method stub
-					ps.setString(1,existIdList.get(i));
+					ps.setString(1,updateUser);
+					ps.setString(2,existIdList.get(i));
 				}
 				
 				@Override
@@ -186,7 +187,7 @@ public class EmpPrivilegeDAO extends DAO<EmpPrivilege>{
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		String sSQL = "update EMP_PRIVILEGE_LEVEL t set t.enabled = 'N' where t.id = ? and t.enabled = 'Y' ";
+		String sSQL = "update EMP_PRIVILEGE_LEVEL t set t.enabled = 'N',t.Update_Time=sysdate,t.Update_Userid=? where t.id = ? and t.enabled = 'Y' ";
 		int disableRow=0;
 		try {
 			  if (empPrivilege!=null) {
@@ -195,7 +196,8 @@ public class EmpPrivilegeDAO extends DAO<EmpPrivilege>{
 						@Override
 						public void setValues(PreparedStatement ps, int i) throws SQLException {
 							// TODO Auto-generated method stub
-							ps.setString(1, empPrivilege[i].getId());
+							ps.setString(1,updateUser);
+							ps.setString(2, empPrivilege[i].getId());
 						}
 						
 						@Override
