@@ -35,7 +35,7 @@ public class GetDepidDao extends DAO<GetDepid>{
 
 	
 	public List<GetDepid> FindRecord(GetDepid getDepid) {
-		String sql="select distinct(depid) from swipe.csr_employee where costid= ? order by depid";
+		String sql="select distinct(deptid) from swipe.csr_employee where costid= ? order by deptid";
 		List<GetDepid> getDepids=null;
 		List<Object> queryList = new ArrayList<Object>();
 		queryList.add(getDepid.getCostid());

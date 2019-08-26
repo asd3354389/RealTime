@@ -14,6 +14,20 @@ public class QueryShift {
 	private String class_no;
 	private String class_end;
 	private String class_start;
+	private String deptid;
+	
+	@Override
+	public String toString() {
+		return "QueryShift [id=" + id + ", name=" + name + ", depid=" + depid + ", costid=" + costid + ", emp_date="
+				+ emp_date + ", empDateEnd=" + empDateEnd + ", update_time=" + update_time + ", class_no=" + class_no
+				+ ", class_end=" + class_end + ", class_start=" + class_start + ", deptid=" + deptid + "]";
+	}
+	public String getDeptid() {
+		return deptid;
+	}
+	public void setDeptid(String deptid) {
+		this.deptid = deptid;
+	}
 	public String getId() {
 		return id;
 	}

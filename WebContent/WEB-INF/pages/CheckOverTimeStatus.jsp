@@ -10,7 +10,7 @@
 <c:url value="/resources/css/main.css" var="mainCSS"></c:url>
 <c:url value="/resources/css/plugins.css" var="pluginsCSS"></c:url>
 <c:url value="/resources/css/bootstrap/bootstrap.min.css" var="bootstrapCSS"></c:url>
-<c:url value="/resources/My97DatePicker/WdatePicker.js" var="WdatePicker"></c:url>
+<c:url value="/resources/assets/My97DatePicker/WdatePicker.js" var="WdatePicker"></c:url>
 <c:url value="/resources/js/jquery/jquery-1.11.3.min.js" var="jqueryJS"></c:url>
 <c:url value="/resources/js/Project/QueryEmpStatus.js?version=${resourceVersion}" var="QueryEmpStatusJS"></c:url>
 <c:url value="/resources/js/Project/jquery.table2excel.js" var="table2excelJS"></c:url>
@@ -104,9 +104,13 @@
 						<th>加班時段</th>
 						<th>助理姓名</th>
 						<th>助理工號</th>
-						<th>NOTES狀態</th>
-						<th>NOTES回饋原因</th>
-						<th>NOTES回饋時間</th>
+						<th>NOTES加班狀態</th>
+						<th>NOTES加班回饋原因</th>
+						<th>NOTES加班回饋時間</th>
+						<th>頂崗時數</th>
+						<th>NOTES頂崗狀態</th>
+						<th>NOTES頂崗回饋原因</th>
+						<th>NOTES頂崗回饋時間</th>
 						<th>車間</th>
 						<th></th>
 					</tr>

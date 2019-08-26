@@ -18,7 +18,7 @@ public class ResourcePathVersion implements ServletContextAware {
     }  
   
     public void init(){  
-        String version = "1.1.1";  
+        String version = "1.1.2";  
         getServletContext().setAttribute("resourceVersion", version);  
     }  
 }  

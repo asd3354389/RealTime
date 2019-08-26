@@ -334,7 +334,7 @@ function SubmitEmployeeOverTimeInfo2ServerByDepid(IsAbnormal, OThourConfirm) {
 }
 
 function OverTimeSheet(employeeID, employeeName, deptID, direct, costID, yd,
-    onDutyTime, offDutyTime, OverTimeInterval, OverTimeHours) {
+    onDutyTime, offDutyTime, OverTimeInterval, OverTimeHours,BONUS) {
     /*加班人員資訊*/
     this.employeeID = employeeID;
     this.employeeName = employeeName;
@@ -357,6 +357,7 @@ function OverTimeSheet(employeeID, employeeName, deptID, direct, costID, yd,
     }
     this.overTimeInterval = OverTimeInterval;
     this.overTimeHours = OverTimeHours;
+    this.bonus = BONUS;
 }
 
 

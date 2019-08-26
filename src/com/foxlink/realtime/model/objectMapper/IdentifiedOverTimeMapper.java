@@ -20,6 +20,7 @@ public class IdentifiedOverTimeMapper implements RowMapper<IdentifiedOverTime> {
 		overTime.setOverTimeType(rs.getInt("overtimetype"));
 		overTime.setNoteStates(rs.getInt("notesStates"));
 		overTime.setReason(rs.getString("Reason"));
+		overTime.setBonus(rs.getString("bonus"));
 		return overTime;
 	}
 

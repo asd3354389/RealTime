@@ -41,31 +41,15 @@ public class OverTime15minController {
 			// QueryService queryService = (QueryService)
 			// applicationContext.getBean("queryService");
 			String jsonResults = "";
-			String timeStart = queryOT15min.getTimeStart();
-			String timeEnd = queryOT15min.getTimeEnd();
-			SimpleDateFormat sdf =new SimpleDateFormat("yyy-MM-dd");
-			Calendar cal = Calendar.getInstance();
-			List<EmpOT15min> allList = new ArrayList<EmpOT15min>();
 			try {
-				Date ds = sdf.parse(timeStart);
-				Date de = sdf.parse(timeEnd);
 				String userDataCostId=(String) session.getAttribute("userDataCostId");
 				if(userDataCostId!=""&&userDataCostId!=null){
-					System.out.println(queryOT15min);
+				System.out.println(queryOT15min);
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				ot15minService = (OT15minService) context.getBean("OT15minService");
 				Gson gson = new GsonBuilder().serializeNulls().create();
-				while(de.compareTo(ds)>=0){
-					queryOT15min.setTimeStart(sdf.format(ds));
-					cal.setTime(ds);
-					cal.add(Calendar.DAY_OF_YEAR, 1);
-					ds= cal.getTime();
-					List<EmpOT15min> list=ot15minService.FindQueryRecords(userDataCostId,queryOT15min);
-					if(list!=null){
-						allList.addAll(list);
-					}
-				}
-				jsonResults = gson.toJson(allList);
+				List<EmpOT15min> list=ot15minService.FindQueryRecords(userDataCostId,queryOT15min);
+				jsonResults = gson.toJson(list);
 			}else{
 				JsonObject costIdJson=new JsonObject();
 				costIdJson.addProperty("ErrorMessage", "该賬號沒有查詢上下班刷卡超15分鐘的權限！");
@@ -79,7 +63,7 @@ public class OverTime15minController {
 			}
 			return jsonResults;
 		}
-		
+		/*mysql的歷史上下班刷卡記錄*/
 		@RequestMapping(value = "/CheckOT15minHistoryJsonAll.show", method = RequestMethod.POST, produces = "Application/json;charset=utf-8")
 		public @ResponseBody String queryEmps15minJsonAllHistory(HttpSession session,@ModelAttribute EmpOT15min queryOT15min) {
 			// ApplicationContext applicationContext = new

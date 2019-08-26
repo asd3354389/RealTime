@@ -120,7 +120,7 @@ $(document).ready(function() {
                     	 WorkshopNO = $(parentElement).children().eq(0).text();
                     	 if(byWorkShopOrLineNo=='byLineNo'){
                     		 LineNo = $(parentElement).children().eq(1).text();
-                    		 if(LineNo==='null')
+                    		 if(LineNo=='null')
                          		LineNo='';
                     		 RC_NO = $(parentElement).children().eq(4).text();
                     		 ClassNo = $(parentElement).children().eq(3).text();

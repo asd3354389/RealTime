@@ -21,6 +21,7 @@ public class QueryShiftMapper implements RowMapper<QueryShift> {
 		queryShift.setEmp_date(rs.getString("emp_date"));
 		queryShift.setUpdate_time(rs.getString("update_time"));
 		queryShift.setClass_no(rs.getString("class_no"));
+		queryShift.setDeptid(rs.getString("deptid"));
 		return queryShift;
 	}
 
