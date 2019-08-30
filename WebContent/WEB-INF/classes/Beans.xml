@@ -265,4 +265,11 @@
 	<bean id="empPrivilegeService" class="com.foxlink.realtime.service.EmpPrivilegeService">
 		<property name="empPrivilegeDAO" ref="empPrivilegeDAO" />
 	</bean>
+	
+	<bean id="wSListStatusDAO" class="com.foxlink.realtime.DAO.WSListStatusDAO"
+		parent="dAO">
+	</bean>
+	<bean id="wSListStatusService" class="com.foxlink.realtime.service.WSListStatusService">
+		<property name="wSListStatusDAO" ref="wSListStatusDAO" />
+	</bean>
 </beans>
