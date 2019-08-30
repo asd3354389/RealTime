@@ -126,6 +126,11 @@
 				"icon" : "icon-nav",
 				"url" : "EmpPrivilege/ShowEmpPrivilege"
 
+			},{
+				"menuname" : "產綫維護",
+				"icon" : "icon-nav",
+				"url" : "WSListStatus/ShowWSListStatus"
+
 			}]
 		},{
 
