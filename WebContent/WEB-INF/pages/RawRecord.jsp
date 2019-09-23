@@ -113,6 +113,7 @@
 					<input type="checkbox" name="recordStatus" value="5">刷卡重復 
 					<input type="checkbox" name="recordStatus" value="6">上下班卡已刷 
 					<input type="checkbox" name="recordStatus" value="7">無網絡記錄回寫
+					<input type="checkbox" name="recordStatus" value="8">換線刷卡記錄
 				</div>
 				<div class="col-sm-12 col-sm-12" style="margin: 5px;">				   
 					<input type="button" id="searchRawRecordBtn" name="searchRawRecordBtn" class="btn btn-sm btn-primary" value="查詢">

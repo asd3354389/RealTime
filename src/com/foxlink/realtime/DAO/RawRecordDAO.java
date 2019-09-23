@@ -73,7 +73,7 @@ private static Logger logger=Logger.getLogger(RawRecordDAO.class);
  			
  			}
  			if(!depId.equals("")){
- 				sSQL+=" and e.depId in(";  
+ 				sSQL+=" and e.deptId in(";  
  				  String [] depIdArray = depId.split(",");
  		            for(int i=0;i<depIdArray.length;i++){
  		            	sSQL+="'"+depIdArray[i].trim()+"'";
@@ -140,7 +140,7 @@ private static Logger logger=Logger.getLogger(RawRecordDAO.class);
 		// TODO Auto-generated method stub
 		List<SearchRawRecordInfo> searchRawRecord = null;
 		String sSQL = "select * from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from "
-				+ "(SELECT r.id empId,e.name,e.depid,e.costId,to_char(r.SwipeCardTime,'yyyy-MM-dd HH24:mi:ss') swipeCardTime,r.IP_ADDRESS swipeCardIpAddress"
+				+ "(SELECT r.id empId,e.name,e.depid,e.deptid,e.costId,to_char(r.SwipeCardTime,'yyyy-MM-dd HH24:mi:ss') swipeCardTime,r.IP_ADDRESS swipeCardIpAddress"
 				+ " FROM SWIPE.raw_record r join SWIPE.csr_employee e on r.id=e.id where e.isOnwork='0'";
 		try {	
 			 List <Object> queryList=new  ArrayList<Object>();  
@@ -157,7 +157,7 @@ private static Logger logger=Logger.getLogger(RawRecordDAO.class);
 			
 			}
 			if(!depId.equals("")){
-				sSQL+=" and e.depId in(";  
+				sSQL+=" and e.deptId in(";  
 				  String [] depIdArray = depId.split(",");
 		            for(int i=0;i<depIdArray.length;i++){
 		            	sSQL+="'"+depIdArray[i].trim()+"'";
@@ -216,15 +216,13 @@ private static Logger logger=Logger.getLogger(RawRecordDAO.class);
 			if(!isShowAll){
 				Page page = new Page(currentPage, totalRecord);	  
 				int endIndex=page.getStartIndex() + page.getPageSize();
-				sSQL += " order by e.costID,e.depid,r.id,r.swipecardtime ) a ) where rnum > "+page.getStartIndex()+" and rnum <= "+ endIndex ;
+				sSQL += " order by e.costID,e.depid,e.deptid,r.id,r.swipecardtime ) a ) where rnum > "+page.getStartIndex()+" and rnum <= "+ endIndex ;
 			}
 			else
 			{
-				sSQL += " order by e.costID,e.depid,r.id,r.swipecardtime ) a ) where 1=1";
+				sSQL += " order by e.costID,e.depid,e.deptid,r.id,r.swipecardtime ) a ) where 1=1";
 			}
-		    	    
 		    searchRawRecord = jdbcTemplate.query(sSQL,  queryList.toArray(), new SearchRawRecordInfoMapper());			    
-		
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.error("Search RawRecords Record is failed",ex);

@@ -24,7 +24,7 @@
 				"icon" : "icon-nav",
 				"url" : "ShowCheckOverTime15min"
 			},{
-				"menuname" : "忘卡人员查询",
+				"menuname" : "全天無刷卡人员查询",
 				"icon" : "icon-nav",
 				"url" : "ShowCheckForgetCard"
 			},{
@@ -48,8 +48,93 @@
 				"icon" : "icon-nav",
 				"url" : "LineMapping/ShowAllLineMapping"
 			}]
-		}, {
+		},{
+			"menuid" : "55",
+			"icon" : "icon-sys",
+			"menuname" : "車間門禁管理",
+			"menus" : [ {
+				"menuname" : "隨綫人員維護",
+				"icon" : "icon-nav",
+				"url" : "FlinePerson/ShowFlinePersonMaintain"
+			},{
+				"menuname" : "離崗卡與費用代碼綁定維護",
+				"icon" : "icon-nav",
+				"url" : "OTCardPerson/ShowOTCardbdPerson"
+			},{
+
+				"menuname" : "線組代碼對應的實時卡機設定",
+				"icon" : "icon-nav",
+				"url" : "IpBinding/ShowIpBinding"
+			},{
+
+				"menuname" : "員工對應的實時卡機設定",
+				"icon" : "icon-nav",
+				"url" : "EmpIPBinding/ShowEmpIPBinding"
+			},{
+
+				"menuname" : "進出車間卡機IP維護",
+				"icon" : "icon-nav",
+				"url" : "IOCardBdIP/ShowIOCardbdIP"
+
+			},{
+				"menuname" : "進出車間臨時權限維護",
+				"icon" : "icon-nav",
+				"url" : "IOWorkShopPower/ShowIOWorkShopPwList"
+
+			},{
+				"menuname" : "保密車間臨時權限維護",
+				"icon" : "icon-nav",
+				"url" : "IOSpecialWSEmp/ShowIOSpecialWSEmp"
+			},{
+				"menuname" : "維護車間休息時間段",
+				"icon" : "icon-nav",
+				"url" : "WorkShopNoRest/ShowWorkshopNoRestInfo"
+
+			},{
+				"menuname" : "进出车间门禁記錄查詢",
+				"icon" : "icon-nav",
+				"url" : "IOWorkShop/ShowIOWorkShopRecord"
+
+			},{
+				"menuname" : "車間例外費用代碼維護",
+				"icon" : "icon-nav",
+				"url" : "ExceptionCost/ShowExceptionCost"
+
+			},{
+				"menuname" : "十四休一維護",
+				"icon" : "icon-nav",
+				"url" : "FourteenRO/ShowFourteenRO"
+
+			},{
+				"menuname" : "班別加班休息時間維護",
+				"icon" : "icon-nav",
+				"url" : "ClassNoRest/ShowClassNoRestInfo"
+
+			}]
+		},{
+
 			"menuid" : "56",
+			"icon" : "icon-sys",
+			"menuname" : "綫體狀態維護",
+			"menus" : [{
+				"menuname" : "車間綫體維護",
+				"icon" : "icon-nav",
+				"url" : "WorkShopStatus/ShowWorkShopStatus"
+
+			},{
+				"menuname" : "車間員工權限維護",
+				"icon" : "icon-nav",
+				"url" : "EmpPrivilege/ShowEmpPrivilege"
+
+			},{
+				"menuname" : "產綫維護",
+				"icon" : "icon-nav",
+				"url" : "WSListStatus/ShowWSListStatus"
+
+			}]
+		},{
+
+			"menuid" : "57",
 			"icon" : "icon-sys",
 			"menuname" : "系統信息管理",
 			"menus" : [ {
@@ -65,7 +150,7 @@
 				"icon" : "icon-nav",
 				"url" : "WorkShop/ShowAllWorkShop"
 			}]
-		} ]
+		}]
 	};
 
 	$(function() {

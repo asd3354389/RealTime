@@ -10,20 +10,15 @@
 					http://www.springframework.org/schema/context/spring-context-4.0.xsd"
 	default-autowire="byName">
 
+	<context:property-placeholder location="classpath:db.properties"/>
 <!--    <context:component-scan base-package="com.foxlink.realtime.*" /> -->
    <!-- 實時工時連線資訊 -->   
    <!-- Oracle DB 連線資訊 -->
 	<bean id="OracleDataSource" class = "org.springframework.jdbc.datasource.DriverManagerDataSource">
-      	<property name = "driverClassName" value = "oracle.jdbc.driver.OracleDriver"/>
-      	<!-- <property name="url" value="jdbc:oracle:thin:@192.168.64.224:1521:rtodb" />
-		<property name="username" value="swipe" />
-		<property name="password" value="mis_realt" /> -->
-		<property name="url" value="jdbc:oracle:thin:@192.168.144.187:1521:scard" />
-		<property name="username" value="swipe" />
-		<property name="password" value="mis_swipe" />
-		<!-- <property name="url" value="jdbc:oracle:thin:@192.168.144.187:1521:scard" />
-		<property name="username" value="swipe" />
-		<property name="password" value="mis_swipe" /> -->
+      	<property name = "driverClassName" value = "${jdbc.driverClassName}"/>
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
     </bean>
     
 	 <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
@@ -169,5 +164,112 @@
 	</bean>
 	<bean id="OT15minService" class="com.foxlink.realtime.service.OT15minService">
 		<property name="OT15minDAO" ref="OT15minDAO" />
+	</bean>
+	
+	<bean id="fLinePersonMtDAO" class="com.foxlink.realtime.DAO.FLinePersonMtDAO"
+		parent="dAO">
+	</bean>
+	<bean id="fLinePersonMtService" class="com.foxlink.realtime.service.FLinePersonMtService">
+		<property name="fLinePersonMtDAO" ref="fLinePersonMtDAO" />
+	</bean> 
+	
+	<bean id="oTCardbdPersonDAO" class="com.foxlink.realtime.DAO.OTCardbdPersonDAO"
+		parent="dAO">
+	</bean>
+	<bean id="oTCardbdPersonService" class="com.foxlink.realtime.service.OTCardbdPersonService">
+		<property name="oTCardbdPersonDAO" ref="oTCardbdPersonDAO" />
+	</bean>
+
+    <bean id="ipBindingDAO" class="com.foxlink.realtime.DAO.IpBindingDAO"
+		parent="dAO">
+	</bean>
+	<bean id="ipBindingService" class="com.foxlink.realtime.service.IpBindingService">
+		<property name="ipBindingDAO" ref="ipBindingDAO" />
+	</bean>
+	
+	<bean id="iOCardbdIPDAO" class="com.foxlink.realtime.DAO.IOCardbdIPDAO"
+		parent="dAO">
+	</bean>
+	<bean id="iOCardbdIPService" class="com.foxlink.realtime.service.IOCardbdIPService">
+		<property name="iOCardbdIPDAO" ref="iOCardbdIPDAO" />
+	</bean>
+	
+
+	<bean id="iOWorkShopPowerDAO" class="com.foxlink.realtime.DAO.IOWorkShopPowerDAO"
+		parent="dAO">
+	</bean>
+	<bean id="iOWorkShopPowerService" class="com.foxlink.realtime.service.IOWorkShopPowerService">
+		<property name="iOWorkShopPowerDAO" ref="iOWorkShopPowerDAO" />
+	</bean>
+
+	<bean id="workshopNoRestDao" class="com.foxlink.realtime.DAO.WorkshopNoRestDao"
+		parent="dAO">
+	</bean>
+	<bean id="workshopNoRestService" class="com.foxlink.realtime.service.WorkshopNoRestService">
+		<property name="workshopNoRestDao" ref="workshopNoRestDao" />
+	</bean>
+	
+	<bean id="iOWorkShopRecordDAO" class="com.foxlink.realtime.DAO.IOWorkShopRecordDAO"
+		parent="dAO">
+	</bean>
+	<bean id="iOWorkShopRecordService" class="com.foxlink.realtime.service.IOWorkShopRecordService">
+		<property name="iOWorkShopRecordDAO" ref="iOWorkShopRecordDAO" />
+	</bean>
+	
+	<bean id="empIPBindingDAO" class="com.foxlink.realtime.DAO.EmpIPBindingDAO"
+		parent="dAO">
+	</bean>
+	<bean id="empIPBindingService" class="com.foxlink.realtime.service.EmpIPBindingService">
+		<property name="empIPBindingDAO" ref="empIPBindingDAO" />
+	</bean>
+	
+	<bean id="iOSpecialWSEmpDAO" class="com.foxlink.realtime.DAO.IOSpecialWSEmpDAO"
+		parent="dAO">
+	</bean>
+	<bean id="iOSpecialWSEmpService" class="com.foxlink.realtime.service.IOSpecialWSEmpService">
+		<property name="iOSpecialWSEmpDAO" ref="iOSpecialWSEmpDAO" />
+	</bean>
+
+
+	<bean id="exceptionCostDAO" class="com.foxlink.realtime.DAO.ExceptionCostDAO"
+		parent="dAO">
+	</bean>
+	<bean id="exceptionCostService" class="com.foxlink.realtime.service.ExceptionCostService">
+		<property name="exceptionCostDAO" ref="exceptionCostDAO" />
+	</bean>
+	
+	<bean id="fourteenRODAO" class="com.foxlink.realtime.DAO.FourteenRODAO"
+		parent="dAO">
+	</bean>
+	<bean id="fourteenROService" class="com.foxlink.realtime.service.FourteenROService">
+		<property name="fourteenRODAO" ref="fourteenRODAO" />
+	</bean>
+	
+	<bean id="classNoRestDao" class="com.foxlink.realtime.DAO.ClassNoRestDao"
+		parent="dAO">
+	</bean>
+	<bean id="classNoRestService" class="com.foxlink.realtime.service.ClassNoRestService">
+		<property name="classNoRestDao" ref="classNoRestDao" />
+	</bean>
+	
+	<bean id="workShopStatusDAO" class="com.foxlink.realtime.DAO.WorkShopStatusDAO"
+		parent="dAO">
+	</bean>
+	<bean id="workShopStatusService" class="com.foxlink.realtime.service.WorkShopStatusService">
+		<property name="workShopStatusDAO" ref="workShopStatusDAO" />
+	</bean>
+	
+	<bean id="empPrivilegeDAO" class="com.foxlink.realtime.DAO.EmpPrivilegeDAO"
+		parent="dAO">
+	</bean>
+	<bean id="empPrivilegeService" class="com.foxlink.realtime.service.EmpPrivilegeService">
+		<property name="empPrivilegeDAO" ref="empPrivilegeDAO" />
+	</bean>
+	
+	<bean id="wSListStatusDAO" class="com.foxlink.realtime.DAO.WSListStatusDAO"
+		parent="dAO">
+	</bean>
+	<bean id="wSListStatusService" class="com.foxlink.realtime.service.WSListStatusService">
+		<property name="wSListStatusDAO" ref="wSListStatusDAO" />
 	</bean>
 </beans>

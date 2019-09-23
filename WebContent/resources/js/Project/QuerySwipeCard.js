@@ -104,7 +104,7 @@ $(document)
 																	tableBodyElement += '<tr><td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 																		+ data[i].id + '</td>' + '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 																		+ data[i].name + '</td>'
-																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">' + data[i].depid
+																		+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">' + data[i].deptid
 																		+ '</td>' + '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 																		+ data[i].costid + '</td>'
 																		+ '<td>' + data[i].swipe_date
@@ -267,6 +267,7 @@ $(document)
 						$("#SwipeCardRecords tbody").html("");
 					})
 					$("#submit").click(function() {
+						//alert("上下班刷卡查詢");
 						// var checkbox =
 						// $("input[type='checkbox']").is(':checked');
 						var empNo = $("#empno").val();
@@ -381,6 +382,7 @@ $(document)
 						var data1 = $.param({
 							'curPage' : curPage
 						}) + '&' + $('#form1').serialize();
+						console.log(data1);
 						$.ajax({
 							type : "post",
 							url : 'CheckSCJson.show',
@@ -427,7 +429,7 @@ $(document)
 								tableBodyElement += '<tr><td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 										+ queryResult[i].id + '</td>' + '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 										+ queryResult[i].name + '</td>'
-										+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">' + queryResult[i].depid
+										+ '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">' + queryResult[i].deptid
 										+ '</td>' + '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'
 										+ queryResult[i].costid + '</td>'
 										+ '<td>' + queryResult[i].swipe_date

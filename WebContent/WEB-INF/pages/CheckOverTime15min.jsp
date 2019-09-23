@@ -11,7 +11,7 @@
 <c:url value="/resources/css/plugins.css" var="pluginsCSS"></c:url>
 <c:url value="/resources/css/bootstrap/bootstrap.min.css"
 	var="bootstrapCSS"></c:url>
-<c:url value="/resources/My97DatePicker/WdatePicker.js"	var="WdatePicker"></c:url>
+<c:url value="/resources/assets/My97DatePicker/WdatePicker.js"	var="WdatePicker"></c:url>
 <c:url value="/resources/js/jquery/jquery-1.11.3.min.js" var="jqueryJS"></c:url>
 <c:url value="/resources/js/Project/AjaxCheckSession.js?version=${resourceVersion}" var="AjaxCheckSessionJS"/> 
 <c:url value="/resources/js/Project/QueryOverTime15min.js?version=${resourceVersion}" var="QueryOverTime15min"></c:url>
@@ -59,7 +59,7 @@
 						id="span1"> <span>導入員工ID號</span> <input type="file"
 						disabled="true" id="fu1">
 					</span>&nbsp; 此次共導入：<span id="sumId">0</span>個ID<br> 部門代碼: <input
-						type="text" id="deptno" name="depid" autocomplete="off" /> <input type="checkbox"
+						type="text" id="deptno" name="deptid" autocomplete="off" /> <input type="checkbox"
 						id="chk2">&nbsp; <span
 						class="btn btn-primary fileinput-button" disabled="true"
 						id="span3"> <span>導入部門代碼</span> <input type="file"

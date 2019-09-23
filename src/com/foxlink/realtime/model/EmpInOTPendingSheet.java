@@ -15,7 +15,14 @@ public class EmpInOTPendingSheet {
 	private String OffDutyTime;
 	private String OverTimeHour;
 	private String OverTimeInterval;
+	private String BONUS;
 	
+	public String getBONUS() {
+		return BONUS;
+	}
+	public void setBONUS(String bONUS) {
+		BONUS = bONUS;
+	}
 	public String getEmpID() {
 		return EmpID;
 	}
