@@ -438,7 +438,6 @@ public class OverTimeController {
 			exception.addProperty("Message", "檢查此部門代碼是否有修改時數權限，原因："+ex.toString());
 			checkResult=exception.toString();
 		}
-		System.out.println(checkResult);
 		return checkResult;
 	}
 	

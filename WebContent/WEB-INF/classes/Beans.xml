@@ -251,4 +251,25 @@
 	<bean id="classNoRestService" class="com.foxlink.realtime.service.ClassNoRestService">
 		<property name="classNoRestDao" ref="classNoRestDao" />
 	</bean>
+	
+	<bean id="workShopStatusDAO" class="com.foxlink.realtime.DAO.WorkShopStatusDAO"
+		parent="dAO">
+	</bean>
+	<bean id="workShopStatusService" class="com.foxlink.realtime.service.WorkShopStatusService">
+		<property name="workShopStatusDAO" ref="workShopStatusDAO" />
+	</bean>
+	
+	<bean id="empPrivilegeDAO" class="com.foxlink.realtime.DAO.EmpPrivilegeDAO"
+		parent="dAO">
+	</bean>
+	<bean id="empPrivilegeService" class="com.foxlink.realtime.service.EmpPrivilegeService">
+		<property name="empPrivilegeDAO" ref="empPrivilegeDAO" />
+	</bean>
+	
+	<bean id="wSListStatusDAO" class="com.foxlink.realtime.DAO.WSListStatusDAO"
+		parent="dAO">
+	</bean>
+	<bean id="wSListStatusService" class="com.foxlink.realtime.service.WSListStatusService">
+		<property name="wSListStatusDAO" ref="wSListStatusDAO" />
+	</bean>
 </beans>

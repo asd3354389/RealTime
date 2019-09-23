@@ -31,8 +31,8 @@ $(document).ready(function(){
 	
 	$('#searchJobTitleBtn').click(function(){
 		curPage = 1;
-		var queryCritirea=$('#queryCritirea option:selected').val();
-		var queryParam=$('#queryParam').val();
+		queryCritirea=$('#queryCritirea option:selected').val();
+		queryParam=$('#queryParam').val();
 		getJobTitleInfo(curPage,queryCritirea,queryParam)
 	});
 	

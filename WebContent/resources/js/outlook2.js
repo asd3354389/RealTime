@@ -3,6 +3,8 @@
 	InitLeftMenu();
 	tabClose();
 	tabCloseEven();
+	
+	$('.easyui-accordion').children().eq(2).children().eq(0).css('background','linear-gradient(180deg,#07e2e8,#beedf7)');
 })
 
 // 初始化左侧

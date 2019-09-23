@@ -55,7 +55,6 @@ public class OTCardbdPersonController {
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			Page page = oTCardbdPersonService.getPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId,accessRole);
 			page.setList(oTCardbdPersonService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId,accessRole));
-			System.out.println(gson.toJson(page));
 			JsonResult = gson.toJson(page);
 		} catch (Exception e) {
 			// TODO: handle exception

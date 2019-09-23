@@ -115,6 +115,27 @@
 
 			"menuid" : "56",
 			"icon" : "icon-sys",
+			"menuname" : "綫體狀態維護",
+			"menus" : [{
+				"menuname" : "車間綫體維護",
+				"icon" : "icon-nav",
+				"url" : "WorkShopStatus/ShowWorkShopStatus"
+
+			},{
+				"menuname" : "車間員工權限維護",
+				"icon" : "icon-nav",
+				"url" : "EmpPrivilege/ShowEmpPrivilege"
+
+			},{
+				"menuname" : "產綫維護",
+				"icon" : "icon-nav",
+				"url" : "WSListStatus/ShowWSListStatus"
+
+			}]
+		},{
+
+			"menuid" : "57",
+			"icon" : "icon-sys",
 			"menuname" : "系統信息管理",
 			"menus" : [ {
 				"menuname" : "助理信息管理",
@@ -129,7 +150,7 @@
 				"icon" : "icon-nav",
 				"url" : "WorkShop/ShowAllWorkShop"
 			}]
-		} ]
+		}]
 	};
 
 	$(function() {

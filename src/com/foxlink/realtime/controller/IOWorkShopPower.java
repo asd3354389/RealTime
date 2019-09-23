@@ -56,7 +56,6 @@ public class IOWorkShopPower {
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			Page page = iOWorkShopPowerService.getPersonPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId,accessRole);
 			page.setList(iOWorkShopPowerService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId,accessRole));
-			System.out.println(iOWorkShopPowerService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId,accessRole));
 			JsonResult = gson.toJson(page);
 		} catch (Exception e) {
 			// TODO: handle exception

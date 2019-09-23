@@ -218,7 +218,7 @@ $(document).ready(function(){
 			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["name"]+'</td>'+
 			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["deptid"]+'</td>'+
 			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["costId"]+'</td>'+
-			     '<td>'+executeResult[i]["swipeCardTime"]+'</td>'+
+			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["swipeCardTime"]+'</td>'+
 			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["swipeCardIpAddress"]+'</td></tr>';
 			     $('#rawRecordTable tbody').append(tableContents);
 			  } 

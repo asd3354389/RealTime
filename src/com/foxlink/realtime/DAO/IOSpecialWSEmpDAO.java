@@ -100,7 +100,7 @@ public class IOSpecialWSEmpDAO extends DAO<IOWorkShopPW>{
 			
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
-		    sSQL += "order by t.workshopno,t.emp_id)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+" " ;
+		    sSQL += "order by t.workshopno,t.emp_id,t.Cardid)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+" " ;
 		    
 		    if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);

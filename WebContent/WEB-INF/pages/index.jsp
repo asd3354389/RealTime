@@ -69,6 +69,13 @@
 			<div title="欢迎使用" style="padding: 20px; overflow: hidden;" id="home">
 				<h1>歡迎來到加班自動拋轉系統</h1>
 				<h1 style="color:red;">根據人資規定，所有刷卡記錄只允許查詢近三個月的記錄</h1>
+				<h1 style="color:red;">加班拋轉系統請使用<img src="./resources/images/chromeicon.jpg" alt='谷歌瀏覽器圖標！'/>谷歌瀏覽器拋轉，請不要使用<img src="./resources/images/ieicon.png" alt='ie瀏覽器圖標！'/>IE，<img src="./resources/images/firefoxicon.jpg" alt='火狐瀏覽器圖標！'/>火狐等瀏覽器。如沒有谷歌瀏覽器請自行點擊下方藍色字體下載相對應的谷歌瀏覽器。否則出現報加班的問題請自行用聯絡單修改，或者聯繫林東平36908，陳健文31013，劉峰君31007進行谷歌瀏覽器的安裝。</h1>
+				<div>
+				<a style="font-size: 50px;color: blue;" href="./Utils/DownLoadChrome.do?filename=32" download="64.0.3282.140_chrome32_stable_windows_installer.exe"  target="_blank">點擊下載32位谷歌瀏覽器</a>
+				</div>
+				<div>
+				<a style="font-size: 50px;color: blue;" href="./Utils/DownLoadChrome.do?filename=64" download="chromebeta_x64-v68.0.3440.33.exe"  target="_blank">點擊下載64位谷歌瀏覽器</a>
+				</div>
 				<div>
 				<a style="font-size: 50px;color: blue;" href="./resources/ppt/實時工時系統USERGUIDE.pptx" download="實時工時系統USERGUIDE.pptx"  target="_blank">實時工時SOP下載</a>
 				</div>
