@@ -4,7 +4,7 @@
 	tabClose();
 	tabCloseEven();
 	
-	$('.easyui-accordion').children().eq(2).children().eq(0).css('background','linear-gradient(180deg,#07e2e8,#beedf7)');
+	$('.easyui-accordion').children().eq(3).children().eq(0).css('background','linear-gradient(180deg,#07e2e8,#beedf7)');
 })
 
 // 初始化左侧
