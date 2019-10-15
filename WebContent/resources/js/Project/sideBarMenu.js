@@ -49,6 +49,21 @@
 				"url" : "LineMapping/ShowAllLineMapping"
 			}]
 		},{
+
+			"menuid" : "42",
+			"icon" : "icon-sys",
+			"menuname" : "卡機刷卡設定",
+			"menus" : [{
+				"menuname" : "線組代碼對應的實時卡機設定",
+				"icon" : "icon-nav",
+				"url" : "IpBinding/ShowIpBinding"
+			},{
+
+				"menuname" : "員工對應的實時卡機設定",
+				"icon" : "icon-nav",
+				"url" : "EmpIPBinding/ShowEmpIPBinding"
+			}]
+		},{
 			"menuid" : "55",
 			"icon" : "icon-sys",
 			"menuname" : "車間門禁管理",
@@ -60,16 +75,6 @@
 				"menuname" : "離崗卡與費用代碼綁定維護",
 				"icon" : "icon-nav",
 				"url" : "OTCardPerson/ShowOTCardbdPerson"
-			},{
-
-				"menuname" : "線組代碼對應的實時卡機設定",
-				"icon" : "icon-nav",
-				"url" : "IpBinding/ShowIpBinding"
-			},{
-
-				"menuname" : "員工對應的實時卡機設定",
-				"icon" : "icon-nav",
-				"url" : "EmpIPBinding/ShowEmpIPBinding"
 			},{
 
 				"menuname" : "進出車間卡機IP維護",

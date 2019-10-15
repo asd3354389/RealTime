@@ -311,7 +311,7 @@ public class IOWorkShopRecordDAO extends DAO<IOWSRecord>{
 		// TODO Auto-generated method stub
 		List<IOWSRecord> searchRawRecord = null;
 		String sSQL = "select * from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from "
-				+ "(SELECT r.Emp_id,r.D_Cardid,r.WorkShopNo,'' AS NAME,'' as depid,'' as costId,to_char(r.SwipeCardTime,'yyyy-MM-dd HH24:mi:ss') swipeCardTime,r.Direction"
+				+ "(SELECT r.Emp_id,r.D_Cardid,r.WorkShopNo,'' AS DEPTID,'' AS NAME,'' as depid,'' as costId,to_char(r.SwipeCardTime,'yyyy-MM-dd HH24:mi:ss') swipeCardTime,r.Direction"
 				+ " FROM SWIPE.RT_ACCESS_CONTROL_RECORD r  where 1=1";
 		try {	
 			 List <Object> queryList=new  ArrayList<Object>();  

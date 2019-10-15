@@ -109,7 +109,7 @@
 			</div>
 			
 			<div class="middle">
-				<div class="left" style="width:15%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;background-attachment: red;margin-top: -50.5%;margin-left: 50%;overflow: auto;" >
+				<div class="left" style="width:15%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position:absolute;background-attachment: red;top:13%;left:45%;overflow: auto;" >
 					<table id="DeptNobinding" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed; ">
 						<thead>
 							<tr>	

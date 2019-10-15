@@ -556,7 +556,7 @@ public class IpBindingDAO extends DAO<IpBinding>{
 		txStatus = transactionManager.getTransaction(txDef);	
 		//UPDATE SWIPE.DEVICE_DEPT_BINDING SET DEPTID = '8145',UPDATE_USERID = '129548' WHERE DEVICEIP = '127.0.0.1' AND ENABLED = 'Y'
 		//String sSQL="UPDATE SWIPE.RT_DEVICE_INFO SET WorkShopNo=?,WorkShop_Desc=?,Direction=?,Update_Userid=? WHERE Deviceip=? and Enabled='Y'";
-		String sSQL="UPDATE SWIPE.DEVICE_DEPT_BINDING SET DEPTID = ?,UPDATE_USERID = ? WHERE DEVICEIP = ? AND ENABLED = 'Y' AND DEPTID = ? ";
+		String sSQL="UPDATE SWIPE.DEVICE_DEPT_BINDING SET DEPTID = ?,UPDATE_TIME = SYSDATE ,UPDATE_USERID = ? WHERE DEVICEIP = ? AND ENABLED = 'Y' AND DEPTID = ? ";
 		 System.out.println("輸入的部門 代碼"+ IsDeviceIP);
 		if (list.contains(DeptID)&& IsDeviceIP == "") {
 //			for(int i = 0; i < SpecList.size();i++){
@@ -645,7 +645,7 @@ public class IpBindingDAO extends DAO<IpBinding>{
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		String sSQL= "UPDATE SWIPE.DEVICE_DEPT_BINDING  SET ENABLED = 'N' ,UPDATE_USERID = ? WHERE DEVICEIP = ? AND ENABLED = 'Y' AND DEPTID = ?";
+		String sSQL= "UPDATE SWIPE.DEVICE_DEPT_BINDING  SET ENABLED = 'N' ,UPDATE_TIME = SYSDATE ,UPDATE_USERID = ? WHERE DEVICEIP = ? AND ENABLED = 'Y' AND DEPTID = ?";
 		
 		System.out.println("刪除信息=============>>"+sSQL);
 		System.out.println("刪除信息=============>>"+Deviceip);
@@ -771,7 +771,7 @@ public class IpBindingDAO extends DAO<IpBinding>{
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		String sSQL = "UPDATE SWIPE.DEVICE_DEPT_BINDING  SET ENABLED = 'N' ,UPDATE_USERID = ? WHERE DEVICEIP = ? AND ENABLED = 'Y' AND DEPTID = ?";
+		String sSQL = "UPDATE SWIPE.DEVICE_DEPT_BINDING  SET ENABLED = 'N' ,UPDATE_TIME = SYSDATE ,UPDATE_USERID = ? WHERE DEVICEIP = ? AND ENABLED = 'Y' AND DEPTID = ?";
 		int disableRow=0;
 		try {
 			  if (ipBinding!=null) {
