@@ -39,6 +39,7 @@
 		<intercept-url pattern="/ClassNoRest/ShowClassNoRestInfo" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW','ROLE_ZJADLOW','ROLE_LJADLOW')" />
 		<intercept-url pattern="/WorkShopStatus/ShowWorkShopStatus" access="hasAnyRole('ROLE_ADMIN','ROLE_ZJADLOW','ROLE_LJADLOW')" />
 		<intercept-url pattern="/EmpPrivilege/ShowEmpPrivilege" access="hasAnyRole('ROLE_ADMIN','ROLE_ZJADLOW','ROLE_LJADLOW')" />
+		<intercept-url pattern="/WSListStatus/ShowWSListStatus" access="hasAnyRole('ROLE_ADMIN','ROLE_ZJADLOW','ROLE_LJADLOW')" />
 		<!-- access="hasRole('ROLE_USER','ROLE_ADMIN')"  -->
 
      <!--会话管理 -->   
