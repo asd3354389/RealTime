@@ -139,6 +139,24 @@
 			}]
 		},{
 
+			"menuid" : "43",
+			"icon" : "icon-sys",
+			"menuname" : "人力管理",
+			"menus" : [{
+				"menuname" : "各綫人力統計",
+				"icon" : "icon-nav",
+				"url" : "CountEmp/ShowCountEmp"
+			}]
+		},{
+
+			"menuid" : "43",
+			"icon" : "icon-sys",
+			"menuname" : "門禁管理",
+			"menus" : [{
+				
+			}]
+		},{
+
 			"menuid" : "57",
 			"icon" : "icon-sys",
 			"menuname" : "系統信息管理",
