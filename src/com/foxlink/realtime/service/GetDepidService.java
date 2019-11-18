@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import com.foxlink.realtime.DAO.GetDepidDao;
 import com.foxlink.realtime.model.GetDepid;
+import com.google.gson.JsonElement;
 
 public class GetDepidService extends Service<GetDepid> {
 	private static Logger logger = Logger.getLogger(GetDepidService.class);
@@ -74,6 +75,18 @@ public class GetDepidService extends Service<GetDepid> {
 	public List<GetDepid> FindQueryRecords(String userDataCostId, GetDepid t) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public List<GetDepid> FindDepidRecords(String userDataCostId) {
+		// TODO Auto-generated method stub
+		List<GetDepid> allStatus=null;
+		try {
+			allStatus=getDepidDao.FindDepidRecords(userDataCostId);
+		} catch (Exception ex) {
+			logger.error("query error" + ex);
+		}
+
+		return allStatus;
 	}
 
 }

@@ -351,8 +351,7 @@ public class IOWorkShopPowerDAO extends DAO<IOWorkShopPW>{
 		int updateRow=-1;
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
-		//String sSQL="UPDATE SWIPE.RT_ACCESS_USER_TEMP SET WorkShopNo=?,Start_Date=?,End_Date=?,Update_Userid=?,Remark=? WHERE Emp_id=? and Enabled='Y'";
-		//String sSQL="UPDATE SWIPE.RT_ACCESS_USER_TEMP SET WorkShopNo=?,Start_Date=?,End_Date=?,Update_Userid=?,Remark=?";
+
 		String sSQL="UPDATE SWIPE.RT_ACCESS_USER_TEMP SET Start_Date=?,End_Date=?,Update_Userid=?,update_time=sysdate,Remark=?";
 		System.out.println("更新信息================="+ioWorkShopPW.getCardId());
 		try {

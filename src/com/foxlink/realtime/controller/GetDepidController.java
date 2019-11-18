@@ -1,5 +1,8 @@
 package com.foxlink.realtime.controller;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -42,4 +45,28 @@ private GetDepidService getDepidService;
 		return jsonResults;
 	}
 
+	
+	@RequestMapping(value = "/ShowDepid.show", method = RequestMethod.POST, produces = "Application/json;charset=utf-8")
+
+	public @ResponseBody String ShowDepid(HttpSession session) {
+		// ApplicationContext applicationContext = new
+		// ClassPathXmlAppltionContext("Beans.xml");
+		// QueryService queryService = (QueryService)
+		// applicationContext.getBean("queryService");
+		String jsonResults = null;
+		String userDataCostId=(String) session.getAttribute("userDataCostId");
+		try {
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			getDepidService = (GetDepidService) context.getBean("getDepidService");
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			jsonResults = gson.toJson(getDepidService.FindDepidRecords(userDataCostId));
+		} catch (Exception ex) {
+			logger.error("FindDepid falid", ex);
+			JsonObject error = new JsonObject();
+			error.addProperty("ErrorCode", 500);
+			error.addProperty("ErrorMsg", "取部門代碼失敗，原因:" + ex.toString());
+			jsonResults = error.toString();
+		}
+		return jsonResults;
+	}
 }
