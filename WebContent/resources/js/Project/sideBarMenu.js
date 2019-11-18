@@ -143,13 +143,33 @@
 			"icon" : "icon-sys",
 			"menuname" : "人力管理",
 			"menus" : [{
-				]
+				"menuname" : "各綫人力統計",
+				"icon" : "icon-nav",
+				"url" : "CountEmp/ShowCountEmp"
+			},{
+				"menuname" : "刷卡人員異動",
+				"icon" : "icon-nav",
+				"url" : "ChangeEmployee/ShowChangeEmployee"
+			},{
+				"menuname" : "排配機種",
+				"icon" : "icon-nav",
+				"url" : "ProdPerson/ShowProdPerson"
+			}]
+
 		},{
 
 			"menuid" : "43",
 			"icon" : "icon-sys",
 			"menuname" : "門禁管理",
-			"menus" : []
+			"menus" : [{
+				"menuname" : "依員工工號查詢",
+				"icon" : "icon-nav",
+				"url" : "QueryById/ShowQueryById"
+			},{
+				"menuname" : "實時及門禁刷卡查詢依工號",
+				"icon" : "icon-nav",
+				"url" : "QueryRecordById/ShowQueryRecordById"
+			}]
 		},{
 
 			"menuid" : "57",
