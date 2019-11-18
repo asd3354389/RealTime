@@ -272,7 +272,31 @@
 	<bean id="wSListStatusService" class="com.foxlink.realtime.service.WSListStatusService">
 		<property name="wSListStatusDAO" ref="wSListStatusDAO" />
 	</bean>
-	
 
+
+    <bean id="ChangeEmployeeDAO" class="com.foxlink.realtime.DAO.ChangeEmployeeDAO"
+		parent="dAO">
 	</bean>
+	<bean id="ChangeEmployeeService" class="com.foxlink.realtime.service.ChangeEmployeeService">
+		<property name="ChangeEmployeeDAO" ref="ChangeEmployeeDAO" />
+	</bean> 
+ <bean id="ProdPersonDAO" class="com.foxlink.realtime.DAO.ProdPersonDAO"
+		parent="dAO">
+	</bean>
+	<bean id="ProdPersonService" class="com.foxlink.realtime.service.ProdPersonService">
+		<property name="ProdPersonDAO" ref="ProdPersonDAO" />
+	</bean> 
+	<bean id="QueryByIdDAO" class="com.foxlink.realtime.DAO.QueryByIdDAO"
+		parent="dAO">
+	</bean>
+	<bean id="QueryByIdService" class="com.foxlink.realtime.service.QueryByIdService">
+		<property name="QueryByIdDAO" ref="QueryByIdDAO" />
+	</bean> 
+	<bean id="QueryRecordByIdDAO" class="com.foxlink.realtime.DAO.QueryRecordByIdDAO"
+		parent="dAO">
+	</bean>
+	<bean id="QueryRecordByIdService" class="com.foxlink.realtime.service.QueryRecordByIdService">
+		<property name="QueryRecordByIdDAO" ref="QueryRecordByIdDAO" />
+	</bean> 
+
 </beans>
