@@ -192,13 +192,7 @@ public class IpBindingDAO extends DAO<IpBinding>{
 		
 	}
 	
-	//查詢是否有綁定過ip
-	public String SelectIsIp(String DeviceIp,String Deptid) {
-		String Cost_id = "";
-		//SELECT COM_IP,CONTROL_EXCEPT FROM APP_LOGIN_CONTROL WHERE COM_IP LIKE '10.64.119%'
-		String AppStr = "SELECT DEPTID FROM DEVICE_DEPT_BINDING WHERE DEVICEIP = '"+DeviceIp+"' AND DEPTID = '"+Deptid+"'";
-		return Cost_id;
-	}
+	
 	//查詢是否是例外的
 	public String SelectExceptIp(String DeviceIp) {
 		String Except_Ip = "";
