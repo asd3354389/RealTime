@@ -51,6 +51,7 @@ public class IpBindingDAO extends DAO<IpBinding>{
 	private StringBuffer userData_CostId;
 	JsonObject UpdateResult;
 	private String Ipreturn;
+	private String Deptidreturn;
 	
 	
 	
@@ -91,18 +92,11 @@ public class IpBindingDAO extends DAO<IpBinding>{
 			
 		}
 	  
-		
-		
-		//返回的費用代碼
-	  		
-		//String CostIdReturn = SelectDeptId(item);
-		
-		//device表返回的ip信息		
-		//String DeviceIpRe = SelectDeviceIp(DeviceIp,item);
 	
 	    //返回的助理Id
 	    String IdReturn = SelectId(ID);
-	  
+	  //返回的是否綁定信息
+	  //  Deptidreturn = SelectIsIp(DeviceIp, Deptid)
 		reList = new ArrayList<>();
 		
 	 	//String strSQL = "INSERT INTO SWIPE.DEVICE_DEPT_BINDING (DEVICEIP,DEPTID,UPDATE_USERID) VALUES ('"+DeviceIp+"','"+DeptId+"','"+ID+"')";
@@ -118,14 +112,8 @@ public class IpBindingDAO extends DAO<IpBinding>{
 			System.out.println("ip地址不存在,請重新輸入");
 		
 	 	}else {
-
-
-			
 			try {
 				
-
-					
-
 				System.out.println("返回的IP数组的个数==============================================================="+IpArray.length);
 				if (commaArray.length > 1 && IpArray.length > 1) {
 					createRow=1;
@@ -202,6 +190,14 @@ public class IpBindingDAO extends DAO<IpBinding>{
 				 return false;
 		}
 		
+	}
+	
+	//查詢是否有綁定過ip
+	public String SelectIsIp(String DeviceIp,String Deptid) {
+		String Cost_id = "";
+		//SELECT COM_IP,CONTROL_EXCEPT FROM APP_LOGIN_CONTROL WHERE COM_IP LIKE '10.64.119%'
+		String AppStr = "SELECT DEPTID FROM DEVICE_DEPT_BINDING WHERE DEVICEIP = '"+DeviceIp+"' AND DEPTID = '"+Deptid+"'";
+		return Cost_id;
 	}
 	//查詢是否是例外的
 	public String SelectExceptIp(String DeviceIp) {
