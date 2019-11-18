@@ -143,32 +143,13 @@
 			"icon" : "icon-sys",
 			"menuname" : "人力管理",
 			"menus" : [{
-				"menuname" : "各綫人力統計",
-				"icon" : "icon-nav",
-				"url" : "CountEmp/ShowCountEmp"
-			},{
-				"menuname" : "人力縂表-依課別",
-				"icon" : "icon-nav",
-				"url" : "CountEmpByCostID/ShowCountEmpByCostID"
-			},{
-				"menuname" : "各課排配人力",
-				"icon" : "icon-nav",
-				"url" : "ProdAllLine/ShowProdAllLine"
-			}]
+				]
 		},{
 
 			"menuid" : "43",
 			"icon" : "icon-sys",
 			"menuname" : "門禁管理",
-			"menus" : [{
-				"menuname" : "依課別-線別查詢",
-				"icon" : "icon-nav",
-				"url" : "QuertAbTimeByCostId/ShowQuertAbTimeByCostId"
-			},{
-				"menuname" : "異常原因回復",
-				"icon" : "icon-nav",
-				"url" : "AbReasonReply/ShowAbReasonReply"
-			}]
+			"menus" : []
 		},{
 
 			"menuid" : "57",
