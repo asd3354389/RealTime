@@ -14,7 +14,6 @@ public class Employee {
 	private String Job_Name;
 	private String Line_Personnel;
 	private String DEPTID;
-	
 	public String getDEPTID() {
 		return DEPTID;
 	}
