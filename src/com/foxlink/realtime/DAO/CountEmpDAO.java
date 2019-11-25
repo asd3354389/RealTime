@@ -156,10 +156,16 @@ public class CountEmpDAO extends DAO<ManPowerStatus> {
 
 	public boolean UpdateStatus(String userNo, String depid, String sDate, String type_status, String class_no) {
 		// TODO Auto-generated method stub
-		int updateRow=-1,updateRole=-1;
+		int updateRow=-1;
 		txDef = new DefaultTransactionDefinition();
-		txStatus = transactionManager.getTransaction(txDef);		
-		String sSQL="update manpower_status set status =? where id=? and to_char(workdate,'yyyy-mm-dd') = ?  and class_no = ? ";
+		txStatus = transactionManager.getTransaction(txDef);
+		String sSQL="";
+		if(!class_no.equals("11")) {
+			sSQL+="update manpower_status set status =? where id=? and to_char(workdate,'yyyy-mm-dd') = ?  and class_no != '11'" ;
+		}else {
+		    sSQL+="update manpower_status set status =? where id=? and to_char(workdate,'yyyy-mm-dd') =?  and class_no = '11' ";
+		}
+		
 		try {
 				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
@@ -167,13 +173,13 @@ public class CountEmpDAO extends DAO<ManPowerStatus> {
 						// TODO Auto-generated method stub
 						arg0.setString(1, type_status);
 						arg0.setString(2, userNo);
-						arg0.setString(3, sDate);
-						arg0.setString(4, class_no);
-						
+						arg0.setString(3, sDate);						
 					}	
 				});
 				transactionManager.commit(txStatus);
+				System.out.println(sSQL);
 		}
+		
 		catch(Exception ex) {
 			logger.error("Update Status is failed",ex);
 			transactionManager.rollback(txStatus);
@@ -182,6 +188,21 @@ public class CountEmpDAO extends DAO<ManPowerStatus> {
 				   return true; 
 				else
 				   return false;
+	}
+
+	public List<String> FindAssistantDepid(String username) {
+		// TODO Auto-generated method stub
+		List<String> getDepids=null;
+		String sSQL="select DEPARTMENTCODE from swipe.user_data where enabled='1' and username='"+username+"'";
+		try { 
+				sSQL += "order by DEPARTMENTCODE";				
+				getDepids=jdbcTemplate.queryForList(sSQL,String.class);
+		} catch (Exception ex) {
+			// TODO: handle exception
+			ex.printStackTrace();
+			logger.error("Search AssistantDepid Record is failed",ex);
+		}
+		return getDepids;
 	}
 	
 }

@@ -22,14 +22,14 @@
 <c:url value="/resources/assets/js/jquery-1.8.3.min.js" var="assetsJqueryJS" />
 <c:url value="/resources/js/jquery/jquery-1.11.3.min.js" var="JqueryJS" />
 <c:url value="/resources/js/bootstrap/bootstrap.min.js" var="bootstrapJS" />
-<%-- <c:url value="/resources/js/Project/RealTime.Modify.CountEmp.js?version=${resourceVersion}" var="modifyCountEmpJS" /> --%>
+<c:url value="/resources/js/Project/RealTime.Modify.AbReasonReply.js?version=${resourceVersion}" var="modifyAbReasonReplyJS" />
 <c:url value="/resources/assets/My97DatePicker/WdatePicker.js" var="wdatePickerJS" />
 <c:url value="/resources/js/Project/AjaxCheckSession.js?version=${resourceVersion}" var="AjaxCheckSessionJS"/> 
 <script src="${JqueryJS}" type="text/javascript"></script>
 <script src="${bootstrapJS}" type="text/javascript"></script>
 <script src="${wdatePickerJS}" language="javascript" type="text/javascript"></script>
 <script type="text/javascript" src='${AjaxCheckSessionJS}'></script>
-<script src="${modifyCountEmpJS}" type="text/javascript"></script>
+<script src="${modifyAbReasonReplyJS}" type="text/javascript"></script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>異常原因回復</title>
@@ -54,53 +54,74 @@
 					<label for="startDate">結束日期:</label> 
 					<input id="endDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm',minDate:'#F{$dp.$D(\'startDate\')}'})" autocomplete="off" /> 	
 	  			</div> 
-	  			<label class="control-label" for="BU">部別</label>
-	    		<select id="BU" class="input-small">
-					<option>請選擇部別</option>"
-					<option value="AllBU">All</option>"
-					<option value="B1001">組裝</option>"
-					<option value="B1002">成型</option>"
-					<option value="B1003">電鍍</option>"
-					<option value="B1004">衝壓</option>"
-				</select> 
-				<label class="control-label" for="costid">課別</label>
-	    		<select id="costid" class="input-small">
-					<option>請選擇課別</option>"
-				</select> 
-				<input type="button" id="searchCountEmp" name="searchCountEmp"class="btn btn-sm btn-primary" value="查詢">
-			</div>
-    		
-			<div style="border: 1px solid #e1e3e6;margin:20px 0px;">
+	  			<div class="Admin_Depid" style="display:none">
+		  			<label class="control-label" for="BU">部別</label>
+		    		<select id="BU" class="input-small">
+						<option>請選擇部別</option>"
+						<option value="AllBU">All</option>"
+						<option value="B1001">組裝</option>"
+						<option value="B1002">成型</option>"
+						<option value="B1003">電鍍</option>"
+						<option value="B1004">衝壓</option>"
+					</select> 
+					<label class="control-label" for="costid">課別</label>
+		    		<select id="costid" class="input-small">
+						<option>請選擇課別</option>"
+					</select> 
+				</div>
+				<div class="Assistant_Depid" style="display:inline-block">
+		  			<label class="control-label" for="Assistant_depid">線別</label>
+		    		<select id="Assistant_depid" class="input-small">
+						
+					</select> 
+	  			</div>
+				<input type="button" id="searchABReason" name="searchABReason"class="btn btn-sm btn-primary" value="查詢">
+			</div>	
+		</div>
+	</div>
+	
+	<div class="ShowABReason" style="display:none;margin:20px 0px;">
 				<div>
-					<h4>車間列表：</h4>
+					<h4>異常回覆畫面：</h4>
+					<label>異常原因：</label>
+					<select id="exception_reason">
+						<option value="請假">請假</option>
+						<option value="曠工">曠工</option>
+						<option value="異常">異常</option>
+						<option value="新人">新人</option>
+						<option value="班別錯誤">班別錯誤</option>
+						<option value="連班換崗">連班換崗</option>
+						<option value="支援別課">支援別課</option>
+						<option value="補辦廠證">補辦廠證</option>
+						<option value="卡機異常">卡機異常</option>
+						<option value="員工漏刷卡">員工漏刷卡</option>
+						<option value="跨廠區作業">跨廠區作業</option>
+						<option value="換班配合生產">換班配合生產</option>
+					</select>				
+					<input class="btn btn-primary" type="button" id="Reply" value="回覆" />
 				</div>
 				<div class="panel-body" style="border: 1px solid #e1e3e6;margin:0px 10px 5px;">
-					<!-- <table id="WorkShopInfoTable" class="table table-striped">
+				  <table id="ABReasonList" class="table table-striped">
 						<thead>
 							<tr>
-								<th>車間名稱</th>
-								<th>線體名稱</th>
-								<th>創建人</th>
-								<th>創建日期</th>								
+								<th class="per5"><input name="checkbox" type="checkbox"
+									id="inlineCheckbox1" value="option1" >
+								</th>
+								<th>課別</th>
+								<th>線別</th>
+								<th>工號</th>
+								<th>姓名</th>	
+								<th>異常日期</th>	
+								<th>班別</th>	
+								<th>異常時間起迄</th>	
+								<th>異常時間(分)</th>	
+								<th>異常原因</th>						
 							</tr>
 						</thead>
 						<tbody></tbody>
-						<tfoot>
-							<tr>
-								<th>車間名稱</th>
-								<th>線體名稱</th>
-								<th>創建人</th>
-								<th>創建日期</th>	
-							</tr>
-						</tfoot>
-					</table> -->
+					</table> 
 				</div>
 			</div>
-			
-		
-			
-		</div>
-	</div>
 </div>	
 </body>
 </html>

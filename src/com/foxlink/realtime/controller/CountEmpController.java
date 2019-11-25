@@ -36,6 +36,9 @@ public class CountEmpController {
 	public @ResponseBody String ShowDepid(HttpSession session) {
 		String jsonResults = null;
 		String userDataCostId=(String) session.getAttribute("userDataCostId");
+		String username=(String) session.getAttribute("username");
+		//String accessRole = (String) session.getAttribute("accessRole");
+
 		try {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			countEmpService = (CountEmpService) context.getBean("countEmpService");
@@ -69,6 +72,7 @@ public class CountEmpController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			countEmpService = (CountEmpService) context.getBean("countEmpService");
 			if(countEmpService.UpdateStatus(userNo,depid,SDate,type_status,class_no)){
+				
 				UpdateResult.addProperty("StatusCode", "200");
 				UpdateResult.addProperty("Message", "更新狀態成功");
 			}
@@ -83,5 +87,53 @@ public class CountEmpController {
 			UpdateResult.addProperty("Message", "更新狀態發生錯誤，原因："+ex.toString());
 		}
 		return UpdateResult.toString();
+	}
+	
+	@RequestMapping(value = "/ShowRole", method = RequestMethod.POST,produces = "Application/json;charset=utf-8")
+	public @ResponseBody String ShowRole(HttpSession session) {
+		String jsonResults = null;
+		String accessRole=(String) session.getAttribute("accessRole");	
+		try {
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			countEmpService = (CountEmpService) context.getBean("countEmpService");
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			jsonResults = gson.toJson(accessRole);
+		} catch (Exception ex) {
+			logger.error("FindRole falid", ex);
+			JsonObject error = new JsonObject();
+			error.addProperty("ErrorCode", 500);
+			error.addProperty("ErrorMsg", "取权限失敗，原因:" + ex.toString());
+			jsonResults = error.toString();
+		}
+		return jsonResults;
+	}
+	
+	@RequestMapping(value = "/ShowRoleText", method = RequestMethod.POST,produces = "Application/json;charset=utf-8")
+	public @ResponseBody String ShowRoleText(HttpSession session) {
+			String accessRole=(String) session.getAttribute("accessRole");	
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			countEmpService = (CountEmpService) context.getBean("countEmpService");
+
+		return accessRole;
+	}
+	
+	@RequestMapping(value = "/ShowAssistantDepid.show", method = RequestMethod.POST, produces = "Application/json;charset=utf-8")
+	public @ResponseBody String ShowAssistantDepid(HttpSession session) {
+		String jsonResults = null;
+		String username=(String) session.getAttribute("username");
+
+		try {
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			countEmpService = (CountEmpService) context.getBean("countEmpService");
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			jsonResults = gson.toJson(countEmpService.FindAssistantDepid(username));
+		} catch (Exception ex) {
+			logger.error("FindDepid falid", ex);
+			JsonObject error = new JsonObject();
+			error.addProperty("ErrorCode", 500);
+			error.addProperty("ErrorMsg", "取部門代碼失敗，原因:" + ex.toString());
+			jsonResults = error.toString();
+		}
+		return jsonResults;
 	}
 }

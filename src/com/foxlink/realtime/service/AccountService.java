@@ -111,6 +111,10 @@ public class AccountService extends Service<User> {
 					Role = "ZJ";
 				}else if(string.equals("ROLE_LJADLOW")&&Role==null){
 					Role = "LJ";
+				}else if(string.equals("ROLE_VIC_ASSISTANT")&&Role==null){
+					Role = "ROLE_VIC_ASSISTANT";
+				}else if(string.equals("ROLE_VIC_ADMIN")&&Role==null){
+					Role = "ROLE_VIC_ADMIN";
 				}
 			}
 		}

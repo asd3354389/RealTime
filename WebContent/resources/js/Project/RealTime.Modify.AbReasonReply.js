@@ -1,4 +1,5 @@
-$(document).ready(function(){	
+$(document).ready(function(){
+	
 	var Role = "";
 	ShowRole();
 	$('#BU').change(function(){
@@ -38,54 +39,46 @@ $(document).ready(function(){
 			'<option value="9635">沖壓一課</option><option value="9644">沖壓二課</option><option value="9670">沖壓技術課</option>';
 			$('#costid').append(options);
 		}
-		
-		$('#costid').change(function(){
-			$('#ABTimeList tbody').empty();
-			$('#ShowABTime').css('display','none');
-			var costid=$('#costid').val();
-			if(costid=="AllCost"){
-				$('#depid').empty();
-				var options='<option>請選擇線別</option>';
-				$('#depid').append(options);
-			}else{
-				$('#depid').empty();
-				$.ajax({
-					url:'../QuertAbTimeByCostId/ShowDepid.show',
-					type:'post',
-					data:{
-						costid:costid
-					},
-					async:false,
-					success:function(res){
-						//console.log(res);
-						var options='<option value="AllDepid">All</option>';
-						if(res.length>0){
-							for(var i=0;i<res.length;i++){
-								options+='<option value='+res[i]+'>'+res[i]+'</option>'
-							}	
-						}
-						$('#depid').append(options);
-					},
-					error:function(){
-						alert('發生錯誤！');
-					}
-				})
-			}
-		})
 	})
 	
-	$('#searchByCostid').click(function(){
-		var errorMessage = '';
+	$('#searchABReason').click(function(){
+		//console.log(errorMessage);
+		SearchAbReason();
+	})
+	
+	$('#Reply').click(function(){
+		var Emp=[];
+		var reason = $('#exception_reason').val();
+		$('#ABReasonList tbody tr td').find('input:checked').each(function(){
+			$(this).each(function(){
+				var recordid = $(this).val();
+				var Empid = new Object();
+				Empid.RECORDID=recordid;
+				Empid.EXCEPTION_REASON=reason;
+				Emp.push(Empid);
+			})
+		})
+		if(Emp.length>0){
+			ReplyReason(Emp);
+		}else {
+			alert("未選中需要回復的異常原因信息");
+		}	
+	})
+	
+	function SearchAbReason(){
+		var errorMessage='';
 		var Bu ="";
 		var costid=""; 
-		var depid=""; 
+		var depid="";
+		$('#ABReasonList tbody').empty();
+		$('.ShowABReason').css('display','none');
 		if(Role=='ROLE_VIC_ADMIN'){
 			 Bu = $('#BU').val();
 			 costid=$('#costid').val(); 
-			 depid=$('#depid').val(); 
 		}else if(Role=='ROLE_VIC_ASSISTANT'){
 			 depid=$('#Assistant_depid').val(); 
 		}
+		//var depid=$('#depid').val(); 
 		var SDate = $('#startDate').val();
 		var EDate = $('#endDate').val();
 		if(SDate=="null" || SDate=='')
@@ -94,7 +87,7 @@ $(document).ready(function(){
 			errorMessage+='未選擇結束時間\n';
 		if(errorMessage==''){	
 			$.ajax({
-				url:'../QuertAbTimeByCostId/ShowABTimeByCostid',
+				url:'../AbReasonReply/ShowABReasonReplyList',
 				type:'post',
 				data:{
 					Bu:Bu,
@@ -105,12 +98,11 @@ $(document).ready(function(){
 				},
 				async:false,
 				success:function(res){
-					//console.log(res);
+					console.log(res);
 					if(res.StatusCode=="200"){
-						ShowABTimeList(res.ABTimeList);
-					}
-					else{
-						  alert(data.message);
+						ShowABReasonList(res.ABReason);
+					}else{
+						alert(res.message);
 					}
 				},
 				error:function(){
@@ -123,16 +115,44 @@ $(document).ready(function(){
 				event.preventDefault(); //preventDefault() 方法阻止元素发生默认的行为（例如，当点击提交按钮时阻止对表单的提交）。
 			}
 		}
-	})
+	}
 	
-	function ShowABTimeList(data){
-		var ABTime = JSON.parse(data);
+	function ShowABReasonList(data){
+		var ABReason = JSON.parse(data);
 		var tableContents='';
-		for(var i=0;i<ABTime.length;i++){
-			tableContents+='<tr><td>'+ABTime[i].DEPID+'</td><td>'+ABTime[i].USERID+'</td><td>'+ABTime[i].USERNAME+'</td><td>'+ABTime[i].Count+'</td><td>'+ABTime[i].SumTime+'</td></tr>'
+		for(var i=0;i<ABReason.length;i++){
+			tableContents+='<tr><td><input class="checkValue" name="checkbox" type="checkbox" value='+ABReason[i].RECORDID+'></td><td>'+ABReason[i].COSTID+'</td><td>'+ABReason[i].DEPID+'</td><td>'+ABReason[i].USERID+'</td><td>'+ABReason[i].USERNAME+'</td>'+
+			'<td>'+ABReason[i].EXCEPTION_DATE+'</td><td>'+ABReason[i].SHIFT+'</td><td>'+ABReason[i].EXCEPTION_INTERVAL+'</td><td>'+ABReason[i].EXCEPTION_TIME+'</td><td>'+ABReason[i].EXCEPTION_REASON+'</td></tr>'
 		}
-		$('#ABTimeList tbody').append(tableContents);
-		$('#ShowABTime').css('display','block');
+		$('#ABReasonList tbody').append(tableContents);
+		$('.ShowABReason').css('display','block');
+	}
+	
+	function ReplyReason(Emp){
+		$.ajax({
+			type:'post',
+			contentType:'application/json',
+			url:'../AbReasonReply/ReplyReason',
+			data:JSON.stringify(Emp),
+			dataType:'json',
+			async:false,
+			success:function(data){
+				if(data!=null && data!=''){
+					  if(data.StatusCode=="200"){
+						  $('#inlineCheckbox1').get(0).checked="";
+						  SearchAbReason();
+						  alert(data.message); 
+					  }else{
+						  alert(data.message);
+					  }
+				  }else{
+					  alert('操作失敗！')
+				  }
+			},
+			error:function(e){
+				alert(e);
+			}
+		})
 	}
 	
 	function ShowRole(){
@@ -144,12 +164,10 @@ $(document).ready(function(){
 			success:function(data){
 				//console.log(data);
 				Role=data;
-				if(Role=='ROLE_VIC_ADMIN'){
-					
+				if(Role=='ROLE_VIC_ADMIN'){	
 					$('.Admin_Depid').css('display','inline-block');
 					$('.Assistant_Depid').css('display','none');
-				}else if(Role=='ROLE_VIC_ASSISTANT'){
-					
+				}else if(Role=='ROLE_VIC_ASSISTANT'){				
 					$('.Admin_Depid').css('display','none');
 					$('.Assistant_Depid').css('display','inline-block');
 					ShowAssistantDepid();
@@ -157,6 +175,7 @@ $(document).ready(function(){
 			}
 		});   
 	}
+	
 	function ShowAssistantDepid(){
 		$.ajax({
 			type:'POST',
@@ -181,4 +200,19 @@ $(document).ready(function(){
 			}
 		});   
 	}
+	
+	$('#inlineCheckbox1').click(function() {
+		var checkbox = $('.checkValue');
+		//console.log(checkbox);
+		if ($(this).get(0).checked) {
+			//console.log(123);
+			for ( var i = 0; i < checkbox.length; i++) {
+				checkbox.get(i).checked = "checked";
+			}
+		} else {
+			for ( var i = 0; i < checkbox.length; i++) {
+				checkbox.get(i).checked = "";
+			}
+		}
+	})
 })

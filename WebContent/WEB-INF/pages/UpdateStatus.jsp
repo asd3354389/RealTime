@@ -59,7 +59,7 @@
   		</div>
 	
         <br>
-  		<button type="submit" id="changeStatus" class="btn btn-primary">更改狀態</button>
+  		<button type="submit" id="cStatus" class="btn btn-primary">更改狀態</button>
 			</div>	
 		</div>
 	</div>

@@ -12,6 +12,7 @@ import com.foxlink.realtime.model.GetDepid;
 import com.foxlink.realtime.model.ManPowerStatus;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 
@@ -109,6 +110,18 @@ public class CountEmpService extends Service<ManPowerStatus> {
 	public boolean UpdateStatus(String userNo, String depid, String sDate, String type_status, String class_no) {
 		// TODO Auto-generated method stub
 		return countEmpDAO.UpdateStatus(userNo,depid,sDate,type_status,class_no);
+	}
+
+	public List<String> FindAssistantDepid(String username) {
+		// TODO Auto-generated method stub
+		List<String> allStatus=null;
+		try {
+			allStatus=countEmpDAO.FindAssistantDepid(username);
+		} catch (Exception ex) {
+			logger.error("query error" + ex);
+		}
+
+		return allStatus;
 	}
 	
 

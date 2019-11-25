@@ -28,8 +28,8 @@ $(document).ready(function(){
 					 var StatusCode = result.StatusCode;
 					  var message = result.Message;
 					  if (result.length> 0) {
-						alert("查詢實時門禁列表成功");
-						console.log(result);
+						/*alert("查詢實時門禁列表成功");
+						console.log(result);*/
 						ShowSelectRecordListtTable(result);
 					} else {
 						alert(message);
@@ -47,8 +47,8 @@ $(document).ready(function(){
 					 var StatusCode = result.StatusCode;
 					  var message = result.Message;
 					  if (result.length> 0) {
-						alert("查詢大門門禁列表成功");
-						console.log(result);
+						/*alert("查詢大門門禁列表成功");
+						console.log(result);*/
 						ShowSelectInfoListtTable(result);
 					} else {
 						alert(message);

@@ -50,61 +50,62 @@
 			<div class="top" style="padding-bottom:5px;border: 1px solid #e1e3e6;">
 	    		<div class="controls" style="display: inline-block;">
 				 	<label for="startDate">開始日期:</label> 
-					<input id="startDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm',minDate:'%y-\#{%M-2}-01',maxDate:'#F{$dp.$D(\'endDate\')}'})" autocomplete="off" />
+					<input id="startDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'%y-\#{%M-2}-01',maxDate:'#F{$dp.$D(\'endDate\')}'})" autocomplete="off" />
 					<label for="startDate">結束日期:</label> 
-					<input id="endDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm',minDate:'#F{$dp.$D(\'startDate\')}'})" autocomplete="off" /> 	
-	  			</div> 
-	  			<label class="control-label" for="BU">部別</label>
-	    		<select id="BU" class="input-small">
-					<option>請選擇部別</option>"
-					<option value="AllBU">All</option>"
-					<option value="B1001">組裝</option>"
-					<option value="B1002">成型</option>"
-					<option value="B1003">電鍍</option>"
-					<option value="B1004">衝壓</option>"
-				</select> 
-				<label class="control-label" for="costid">課別</label>
-	    		<select id="costid" class="input-small">
-					<option>請選擇課別</option>"
-				</select> 
-	  			<label class="control-label" for="depid">線別</label>
-	    		<select id="depid" class="input-small">
-					<option>請選擇線別</option>"
-				</select> 
+					<input id="endDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'startDate\')}'})" autocomplete="off" /> 	
+	  			</div>
+		  		<div class="Admin_Depid" style="display:none">
+		  			<label class="control-label" for="BU">部別</label>
+		    		<select id="BU" class="input-small">
+						<option value="AllReSet">請選擇部別</option>"
+						<option value="AllBU">All</option>"
+						<option value="B1001">組裝</option>"
+						<option value="B1002">成型</option>"
+						<option value="B1003">電鍍</option>"
+						<option value="B1004">衝壓</option>"
+					</select> 
+					<label class="control-label" for="costid">課別</label>
+		    		<select id="costid" class="input-small">
+						<option>請選擇課別</option>"
+					</select> 
+		  			<label class="control-label" for="depid">線別</label>
+		    		<select id="depid" class="input-small">
+						<option>請選擇線別</option>"
+					</select> 
+	  			</div>
+	  			
+	  			<div class="Assistant_Depid" style="display:inline-block">
+		  			<label class="control-label" for="Assistant_depid">線別</label>
+		    		<select id="Assistant_depid" class="input-small">
+						
+					</select> 
+	  			</div>
+	  			 
 				<input type="button" id="searchByCostid" name="searchByCostid"class="btn btn-sm btn-primary" value="查詢">
-			</div>
-    		
-			<div style="border: 1px solid #e1e3e6;margin:20px 0px;">
+			</div>		
+		</div>
+	</div>
+	
+	<div id="ShowABTime" style="display:none;margin:20px 0px;">
 				<div>
-					<h4>車間列表：</h4>
+					<h4>系統查詢畫面-依部別.課別.線別：</h4>
 				</div>
 				<div class="panel-body" style="border: 1px solid #e1e3e6;margin:0px 10px 5px;">
-					<!-- <table id="WorkShopInfoTable" class="table table-striped">
+					<table id="ABTimeList" class="table table-striped">
 						<thead>
 							<tr>
-								<th>車間名稱</th>
-								<th>線體名稱</th>
-								<th>創建人</th>
-								<th>創建日期</th>								
+								<th>線 別</th>
+								<th>工號</th>
+								<th>姓名</th>
+								<th>異常次數</th>	
+								<th>異常總時間(分鐘)</th>							
 							</tr>
 						</thead>
 						<tbody></tbody>
-						<tfoot>
-							<tr>
-								<th>車間名稱</th>
-								<th>線體名稱</th>
-								<th>創建人</th>
-								<th>創建日期</th>	
-							</tr>
-						</tfoot>
-					</table> -->
+					</table>
 				</div>
-			</div>
-			
-		
-			
-		</div>
 	</div>
+			
 </div>	
 </body>
 </html>

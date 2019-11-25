@@ -33,10 +33,13 @@ public class QuertAbTimeByCostIdController {
 	public @ResponseBody String ShowDepid(HttpSession session,@RequestParam("costid")String costid) {
 		String jsonResults = null;
 		try {
+			String accessRole = (String) session.getAttribute("accessRole");
+			String userDataCostId=(String) session.getAttribute("userDataCostId");
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			quertAbTimeByCostIdService = (QuertAbTimeByCostIdService) context.getBean("quertAbTimeByCostIdService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			jsonResults = gson.toJson(quertAbTimeByCostIdService.FindDepidRecords(costid));
+			
 		} catch (Exception ex) {
 			logger.error("FindDepid falid", ex);
 			JsonObject error = new JsonObject();
@@ -46,4 +49,20 @@ public class QuertAbTimeByCostIdController {
 		}
 		return jsonResults;
 	}
+	
+	@RequestMapping(value="/ShowABTimeByCostid", method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+	public @ResponseBody String ShowABTimeByCostid(HttpSession session,@RequestParam("Bu")String Bu,@RequestParam("costid")String costid,@RequestParam("depid")String depid,@RequestParam("SDate")String SDate,@RequestParam("EDate")String EDate){
+			String result = "";
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			quertAbTimeByCostIdService = (QuertAbTimeByCostIdService) context.getBean("quertAbTimeByCostIdService");
+			String accessRole = (String) session.getAttribute("accessRole");
+			if(accessRole.equals("ROLE_VIC_ASSISTANT")) {
+				result = quertAbTimeByCostIdService.ShowABTimeByDepid(depid,SDate,EDate);
+			}else if(accessRole.equals("ROLE_VIC_ADMIN")) {
+				result = quertAbTimeByCostIdService.ShowABTimeByCostid(Bu,costid,depid,SDate,EDate);
+			}
+			return result;
+	}
+	
+	
 }

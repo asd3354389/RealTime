@@ -27,8 +27,8 @@ $(document).ready(function(){
 					 var StatusCode = result.StatusCode;
 					  var message = result.Message;
 					  if (result.length> 0) {
-						alert("查詢異常列表成功");
-						console.log(result);
+						/*alert("查詢異常列表成功");
+						console.log(result);*/
 						ShowSelectByIdListtTable(result);
 					} else {
 						alert(message);

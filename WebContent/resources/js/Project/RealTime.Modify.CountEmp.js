@@ -1,5 +1,6 @@
 $(document).ready(function(){
-	ShowDepid();
+	var Role = "";
+	ShowRole();
 	
 	$('#searchCountEmp').click(function(){
 		 ShowTable();
@@ -59,7 +60,7 @@ $(document).ready(function(){
 		}
 	})
 	
-	$('#changeStatus').click(function(){
+	$('#cStatus').click(function(){
 			var type = $("#type").val();
 		    var status = $("#status").val();
 		    var type_status = type + "_" + status;
@@ -76,10 +77,7 @@ $(document).ready(function(){
 			}else if(Class_No=='夜'){
 				class_no = "11";
 			}
-		    console.log(type_status);
-		    //changeDate = getDate1(SDate);
-		    // checkDate(changeDate);
-		    //checkType(type);
+		    console.log(UserNo);
 
 		    $.ajax({
 		        type: 'post',
@@ -92,10 +90,14 @@ $(document).ready(function(){
 		            type_status: type_status
 		        },
 		        success: function(msg) {
+		        	console.log(msg);
 		            if(msg.StatusCode=="200"){
 		            	ShowTable();
 		            	alert(msg.Message)
 		            }
+		        },
+		        error:function(e){
+		        	alert(e);
 		        }
 		    });
 	})
@@ -190,7 +192,7 @@ $(document).ready(function(){
 			}		
 		}
 		SunProductionNum=parseInt(data.Sun)-SunNewEmployee-SunLeaveNum-SunDimissionNum-SunVacateNume-SunAbsenteeismNum-SunAlltechnicalNum;
-		NightProductionNum=parseInt(data.Night)-NightNewEmployee-NightLeaveNum-NightDimissionNum-NightAbsenteeismNum-NightAlltechnicalNum;
+		NightProductionNum=parseInt(data.Night)-NightNewEmployee-NightLeaveNum-NightDimissionNum-NightVacateNume-NightAbsenteeismNum-NightAlltechnicalNum;
 		var tableContents='<tr><td>'+$("#depid").val()+'</td><td>日</td>'+
 						'<td>'+data.Sun+'</td><td>'+SunNewEmployee+'</td><td>'+SunLeaveNum+'</td><td>'+SunDimissionNum+'</td><td>'+SunVacateNume+'</td><td>'+SunAbsenteeismNum+'</td><td>'+SunAlltechnicalNum+'</td><td>'+SunProductionNum+'</td></tr>';
 		tableContents+='<tr><td>'+$("#depid").val()+'</td><td>夜</td>'+
@@ -234,7 +236,7 @@ $(document).ready(function(){
 				if(j==0){
 					tableContents+='<tr><td rowspan='+nightLength+' style="color: red;">'+NightNum[j].Depid+'</td><td rowspan='+nightLength+' style="color: red;">'+Shift+'</td><td>'+NightNum[j].ID+'</td><td>'+NightNum[j].Name+'</td><td>'+getCNStatus(NightNum[j].Status)+'</td><td><a role="button" href=".ChangeStatus" class="changeStatus btn btn-primary btn-sm" data-toggle="modal" value='+NightNum[j].ID+'>詳情</a></td></tr>';
 				}else{
-					tableContents+='<tr><td style="display:none"></td><td style="display:none">'+Shift+'</td><td>'+NightNum[ji].ID+'</td><td>'+NightNum[j].Name+'</td><td>'+getCNStatus(NightNum[j].Status)+'</td><td><a role="button" href=".ChangeStatus" class="changeStatus btn btn-primary btn-sm" data-toggle="modal" value='+NightNum[j].ID+'>詳情</a></td></tr>';
+					tableContents+='<tr><td style="display:none"></td><td style="display:none">'+Shift+'</td><td>'+NightNum[j].ID+'</td><td>'+NightNum[j].Name+'</td><td>'+getCNStatus(NightNum[j].Status)+'</td><td><a role="button" href=".ChangeStatus" class="changeStatus btn btn-primary btn-sm" data-toggle="modal" value='+NightNum[j].ID+'>詳情</a></td></tr>';
 				}
 			}
 			//console.log(tableContents);
@@ -270,6 +272,32 @@ $(document).ready(function(){
 		return PersonStatus;
 	}
 	
+	function ShowAssistantDepid(){
+		$.ajax({
+			type:'POST',
+			url:'../CountEmp/ShowAssistantDepid.show',
+			data:{},
+			async:false,
+			success:function(data){
+			 var htmlAppender='';
+			 if(data!=null && data!=''){	
+				if(data.length>0 && data.StatusCode == null){
+					for(var i=0;i<data.length;i++){
+						htmlAppender+='<option value="'+data[i]+'">'+data[i]+'</option>';
+					}
+					 $('#depid').append(htmlAppender);
+				}
+				else{
+					alert('無資料');
+				}
+			 }else{
+				 alert('無資料');
+			 }
+			}
+		});   
+	}
+	
+	
 	function ShowDepid(){
 		$.ajax({
 			type:'POST',
@@ -286,11 +314,29 @@ $(document).ready(function(){
 					 $('#depid').append(htmlAppender);
 				}
 				else{
-					console.log('無車間資料');
+					alert('無資料');
 				}
 			 }else{
-				 console.log('無車間資料');
+				 alert('無資料');
 			 }
+			}
+		});   
+	}
+	
+	function ShowRole(){
+		$.ajax({
+			type:'POST',
+			url:'../CountEmp/ShowRole',
+			data:{},
+			async:false,
+			success:function(data){
+				//console.log(data);
+				Role=data;
+				if(Role=='ROLE_VIC_ADMIN'){
+					ShowDepid();
+				}else if(Role=='ROLE_VIC_ASSISTANT'){
+					ShowAssistantDepid();
+				}
 			}
 		});   
 	}
