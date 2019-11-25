@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class QueryByIdList {
+	private String RECORDID;
 	private String EXCEPTION_DATE;
 	private String COSTID;
 	private String DEPID;
@@ -12,7 +13,17 @@ public class QueryByIdList {
 	private String USERID;
 	private String USERNAME;
 	private String EXCEPTION_INTERVAL;
+	private String EXCEPTION_TIME;
 	private String EXCEPTION_REASON;
+	private int Count;
+	private int SumTime;
+
+	public String getRECORDID() {
+		return RECORDID;
+	}
+	public void setRECORDID(String rECORDID) {
+		RECORDID = rECORDID;
+	}
 	public String getEXCEPTION_DATE() {	
 		return EXCEPTION_DATE;
 	}
@@ -70,17 +81,38 @@ public class QueryByIdList {
 	public void setEXCEPTION_INTERVAL(String eXCEPTION_INTERVAL) {
 		EXCEPTION_INTERVAL = eXCEPTION_INTERVAL;
 	}
+	
+	public String getEXCEPTION_TIME() {
+		return EXCEPTION_TIME;
+	}
+	public void setEXCEPTION_TIME(String eXCEPTION_TIME) {
+		EXCEPTION_TIME = eXCEPTION_TIME;
+	}
 	public String getEXCEPTION_REASON() {
 		return EXCEPTION_REASON;
 	}
 	public void setEXCEPTION_REASON(String eXCEPTION_REASON) {
 		EXCEPTION_REASON = eXCEPTION_REASON;
 	}
+	
+	public int getCount() {
+		return Count;
+	}
+	public void setCount(int count) {
+		Count = count;
+	}
+	public int getSumTime() {
+		return SumTime;
+	}
+	public void setSumTime(int sumTime) {
+		SumTime = sumTime;
+	}
 	@Override
 	public String toString() {
-		return "QueryByIdList [EXCEPTION_DATE=" + EXCEPTION_DATE + ", COSTID=" + COSTID + ", DEPID=" + DEPID
-				+ ", SHIFT=" + SHIFT + ", USERID=" + USERID + ", USERNAME=" + USERNAME + ", EXCEPTION_INTERVAL="
-				+ EXCEPTION_INTERVAL + ", EXCEPTION_REASON=" + EXCEPTION_REASON + "]";
+		return "QueryByIdList [RECORDID=" + RECORDID + ", EXCEPTION_DATE=" + EXCEPTION_DATE + ", COSTID=" + COSTID
+				+ ", DEPID=" + DEPID + ", SHIFT=" + SHIFT + ", USERID=" + USERID + ", USERNAME=" + USERNAME
+				+ ", EXCEPTION_INTERVAL=" + EXCEPTION_INTERVAL + ", EXCEPTION_TIME=" + EXCEPTION_TIME
+				+ ", EXCEPTION_REASON=" + EXCEPTION_REASON + ", Count=" + Count + ", SumTime=" + SumTime + "]";
 	}
 	
 }

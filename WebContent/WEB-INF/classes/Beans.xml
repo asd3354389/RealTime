@@ -272,6 +272,8 @@
 	<bean id="wSListStatusService" class="com.foxlink.realtime.service.WSListStatusService">
 		<property name="wSListStatusDAO" ref="wSListStatusDAO" />
 	</bean>
+
+
     <bean id="ChangeEmployeeDAO" class="com.foxlink.realtime.DAO.ChangeEmployeeDAO"
 		parent="dAO">
 	</bean>
@@ -296,4 +298,40 @@
 	<bean id="QueryRecordByIdService" class="com.foxlink.realtime.service.QueryRecordByIdService">
 		<property name="QueryRecordByIdDAO" ref="QueryRecordByIdDAO" />
 	</bean> 
+	
+	<bean id="countEmpDAO" class="com.foxlink.realtime.DAO.CountEmpDAO"
+		parent="dAO">
+	</bean>
+	<bean id="countEmpService" class="com.foxlink.realtime.service.CountEmpService">
+		<property name="countEmpDAO" ref="countEmpDAO" />
+	</bean>
+	
+	<bean id="countEmpByCostIDDAO" class="com.foxlink.realtime.DAO.CountEmpByCostIDDAO"
+		parent="dAO">
+	</bean>
+	<bean id="countEmpByCostIDService" class="com.foxlink.realtime.service.CountEmpByCostIDService">
+		<property name="countEmpByCostIDDAO" ref="countEmpByCostIDDAO" />
+	</bean>
+	
+	<bean id="prodAllLineDAO" class="com.foxlink.realtime.DAO.ProdAllLineDAO"
+		parent="dAO">
+	</bean>
+	<bean id="prodAllLineService" class="com.foxlink.realtime.service.ProdAllLineService">
+		<property name="prodAllLineDAO" ref="prodAllLineDAO" />
+	</bean>
+	
+	<bean id="quertAbTimeByCostIdDAO" class="com.foxlink.realtime.DAO.QuertAbTimeByCostIdDAO"
+		parent="dAO">
+	</bean>
+	<bean id="quertAbTimeByCostIdService" class="com.foxlink.realtime.service.QuertAbTimeByCostIdService">
+		<property name="quertAbTimeByCostIdDAO" ref="quertAbTimeByCostIdDAO" />
+	</bean>
+	
+	<bean id="abReasonReplyDAO" class="com.foxlink.realtime.DAO.AbReasonReplyDAO"
+		parent="dAO">
+	</bean>
+	<bean id="abReasonReplyService" class="com.foxlink.realtime.service.AbReasonReplyService">
+		<property name="abReasonReplyDAO" ref="abReasonReplyDAO" />
+	</bean>
+	
 </beans>

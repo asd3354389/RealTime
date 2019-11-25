@@ -151,9 +151,28 @@
 				"icon" : "icon-nav",
 				"url" : "ChangeEmployee/ShowChangeEmployee"
 			},{
+				"menuname" : "人力縂表-依課別",
+				"icon" : "icon-nav",
+				"url" : "CountEmpByCostID/ShowCountEmpByCostID"
+			},{
 				"menuname" : "排配機種",
 				"icon" : "icon-nav",
 				"url" : "ProdPerson/ShowProdPerson"
+			},{
+				"menuname" : "各課排配人力",
+				"icon" : "icon-nav",
+				"url" : "ProdAllLine/ShowProdAllLine"
+			}]
+
+		},{
+
+			"menuid" : "43",
+			"icon" : "icon-sys",
+			"menuname" : "門禁管理",
+			"menus" : [{
+				"menuname" : "依課別-線別查詢",
+				"icon" : "icon-nav",
+				"url" : "QuertAbTimeByCostId/ShowQuertAbTimeByCostId"
 			},{
 				"menuname" : "依員工工號查詢",
 				"icon" : "icon-nav",
@@ -162,14 +181,10 @@
 				"menuname" : "實時及門禁刷卡查詢依工號",
 				"icon" : "icon-nav",
 				"url" : "QueryRecordById/ShowQueryRecordById"
-			}]
-		},{
-
-			"menuid" : "43",
-			"icon" : "icon-sys",
-			"menuname" : "門禁管理",
-			"menus" : [{
-				
+			},{
+				"menuname" : "異常原因回復",
+				"icon" : "icon-nav",
+				"url" : "AbReasonReply/ShowAbReasonReply"
 			}]
 		},{
 
