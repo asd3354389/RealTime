@@ -110,7 +110,7 @@ $(document).ready(function(){
 						ShowABTimeList(res.ABTimeList);
 					}
 					else{
-						  alert(data.message);
+						  alert(res.message);
 					}
 				},
 				error:function(){
