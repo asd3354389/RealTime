@@ -98,7 +98,7 @@ $(document).ready(function(){
 				},
 				async:false,
 				success:function(res){
-					console.log(res);
+					//console.log(res);
 					if(res.StatusCode=="200"){
 						ShowABReasonList(res.ABReason);
 					}else{
@@ -139,9 +139,10 @@ $(document).ready(function(){
 			success:function(data){
 				if(data!=null && data!=''){
 					  if(data.StatusCode=="200"){
+						  //console.log(data);
 						  $('#inlineCheckbox1').get(0).checked="";
 						  SearchAbReason();
-						  alert(data.message); 
+						  alert(data.Message); 
 					  }else{
 						  alert(data.message);
 					  }
