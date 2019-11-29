@@ -16,7 +16,7 @@ public class QueryABReason implements RowMapper<QueryByIdList> {
 	public QueryByIdList mapRow(ResultSet rs, int rowNum) throws SQLException {
 		// TODO Auto-generated method stub
 		QueryByIdList qbi = new QueryByIdList();
-		qbi.setRECORDID(rs.getString("recordid"));
+		qbi.setROWID(rs.getString("id"));
 		qbi.setCOSTID(rs.getString("costid"));
 		qbi.setDEPID(rs.getString("depid"));
 		qbi.setUSERID(rs.getString("userid"));
