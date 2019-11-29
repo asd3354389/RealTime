@@ -51,9 +51,9 @@ $(document).ready(function(){
 		var reason = $('#exception_reason').val();
 		$('#ABReasonList tbody tr td').find('input:checked').each(function(){
 			$(this).each(function(){
-				var recordid = $(this).val();
+				var ROWID = $(this).val();
 				var Empid = new Object();
-				Empid.RECORDID=recordid;
+				Empid.ROWID=ROWID;
 				Empid.EXCEPTION_REASON=reason;
 				Emp.push(Empid);
 			})
@@ -121,7 +121,7 @@ $(document).ready(function(){
 		var ABReason = JSON.parse(data);
 		var tableContents='';
 		for(var i=0;i<ABReason.length;i++){
-			tableContents+='<tr><td><input class="checkValue" name="checkbox" type="checkbox" value='+ABReason[i].RECORDID+'></td><td>'+ABReason[i].COSTID+'</td><td>'+ABReason[i].DEPID+'</td><td>'+ABReason[i].USERID+'</td><td>'+ABReason[i].USERNAME+'</td>'+
+			tableContents+='<tr><td><input class="checkValue" name="checkbox" type="checkbox" value='+ABReason[i].ROWID+'></td><td>'+ABReason[i].COSTID+'</td><td>'+ABReason[i].DEPID+'</td><td>'+ABReason[i].USERID+'</td><td>'+ABReason[i].USERNAME+'</td>'+
 			'<td>'+ABReason[i].EXCEPTION_DATE+'</td><td>'+ABReason[i].SHIFT+'</td><td>'+ABReason[i].EXCEPTION_INTERVAL+'</td><td>'+ABReason[i].EXCEPTION_TIME+'</td><td>'+ABReason[i].EXCEPTION_REASON+'</td></tr>'
 		}
 		$('#ABReasonList tbody').append(tableContents);
@@ -129,6 +129,7 @@ $(document).ready(function(){
 	}
 	
 	function ReplyReason(Emp){
+		console.log(Emp)
 		$.ajax({
 			type:'post',
 			contentType:'application/json',

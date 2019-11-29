@@ -17,7 +17,7 @@ public class AbReasonReplyDAO extends DAO<QueryByIdList>{
 	public List<QueryByIdList> searchABReasonList(String bu, String costid, String sDate, String eDate) {
 		// TODO Auto-generated method stub
 		List<QueryByIdList> ABReasonList = null;
-		String sSQl = "SELECT recordid,costid,userid,username,depid,exception_date,shift,exception_interval,exception_time,exception_reason FROM SWIPE.SWIPE_TIMEOUT_CACHE where Exception_Date >= to_date('"+sDate+"','yyyy-MM-dd HH24:mi:ss') and Exception_Date< to_date('"+eDate+"','yyyy-MM-dd HH24:mi:ss')";
+		String sSQl = "SELECT rowid as id,costid,userid,username,depid,exception_date,shift,exception_interval,exception_time,exception_reason FROM SWIPE.SWIPE_TIMEOUT_CACHE where Exception_Date >= to_date('"+sDate+"','yyyy-MM-dd HH24:mi:ss') and Exception_Date< to_date('"+eDate+"','yyyy-MM-dd HH24:mi:ss')";
 		try {
 			if(bu.equals("AllBU")) {
 				sSQl+="";
@@ -97,7 +97,7 @@ public class AbReasonReplyDAO extends DAO<QueryByIdList>{
 
 	public int replyReason(QueryByIdList[] emp) {
 		// TODO Auto-generated method stub
-		String sSQL="update SWIPE.SWIPE_TIMEOUT_CACHE set exception_reason = ? where recordid=?";
+		String sSQL="update SWIPE.SWIPE_TIMEOUT_CACHE set exception_reason = ? where ROWID=?";
 		int result = 0;
 		try {
 			jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
@@ -106,7 +106,7 @@ public class AbReasonReplyDAO extends DAO<QueryByIdList>{
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					// TODO Auto-generated method stub
 					ps.setString(1, emp[i].getEXCEPTION_REASON());
-					ps.setString(2, emp[i].getRECORDID());
+					ps.setString(2, emp[i].getROWID());
 				}
 				
 				@Override
@@ -127,7 +127,7 @@ public class AbReasonReplyDAO extends DAO<QueryByIdList>{
 	public List<QueryByIdList> searchABReasonByDepid(String depid, String sDate, String eDate) {
 		// TODO Auto-generated method stub
 		List<QueryByIdList> ABReasonList = null;
-		String sSQl = "SELECT recordid,costid,userid,username,depid,exception_date,shift,exception_interval,exception_time,exception_reason FROM SWIPE.SWIPE_TIMEOUT_CACHE where Exception_Date >= to_date('"+sDate+"','yyyy-MM-dd HH24:mi:ss') and Exception_Date< to_date('"+eDate+"','yyyy-MM-dd HH24:mi:ss')";
+		String sSQl = "SELECT rowid as id,costid,userid,username,depid,exception_date,shift,exception_interval,exception_time,exception_reason FROM SWIPE.SWIPE_TIMEOUT_CACHE where Exception_Date >= to_date('"+sDate+"','yyyy-MM-dd HH24:mi:ss') and Exception_Date< to_date('"+eDate+"','yyyy-MM-dd HH24:mi:ss')";
 		try {
 			sSQl+=" and depid='"+depid+"' ORDER BY depid";
 			//System.out.println(sSQl);

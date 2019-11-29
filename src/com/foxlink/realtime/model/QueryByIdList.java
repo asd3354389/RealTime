@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class QueryByIdList {
+	private String ROWID;
 	private String RECORDID;
 	private String EXCEPTION_DATE;
 	private String COSTID;
@@ -18,6 +19,13 @@ public class QueryByIdList {
 	private int Count;
 	private int SumTime;
 
+	
+	public String getROWID() {
+		return ROWID;
+	}
+	public void setROWID(String rOWID) {
+		ROWID = rOWID;
+	}
 	public String getRECORDID() {
 		return RECORDID;
 	}
@@ -109,9 +117,9 @@ public class QueryByIdList {
 	}
 	@Override
 	public String toString() {
-		return "QueryByIdList [RECORDID=" + RECORDID + ", EXCEPTION_DATE=" + EXCEPTION_DATE + ", COSTID=" + COSTID
-				+ ", DEPID=" + DEPID + ", SHIFT=" + SHIFT + ", USERID=" + USERID + ", USERNAME=" + USERNAME
-				+ ", EXCEPTION_INTERVAL=" + EXCEPTION_INTERVAL + ", EXCEPTION_TIME=" + EXCEPTION_TIME
+		return "QueryByIdList [ROWID=" + ROWID + ", RECORDID=" + RECORDID + ", EXCEPTION_DATE=" + EXCEPTION_DATE
+				+ ", COSTID=" + COSTID + ", DEPID=" + DEPID + ", SHIFT=" + SHIFT + ", USERID=" + USERID + ", USERNAME="
+				+ USERNAME + ", EXCEPTION_INTERVAL=" + EXCEPTION_INTERVAL + ", EXCEPTION_TIME=" + EXCEPTION_TIME
 				+ ", EXCEPTION_REASON=" + EXCEPTION_REASON + ", Count=" + Count + ", SumTime=" + SumTime + "]";
 	}
 	
