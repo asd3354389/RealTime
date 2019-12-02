@@ -261,4 +261,36 @@ public class WorkShopController {
 		return AddResult.toString();
 	}
 	
+	@RequestMapping(value="/AddWSAdmin.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+	@ResponseBody 
+	public String AddWSAdminInfos(HttpSession session,@RequestParam("id")String id){
+		JsonObject AddResult=new JsonObject();		
+		try{
+			//String updateUser=(String) session.getAttribute("username");
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			workShopService = (WorkShopService) context.getBean("workShopService");
+			if(workShopService.checkUser(id)){
+				if(workShopService.AddWSAdmin(id)){
+					AddResult.addProperty("StatusCode", "200");
+					AddResult.addProperty("Message", "添加更換車間權限成功");
+				}
+				else{
+					AddResult.addProperty("StatusCode", "500");
+					AddResult.addProperty("Message", "添加更換車間權限失敗");
+				}
+			}else{
+				AddResult.addProperty("StatusCode", "500");
+				AddResult.addProperty("Message", "查無員工信息");
+			}
+			
+		}
+		catch(Exception ex){
+			logger.error("Adding the new WorkShop info is failed, due to: ",ex);
+			ex.printStackTrace();
+			AddResult.addProperty("StatusCode", "500");
+			AddResult.addProperty("Message", "添加更換車間權限發生錯誤，原因："+ex.toString());
+		}
+		return AddResult.toString();
+	}
+	
 }

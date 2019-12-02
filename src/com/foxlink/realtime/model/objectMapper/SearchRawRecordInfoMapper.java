@@ -19,6 +19,7 @@ public class SearchRawRecordInfoMapper implements RowMapper<SearchRawRecordInfo>
 		searchInfo.setSwipeCardTime(rs.getString("swipeCardTime"));
 		searchInfo.setSwipeCardIpAddress(rs.getString("swipeCardIpAddress"));
 		searchInfo.setDeptid(rs.getString("deptid"));
+		searchInfo.setRecord_status(rs.getString("record_status"));
 		return searchInfo;
 	}
 

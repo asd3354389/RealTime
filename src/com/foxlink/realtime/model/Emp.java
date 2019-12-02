@@ -12,6 +12,7 @@ public class Emp{
 	private int IsOnWork;
 	private String Job_Title;
 	private String Job_Name;
+	private String UpdateDate;
 //deptid
 	private String deptid;
 	public String getDeptid() {
@@ -88,14 +89,22 @@ public class Emp{
 	public void setJob_Name(String job_Name) {
 		Job_Name = job_Name;
 	}
-	
-
+	public String getUpdateDate() {
+		return UpdateDate;
+	}
+	public void setUpdateDate(String updateDate) {
+		UpdateDate = updateDate;
+	}
 	@Override
 	public String toString() {
 		return "Emp [EmpNo=" + EmpNo + ", EmpName=" + EmpName + ", DeptNo=" + DeptNo + ", DeptName=" + DeptName
 				+ ", Direct=" + Direct + ", CardID=" + CardID + ", CostID=" + CostID + ", Permission=" + Permission
-				+ ", IsOnWork=" + IsOnWork + ", Job_Title=" + Job_Title + ", Job_Name=" + Job_Name + "]";
+				+ ", IsOnWork=" + IsOnWork + ", Job_Title=" + Job_Title + ", Job_Name=" + Job_Name + ", UpdateDate="
+				+ UpdateDate + ", deptid=" + deptid + "]";
 	}
+	
+	
+	
 	
 	
 	

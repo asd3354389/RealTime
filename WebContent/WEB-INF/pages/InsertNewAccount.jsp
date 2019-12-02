@@ -56,7 +56,14 @@
   		 <div class="control-group">
     		<label class="control-label" for="inputRole">賬號權限</label>
     		<div class="controls">
-      			<input type="text" id="inputRole" name="inputRole"class="required Role" placeholder="賬號權限,格式ROLE_**">
+      			<!-- <input type="text" id="inputRole" name="inputRole"class="required Role" placeholder="賬號權限,格式ROLE_**"> -->
+      			<select id="inputRole" name="inputRole"class="required Role">
+      				<option value="ROLE_ADMIN">ROLE_ADMIN</option>
+      				<option value="ROLE_ASSISTANT">ROLE_ASSISTANT</option>
+      				<option value="ROLE_LineLeader">ROLE_LineLeader</option>
+      				<option value="ROLE_TXADLOW">ROLE_TXADLOW</option>
+      				<option value="ROLE_ZJADLOW">ROLE_ZJADLOW</option>
+      			</select>
     		</div>
   		</div>
   		

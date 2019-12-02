@@ -13,24 +13,28 @@
 <c:url value="/resources/assets/css/bootstrap.css" var="bootstrapCSS" />
 <c:url value="/resources/assets/css/plugins.css" var="pluginsCSS" />
 <c:url value="/resources/assets/css/main.css" var="mainCSS" />
+<c:url value="/resources/css/bootstrap/bootstrap-select.min.css" var="bootstrapSelectCSS" />
 
 <link href="${iconsCSS}" rel="stylesheet">
 <link href="${bootstrapCSS}" rel="stylesheet">
 <link href="${pluginsCSS}" rel="stylesheet">
 <link href="${mainCSS}" rel="stylesheet">
+<link href="${bootstrapSelectCSS}" rel="stylesheet">
 
 <c:url value="/resources/assets/js/jquery-1.8.3.min.js" var="assetsJqueryJS" />
+<c:url value="/resources/js/Project/RealTime.Modify.EmpInfo.js?version=${resourceVersion}" var="modifyEmpInfoJS" />
 <c:url value="/resources/js/jquery/jquery-1.11.3.min.js" var="JqueryJS" />
 <c:url value="/resources/js/bootstrap/bootstrap.min.js" var="bootstrapJS" />
-<c:url value="/resources/js/Project/RealTime.Modify.WorkShop.js?version=${resourceVersion}" var="modifyWorkShopJS" />
+<c:url value="/resources/js/bootstrap/bootstrap-select.min.js" var="bootstrapSelectJS" />
 <c:url value="/resources/js/Project/AjaxCheckSession.js?version=${resourceVersion}" var="AjaxCheckSessionJS"/> 
 <script src="${JqueryJS}" type="text/javascript"></script>
 <script src="${bootstrapJS}" type="text/javascript"></script>
+<script src="${bootstrapSelectJS}" type="text/javascript"></script>
 <script type="text/javascript" src='${AjaxCheckSessionJS}'></script>
-<script src="${modifyWorkShopJS}" type="text/javascript"></script>
+<script src="${modifyEmpInfoJS}" type="text/javascript"></script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>車間信息管理</title>
+<title>員工信息查詢</title>
 </head>
 <body>
 	<div id="header" class="header-fixed">
@@ -42,55 +46,51 @@
 		</div>
 		<!-- Start .header-inner -->
 	</div>
-<div class="container-fluid" style="margin: 50px 20% 0 0;">
+<div class="container-fluid"  style="margin: 50px 20% 0 0;">
 	<div style="top: 55px; margin-left: 10px">
 		<div class="panel-body" style="border: 1px solid #e1e3e6;">
-				
-              <div align="right">
+			<div align="right">
 				查詢條件：<select id="queryCritirea" class="input-small">
-					<option value="WorkShopNo">車間名称</option>
-					<option value="LineNo">線體名称</option>
-				</select> <input type="text" id="queryParam" name="queryParam" class="input-sm"> 
-                 <input type="button" id="searchWorkShopBtn" name="searchWorkShopBtn"
-					class="btn btn-sm btn-primary" value="Search"> 
-					<a id="addNewWorkShopBtn" role="button" href="#insertWorkShopDialog"
-					class="btn btn-primary btn-sm" data-toggle="modal">新增車間</a>
-					<a id="addNewLineNoBtn" role="button" href="#insertLineNoDialog"
-					class="btn btn-primary btn-sm" data-toggle="modal">新增線體</a>
-					<a id="addAdminBtn" role="button" href="#insertWSAdminDialog"
-					class="btn btn-primary btn-sm" data-toggle="modal">新增更換車間權限</a>
+					<option value="Id">工號</option>
+				</select> <input type="text" id="queryParam" name="queryParam"
+					class="input-sm" > <input type="button"
+					id="empInfoTitleBtn" name="searchEmpInfoBtn"
+					class="btn btn-sm btn-primary" value="Search">
 			</div>
 			<div>
 				<div>
-					<h4>車間列表：</h4>
+					<h4>員工信息列表：</h4>
 				</div>
 				<div class="panel-body" style="border: 1px solid #e1e3e6;">
-					<table id="WorkShopInfoTable" class="table table-striped">
+					<table id="empInfoTable" class="table table-hover" style="table-layout:fixed;">
 						<thead>
 							<tr>
-								<th>車間名稱</th>
-								<th>線體名稱</th>
-								<th>創建人</th>
-								<th>創建日期</th>								
+								<th>工號</th>
+								<th>姓名</th>
+								<th>費用代碼</th>
+								<th>部門代碼</th>
+								<th>線組別代碼</th>
+								<th>卡號</th>
+								<th>更新日期</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
 						<tfoot>
 							<tr>
-								<th>車間名稱</th>
-								<th>線體名稱</th>
-								<th>創建人</th>
-								<th>創建日期</th>	
+								<th>工號</th>
+								<th>姓名</th>
+								<th>費用代碼</th>
+								<th>部門代碼</th>
+								<th>線組別代碼</th>
+								<th>卡號</th>
+								<th>更新日期</th>
 							</tr>
 						</tfoot>
 					</table>
 				</div>
 			</div>
-			<div id="WorkShopInfoPagination" align="right" style="height: 20">
+			<div id="empInfoPagination" align="right" style="height: 20">
 			</div>
-			<jsp:include page="InsertNewWorkShop.jsp" />
-			<jsp:include page="InsertNewLineNo.jsp" />
-			<jsp:include page="InsertWSAdmin.jsp" />
 		</div>
 	</div>
 </div>	

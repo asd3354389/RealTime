@@ -185,8 +185,8 @@ public class AccountDAO extends DAO<User> {
 		String sSQL="UPDATE SWIPE.USER_DATA SET Assistant_Id=?,CostId=?,Phone_Tel=?,Update_User=?,Departmentcode=? WHERE UserName=?";
 		try {
 			if(updateRecord!=null) {
-				String sSQLrole="UPDATE USER_Roles SET ROLE=?,Update_User=? WHERE UserName=?";
-				updateRole=jdbcTemplate.update(sSQLrole,new PreparedStatementSetter() {
+				//String sSQLrole="UPDATE USER_Roles SET ROLE=?,Update_User=? WHERE UserName=?";
+				/*updateRole=jdbcTemplate.update(sSQLrole,new PreparedStatementSetter() {
 						@Override
 						public void setValues(PreparedStatement arg0) throws SQLException {
 							// TODO Auto-generated method stub
@@ -194,7 +194,7 @@ public class AccountDAO extends DAO<User> {
 							arg0.setString(2, updateRecord.getUPDATE_USER());
 							arg0.setString(3, updateRecord.getUSERNAME());
 						}	
-					});
+					});*/
 				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement arg0) throws SQLException {
@@ -214,7 +214,7 @@ public class AccountDAO extends DAO<User> {
 			logger.error("Update Account is failed",ex);
 			transactionManager.rollback(txStatus);
 		}			
-			if(updateRow > 0 && updateRole >0) 
+			if(updateRow > 0) 
 				   return true; 
 				else
 				   return false;
@@ -373,6 +373,80 @@ public class AccountDAO extends DAO<User> {
 			return null;
 		}
 		return selectUsers;
+	}
+	
+	public boolean DeletePowerRecord(String recordID,String role) {
+		// TODO Auto-generated method stub
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);
+		String sSQL="delete from USER_ROLES t where t.username = ? and t.role = ?";
+		int disableRow=-1;
+		try {
+			if(recordID!=null) {
+				disableRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement arg0) throws SQLException {
+						// TODO Auto-generated method stub
+						arg0.setString(1, recordID);
+						arg0.setString(2, role);
+					}	
+				});
+				transactionManager.commit(txStatus);
+			}
+		}
+		catch(Exception ex) {
+			logger.error("Disable user_data is failed",ex);
+			transactionManager.rollback(txStatus);
+		}
+		 if(disableRow > 0) 
+			   return true; 
+		 else
+			 return false;
+	}
+	public boolean NewPowerRecord(String userName, String role, String updateUser) {
+		// TODO Auto-generated method stub
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);
+		String sSQL="insert into USER_ROLES(USERNAME,ROLE,UPDATE_DATE,UPDATE_USER) values(?,?,sysdate,?)";
+		int disableRow=-1;
+		try {
+			if(userName!=null) {
+				disableRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement arg0) throws SQLException {
+						// TODO Auto-generated method stub
+						arg0.setString(1, userName);
+						arg0.setString(2, role);
+						arg0.setString(3, updateUser);
+					}	
+				});
+				transactionManager.commit(txStatus);
+			}
+		}
+		catch(Exception ex) {
+			logger.error("Disable user_data is failed",ex);
+			transactionManager.rollback(txStatus);
+		}
+		 if(disableRow > 0) 
+			   return true; 
+		 else
+			 return false;
+	}
+	
+	public boolean checkRole(String userName, String role) {
+		// TODO Auto-generated method stub
+		int totalRecord=-1;
+    	String sSQL = "select count(*) from USER_ROLES t where t.username = ? and t.role = ?";
+    	try {    	    	
+    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { userName,role },Integer.class);	   	
+    	  } catch (Exception ex) {
+    		  ex.printStackTrace();
+    		  }
+    	
+    	 if(totalRecord > 0) 
+			   return false; 
+		 else
+			 return true;
 	}
 	
 

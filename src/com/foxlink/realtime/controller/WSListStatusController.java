@@ -58,7 +58,6 @@ public class WSListStatusController {
 			Page page = wSListStatusService.getFindWslsPage(currentPage,queryCritirea, queryParam,accessRole);
 			page.setList(wSListStatusService.FindQueryWsls(currentPage, queryCritirea,queryParam,accessRole));
 			/*System.out.println(gson.toJson(page));*/
-			System.out.println(gson.toJson(page));
 			JsonResult = gson.toJson(page);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -104,7 +103,6 @@ public class WSListStatusController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			wSListStatusService=(WSListStatusService) context.getBean("wSListStatusService");
 			jsonResults=gson.toJson(wSListStatusService.FindReasonClass());
-			System.out.print(jsonResults);
 		}catch(Exception ex){
 			JsonObject exception=new JsonObject();
 			exception.addProperty("StatusCode", "500");
@@ -149,7 +147,6 @@ public class WSListStatusController {
 			checkResult.addProperty("StatusCode", "500");
 			checkResult.addProperty("Message", "此原因描述設置發生錯誤，原因："+ex.toString());
 		}
-		System.out.println(checkResult.toString());
 		return checkResult.toString();
 	}
 }

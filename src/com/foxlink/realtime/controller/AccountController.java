@@ -212,4 +212,60 @@ public class AccountController {
 		return DisableResult.toString();
 	}
 	
+	@RequestMapping(value="/DisableAccountPower.do",method=RequestMethod.GET,produces="application/json;charset=utf-8")
+	@ResponseBody
+	public String DisableAccountPowerInfos(HttpSession session,@RequestParam("userName")String userName,@RequestParam("role")String role){
+		JsonObject DisableResult=new JsonObject();
+		try{
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			accountService = (AccountService) context.getBean("accountService");
+			String updateUser=(String) session.getAttribute("username");
+			if(accountService.DeletePowerRecord(userName, role)){
+				DisableResult.addProperty("StatusCode", "200");
+				DisableResult.addProperty("Message", "權限刪除成功");
+			}
+			else{
+				DisableResult.addProperty("StatusCode", "500");
+				DisableResult.addProperty("Message", "權限刪除發生錯誤");
+			}
+		}
+		catch(Exception ex){
+			logger.error("Disable the Account info is failed, due to:",ex);
+			DisableResult.addProperty("StatusCode", "500");
+			DisableResult.addProperty("Message", "權限刪除發生錯誤，原因:"+ex.toString());
+		}		
+		return DisableResult.toString();
+	}
+	
+	@RequestMapping(value="/NewPower.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+	@ResponseBody
+	public String NewAccountPowerInfos(HttpSession session,@RequestParam("powerUser")String userName,@RequestParam("Power")String role){
+		JsonObject DisableResult=new JsonObject();
+		try{
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			accountService = (AccountService) context.getBean("accountService");
+			String updateUser=(String) session.getAttribute("username");
+			if(accountService.checkRole(userName, role)){
+				if(accountService.NewPowerRecord(userName, role,updateUser)){
+					DisableResult.addProperty("StatusCode", "200");
+					DisableResult.addProperty("Message", "添加權限成功");
+				}
+				else{
+					DisableResult.addProperty("StatusCode", "500");
+					DisableResult.addProperty("Message", "添加權限發生錯誤");
+				}
+			}else{
+				DisableResult.addProperty("StatusCode", "500");
+				DisableResult.addProperty("Message", "該用戶已擁有此權限不需要額外添加");
+			}
+			
+		}
+		catch(Exception ex){
+			logger.error("Disable the Account info is failed, due to:",ex);
+			DisableResult.addProperty("StatusCode", "500");
+			DisableResult.addProperty("Message", "添加權限發生錯誤，原因:"+ex.toString());
+		}		
+		return DisableResult.toString();
+	}
+	
 }
