@@ -214,12 +214,35 @@ $(document).ready(function(){
 		var executeResult=rawData["list"];
 		console.log(executeResult);
 		for(var i=0;i<executeResult.length;i++){
+			   var record_status;
+			   if(executeResult[i]["record_status"]==0){
+				   record_status = "正常刷卡";
+			   }else if(executeResult[i]["record_status"]==2){
+				   record_status = "無班別資料";
+			   }else if(executeResult[i]["record_status"]==3){
+				   record_status = "上班提前超15分鐘";
+			   }else if(executeResult[i]["record_status"]==4){
+				   record_status = "不符合七休一";
+			   }else if(executeResult[i]["record_status"]==5){
+				   record_status = "刷卡重復 ";
+			   }else if(executeResult[i]["record_status"]==6){
+				   record_status = "上下班卡已刷 ";
+			   }else if(executeResult[i]["record_status"]==7){
+				   record_status = "無網絡記錄回寫";
+			   }else if(executeResult[i]["record_status"]==8){
+				   record_status = "換線刷卡記錄";
+			   }else if(executeResult[i]["record_status"]==10){
+				   record_status = "非指定地點刷卡";
+			   }else{
+				   record_status = "未知刷卡類型";
+			   }
 			   var tableContents='<tr><td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["empId"]+'</td>'+
 			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["name"]+'</td>'+
 			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["deptid"]+'</td>'+
 			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["costId"]+'</td>'+
 			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["swipeCardTime"]+'</td>'+
-			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["swipeCardIpAddress"]+'</td></tr>';
+			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["swipeCardIpAddress"]+'</td>'+
+			     '<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+record_status+'</td></tr>';
 			     $('#rawRecordTable tbody').append(tableContents);
 			  } 
 		if(!isShowAll){

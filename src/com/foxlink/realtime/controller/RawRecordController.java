@@ -79,7 +79,7 @@ public class RawRecordController {
 				exception.addProperty("ErrorMessage", "取得原始刷卡記錄列表失敗，原因："+ex.toString());
 				jsonResults=exception.toString();
 		}
-		
+		System.out.println(jsonResults);
 		return jsonResults;
 	}
 	

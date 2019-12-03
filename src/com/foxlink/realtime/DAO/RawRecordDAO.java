@@ -140,7 +140,7 @@ private static Logger logger=Logger.getLogger(RawRecordDAO.class);
 		// TODO Auto-generated method stub
 		List<SearchRawRecordInfo> searchRawRecord = null;
 		String sSQL = "select * from (select a.*,rownum as rnum,COUNT (*) OVER () totalPage from "
-				+ "(SELECT r.id empId,e.name,e.depid,e.deptid,e.costId,to_char(r.SwipeCardTime,'yyyy-MM-dd HH24:mi:ss') swipeCardTime,r.IP_ADDRESS swipeCardIpAddress"
+				+ "(SELECT r.id empId,e.name,e.depid,e.deptid,e.costId,to_char(r.SwipeCardTime,'yyyy-MM-dd HH24:mi:ss') swipeCardTime,r.IP_ADDRESS swipeCardIpAddress,r.record_status "
 				+ " FROM SWIPE.raw_record r join SWIPE.csr_employee e on r.id=e.id where e.isOnwork='0'";
 		try {	
 			 List <Object> queryList=new  ArrayList<Object>();  

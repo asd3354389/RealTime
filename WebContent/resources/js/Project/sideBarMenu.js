@@ -203,6 +203,18 @@
 				"menuname" : "車間管理",
 				"icon" : "icon-nav",
 				"url" : "WorkShop/ShowAllWorkShop"
+			}, {
+				"menuname" : "人員信息查詢",
+				"icon" : "icon-nav",
+				"url" : "AdminActioin/ShowEmpInfo"
+			}, {
+				"menuname" : "廠區假日管理",
+				"icon" : "icon-nav",
+				"url" : "AdminActioin/ShowHolidayInfo"
+			}, {
+				"menuname" : "卡機ip綁定可刷卡費用代碼",
+				"icon" : "icon-nav",
+				"url" : "AdminActioin/ShowIpBindingCostSCInfo"
 			}]
 		}]
 	};

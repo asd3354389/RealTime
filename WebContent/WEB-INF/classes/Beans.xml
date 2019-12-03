@@ -334,4 +334,11 @@
 		<property name="abReasonReplyDAO" ref="abReasonReplyDAO" />
 	</bean>
 	
+	<bean id="AdminActionDao" class="com.foxlink.realtime.DAO.AdminActionDao"
+		parent="dAO">
+	</bean>
+	<bean id="AdminActionService" class="com.foxlink.realtime.service.AdminActionService">
+		<property name="AdminActionDao" ref="AdminActionDao" />
+	</bean> 
+	
 </beans>

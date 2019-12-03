@@ -107,13 +107,14 @@
 					<input type="checkbox" name="recordStatus" value="0"
 						checked="checked">正常刷卡
 					<!-- 	<input type="checkbox" name="recordStatus" value="1">無人員資料 -->
-					<input type="checkbox" name="recordStatus" value="2">無班別資料
-					<input type="checkbox" name="recordStatus" value="3">上班提前超15分鐘
-					<input type="checkbox" name="recordStatus" value="4">不符合七休一
-					<input type="checkbox" name="recordStatus" value="5">刷卡重復 
-					<input type="checkbox" name="recordStatus" value="6">上下班卡已刷 
-					<input type="checkbox" name="recordStatus" value="7">無網絡記錄回寫
-					<input type="checkbox" name="recordStatus" value="8">換線刷卡記錄
+					<input type="checkbox" name="recordStatus" value="2" checked="checked">無班別資料
+					<input type="checkbox" name="recordStatus" value="3" checked="checked">上班提前超15分鐘
+					<input type="checkbox" name="recordStatus" value="4" checked="checked">不符合七休一
+					<input type="checkbox" name="recordStatus" value="5" checked="checked">刷卡重復 
+					<input type="checkbox" name="recordStatus" value="6" checked="checked">上下班卡已刷 
+					<input type="checkbox" name="recordStatus" value="7" checked="checked">無網絡記錄回寫
+					<input type="checkbox" name="recordStatus" value="8" checked="checked">換線刷卡記錄
+					<input type="checkbox" name="recordStatus" value="10" checked="checked">非指定地點刷卡
 				</div>
 				<div class="col-sm-12 col-sm-12" style="margin: 5px;">				   
 					<input type="button" id="searchRawRecordBtn" name="searchRawRecordBtn" class="btn btn-sm btn-primary" value="查詢">
@@ -135,6 +136,7 @@
 									<th>費用代碼</th>
 									<th>刷卡記錄</th>
 									<th>刷卡IP地址</th>
+									<th>刷卡類型</th>
 								</tr>
 							</thead>
 							<tbody></tbody>
@@ -146,6 +148,7 @@
 									<th>費用代碼</th>
 									<th>刷卡記錄</th>
 									<th>刷卡IP地址</th>
+									<th>刷卡類型</th>
 								</tr>
 							</tfoot>
 						</table>
