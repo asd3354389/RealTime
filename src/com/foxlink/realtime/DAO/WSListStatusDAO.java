@@ -143,7 +143,6 @@ public class WSListStatusDAO extends DAO<WSListStatus> {
 		    }
 		  
 		  AllWsls = jdbcTemplate.query(sSQL, queryList.toArray(), new QueryWSListStatus());	
-		  System.out.println(sSQL);
 		
     	  } catch (Exception ex) {
     		  logger.error("Find WSListStatus TotalRecord are failed ",ex);

@@ -112,7 +112,6 @@ public class WSListStatusService extends Service<WSListStatus> {
 				resultJson.addProperty("StatusCode", "500");
 				resultJson.addProperty("Message", "原因描述設定失敗");
 			}
-		System.out.println(resultJson.toString());
 		return resultJson.toString();
 	}
 

@@ -419,5 +419,30 @@ $(document).ready(function(){
 									}
 		});		
 	}
+	
+	$('#setNewWSAdminInfo').click(function(){
+		var id=$('#inputWSAdmin').val();
+		$.ajax({
+			type:'POST',
+			url:'../WorkShop/AddWSAdmin.do',
+			data:{id:id},
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){
+				 if(data!=null && data!=''){
+					 if(data.StatusCode=="200"){
+						 alert(data.Message);
+					 }
+					 else{
+						 alert(data.Message);
+					 }
+				 }else{
+					 alert('操作失敗!')
+				 }
+			}
+		});
+	
+	});
 		
 });

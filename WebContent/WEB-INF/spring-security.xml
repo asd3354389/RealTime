@@ -50,6 +50,8 @@
 		<intercept-url pattern="/QueryById/ShowQueryById" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN','ROLE_VIC_ASSISTANT')" />
 		<intercept-url pattern="/QueryRecordById/ShowQueryRecordById" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN','ROLE_VIC_ASSISTANT')" />
 		<intercept-url pattern="/AbReasonReply/ShowAbReasonReply" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN','ROLE_VIC_ASSISTANT')" />	
+		
+		<intercept-url pattern="/AdminActioin/**" access="hasRole('ROLE_ADMIN')" />
 		<!-- access="hasRole('ROLE_USER','ROLE_ADMIN')"  -->
 
      <!--会话管理 -->   

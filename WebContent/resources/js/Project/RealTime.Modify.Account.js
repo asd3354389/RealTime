@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false;
+	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false,powerUser=null;
 	init();
 	
 	function init(callback){
@@ -51,7 +51,10 @@ $(document).ready(function(){
 						break;
 					}		*/
 					tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">'+
-					'<input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td></tr>';
+					'<input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>'+
+					'<td><input type="button" href="#insertPowerDialog" value="添加權限" class="addPowerBtn btn btn-xs btn-link" data-toggle="modal">'+
+					'<input type="button" value="刪除權限" class="deletePowerBtn btn btn-xs btn-link"></td>'+
+					'</tr>';
 					$('#accountInfoTable tbody').append(tableContents);
 		}	
 		refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize);
@@ -80,7 +83,7 @@ $(document).ready(function(){
 			$(parentElement).find('td').eq(5).html('<input type="text" class="changePhoneTel input-small" value="'+phoneTel+'">');
 			
 			var role=$(parentElement).find('td').eq(6).text();
-			$(parentElement).find('td').eq(6).html('<input type="text" class="changeRole input-small" value="'+role+'">');
+			//$(parentElement).find('td').eq(6).html('<input type="text" class="changeRole input-small" value="'+role+'">');
 			
 			$(parentElement).children().find('.editBtn .deleteBtn').hide();
 			$(parentElement).find('td').eq(7).append('<a class="confirmBtn btn btn-xs btn-link" role="button">確認</a>'+
@@ -108,7 +111,7 @@ $(document).ready(function(){
 				if(User.PHONE_TEL==="null" || User.PHONE_TEL=='')
 					errorMessage+='分機未填寫\n';	
 				
-				if(User.ROLE==="null" || User.ROLE==''){
+				/*if(User.ROLE==="null" || User.ROLE==''){
 					errorMessage+='賬號權限未填寫\n';	
 				}
 				else{
@@ -116,7 +119,7 @@ $(document).ready(function(){
 					if(!User.ROLE.match(regx)){
 						errorMessage+='賬號權限格式錯誤，請重新輸入\n'
 					}
-				}
+				}*/
 				
 				if(errorMessage==''){
 					
@@ -203,6 +206,42 @@ $(document).ready(function(){
 					}
 				});
 			}
+		});
+		
+		$('.deletePowerBtn').click(function(){
+			var parentElement=$(this).parent().parent();
+			var deleteUserName=$(parentElement).find('td').eq(0).text();
+			var role=$(parentElement).find('td').eq(6).text();
+			var results=confirm("確定刪除 "+deleteUserName+" 的"+role+"權限 ?");
+			if(results==true){
+				$.ajax({
+					type:'GET',
+					url:'../Account/DisableAccountPower.do',
+					data:{userName:deleteUserName,role:role},
+					error:function(e){
+						alert(e);
+					},
+					success:function(data){
+						 if(data!=null && data!=''){
+							 if(data.StatusCode=="200"){
+								 alert(data.Message);
+								  
+								 ShowAllAccountList();
+							 }
+							 else{
+								 alert(data.Message);
+							 }
+						 }else{
+							 alert('操作失敗!')
+						 }
+					}
+				});
+			}
+		});
+		
+		$('.addPowerBtn').click(function(){
+			var parentElement=$(this).parent().parent();
+			powerUser=$(parentElement).find('td').eq(0).text();
 		});
 	}
 	
@@ -365,6 +404,33 @@ $(document).ready(function(){
 			event.preventDefault(); //preventDefault() 方法阻止元素发生默认的行为（例如，当点击提交按钮时阻止对表单的提交）。
 		}
 	}
+	
+	});
+	
+	$('#setNewPowerInfo').click(function(){
+		var Power=$('#inputPower').val();
+		$.ajax({
+			type:'POST',
+			url:'../Account/NewPower.do',
+			data:{Power:Power,powerUser:powerUser},
+			error:function(e){
+				alert(e);
+			},
+			success:function(data){
+				 if(data!=null && data!=''){
+					 if(data.StatusCode=="200"){
+						 alert(data.Message);
+						  
+						 ShowAllAccountList();
+					 }
+					 else{
+						 alert(data.Message);
+					 }
+				 }else{
+					 alert('操作失敗!')
+				 }
+			}
+		});
 	
 	});
 	

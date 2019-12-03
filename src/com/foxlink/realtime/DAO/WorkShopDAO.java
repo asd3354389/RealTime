@@ -301,4 +301,54 @@ public class WorkShopDAO extends DAO<WorkShop> {
 		return 0;
 	}
 
+
+
+	public boolean AddWSAdmin(String id) {
+		// TODO Auto-generated method stub
+		int updateRow=-1;
+
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);
+		String sSQL="update csr_employee t set t.permission = '1' where t.id = ? and t.isonwork = '0'";
+		try {
+		      updateRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement arg0) throws SQLException {
+						// TODO Auto-generated method stub
+						arg0.setString(1, id);
+					
+					}	
+				});
+				transactionManager.commit(txStatus);
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+			logger.error("Update LineNo is failed,原因"+ex);
+			transactionManager.rollback(txStatus);
+		}
+		
+		 if(updateRow > 0) 
+			   return true; 
+		 else
+			 return false;
+	}
+
+
+
+	public boolean checkUser(String id) {
+		// TODO Auto-generated method stub
+		int totalRecord=-1;
+    	String sSQL = "select count(*) from csr_employee t where t.id = ? and t.isonwork = '0'";
+    	try {    	    	
+    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { id },Integer.class);	   	
+    	  } catch (Exception ex) {
+    		  ex.printStackTrace();
+    		  }
+    	
+    	 if(totalRecord > 0) 
+			   return true; 
+		 else
+			 return false;
+	}
+
 }
