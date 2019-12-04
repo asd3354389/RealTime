@@ -469,7 +469,7 @@ $(document).ready(function(){
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0){
 							ShowAllWSListTable(rawData);
-							$('#queryParam').val('');
+							//$('#queryParam').val('');
 						}
 						else{
 						

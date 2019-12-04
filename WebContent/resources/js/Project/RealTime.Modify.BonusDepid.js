@@ -1,93 +1,34 @@
 $(document).ready(function(){
 	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false;
 	var reg = new RegExp("^[0-9]{4}$");
-	ShowAllPersonList();
-	ShowWorkShop();
-	$("#setCostWorkShop").click(function(){
-		/*$('#setCostWorkShop').attr("disabled",true);*/
-		var Cost=$('#WorkShopCost').val();
-		var CostNo=Cost.split(",");
-		var WorkShopNo=$('#workShopNo').val();
-//		console.log(WorkShopNo);
-		var list=[],errorMessage='',CostId=[];
+	ShowAllBonusList();
+
+	$("#setBonusDepid").click(function(){
+		var Deptid=$('#Deptid').val();
+		var Bonus_Rule=$('#Bonus_Rule').val();
+		var errorMessage='';
 		//console.log(CostNo.length);
-		if(CostNo==null||CostNo==''){
-			errorMessage+='费用代码不能为空\n';
+		if(Deptid==null||Deptid==''){
+			errorMessage+='組別代码不能为空\n';
 		}
-		if(WorkShopNo==null||WorkShopNo==""){
-			errorMessage+='車間號不能爲空\n';
-		}else{
-			for(var i=0;i<CostNo.length;i++){
-				if(CostId.indexOf(CostNo[i])==-1){
-					CostId.push(CostNo[i]);
-				}
-			}
-//			console.log(CostId);
-			
-			for(var i=0;i<CostId.length;i++){
-				 checkCostIdDuplicate(CostId[i])
-				 if(!isUserNameValid){
-					 errorMessage+="輸入的費用代碼有不存在的費用代碼！";
-					 break;
-				 }
-				for(var j=0;j<WorkShopNo.length;j++){
-					var data = new Object();
-					if(!reg.test(CostId[i])){
-						errorMessage+='费用代码必须都是4位数字\n';
-						break;
-					}
-					data.CostId = CostId[i];
-					data.WorkShopNo=WorkShopNo[j];
-//					console.log(data.WorkShopNo);
-//					console.log(data);
-					list.push(data);
-				}
-			}
-		}
-		
-//		console.log(list);
-//		alert(errorMessage);
-		if(errorMessage==''){
+		checkBonusByDeptid(Deptid)
+		if(errorMessage==''&&isUserNameValid){
 			//新增賬號
 			$.ajax({
 				type:'POST',
-				contentType: "application/json",
-				url:'../ExceptionCost/AddExceptionCost.do',
-				data:JSON.stringify(list),
-				dataType:'json',
+				url:'../AdminBonusDepid/AddBonusDeptid.do',
+				data:{			
+					Deptid:Deptid,
+					Bonus_Rule:Bonus_Rule
+				},
 				success:function(data){
-//					$('#submitNewUser').prop("disabled",false);
-//					 if(data!=null && data!=''){
-//						 if(data.StatusCode=="200"){
-//							 alert(data.Message);			
-//							 $('#inputUserName').val('');
-//							 $('#inputChineseName').val('');
-//							 $('#inputDepID').val('');
-//							 $('#inputCostID').val(null);
-//							 $("#inputAssistantId").val('');
-//							 $('#inputPhoneTel').val('');
-//							 $('#inputRole').val('');
-//							 $('#insertAccountDialog').modal('hide');
-//							 ShowAllAccountList();
-//						 }
-//						 else{
-//							 alert(data.Message);
-//						 }
-//					 }else{
-//						 alert('新增賬號基本資料失敗!');
-//					 }
 					if(data!=null&&data!=''){
-						ShowAllPersonList();
+						ShowAllBonusList();
 						alert(data.Message);
-						$('#WorkShopCost').val('');
-						$('#workShopNo').selectpicker('val',['noneSelectedText'])
-						$("#workShopNo").selectpicker('refresh');
-
-					}
-					
+					}					
 				},
 				error:function(e){
-					alert('新增車間例外費用代碼發生錯誤');
+					alert('新增頂崗津貼信息發生錯誤');
 				}
 			});
 		}
@@ -112,17 +53,17 @@ $(document).ready(function(){
 				//				console.log(i);
 								var dltr = {};
 								var child =$(this).children();
-								dltr.WorkShopNo = child.eq(0).text();
-								dltr.CostId = child.eq(1).text();
+								dltr.Deptid = child.eq(0).text();
+								dltr.Bonus_Rule = child.eq(1).text();
 								relist.push(dltr);
 			})
-			console.log(relist);
+			//console.log(relist);
 			var results=confirm("確定刪除表格内的"+size+"條綁定訊息 ?");
 			if(results==true){
 				$.ajax({
 					type:'POST',
 					contentType: "application/json",
-					url:'../ExceptionCost/RelieveExceCost',
+					url:'../AdminBonusDepid/RelieveBonusDeptid',
 					data:JSON.stringify(relist),
 					dataType:'json',
 					error:function(e){
@@ -137,7 +78,7 @@ $(document).ready(function(){
 								//刪除，所以將此列從畫面移除
 								parentElement.remove();
 								  */
-								 ShowAllPersonList();
+								 ShowAllBonusList();
 								 $('#deleteId .dlTable').empty();
 							 }
 							 else{
@@ -152,19 +93,15 @@ $(document).ready(function(){
 		}
 	})
 
-	$('#searchExceCostBtn').click(function(){
+	$('#searchBtn').click(function(){
 		curPage = 1;
 		var queryCritirea=$('#queryCritirea option:selected').val();
 		var queryParam;
-		if(queryCritirea=="CostId"){
+		if(queryCritirea=="Deptid"){
 			queryParam=$('#queryParam').val();
-		}else if(queryCritirea=="WorkShopNo"){
-			queryParam=$('#changeWorkShopNo').val();
-		}
-		
-	
+		}			
 		if(queryParam==""){
-			ShowAllPersonList();
+			ShowAllBonusList();
 		}else{
 			/*searchPersonList(curPage,queryCritirea,queryParam);
 			queryParam=='';*/
@@ -172,13 +109,6 @@ $(document).ready(function(){
 			
 		}
 	})
-
-	$('#workShopNo').selectpicker({
-		  'selectedText': 'cat'
-			 // size: 6
-	 });
-
-	$('.selectpicker').selectpicker('val', 'Mustard');  
 	  
 	
 	$('#queryCritirea').change(function(){
@@ -219,10 +149,10 @@ $(document).ready(function(){
 			});   
 		}
 	
-	function ShowAllPersonList(){
+	function ShowAllBonusList(){
 		$.ajax({
 			type:'GET',
-			url:'../ExceptionCost/ShowExceptionList',
+			url:'../AdminBonusDepid/ShowBonusDepidList',
 			data:{curPage:curPage,queryCritirea:queryCritirea,queryParam:queryParam},
 			error:function(e){
 				alert('找不到資料');
@@ -237,13 +167,13 @@ $(document).ready(function(){
 					else{
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0)	
-							ShowAllExceListTable(rawData);
+							ShowAllBonusListTable(rawData);
 						
 						else{
 							/*$('.left').css('height','727px');*/
 							/*ShowAllPersonListTable(rawData);*/
-							ShowAllExceListTable(rawData);
-							setTimeout(function(){ alert('找不到車間例外費用代碼資料！'); }, 100);			
+							ShowAllBonusListTable(rawData);
+							setTimeout(function(){ alert('找不到頂崗津貼信息資料！'); }, 100);			
 //							setTimeout(function(){ alert('暫無離崗卡與費用代碼綁定資料'); }, 100);					
 						}
 					}
@@ -252,7 +182,7 @@ $(document).ready(function(){
 		});	
 	}
 	
-	function ShowAllExceListTable(rawData){
+	function ShowAllBonusListTable(rawData){
 		$('#Personbinding tbody').empty();
 		var currentPage=rawData.currentPage;
 		var totalRecord=rawData.totalRecord;
@@ -261,10 +191,17 @@ $(document).ready(function(){
 		var executeResult=rawData["list"];
 		for(var i=0;i<executeResult.length;i++){
 			var	tableContents='<tr>'+
-					'<td class="touch">'+executeResult[i]["WorkShopNo"]+'</td>'+
-					'<td>'+executeResult[i]["CostId"]+'</td>'
-					var enabled =executeResult[i].Enabled=="Y"?'已生效':'';		
-					tableContents+='<td>'+enabled+'</td>'+
+					'<td class="touch">'+executeResult[i]["Deptid"]+'</td>'+
+					'<td>'+executeResult[i]["Bonus_Rule"]+'</td>'
+					var allowed ="";
+					if(executeResult[i].Modify_Allowed=='Y'){
+						allowed="允许"
+					}else if(executeResult[i].Modify_Allowed=='N'){
+						allowed="不允许"
+					}else{
+						allowed=executeResult[i].Modify_Allowed;
+					}
+					tableContents+='<td>'+allowed+'</td>'+
 					'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"></td>';
 				   tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
@@ -310,7 +247,7 @@ $(document).ready(function(){
 		
 		$(".editBtn").click(function(){
 			var parentElement = $(this).parent().parent();
-			var WorkShopNo=$(parentElement).find('td').eq(0).text();
+			var Deptid=$(parentElement).find('td').eq(0).text();
 			/*$(parentElement).find('td').eq(0).html('<select class="changeWorkShopNo input-small"></select>');
 			
 			ShowWorkShopNo('changeWorkShopNo');
@@ -321,47 +258,35 @@ $(document).ready(function(){
 				}
 			});*/
 			
-			var CostNo=$(parentElement).find('td').eq(1).text();
-			$(parentElement).find('td').eq(1).html('<input type="text" class="changeCostNo input-small" maxlength="4" value="'+CostNo+'">');
-//			$(parentElement).find('td').eq(2).html('<textarea class="input-small changeWorkShop_Desc" id="message-text" value="'+WorkShop_Desc+'"></textarea>');
-			
-//			$(parentElement).children().find('.editBtn .deleteBtn').hide();
+			var Bonus_Rule=$(parentElement).find('td').eq(1).text();
+			var Modify_Allowed = $(parentElement).find('td').eq(2).text();
+			var htmlDom = "";
+			if(Modify_Allowed=="允许"){
+				htmlDom+='<select class="changeAllowed input-small"><option selected value="Y">Y (允许)</option><option value="N">N (不允许)</option></select>'
+			}else if(Modify_Allowed=="不允许"){
+				htmlDom+='<select class="changeAllowed input-small"><option value="Y">Y (允许)</option><option selected value="N">N (不允许)</option></select>'
+			}
+			$(parentElement).find('td').eq(2).html(htmlDom);
+;
 			$(parentElement).find('td').eq(3).append('<a class="confirmBtn btn btn-xs btn-link" role="button">確認</a>'+
 	        		'<a class="cancelBtn btn btn-xs btn-link" role="button">取消</a>');
 			$(parentElement).find('.editBtn,.deleteBtn').hide();
      
 			$('.confirmBtn').click(function(){
 				var parentElement=$(this).parent().parent();
-				var User=new Object(),errorMessage='';
-//				var Direction=$(parentElement).find('.changeStatus option:selected').eq(0).text();
-				/*User.WorkShopNo = $(parentElement).find('td option:selected').eq(0).val();*/
-				User.CostId=$(parentElement).find('td input:text').eq(0).val();	
-				User.O_CostId = CostNo;
-				User.O_WorkShopNo = WorkShopNo;
-				
-				
-				if(User.CostId==="null" || User.CostId=='')
-					errorMessage+='費用代碼未填寫\n';
-				if(!reg.test(User.CostId))	
-					errorMessage+='費用代碼不符合規格！必須是4位數\n';
-				checkCostIdDuplicate(User.CostId);
-				if(!isUserNameValid){
-					errorMessage+='此费用代码資料不存在';
-				}
-				checkWorkShopCost(User.CostId,User.O_WorkShopNo);
-				if(isUserNameValid){
-					errorMessage+='此费用代码綁定此車間資料已存在，請重新輸入！';
-				}
-				/*if(User.WorkShopNo==="null" || User.WorkShopNo=='')
-					errorMessage+='車間號未填寫\n';*/
-				
-//				console.log(User);
-				if(errorMessage==''){	
+				var BonusDeptid=new Object(),errorMessage='';
+				BonusDeptid.Deptid=Deptid;	
+				BonusDeptid.Bonus_Rule = Bonus_Rule;
+				BonusDeptid.Modify_Allowed =$(parentElement).find('td .changeAllowed').val();
+//				console.log(BonusDeptid.Modify_Allowed);
+			
+//				checkWorkShopCost(User.CostId,User.O_WorkShopNo);
+
 					$.ajax({
 						type:'POST',
 						contentType: "application/json",
-						url:'../ExceptionCost//UpdateExceCost',
-						data:JSON.stringify(User),
+						url:'../AdminBonusDepid//UpdateBonusAllowed',
+						data:JSON.stringify(BonusDeptid),
 						dataType:'json',
 						error:function(e){
 							alert(e);
@@ -369,11 +294,8 @@ $(document).ready(function(){
 						success:function(data){
 							  if(data!=null && data!=''){
 								  if(data.StatusCode=="200"){
+									  ShowAllBonusList();
 									  alert(data.Message);
-									  $(parentElement).find('.editBtn').show();
-									  $(parentElement).find('td').eq(0).html(User.WorkShopNo);
-									  $(parentElement).find('td').eq(1).html(User.CostId);
-									  $(parentElement).find('.confirmBtn,.cancelBtn').remove();
 								  }
 								  else{
 									  alert(data.Message);
@@ -382,68 +304,20 @@ $(document).ready(function(){
 								  alert('操作失敗！')
 							  }
 							}
-							});
-					}
-				  else{
-				    	if(errorMessage.length>0 ||errorMessage!='' ){
-					    alert(errorMessage);		
-						event.preventDefault(); //preventDefault() 方法阻止元素发生默认的行为（例如，当点击提交按钮时阻止对表单的提交）。
-					}
-				  }
+					});
 				});
 			
 			$('.cancelBtn').click(function(){
 				var parentElement=$(this).parent().parent();
 				$(parentElement).find('.editBtn').show();
-				$(parentElement).find('td').eq(0).html(WorkShopNo);
-				$(parentElement).find('td').eq(1).html(CostNo);
+				$(parentElement).find('td').eq(0).html(Deptid);
+				$(parentElement).find('td').eq(1).html(Bonus_Rule);
+				$(parentElement).find('td').eq(2).html(Modify_Allowed);
 				$(this).parent().find('.confirmBtn,.cancelBtn').remove();
 			})					
 		})
-		
-/*		$('.deleteBtn').click(function(){
-			var parentElement=$(this).parent().parent();
-			var CosttID=$(parentElement).find('td').eq(1).text();
-			var WorkShopNo=$(parentElement).find('td').eq(0).text();
-			var user={};
-			user["CostId"]=CosttID;		
-			user["WorkShopNo"]=WorkShopNo;
-			var results=confirm("確定刪除車間號為 "+WorkShopNo+" 的例外費用代碼"+CosttID+"嗎?");
-			console.log(user);
-			if(results==true){
-				$.ajax({
-					type:'POST',
-					url:'../ExceptionCost/RelieveExceCost',
-					contentType: "application/json",
-					data:JSON.stringify(user),
-					dataType:'json',
-					error:function(e){
-						alert(e);
-					},
-					success:function(data){
-						 if(data!=null && data!=''){
-							 if(data.StatusCode=="200"){
-								 alert(data.Message);
-								 
-								var parentElement=$(this).parent().parent();
-								//刪除，所以將此列從畫面移除
-								parentElement.remove();
-								  
-								ShowAllPersonList();
-							 }
-							 else{
-								 alert(data.Message);
-							 }
-						 }else{
-							 alert('操作失敗!')
-						 }
-					}
-				});
-			}
-		});*/
-		
 	}
-
+		
 	function refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize){
 		$('#PersonListPagination').empty();
 		var paginationElement='頁次：'+currentPage+'/'+totalPage +'&nbsp;每页:&nbsp;'+pageSize+'&nbsp;共&nbsp;'+totalRecord+'&nbsp;條&nbsp;';
@@ -516,12 +390,13 @@ $(document).ready(function(){
 	function getPersonList(curPage,queryCritirea,queryParam){
 		$.ajax({
 			type:'GET',
-			url:'../ExceptionCost/ShowExceptionList',
+			url:'../AdminBonusDepid/ShowBonusDepidList',
 			data:{curPage:curPage,queryCritirea:queryCritirea,queryParam:queryParam},
 			error:function(e){
 				alert('找不到資料');
 			},
-			success:function(rawData){	
+			success:function(rawData){
+				//console.log(rawData);
 				if (rawData != null && rawData != "") {
 					var executeResult=rawData["list"];
 					var errorResponse=executeResult.ErrorMessage;
@@ -531,8 +406,7 @@ $(document).ready(function(){
 					else{
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0){
-							ShowAllExceListTable(rawData);
-							//$('#queryParam').val('');
+							ShowAllBonusListTable(rawData);	
 						}
 						else{
 						
@@ -599,15 +473,13 @@ $(document).ready(function(){
 			}
 		}
 	 
-	 function checkWorkShopCost(CostId,WorkShopNo){
-//		 alert(1);
-			if(CostId!=""&&WorkShopNo!=""){
+	 function checkBonusByDeptid(Deptid){
+			if(Deptid!=""){
 				$.ajax({
 					type:'POST',
-					url:'../ExceptionCost/checkWorkShopCost.do',
+					url:'../AdminBonusDepid/checkBonusByDeptid.do',
 					data:{
-						CostId:CostId,
-						WorkShopNo:WorkShopNo
+						Deptid:Deptid,
 					},
 					async:false,
 					error:function(e){
@@ -616,11 +488,11 @@ $(document).ready(function(){
 					success:function(data){	
 						 if(data!=null && data!=''){
 							 if(data.StatusCode==200){
-//								 alert(data.Message);
-								 isUserNameValid=true;
+								 alert(data.Message);
+								 isUserNameValid=false;
 							 }
 							 else
-								 isUserNameValid=false;
+								 isUserNameValid=true;
 						 }else{
 							 isUserNameValid=false;
 						 }

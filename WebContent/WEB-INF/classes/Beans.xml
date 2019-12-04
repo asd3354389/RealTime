@@ -341,4 +341,11 @@
 		<property name="AdminActionDao" ref="AdminActionDao" />
 	</bean> 
 	
+	<bean id="adminBonusDepidDAO" class="com.foxlink.realtime.DAO.AdminBonusDepidDAO"
+		parent="dAO">
+	</bean>
+	<bean id="adminBonusDepidService" class="com.foxlink.realtime.service.AdminBonusDepidService">
+		<property name="adminBonusDepidDAO" ref="adminBonusDepidDAO" />
+	</bean> 
+	
 </beans>

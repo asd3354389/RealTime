@@ -418,7 +418,7 @@ $(document).ready(function(){
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0){
 							ShowAllWorkshopNoRestInfoTable(rawData);
-							$('#queryParam').val('');
+							//$('#queryParam').val('');
 						}
 						else{
 						/*	var currentPage=rawData.currentPage;
