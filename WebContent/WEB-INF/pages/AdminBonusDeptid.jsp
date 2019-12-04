@@ -55,7 +55,7 @@
 					class="btn btn-sm btn-primary" value="Search">
 			</div>
 			<div>
-					<h4>頂崗津貼列表</h4>
+					<h4>頂崗津貼列表(A類為2小時頂崗，B類為1小時頂崗)</h4>
 			</div>
 			<div class="middle">
 				<div class="left" style="width:60%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >

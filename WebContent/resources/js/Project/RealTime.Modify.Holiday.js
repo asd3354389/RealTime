@@ -57,8 +57,9 @@ $(document).ready(function(){
 						alert('找不到資料');
 					}
 					else{
-						var numOfRecords=executeResult.length;
-						if(numOfRecords>0){
+						var numOfRecordsL=JSON.parse(executeResult.L).length;
+						var numOfRecordsS=JSON.parse(executeResult.S).length;
+						if(numOfRecordsL>0||numOfRecordsS>0){
 							ShowHolidayInfoTable(rawData);
 						}
 						else
@@ -70,23 +71,45 @@ $(document).ready(function(){
 	}
 	
 	function ShowHolidayInfoTable(rawData){
-		$('#HolidayInfoTable tbody').empty();
 		var executeResult=rawData;
+		var holidayL,holidayS; 
+		var message = "";
+		holidayL = JSON.parse(executeResult.L);
+		holidayS = JSON.parse(executeResult.S);
+		$('#HolidayLInfoTable tbody').empty();
+		var numOfRecords=holidayL.length;
 		var htmlAppender;
-		var numOfRecords=executeResult.length;
 		for(var i=1;i<=numOfRecords;i++){
 			if(i%4==1){
-				htmlAppender+='<tr><td><input type="button" value="'+executeResult[i-1]+'" class="deleteBtn btn btn-xs btn-link"></td>';
+				htmlAppender+='<tr><td><input type="button" value="'+holidayL[i-1]+'" class="deleteBtn btn btn-xs btn-link"></td>';
 			}else if(i%4==0){
-				htmlAppender+='<td><input type="button" value="'+executeResult[i-1]+'" class="deleteBtn btn btn-xs btn-link"></td></tr>';
+				htmlAppender+='<td><input type="button" value="'+holidayL[i-1]+'" class="deleteBtn btn btn-xs btn-link"></td></tr>';
 			}else{
-				htmlAppender+='<td><input type="button" value="'+executeResult[i-1]+'" class="deleteBtn btn btn-xs btn-link"></td>';
+				htmlAppender+='<td><input type="button" value="'+holidayL[i-1]+'" class="deleteBtn btn btn-xs btn-link"></td>';
 			}
 			if(i==numOfRecords){
 				htmlAppender+='</tr>';
 			}
 		}
-		$('#HolidayInfoTable tbody').append(htmlAppender);
+		$('#HolidayLInfoTable tbody').append(htmlAppender);
+			
+		$('#HolidaySInfoTable tbody').empty();
+		var htmlAppenderS;
+		var numOfRecords=holidayS.length;
+		for(var i=1;i<=numOfRecords;i++){
+			if(i%4==1){
+				htmlAppenderS+='<tr><td><input type="button" value="'+holidayS[i-1]+'" class="deleteBtn btn btn-xs btn-link"></td>';
+			}else if(i%4==0){
+				htmlAppenderS+='<td><input type="button" value="'+holidayS[i-1]+'" class="deleteBtn btn btn-xs btn-link"></td></tr>';
+			}else{
+				htmlAppenderS+='<td><input type="button" value="'+holidayS[i-1]+'" class="deleteBtn btn btn-xs btn-link"></td>';
+			}
+			if(i==numOfRecords){
+				htmlAppenderS+='</tr>';
+			}
+		}
+		$('#HolidaySInfoTable tbody').append(htmlAppenderS);
+		
 		
 		$(".deleteBtn").click(function(){
 			var delete_date = $(this).val();
