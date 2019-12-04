@@ -215,6 +215,10 @@
 				"menuname" : "卡機ip綁定可刷卡費用代碼",
 				"icon" : "icon-nav",
 				"url" : "AdminActioin/ShowIpBindingCostSCInfo"
+			}, {
+				"menuname" : "頂崗津貼設置",
+				"icon" : "icon-nav",
+				"url" : "AdminBonusDepid/ShowAdminBonusDepid"
 			}]
 		}]
 	};
