@@ -424,7 +424,7 @@ $(document).ready(function(){
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0){
 							ShowAllEmpIPBindingTable(rawData);
-							$('#queryParam').val('');
+							//$('#queryParam').val('');
 						}
 						else{
 						/*	var currentPage=rawData.currentPage;

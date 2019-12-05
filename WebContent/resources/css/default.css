@@ -30,3 +30,13 @@ a:hover{ color:Red; text-decoration:underline;}
 .icon-set{background-position: -380px -200px;}
 .icon-log{background-position: -380px -80px;}
 
+@media (max-height: 768px) {
+  .panel {
+    position: relative;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    border: 0;
+    box-shadow: none;       
+  }
+}
+

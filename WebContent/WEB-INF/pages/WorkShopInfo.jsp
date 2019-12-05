@@ -57,6 +57,8 @@
 					class="btn btn-primary btn-sm" data-toggle="modal">新增車間</a>
 					<a id="addNewLineNoBtn" role="button" href="#insertLineNoDialog"
 					class="btn btn-primary btn-sm" data-toggle="modal">新增線體</a>
+					<a id="addAdminBtn" role="button" href="#insertWSAdminDialog"
+					class="btn btn-primary btn-sm" data-toggle="modal">新增更換車間權限</a>
 			</div>
 			<div>
 				<div>
@@ -88,6 +90,7 @@
 			</div>
 			<jsp:include page="InsertNewWorkShop.jsp" />
 			<jsp:include page="InsertNewLineNo.jsp" />
+			<jsp:include page="InsertWSAdmin.jsp" />
 		</div>
 	</div>
 </div>	

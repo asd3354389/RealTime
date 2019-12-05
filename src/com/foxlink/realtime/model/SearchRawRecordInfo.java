@@ -11,11 +11,14 @@ public class SearchRawRecordInfo  implements Serializable {
 	private String swipeCardTime;
 	private String swipeCardIpAddress;
 	private String deptid;
+	private String record_status;
+	
+
 	@Override
 	public String toString() {
 		return "SearchRawRecordInfo [empId=" + empId + ", name=" + name + ", depId=" + depId + ", costId=" + costId
 				+ ", swipeCardTime=" + swipeCardTime + ", swipeCardIpAddress=" + swipeCardIpAddress + ", deptid="
-				+ deptid + "]";
+				+ deptid + ", record_status=" + record_status + "]";
 	}
 
 	public String getDeptid() {
@@ -89,5 +92,14 @@ public class SearchRawRecordInfo  implements Serializable {
 	public void setSwipeCardIpAddress(String swipeCardIpAddress) {
 		this.swipeCardIpAddress = swipeCardIpAddress;
 	}
+
+	public String getRecord_status() {
+		return record_status;
+	}
+
+	public void setRecord_status(String record_status) {
+		this.record_status = record_status;
+	}
+	
 
 }

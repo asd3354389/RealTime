@@ -53,7 +53,7 @@
 			</select>
 			<label>工作內容：</label>				
 			<input type="text" id="workcontent" class="input-sm" />
-			<label style="color:red">(加班單內容不宜過長，請保持在100字以內)</label>					
+			<label style="color:red">(加班單內容不宜過長，請保持在70字以內)</label>					
 		</div>
 		
 		<div class="row" style="margin: 5px;">		

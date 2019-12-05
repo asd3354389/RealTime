@@ -111,6 +111,10 @@ public class AccountService extends Service<User> {
 					Role = "ZJ";
 				}else if(string.equals("ROLE_LJADLOW")&&Role==null){
 					Role = "LJ";
+				}else if(string.equals("ROLE_VIC_ASSISTANT")&&Role==null){
+					Role = "ROLE_VIC_ASSISTANT";
+				}else if(string.equals("ROLE_VIC_ADMIN")&&Role==null){
+					Role = "ROLE_VIC_ADMIN";
 				}
 			}
 		}
@@ -135,6 +139,21 @@ public class AccountService extends Service<User> {
 	public List<User> FindQueryRecords(String userDataCostId, User t) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public boolean DeletePowerRecord(String recordID,String role) {
+		// TODO Auto-generated method stub
+		return accountDAO.DeletePowerRecord(recordID,role);
+	}
+
+	public boolean NewPowerRecord(String userName, String role, String updateUser) {
+		// TODO Auto-generated method stub
+		return accountDAO.NewPowerRecord(userName,role,updateUser);
+	}
+
+	public boolean checkRole(String userName, String role) {
+		// TODO Auto-generated method stub
+		return accountDAO.checkRole(userName,role);
 	}
 
 }

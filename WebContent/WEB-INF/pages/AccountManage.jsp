@@ -75,6 +75,8 @@
 								<th>報加班費用代碼</th>
 								<th>分機號碼</th>
 								<th>賬號權限</th>
+								<th>賬號編輯</th>
+								<th>權限編輯</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -87,6 +89,8 @@
 								<th>報加班費用代碼</th>
 								<th>分機號碼</th>
 								<th>賬號權限</th>
+								<th>賬號編輯</th>
+								<th>權限編輯</th>
 							</tr>
 						</tfoot>
 					</table>
@@ -95,6 +99,7 @@
 			<div id="accountInfoPagination" align="right" style="height: 20">
 			</div>
 			<jsp:include page="InsertNewAccount.jsp" />
+			<jsp:include page="InsertPower.jsp" />
 		</div>
 	</div>
 </div>	

@@ -115,6 +115,16 @@ public class WorkShopService  extends Service<WorkShop> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public boolean AddWSAdmin(String id) {
+		// TODO Auto-generated method stub
+		return workShopDAO.AddWSAdmin(id);
+	}
+
+	public boolean checkUser(String id) {
+		// TODO Auto-generated method stub
+		return workShopDAO.checkUser(id);
+	}
 	
 
 }

@@ -69,4 +69,14 @@ public class GetDepidDao extends DAO<GetDepid>{
 		return 0;
 	}
 
+	public List<GetDepid> FindDepidRecords(String userDataCostId) {
+		// TODO Auto-generated method stub
+		String sql="select distinct(deptid) from swipe.csr_employee where costid= ? order by deptid";
+		List<GetDepid> getDepids=null;
+		/*List<Object> queryList = new ArrayList<Object>();
+		queryList.add(getDepid.getCostid());
+		getDepids=jdbcTemplate.query(sql, queryList.toArray(),new GetDepidMapper());*/
+		return getDepids;
+	}
+
 }

@@ -40,6 +40,19 @@
 		<intercept-url pattern="/WorkShopStatus/ShowWorkShopStatus" access="hasAnyRole('ROLE_ADMIN','ROLE_ZJADLOW','ROLE_LJADLOW')" />
 		<intercept-url pattern="/EmpPrivilege/ShowEmpPrivilege" access="hasAnyRole('ROLE_ADMIN','ROLE_ZJADLOW','ROLE_LJADLOW')" />
 		<intercept-url pattern="/WSListStatus/ShowWSListStatus" access="hasAnyRole('ROLE_ADMIN','ROLE_ZJADLOW','ROLE_LJADLOW')" />
+		
+		<intercept-url pattern="/CountEmp/ShowCountEmp" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN','ROLE_VIC_ASSISTANT')" />
+		<intercept-url pattern="/ChangeEmployee/ShowChangeEmployee" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN','ROLE_VIC_ASSISTANT')" />
+		<intercept-url pattern="/CountEmpByCostID/ShowCountEmpByCostID" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN')" />
+		<intercept-url pattern="/ProdPerson/ShowProdPerson" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN')" />
+		<intercept-url pattern="/ProdAllLine/ShowProdAllLine" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN')" />
+		<intercept-url pattern="/QuertAbTimeByCostId/ShowQuertAbTimeByCostId" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN','ROLE_VIC_ASSISTANT')" />
+		<intercept-url pattern="/QueryById/ShowQueryById" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN','ROLE_VIC_ASSISTANT')" />
+		<intercept-url pattern="/QueryRecordById/ShowQueryRecordById" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN','ROLE_VIC_ASSISTANT')" />
+		<intercept-url pattern="/AbReasonReply/ShowAbReasonReply" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN','ROLE_VIC_ASSISTANT')" />	
+		
+		<intercept-url pattern="/AdminActioin/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="AdminBonusDepid/ShowAdminBonusDepid" access="hasRole('ROLE_ADMIN')" />
 		<!-- access="hasRole('ROLE_USER','ROLE_ADMIN')"  -->
 
      <!--会话管理 -->   

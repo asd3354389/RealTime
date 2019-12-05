@@ -151,9 +151,28 @@
 				"icon" : "icon-nav",
 				"url" : "ChangeEmployee/ShowChangeEmployee"
 			},{
+				"menuname" : "人力縂表-依課別",
+				"icon" : "icon-nav",
+				"url" : "CountEmpByCostID/ShowCountEmpByCostID"
+			},{
 				"menuname" : "排配機種",
 				"icon" : "icon-nav",
 				"url" : "ProdPerson/ShowProdPerson"
+			},{
+				"menuname" : "各課排配人力",
+				"icon" : "icon-nav",
+				"url" : "ProdAllLine/ShowProdAllLine"
+			}]
+
+		},{
+
+			"menuid" : "43",
+			"icon" : "icon-sys",
+			"menuname" : "門禁管理",
+			"menus" : [{
+				"menuname" : "依課別-線別查詢",
+				"icon" : "icon-nav",
+				"url" : "QuertAbTimeByCostId/ShowQuertAbTimeByCostId"
 			},{
 				"menuname" : "依員工工號查詢",
 				"icon" : "icon-nav",
@@ -162,14 +181,10 @@
 				"menuname" : "實時及門禁刷卡查詢依工號",
 				"icon" : "icon-nav",
 				"url" : "QueryRecordById/ShowQueryRecordById"
-			}]
-		},{
-
-			"menuid" : "43",
-			"icon" : "icon-sys",
-			"menuname" : "門禁管理",
-			"menus" : [{
-				
+			},{
+				"menuname" : "異常原因回復",
+				"icon" : "icon-nav",
+				"url" : "AbReasonReply/ShowAbReasonReply"
 			}]
 		},{
 
@@ -188,6 +203,26 @@
 				"menuname" : "車間管理",
 				"icon" : "icon-nav",
 				"url" : "WorkShop/ShowAllWorkShop"
+			}, {
+				"menuname" : "人員信息查詢",
+				"icon" : "icon-nav",
+				"url" : "AdminActioin/ShowEmpInfo"
+			}, {
+				"menuname" : "廠區假日管理",
+				"icon" : "icon-nav",
+				"url" : "AdminActioin/ShowHolidayInfo"
+			}, {
+				"menuname" : "卡機ip綁定可刷卡費用代碼",
+				"icon" : "icon-nav",
+				"url" : "AdminActioin/ShowIpBindingCostSCInfo"
+			}, {
+				"menuname" : "頂崗津貼設置",
+				"icon" : "icon-nav",
+				"url" : "AdminBonusDepid/ShowAdminBonusDepid"
+			}, {
+				"menuname" : "實時工時卡機ip管控",
+				"icon" : "icon-nav",
+				"url" : "AdminActioin/ShowAppLoginInfo"
 			}]
 		}]
 	};
