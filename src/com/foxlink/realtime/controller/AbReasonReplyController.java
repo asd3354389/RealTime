@@ -37,7 +37,7 @@ public class AbReasonReplyController {
 			abReasonReplyService = (AbReasonReplyService) context.getBean("abReasonReplyService");
 			if(accessRole.equals("ROLE_VIC_ASSISTANT")) {
 				result = abReasonReplyService.ShowABReplyByDepid(depid,SDate,EDate);
-			}else if(accessRole.equals("ROLE_VIC_ADMIN")) {
+			}else if(accessRole.equals("ROLE_VIC_ADMIN")||accessRole.equals("ALL")) {
 				result = abReasonReplyService.ShowABReasonReply(Bu,costid,SDate,EDate);
 			}
 		return result;
