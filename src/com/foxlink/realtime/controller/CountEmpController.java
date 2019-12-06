@@ -98,6 +98,7 @@ public class CountEmpController {
 			countEmpService = (CountEmpService) context.getBean("countEmpService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			jsonResults = gson.toJson(accessRole);
+			//System.out.println(accessRole);
 		} catch (Exception ex) {
 			logger.error("FindRole falid", ex);
 			JsonObject error = new JsonObject();

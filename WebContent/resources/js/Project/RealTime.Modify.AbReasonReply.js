@@ -72,7 +72,7 @@ $(document).ready(function(){
 		var depid="";
 		$('#ABReasonList tbody').empty();
 		$('.ShowABReason').css('display','none');
-		if(Role=='ROLE_VIC_ADMIN'){
+		if(Role=='ROLE_VIC_ADMIN'||Role=='ALL'){
 			 Bu = $('#BU').val();
 			 costid=$('#costid').val(); 
 		}else if(Role=='ROLE_VIC_ASSISTANT'){
@@ -166,10 +166,10 @@ $(document).ready(function(){
 			success:function(data){
 				//console.log(data);
 				Role=data;
-				if(Role=='ROLE_VIC_ADMIN'){	
+				if(Role=='ROLE_VIC_ADMIN'||Role=='ALL'){	
 					$('.Admin_Depid').css('display','inline-block');
 					$('.Assistant_Depid').css('display','none');
-				}else if(Role=='ROLE_VIC_ASSISTANT'){				
+				}else if(Role=='ROLE_VIC_ASSISTANT'){	
 					$('.Admin_Depid').css('display','none');
 					$('.Assistant_Depid').css('display','inline-block');
 					ShowAssistantDepid();
@@ -179,12 +179,14 @@ $(document).ready(function(){
 	}
 	
 	function ShowAssistantDepid(){
+		console.log(123);
 		$.ajax({
 			type:'POST',
 			url:'../CountEmp/ShowAssistantDepid.show',
 			data:{},
 			async:false,
 			success:function(data){
+				console.log(data);
 			 var htmlAppender='';
 			 if(data!=null && data!=''){	
 				if(data.length>0 && data.StatusCode == null){
