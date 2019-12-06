@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
-
 <html>
 <head>
 <c:url value="/resources/assets/css/icons.css" var="iconsCSS" />
@@ -14,7 +13,6 @@
 <c:url value="/resources/assets/css/plugins.css" var="pluginsCSS" />
 <c:url value="/resources/assets/css/main.css" var="mainCSS" />
 <c:url value="/resources/css/bootstrap/bootstrap-select.min.css" var="bootstrapSelectCSS" />
-
 <link href="${iconsCSS}" rel="stylesheet">
 <link href="${bootstrapCSS}" rel="stylesheet">
 <link href="${pluginsCSS}" rel="stylesheet">
@@ -23,23 +21,22 @@
 
 <c:url value="/resources/assets/My97DatePicker/WdatePicker.js" var="wdatePickerJS" />
 <c:url value="/resources/assets/js/jquery-1.8.3.min.js" var="assetsJqueryJS" />
-<c:url value="/resources/js/Project/RealTime.Modify.Holiday.js?version=${resourceVersion}" var="modifyHolidayJS" />
+<c:url value="/resources/js/Project/RealTime.Modify.AppLogin.js?version=${resourceVersion}" var="AppLogin" /> 
 <c:url value="/resources/js/jquery/jquery-1.11.3.min.js" var="JqueryJS" />
 <c:url value="/resources/js/bootstrap/bootstrap.min.js" var="bootstrapJS" />
 <c:url value="/resources/js/bootstrap/bootstrap-select.min.js" var="bootstrapSelectJS" />
 <c:url value="/resources/js/Project/AjaxCheckSession.js?version=${resourceVersion}" var="AjaxCheckSessionJS"/> 
 <script src="${JqueryJS}" type="text/javascript"></script>
-<script src="${wdatePickerJS}" language="javascript" type="text/javascript"></script>
 <script src="${bootstrapJS}" type="text/javascript"></script>
+<script src="${wdatePickerJS}" language="javascript" type="text/javascript"></script>
 <script src="${bootstrapSelectJS}" type="text/javascript"></script>
 <script type="text/javascript" src='${AjaxCheckSessionJS}'></script>
-<script src="${modifyHolidayJS}" type="text/javascript"></script>
-
+<script src="${AppLogin}" type="text/javascript"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>廠區假日管理</title>
+<title>實時卡機ip管控</title>
 </head>
-<body>
-	<div id="header" class="header-fixed">
+<body style="position:relative;">
+		<div id="header" class="header-fixed">
 		<div class="navbar">
 			<a class="navbar-brand" href="Login"> <i
 				class="im-windows8 text-logo-element animated bounceIn"></i> <span
@@ -48,36 +45,43 @@
 		</div>
 		<!-- Start .header-inner -->
 	</div>
-<div class="container-fluid"  style="margin: 50px 20% 0 0;">
+<div class="container-fluid"  style="margin: 50px 10% 0 0;">
 	<div style="top: 55px; margin-left: 10px">
 		<div class="panel-body" style="border: 1px solid #e1e3e6;">
 			<div align="right">
-				按年份查詢：<select id="queryParam" class="input-small"></select>  
-					<input type="button" id="HolidayInfoTitleBtn" name="searchHolidayInfoBtn"
+				查詢條件：<select id="queryCritirea" class="input-small">
+					<option value="ip">卡機ip</option>
+				</select> <input type="text" id="queryParam" name="queryParam"
+					class="input-sm"> <input type="button"
+					id="searchAppLogin" name="searchAppLogin"
 					class="btn btn-sm btn-primary" value="Search">
-					<a id="addNewAccountBtn" role="button" href="#insertHolidayInfo"
-					class="btn btn-primary btn-sm" data-toggle="modal">新增節假日或補休賬號</a>
 			</div>
 			<div>
-				<div>
-					<h4>假日信息列表：</h4>
-				</div>
-				<div class="panel-body" style="border: 1px solid #e1e3e6;">
-					<table id="HolidayLInfoTable" class="table .table-bordered" style="table-layout:fixed;">
+					<h4 style="position: relative;">實時卡機ip管控信息：</h4>
+					<a id="addAppLoginInfo" role="button" href="#insertAppLogin"class="btn btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 500px;font-size: 14px;"><i class="glyphicon glyphicon-plus"></i>創建新管控ip</a>
+			</div>
+			<div class="middle">
+				<div class="left" style="width:80%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+					<table id="AppLoginInfoTable" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
 						<thead>
-							<th>節假日</th>
+							<tr>
+								<th>電腦名稱</th>
+								<th>電腦ip</th>
+								<th>責任代碼</th>
+								<th>責任人工號</th>
+								<th>責任人分機</th>
+								<th>卡機類型</th>
+								<th></th>
+							</tr>
 						</thead>
-						<tbody></tbody>
+						<tbody class='spTable'>
+						</tbody>
 					</table>
-					<table id="HolidaySInfoTable" class="table .table-bordered" style="table-layout:fixed;">
-						<thead>
-							<th>補休</th>
-						</thead>
-						<tbody></tbody>
-					</table>
+					<div id="AppLoginInfoListPagination" align="right" style="height: 20;position:absolute; bottom: -20px;right: 0px;">
+					</div>
 				</div>
 			</div>
-			<jsp:include page="InsertHolidayInfo.jsp" />
+			<jsp:include page="InsertAppLogin.jsp" />
 		</div>
 	</div>
 </div>	

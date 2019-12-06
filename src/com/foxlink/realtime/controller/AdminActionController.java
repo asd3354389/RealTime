@@ -14,14 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.foxlink.realtime.model.AppLogin;
 import com.foxlink.realtime.model.Emp;
 import com.foxlink.realtime.model.IpBinding;
-import com.foxlink.realtime.model.JobInfo;
 import com.foxlink.realtime.model.Page;
-import com.foxlink.realtime.model.WorkshopNoRestInfo;
 import com.foxlink.realtime.service.AdminActionService;
-import com.foxlink.realtime.service.JobTitleService;
-import com.foxlink.realtime.service.WorkshopNoRestService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -73,7 +70,7 @@ public class AdminActionController {
 	}
 	
 	/**
-	 * 員工信息查詢
+	 * 節假日信息查詢
 	 * @return
 	 */
 	@RequestMapping(value="/ShowHolidayInfo",method=RequestMethod.GET)
@@ -117,8 +114,12 @@ public class AdminActionController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			adminActionService = (AdminActionService) context.getBean("AdminActionService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
-			List<String> empList = adminActionService.FindHoliday(queryParam);
-			DisableResult = gson.toJson(empList);
+			List<String> holidayLList = adminActionService.FindHoliday(queryParam,"L");
+			List<String> holidaySList = adminActionService.FindHoliday(queryParam,"S");
+			JsonObject exception=new JsonObject();
+			exception.addProperty("L", gson.toJson(holidayLList));
+			exception.addProperty("S", gson.toJson(holidaySList));
+			DisableResult=exception.toString();
 			}
 		}catch(Exception ex){
 			logger.error(ex);
@@ -182,7 +183,11 @@ public class AdminActionController {
 			if(adminActionService.checkHoliday(holidayDate)){
 				if(adminActionService.AddHoliday(holidayType,holidayDate)){
 					exception.addProperty("StatusCode", "200");
-					exception.addProperty("ErrorMessage", "新增節假日或補休成功");
+					if("S".endsWith(holidayType)){
+						exception.addProperty("ErrorMessage", "新增補休成功");
+					}else{
+						exception.addProperty("ErrorMessage", "新增節假日成功");
+					}
 					DisableResult=exception.toString();
 				}else{
 					exception.addProperty("StatusCode", "500");
@@ -304,6 +309,96 @@ public class AdminActionController {
 		}		
 		System.out.println(DisableResult);
 		return DisableResult;
+	}
+	
+	/**
+	 * 實時卡機ip管控
+	 * @return
+	 */
+	@RequestMapping(value="/ShowAppLoginInfo",method=RequestMethod.GET)
+	public String ShowAppLoginInfo(){
+		return "AppLogin";
+	}
+	
+	@RequestMapping(value="/ShowAllAppLoginInfo",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+	@ResponseBody
+	public String ShowAllAppLoginInfo(HttpSession session,@RequestParam("curPage")String curPage,@RequestParam("queryCritirea")String queryCritirea,@RequestParam("queryParam")String queryParam){
+		String DisableResult=null;
+		try{
+			int currentPage=1;
+			if(curPage=="" || curPage==null)
+			     currentPage=1;
+			else
+				currentPage=Integer.parseInt(curPage);;
+			    if(queryParam=="" || queryParam==null)
+			    	queryCritirea="";
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			String updateUser=(String) session.getAttribute("username");
+			String userDataCostId=(String) session.getAttribute("userDataCostId");
+			String accessRole=(String) session.getAttribute("accessRole");
+			adminActionService = (AdminActionService) context.getBean("AdminActionService");
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			Page page = adminActionService.getAppLoginPage(currentPage,queryCritirea, queryParam);
+			page.setList(adminActionService.FindQueryAppLoginRecord(currentPage, queryCritirea,queryParam));
+			DisableResult = gson.toJson(page);
+		}catch(Exception ex){
+			logger.error(ex);
+			JsonObject exception=new JsonObject();
+			exception.addProperty("StatusCode", "500");
+			exception.addProperty("ErrorMessage", "取得實時卡機ip管控列表失敗，原因："+ex.toString());
+			DisableResult=exception.toString();
+		}		
+		System.out.println(DisableResult);
+		return DisableResult;
+	}
+	
+	@RequestMapping(value="/deleteAppLogin.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+	@ResponseBody
+	public String DeleteAppLogin(HttpSession session,@RequestParam("ip")String ip){
+		String DisableResult=null;
+		JsonObject exception=new JsonObject();
+		try{
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			adminActionService = (AdminActionService) context.getBean("AdminActionService");
+			String updateUser=(String) session.getAttribute("username");
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			if(adminActionService.DeleteAppLogin(ip,updateUser)){
+				exception.addProperty("StatusCode", "200");
+				exception.addProperty("ErrorMessage", "刪除實時卡機ip管控信息成功");
+				DisableResult=exception.toString();
+			}else{
+				exception.addProperty("StatusCode", "500");
+				exception.addProperty("ErrorMessage", "刪除實時卡機ip管控信息失敗");
+				DisableResult=exception.toString();
+			}
+		}catch(Exception ex){
+			logger.error(ex);
+			exception.addProperty("StatusCode", "500");
+			exception.addProperty("ErrorMessage", "刪除實時卡機ip管控信息失敗，原因："+ex.toString());
+			DisableResult=exception.toString();
+		}		
+		System.out.println(DisableResult);
+		return DisableResult;
+	}
+	
+	@RequestMapping(value="/AddAppLoginInfo.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+	@ResponseBody 
+	public String AddAppLoginInfo(HttpSession session,@RequestBody AppLogin appLogin){
+		JsonObject AddResult=new JsonObject();		
+		try{
+			String updateUser=(String) session.getAttribute("username");
+//			otCardbd.setUpdate_UserId(updateUser);
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			adminActionService = (AdminActionService) context.getBean("AdminActionService");
+			AddResult = adminActionService.setAppLoginInfo(appLogin,updateUser);
+		}
+		catch(Exception ex){
+			logger.error("Adding the new IOCardMaIP info is failed, due to: ",ex);
+			AddResult.addProperty("StatusCode", "500");
+			AddResult.addProperty("Message", "新增實時卡機ip管控信息發生錯誤，原因："+ex.toString());
+		}
+		System.out.println(AddResult.toString());
+		return AddResult.toString();
 	}
 	
 }

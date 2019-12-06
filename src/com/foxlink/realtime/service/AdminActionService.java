@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.foxlink.realtime.DAO.AdminActionDao;
+import com.foxlink.realtime.model.AppLogin;
 import com.foxlink.realtime.model.Emp;
 import com.foxlink.realtime.model.IpBinding;
 import com.foxlink.realtime.model.Page;
@@ -77,9 +78,9 @@ public class AdminActionService extends Service<Emp>{
 		return adminActionDao.FindHolidayYList();
 	}
 
-	public List<String> FindHoliday(String queryParam) {
+	public List<String> FindHoliday(String queryParam, String holidayType) {
 		// TODO Auto-generated method stub
-		return adminActionDao.FindHoliday(queryParam);
+		return adminActionDao.FindHoliday(queryParam,holidayType);
 	}
 
 	public Boolean DeleteHoliday(String delete_date) {
@@ -139,6 +140,45 @@ public class AdminActionService extends Service<Emp>{
 	public boolean DeleteIpBindingCostSC(String ip, String costid, String updateUser) {
 		// TODO Auto-generated method stub
 		return adminActionDao.DeleteIpBindingCostSC(ip,costid,updateUser);
+	}
+
+	public Page getAppLoginPage(int currentPage, String queryCritirea, String queryParam) {
+		// TODO Auto-generated method stub
+		int totalRecord = adminActionDao.getAppLoginTotalRecord(queryCritirea, queryParam);
+		Page page = new Page(currentPage, totalRecord);
+		// Page page = accountDAO.getPage(pageNum, User.class, totalRecord);
+		return page;
+	}
+
+	public List FindQueryAppLoginRecord(int currentPage, String queryCritirea, String queryParam) {
+		// TODO Auto-generated method stub
+		List<AppLogin> AllAppLoginInfo = null;
+		try{
+			int totalRecord = adminActionDao.getAppLoginTotalRecord(queryCritirea, queryParam);
+			AllAppLoginInfo = adminActionDao.FindQueryAppLoginRecord(currentPage, totalRecord, queryCritirea, queryParam);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Find JobTitle Record is failed ",e);
+		}
+		return AllAppLoginInfo;
+	}
+
+	public boolean DeleteAppLogin(String ip, String updateUser) {
+		// TODO Auto-generated method stub
+		return adminActionDao.DeleteAppLogin(ip,updateUser);
+	}
+
+	public JsonObject setAppLoginInfo(AppLogin appLogin, String updateUser) {
+		// TODO Auto-generated method stub
+		JsonObject AddResult=new JsonObject();
+		if(adminActionDao.insertAppLoginInfo(appLogin,updateUser)){
+			AddResult.addProperty("StatusCode", "200");
+			AddResult.addProperty("Message", "新增實時卡機ip管控信息成功");
+		}else{
+			AddResult.addProperty("StatusCode", "500");
+			AddResult.addProperty("Message", "新增實時卡機ip管控信息失敗");
+		}
+		return AddResult;
 	}
 
 }

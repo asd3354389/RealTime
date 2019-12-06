@@ -6,23 +6,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transaction;
-
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.foxlink.realtime.model.AppLogin;
 import com.foxlink.realtime.model.Emp;
 import com.foxlink.realtime.model.IpBinding;
-import com.foxlink.realtime.model.JobInfo;
 import com.foxlink.realtime.model.Page;
-import com.foxlink.realtime.model.WorkshopNoRestInfo;
+import com.foxlink.realtime.model.objectMapper.AppLoginMapper;
 import com.foxlink.realtime.model.objectMapper.EmpInfoMapper;
 import com.foxlink.realtime.model.objectMapper.IpBindingCostSCMapper;
-import com.foxlink.realtime.model.objectMapper.JobInfoMapper;
-import com.foxlink.realtime.model.objectMapper.QueryWRestInfoMapper;
 
 public class AdminActionDao extends DAO<Emp> {
 	private static Logger logger=Logger.getLogger(AdminActionDao.class);
@@ -115,10 +111,15 @@ public class AdminActionDao extends DAO<Emp> {
 		return HolidayYList;
 	}
 
-	public List<String> FindHoliday(String queryParam) {
+	public List<String> FindHoliday(String queryParam, String holidayType) {
 		// TODO Auto-generated method stub
 		List<String> HolidatList = null;
-		String sql = "select t.holiday_date from FOXLINK_LEGAL_HOLIDAYS t where to_char(to_date(t.holiday_date,'yyyy-mm-dd'),'yyyy') = ?  order by holiday_date asc ";
+		String sql = "select t.holiday_date from FOXLINK_LEGAL_HOLIDAYS t "
+				+ " where to_char(to_date(t.holiday_date,'yyyy-mm-dd'),'yyyy') = ? and t.holiday_type = ?  order by holiday_date asc ";
+		List <Object> queryList=new  ArrayList<Object>();
+		queryList.add(queryParam);
+		queryList.add(holidayType);
+		
 		HolidatList = jdbcTemplate.query(sql,new RowMapper<String>() {
 
 			@Override
@@ -126,7 +127,7 @@ public class AdminActionDao extends DAO<Emp> {
 				// TODO Auto-generated method stub
 				 return rs.getString(1);
 			}
-		},queryParam);
+		},queryList.toArray());
 		return HolidatList;
 	}
 
@@ -333,6 +334,125 @@ public class AdminActionDao extends DAO<Emp> {
 				   return true; 
 				else
 				   return false;
+	}
+
+	public int getAppLoginTotalRecord(String queryCritirea, String queryParam) {
+		// TODO Auto-generated method stub
+		int totalRecord=-1;
+    	String sSQL = "select count(*) from APP_LOGIN_CONTROL where 1 = 1 ";
+    	try {
+    		List <Object> queryList=new  ArrayList<Object>();
+			if(queryCritirea.equals("ip")){
+				sSQL+=" and com_ip = ? ";  
+			}
+			if (!queryCritirea.equals("")){
+		    	queryList.add(queryParam);
+		    }
+		 totalRecord = jdbcTemplate.queryForObject(sSQL,queryList.toArray(), Integer.class);	
+		 
+    	} catch (Exception ex) {
+    		  logger.error("Find WorkshopNoRestInfo TotalRecord are failed ",ex);
+    		  ex.printStackTrace();
+    	}
+    	return totalRecord;
+	}
+
+	public List<AppLogin> FindQueryAppLoginRecord(int currentPage, int totalRecord, String queryCritirea,
+			String queryParam) {
+		// TODO Auto-generated method stub
+		List<AppLogin> AppLoginInfo = null;
+		// TODO Auto-generated method stub
+		String sSQL = "select * from (select b.*,rownum rn from "
+				+ "(select * from APP_LOGIN_CONTROL t "
+				+ " where 1 = 1 ";
+		try {
+			List <Object> queryList=new  ArrayList<Object>();
+			if(queryCritirea.equals("ip")){
+				sSQL+=" and com_ip = ? ";  
+			}
+    		Page page = new Page(currentPage, totalRecord);	  
+			int endIndex=page.getStartIndex() + page.getPageSize();
+		    sSQL += " order by t.control_except,t.com_ip)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+" " ;
+		    
+		    if (!queryCritirea.equals("")){
+		    	queryList.add(queryParam);
+		    }
+		    AppLoginInfo = jdbcTemplate.query(sSQL,queryList.toArray(), new AppLoginMapper());	
+    	  } catch (Exception ex) {
+    		  logger.error("Find WorkshopNoRestInfo TotalRecord are failed ",ex);
+    		  ex.printStackTrace();
+    		  }
+		return AppLoginInfo;
+	}
+
+	public boolean DeleteAppLogin(String ip, String updateUser) {
+		// TODO Auto-generated method stub
+		int updateRow=-1;
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);		
+		String sSQL="delete from APP_LOGIN_CONTROL t where t.com_ip = ?";
+		try {
+				updateRow=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement arg0) throws SQLException {
+						// TODO Auto-generated method stub
+						arg0.setString(1, ip);
+					}	
+				});
+				transactionManager.commit(txStatus);
+		}
+		catch(Exception ex) {
+			logger.error("Update Account is failed",ex);
+			transactionManager.rollback(txStatus);
+		}			
+			if(updateRow > 0) 
+				   return true; 
+				else
+				   return false;
+	}
+
+	public boolean insertAppLoginInfo(AppLogin appLogin, String updateUser) {
+		// TODO Auto-generated method stub
+		int updateRow=-1;
+		String DSQL = "delete from APP_LOGIN_CONTROL t where t.com_ip = ?";
+		String sSQL="insert into APP_LOGIN_CONTROL(com_name,COM_IP,DUTY_COSTID,DUTY_PERSON,DUTY_TEL,CONTROL_EXCEPT) values(?,?,?,?,?,?)";
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);
+		try {
+			jdbcTemplate.update(DSQL,new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement arg0) throws SQLException {
+					// TODO Auto-generated method stub
+					arg0.setString(1, appLogin.getIp());
+				}	
+			});
+			
+			updateRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement arg0) throws SQLException {
+					// TODO Auto-generated method stub
+					arg0.setString(1, appLogin.getCom_name());
+					arg0.setString(2, appLogin.getIp());
+					arg0.setString(3, appLogin.getCostid());
+					arg0.setString(4, appLogin.getId());
+					arg0.setString(5, appLogin.getTel());
+					arg0.setString(6, appLogin.getControl_type());
+				}	
+			});
+			transactionManager.commit(txStatus);
+		}
+		catch(Exception ex) {
+			logger.error("Update WorkshopNoRestInfo is failed",ex);
+			ex.printStackTrace();
+			transactionManager.rollback(txStatus);
+			return false;
+		}			
+		
+		if(updateRow > 0) 
+			   return true; 
+			else
+			   return false;
+		
 	}
 
 }

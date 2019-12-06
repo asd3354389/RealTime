@@ -52,6 +52,7 @@
 		<intercept-url pattern="/AbReasonReply/ShowAbReasonReply" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN','ROLE_VIC_ASSISTANT')" />	
 		
 		<intercept-url pattern="/AdminActioin/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="AdminBonusDepid/ShowAdminBonusDepid" access="hasRole('ROLE_ADMIN')" />
 		<!-- access="hasRole('ROLE_USER','ROLE_ADMIN')"  -->
 
      <!--会话管理 -->   

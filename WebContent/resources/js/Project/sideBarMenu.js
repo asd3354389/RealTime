@@ -219,6 +219,10 @@
 				"menuname" : "頂崗津貼設置",
 				"icon" : "icon-nav",
 				"url" : "AdminBonusDepid/ShowAdminBonusDepid"
+			}, {
+				"menuname" : "實時工時卡機ip管控",
+				"icon" : "icon-nav",
+				"url" : "AdminActioin/ShowAppLoginInfo"
 			}]
 		}]
 	};
