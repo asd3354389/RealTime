@@ -1,5 +1,4 @@
 $(document).ready(function(){
-	
 	var Role = "";
 	ShowRole();
 	$('#BU').change(function(){
