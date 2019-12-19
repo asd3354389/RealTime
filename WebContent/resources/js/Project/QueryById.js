@@ -47,14 +47,20 @@ $(document).ready(function(){
 	
     function ShowSelectByIdListtTable(rawData) {
     	var recordId = null;
+    	//<th style="width: 8%; text-align:center;">線別</th>
+		/*<th style="width: 6%; text-align:center;">工號</th>			
+		<th style="width: 5%; text-align:center;">姓名</th>
+		<th style="width: 10%; text-align:center;">異常日期</th>
+		<th style="width: 18%; text-align:center;">異常時間起迄</th>
+		<th style="width: 10%; text-align:center;">異常原因</th>*/
     	for(var i=0;i<rawData.length;i++){
     		var	tableContents='<tr>'+		
-			'<td style="text-align:center;">'+rawData[i]["DEPID"]+'</td>'+			
-			'<td style="text-align:center;">'+rawData[i]["USERID"]+'</td>'+
-			'<td style="text-align:center;">'+rawData[i]["USERNAME"]+'</td>'+
-			'<td style="text-align:center;">'+rawData[i]["EXCEPTION_DATE"]+'</td>'+
-			'<td style="text-align:center;">'+rawData[i]["EXCEPTION_INTERVAL"]+'</td>'+
-		    '<td style="text-align:center;">'+rawData[i]["EXCEPTION_REASON"]+'</td></tr>';
+			'<td style="text-align:center;width: 8%;">'+rawData[i]["DEPID"]+'</td>'+			
+			'<td style="text-align:center;width: 6%;">'+rawData[i]["USERID"]+'</td>'+
+			'<td style="text-align:center;width: 5%;">'+rawData[i]["USERNAME"]+'</td>'+
+			'<td style="text-align:center;width: 10%">'+rawData[i]["EXCEPTION_DATE"]+'</td>'+
+			'<td style="text-align:center;width: 18%;">'+rawData[i]["EXCEPTION_INTERVAL"]+'</td>'+
+		    '<td style="text-align:center;width: 10%;">'+rawData[i]["EXCEPTION_REASON"]+'</td></tr>';
 			$('#queryById tbody').append(tableContents);
 			$("#queryByIdTable").css("display","inline-block");//显示div
 			
