@@ -332,7 +332,7 @@ $(document).ready(function(){
 			success:function(data){
 				//console.log(data);
 				Role=data;
-				if(Role=='ROLE_VIC_ADMIN'){
+				if(Role=='ROLE_VIC_ADMIN'||Role=='ALL'){
 					ShowDepid();
 				}else if(Role=='ROLE_VIC_ASSISTANT'){
 					ShowAssistantDepid();
