@@ -70,7 +70,7 @@ public class QueryByIdDAO extends DAO<QueryByIdDAO>{
 			String numSql = "SELECT EXCEPTION_DATE,COSTID,DEPID,SHIFT,USERID,USERNAME,EXCEPTION_INTERVAL,EXCEPTION_REASON" + 
 					" FROM SWIPE_TIMEOUT_CACHE " + 
 					" WHERE	TO_CHAR(EXCEPTION_DATE,'YYYY-MM-DD') >=?" + 
-					" AND TO_CHAR(EXCEPTION_DATE,'YYYY-MM-DD') >=?" + 
+					" AND TO_CHAR(EXCEPTION_DATE,'YYYY-MM-DD') <=?" + 
 					" AND USERID = ?";
 			System.out.println("數據庫語句======="+numSql);
 					try {

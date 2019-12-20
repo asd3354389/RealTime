@@ -59,7 +59,7 @@
        <div style="position: absolute; top: 55px; margin-left: 10px">
 
 <div class="panel-body" style="padding-bottom: 0px;">
-<div class="row" style="border: 1px solid #e1e3e6;display: inline-block;width: 667px;">
+<div class="row" style="border: 1px solid #e1e3e6;display: inline-block;width: 597px;">
 <div class="col-md-12" style="margin: 5px;">
 					<label for="startDate">開始日期:</label> 
 					<input id="startDate" class="Wdate" type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'%y-\#{%M-2}-01'})" autocomplete="off" />
