@@ -126,6 +126,7 @@ $(document).ready(function(){
 	})
 	
 	function ShowABTimeList(data){
+		$('#ABTimeList tbody').empty();
 		var ABTime = JSON.parse(data);
 		var tableContents='';
 		for(var i=0;i<ABTime.length;i++){
