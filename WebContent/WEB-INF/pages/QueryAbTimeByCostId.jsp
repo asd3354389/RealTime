@@ -50,9 +50,9 @@
 			<div class="top" style="padding-bottom:5px;border: 1px solid #e1e3e6;">
 	    		<div class="controls" style="display: inline-block;">
 				 	<label for="startDate">開始日期:</label> 
-					<input id="startDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'%y-\#{%M-2}-01',maxDate:'#F{$dp.$D(\'endDate\')}'})" autocomplete="off" />
+					<input id="startDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd',minDate:'%y-\#{%M-2}-01',maxDate:'#F{$dp.$D(\'endDate\')}'})" autocomplete="off" />
 					<label for="startDate">結束日期:</label> 
-					<input id="endDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'startDate\')}'})" autocomplete="off" /> 	
+					<input id="endDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')}'})" autocomplete="off" /> 	
 	  			</div>
 		  		<div class="Admin_Depid" style="display:none">
 		  			<label class="control-label" for="BU">部別</label>
