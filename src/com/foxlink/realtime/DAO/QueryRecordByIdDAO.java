@@ -72,7 +72,7 @@ public class QueryRecordByIdDAO extends DAO<QueryRecordByIdDAO>{
 	//查詢實時門禁
 		public List<QueryRecordByIdList> selectSwipeCardById(String startDate,String endDate,String UserId) {
 			List<QueryRecordByIdList> swipeCardList = null;
-			String numSql = "SELECT t.EMP_ID,e.NAME,e.DEPID,t.SWIPE_DATE,t.SWIPECARDTIME,t.SWIPECARDTIME2,t.SHIFT" + 
+			String numSql = "SELECT t.EMP_ID,e.NAME,e.DEPID,t.SWIPE_DATE,TO_CHAR(t.SWIPECARDTIME,'yyyy-MM-dd hh24:mi:ss') SWIPECARDTIME,TO_CHAR(t.SWIPECARDTIME2,'yyyy-MM-dd hh24:mi:ss') SWIPECARDTIME2,t.SHIFT" + 
 					" FROM CSR_SWIPECARDTIME t,CSR_EMPLOYEE e" + 
 					" WHERE" + 
 					" t.SWIPE_DATE>= ? " + 
@@ -100,7 +100,7 @@ public class QueryRecordByIdDAO extends DAO<QueryRecordByIdDAO>{
 	    public List<QueryInfoByIdList> selectSwipeInfoListById(String startDate,String endDate,String UserId) {
 	    	List<QueryInfoByIdList> swipeInfoList = null;
 	    	
-			String numSql = "SELECT DEPID,DEPNAME,USERID,USERNAME,SWIPEDATETIME,SWIPEDOOR,INSERT_DATETIME" + 
+			String numSql = "SELECT DEPID,DEPNAME,USERID,USERNAME,TO_CHAR(SWIPEDATETIME,'yyyy-MM-dd hh24:mi:ss') SWIPEDATETIME,SWIPEDOOR,INSERT_DATETIME" + 
 					" FROM SWIPE_INFO" + 
 					" WHERE TO_CHAR(SWIPEDATETIME,'YYYY-MM-DD') >=? AND TO_CHAR(SWIPEDATETIME,'YYYY-MM-DD') <=?" + 
 					" AND USERID = ?";
