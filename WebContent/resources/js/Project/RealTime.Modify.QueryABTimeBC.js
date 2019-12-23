@@ -145,12 +145,11 @@ $(document).ready(function(){
 			success:function(data){
 				//console.log(data);
 				Role=data;
-				if(Role=='ROLE_VIC_ADMIN'||Role=='ALL'){
+				if(Role=='ROLE_VIC_ADMIN'||Role=='ROLE_VIC_ASSISTANT'||Role=='ALL'){
 					
 					$('.Admin_Depid').css('display','inline-block');
 					$('.Assistant_Depid').css('display','none');
-				}else if(Role=='ROLE_VIC_ASSISTANT'){
-					
+				}else if(Role=='ROLE_VIC_LineLeader'){
 					$('.Admin_Depid').css('display','none');
 					$('.Assistant_Depid').css('display','inline-block');
 					ShowAssistantDepid();

@@ -35,9 +35,9 @@ public class AbReasonReplyController {
 			String accessRole = (String) session.getAttribute("accessRole");
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			abReasonReplyService = (AbReasonReplyService) context.getBean("abReasonReplyService");
-			if(accessRole.equals("ROLE_VIC_ASSISTANT")) {
+			if(accessRole.equals("ROLE_VIC_LineLeader")) {
 				result = abReasonReplyService.ShowABReplyByDepid(depid,SDate,EDate);
-			}else if(accessRole.equals("ROLE_VIC_ADMIN")||accessRole.equals("ALL")) {
+			}else if(accessRole.equals("ROLE_VIC_ADMIN")||accessRole.equals("ROLE_VIC_ASSISTANT")||accessRole.equals("ALL")) {
 				result = abReasonReplyService.ShowABReasonReply(Bu,costid,SDate,EDate);
 			}
 		return result;
