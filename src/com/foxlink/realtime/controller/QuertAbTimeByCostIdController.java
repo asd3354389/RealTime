@@ -56,9 +56,9 @@ public class QuertAbTimeByCostIdController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			quertAbTimeByCostIdService = (QuertAbTimeByCostIdService) context.getBean("quertAbTimeByCostIdService");
 			String accessRole = (String) session.getAttribute("accessRole");
-			if(accessRole.equals("ROLE_VIC_ASSISTANT")) {
+			if(accessRole.equals("ROLE_VIC_LineLeader")) {
 				result = quertAbTimeByCostIdService.ShowABTimeByDepid(depid,SDate,EDate);
-			}else if(accessRole.equals("ROLE_VIC_ADMIN")||accessRole.equals("ALL")) {
+			}else if(accessRole.equals("ROLE_VIC_ADMIN")||accessRole.equals("ROLE_VIC_ASSISTANT")||accessRole.equals("ALL")) {
 				result = quertAbTimeByCostIdService.ShowABTimeByCostid(Bu,costid,depid,SDate,EDate);
 			}
 			return result;
