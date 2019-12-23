@@ -48,9 +48,9 @@ public class FourteenROService {
 		return fourteenRODAO.UpdateRecord(fourteenRO,updateUser);
 	}
 
-	public boolean DeleteFourteenRO(String costid, String updateUser) {
+	public boolean DeleteFourteenRO(String costid, String updateUser, String startDate, String endDate) {
 		// TODO Auto-generated method stub
-		return fourteenRODAO.DeleteFourteenRO(costid,updateUser);
+		return fourteenRODAO.DeleteFourteenRO(costid,updateUser,startDate,endDate);
 	}
 	
 }

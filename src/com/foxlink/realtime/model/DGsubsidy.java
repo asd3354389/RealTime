@@ -8,6 +8,7 @@ public class DGsubsidy  implements Serializable {
 	private String Name;
 	private String DepId;
 	private String CostId;
+	private String SwipeCardDate;
 	private String SwipeCardTime;
 	private String SwipeCardTime2;
 	private String Class_Start;
@@ -88,6 +89,14 @@ public class DGsubsidy  implements Serializable {
 
 	public void setClass_Start(String class_Start) {
 		Class_Start = class_Start;
+	}
+
+	public String getSwipeCardDate() {
+		return SwipeCardDate;
+	}
+
+	public void setSwipeCardDate(String swipeCardDate) {
+		SwipeCardDate = swipeCardDate;
 	}
 
 	

@@ -47,6 +47,10 @@
 				"menuname" : "線別維護",
 				"icon" : "icon-nav",
 				"url" : "LineMapping/ShowAllLineMapping"
+			},{
+				"menuname" : "未提報加班人員查詢",
+				"icon" : "icon-nav",
+				"url" : "NoCheckOvertime/ShowNoCheckOvertime"
 			}]
 		},{
 
