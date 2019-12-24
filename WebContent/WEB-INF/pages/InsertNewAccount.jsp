@@ -65,6 +65,7 @@
       				<option value="ROLE_ZJADLOW">ROLE_ZJADLOW</option>
       				<option value="ROLE_VIC_ADMIN">ROLE_VIC_ADMIN</option>
       				<option value="ROLE_VIC_ASSISTANT">ROLE_VIC_ASSISTANT</option>
+      				<option value="ROLE_VIC_ASSISTANT">ROLE_VIC_LineLeader</option>
       			</select>
     		</div>
   		</div>
