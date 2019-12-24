@@ -348,4 +348,11 @@
 		<property name="adminBonusDepidDAO" ref="adminBonusDepidDAO" />
 	</bean> 
 	
+	<bean id="noCheckOvertimeDAO" class="com.foxlink.realtime.DAO.NoCheckOvertimeDAO"
+		parent="dAO">
+	</bean>
+	<bean id="noCheckOvertimeService" class="com.foxlink.realtime.service.NoCheckOvertimeService">
+		<property name="noCheckOvertimeDAO" ref="noCheckOvertimeDAO" />
+	</bean> 
+	
 </beans>

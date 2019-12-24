@@ -260,7 +260,7 @@ $(document).ready(function(){
 					'<td>'+executeResult[i]["End_date"]+'</td>'+
 //					'<td>'+executeResult[i]["Direction"]+'</td>'
 //					'<td>'++'</td>'+
-					'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>';
+					'<td><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>';
 				tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
 					$('#FourteenROable tbody').append(tableContents);
@@ -351,13 +351,15 @@ $(document).ready(function(){
 		$('.deleteBtn').click(function(){
 			var parentElement=$(this).parent().parent();
 			var Costid=$(parentElement).find('td').eq(0).text();
+			var startDate=$(parentElement).find('td').eq(1).text();
+			var endDate=$(parentElement).find('td').eq(2).text();
 			//alert("卡号"+deleteCardId);
 			var results=confirm("確定刪除此條數據?");
 			if(results==true){
 				$.ajax({
 					type:'GET',
 					url:'../FourteenRO/deleteFourteenRO.do',
-					data:{Costid:Costid},
+					data:{Costid:Costid,startDate:startDate,endDate:endDate},
 					error:function(e){
 						alert(e);
 					},

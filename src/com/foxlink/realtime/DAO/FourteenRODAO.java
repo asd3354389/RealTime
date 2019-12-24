@@ -131,24 +131,20 @@ public class FourteenRODAO extends DAO<FourteenRO>{
 
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		String DSQL = "update CSR_14R1_COSTID t set t.enabled = 'N' where t.costid = ? and t.enabled = 'Y'";
+		//String DSQL = "update CSR_14R1_COSTID t set t.enabled = 'N' where t.costid = ? and t.enabled = 'Y'";
 		String ISQL="insert into CSR_14R1_COSTID values(?,?,?,?,sysdate,'Y')";
 		try {
 			if(fourteenRO!=null) {
-				jdbcTemplate.batchUpdate(DSQL, new BatchPreparedStatementSetter() {
-					
-					@Override
-					public void setValues(PreparedStatement ps,int i ) throws SQLException {
-						// TODO Auto-generated method stub
-						ps.setString(1, fourteenRO[i].getCostid());
-					}
-					
-					@Override
-					public int getBatchSize() {
-						// TODO Auto-generated method stub
-						return fourteenRO.length;
-					}
-				});
+				/*
+				 * jdbcTemplate.batchUpdate(DSQL, new BatchPreparedStatementSetter() {
+				 * 
+				 * @Override public void setValues(PreparedStatement ps,int i ) throws
+				 * SQLException { // TODO Auto-generated method stub ps.setString(1,
+				 * fourteenRO[i].getCostid()); }
+				 * 
+				 * @Override public int getBatchSize() { // TODO Auto-generated method stub
+				 * return fourteenRO.length; } });
+				 */
 
 				jdbcTemplate.batchUpdate(ISQL, new BatchPreparedStatementSetter() {
 					@Override
@@ -220,11 +216,12 @@ public class FourteenRODAO extends DAO<FourteenRO>{
 				   return false;
 	}
 
-	public boolean DeleteFourteenRO(String costid, String updateUser) {
+	public boolean DeleteFourteenRO(String costid, String updateUser, String startDate, String endDate) {
 		// TODO Auto-generated method stub
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
-		String sSQL="update CSR_14R1_COSTID t set t.enabled = 'N',t.update_userid = ?,t.update_time = sysdate where t.costid = ? and t.enabled = 'Y'";
+		String sSQL="update CSR_14R1_COSTID t set t.enabled = 'N',t.update_userid = ?,t.update_time = sysdate "
+				+ " where t.costid = ? and t.start_date = ? and t.end_date = ? and t.enabled = 'Y'";
 		int disableRow=-1;
 		try {
 				disableRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
@@ -233,6 +230,8 @@ public class FourteenRODAO extends DAO<FourteenRO>{
 						// TODO Auto-generated method stub
 						arg0.setString(1, updateUser);
 						arg0.setString(2, costid);
+						arg0.setString(3, startDate);
+						arg0.setString(4, endDate);
 					}	
 				});
 				System.out.print(sSQL);

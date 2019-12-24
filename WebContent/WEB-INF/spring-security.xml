@@ -19,6 +19,7 @@
 		<intercept-url pattern="/Overtime/OT.show" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" /> 
 		<intercept-url pattern="/Overtime/OTByLL.show" access="hasAnyRole('ROLE_ADMIN','ROLE_LineLeader')" /> 
 		<intercept-url pattern="/ShowCheckOverTimeStatus" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
+		<intercept-url pattern="/NoCheckOvertime/ShowNoCheckOvertime" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
 		<intercept-url pattern="/ShowCheckSwipeCardRecords" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT','ROLE_LineLeader')" />
 		<intercept-url pattern="/ShowCheckForgetCard" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
 		<intercept-url pattern="/ShowCheckShiftStatus" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />

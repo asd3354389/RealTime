@@ -118,14 +118,15 @@ public class FourteenROController {
 	
 	@RequestMapping(value="/deleteFourteenRO.do",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String DeleteIOSpecialWSEmp(HttpSession session,@RequestParam("Costid")String Costid){
+	public String DeleteIOSpecialWSEmp(HttpSession session,@RequestParam("Costid")String Costid
+			,@RequestParam("startDate")String startDate,@RequestParam("endDate")String endDate){
 		JsonObject DisableResult=new JsonObject();
 		try{
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			fourteenROService = (FourteenROService) context.getBean("fourteenROService");
 			String updateUser=(String) session.getAttribute("username");
 			System.out.println("費用代碼========="+Costid);
-			if(fourteenROService.DeleteFourteenRO(Costid, updateUser)){
+			if(fourteenROService.DeleteFourteenRO(Costid, updateUser,startDate,endDate)){
 				DisableResult.addProperty("StatusCode", "200");
 				DisableResult.addProperty("Message", "保密車間進出臨時權限已失效");
 			}
