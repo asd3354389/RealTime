@@ -84,7 +84,7 @@ public class QuertAbTimeByCostIdDAO extends DAO<QueryByIdList>{
 	public List<QueryByIdList> searchABTimeList(String bu, String costid, String depid, String sDate, String eDate) {
 		// TODO Auto-generated method stub
 		List<QueryByIdList> ABTimeList = null;
-		String sSQl = "SELECT count(*)as count,userid,username,depid,sum(EXCEPTION_TIME)as sumtime FROM SWIPE.SWIPE_TIMEOUT_CACHE where Exception_Date >= to_date('"+sDate+"','yyyy-MM-dd') and Exception_Date< to_date('"+eDate+"','yyyy-MM-dd')";
+		String sSQl = "SELECT count(*)as count,userid,username,depid,sum(EXCEPTION_TIME)as sumtime FROM SWIPE.SWIPE_TIMEOUT_CACHE where Exception_Date >= to_date('"+sDate+"','yyyy-MM-dd') and Exception_Date<=to_date('"+eDate+"','yyyy-MM-dd')";
 		try {
 			if(bu.equals("AllBU")) {
 				sSQl+="";
@@ -114,7 +114,7 @@ public class QuertAbTimeByCostIdDAO extends DAO<QueryByIdList>{
 	public List<QueryByIdList> searchABTimeDepid(String depid, String sDate, String eDate) {
 		// TODO Auto-generated method stub
 		List<QueryByIdList> ABTimeList = null;
-		String sSQl = "SELECT count(*)as count,userid,username,depid,sum(EXCEPTION_TIME)as sumtime FROM SWIPE.SWIPE_TIMEOUT_CACHE where Exception_Date >= to_date('"+sDate+"','yyyy-MM-dd') and Exception_Date< to_date('"+eDate+"','yyyy-MM-dd') and depid='"+depid+"'";
+		String sSQl = "SELECT count(*)as count,userid,username,depid,sum(EXCEPTION_TIME)as sumtime FROM SWIPE.SWIPE_TIMEOUT_CACHE where Exception_Date >= to_date('"+sDate+"','yyyy-MM-dd') and Exception_Date<=to_date('"+eDate+"','yyyy-MM-dd') and depid='"+depid+"'";
 		try {
 			sSQl+="group by userid,username,depid ORDER BY depid";
 			System.out.println(sSQl);
