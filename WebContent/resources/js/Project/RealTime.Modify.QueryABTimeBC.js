@@ -79,11 +79,11 @@ $(document).ready(function(){
 		var Bu ="";
 		var costid=""; 
 		var depid=""; 
-		if(Role=='ROLE_VIC_ADMIN'||Role=='ALL'){
+		if(Role=='ROLE_VIC_ADMIN'||Role=='ROLE_VIC_ASSISTANT'||Role=='ALL'){
 			 Bu = $('#BU').val();
 			 costid=$('#costid').val(); 
 			 depid=$('#depid').val(); 
-		}else if(Role=='ROLE_VIC_ASSISTANT'){
+		}else if(Role=='ROLE_VIC_LineLeader'){
 			 depid=$('#Assistant_depid').val(); 
 		}
 		var SDate = $('#startDate').val();
