@@ -121,9 +121,16 @@ public class OTCardbdPersonService extends Service<Emp>{
 		return oTCardbdPersonDAO.checkUserNameDuplicate(CostId);
 	}
 
-	public boolean OTCardbd(OTCardBD otCardbd,String accessRole) {
+	public boolean OTCardbd(OTCardBD[] otCardbd,String accessRole,String updateUser) {
 		// TODO Auto-generated method stub
-		return oTCardbdPersonDAO.OTCardbdPerson(otCardbd,accessRole);
+		
+			RelieveCard(otCardbd,accessRole);
+			return oTCardbdPersonDAO.OTCardbdPerson(otCardbd,accessRole,updateUser);
+	}
+	
+	public void RelieveCard(OTCardBD[] otCardbd,String accessRole) {
+		// TODO Auto-generated method stub
+		oTCardbdPersonDAO.RelieveCard(otCardbd,accessRole);
 	}
 
 	@Override

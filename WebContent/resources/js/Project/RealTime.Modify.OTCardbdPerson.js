@@ -101,31 +101,42 @@ $(document).ready(function(){
 	//離崗卡綁定費用代碼
 	$('#changebdOT').click(function(){
 		button_onclick($('#changebdOT')[0])
-		var user={},errorMessage='';
-		user["D_CardID"]=$('#inputOTCarid').val();
-		user["CostId"]=$('#CostNo').val();
-		user["Default_WorkShop"]=$('#workShop option:selected').val();
-		console.log(user);
+		var CostNo=$('#CostNo').val().split(",");
+		var D_CardID=$('#inputOTCarid').val();
+		var Default_WorkShop=$('#workShop option:selected').val();
+		var errorMessage='',list=[];
+//		user["D_CardID"]=D_CardID;
+//		user["CostId"]=$('#CostNo').val();
+//		user["Default_WorkShop"]=$('#workShop option:selected').val();
 		
-		if(user["CostId"]==="null" || user["CostId"]=='')
+		
+		if($('#CostNo').val()==="null" || $('#CostNo').val()=='')
 			errorMessage+='費用代碼不能爲空\n';		
 //		checkCostIdDuplicate(user["CostId"]);
-		if(user["D_CardID"]=='' || user["D_CardID"]==null){
+		if(D_CardID=='' || D_CardID==null){
 			errorMessage+='離崗卡號必填 \n';
 		}
-		if(!reg.test(user["D_CardID"])){
+		if(!reg.test(D_CardID)){
 			errorMessage+='離崗卡號不符合規格！必須是10位數\n';
 		}
-		checkDcard(user["CostId"],user["D_CardID"]);
-		if(user["Default_WorkShop"]==="null" || user["Default_WorkShop"]=='')
+		if(Default_WorkShop==="null" || Default_WorkShop=='')
 			errorMessage+='未選擇使用的車間\n';
-		if(errorMessage==''&& isUserNameValid){
+		
+		for(var i=0;i<CostNo.length;i++){
+			var user={}
+			user["D_CardID"]=D_CardID;
+			user["CostId"]=CostNo[i];
+			user["Default_WorkShop"]=Default_WorkShop;
+			list.push(user)
+		}
+		//console.log(list);
+		if(errorMessage==''){
 			//新增綁定賬號
 			$.ajax({
 				type:'POST',
 				contentType: "application/json",
 				url:'../OTCardPerson/AddOTCardBdPerson.do',
-				data:JSON.stringify(user),
+				data:JSON.stringify(list),
 				dataType:'json',
 				success:function(data){
 					
@@ -292,9 +303,7 @@ $(document).ready(function(){
 			var	tableContents='<tr>'+
 					'<td class="touch">'+executeResult[i]["CostId"]+'</td>'+
 					'<td>'+executeResult[i]["D_CardID"]+'</td>'+
-					'<td>'+executeResult[i]["Default_WorkShop"]+'</td>'
-					var enabled =executeResult[i].Enabled=="Y"?'已生效':'';		
-					tableContents+='<td>'+enabled+'</td>'+
+					'<td>'+executeResult[i]["Default_WorkShop"]+'</td>'+
 					'<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link"></td>';
 				   tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/

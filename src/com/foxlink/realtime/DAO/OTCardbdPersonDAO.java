@@ -201,7 +201,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 			 return true;
 	}*/
 
-	public boolean OTCardbdPerson(OTCardBD otCardbd,String accessRole) {
+	public boolean OTCardbdPerson(OTCardBD[] otCardbd,String accessRole,String updateUser) {
 		// TODO Auto-generated method stub
 		int createRow=-1;
 
@@ -211,17 +211,24 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 		String sSQL="INSERT INTO SWIPE.DEPARTURE_CARD_INFO (D_CardId,CostId,Default_WorkShopNo,Update_UserId,BU) VALUES(?,?,?,?,?)";
 		try {
 			if(otCardbd!=null) {
-		      createRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
-					@Override
-					public void setValues(PreparedStatement arg0) throws SQLException {
-						// TODO Auto-generated method stub
-						arg0.setString(1, otCardbd.getD_CardID());
-						arg0.setString(2, otCardbd.getCostId());
-						arg0.setString(3, otCardbd.getDefault_WorkShop());
-						arg0.setString(4,otCardbd.getUpdate_UserId());
-						arg0.setString(5,accessRole);
-					}	
-				});
+		      jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
+				
+				@Override
+				public void setValues(PreparedStatement ps, int i) throws SQLException {
+					// TODO Auto-generated method stub
+					ps.setString(1, otCardbd[i].getD_CardID());
+					ps.setString(2, otCardbd[i].getCostId());
+					ps.setString(3, otCardbd[i].getDefault_WorkShop());
+					ps.setString(4, updateUser);
+					ps.setString(5, accessRole);
+				}
+				
+				@Override
+				public int getBatchSize() {
+					// TODO Auto-generated method stub
+					return otCardbd.length;
+				}
+			});
 				transactionManager.commit(txStatus);
 			}			
 		}
@@ -229,12 +236,56 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 			logger.error(ex);
 			transactionManager.rollback(txStatus);
 		}
-		
-		 if(createRow > 0) 
+		//System.out.println(123);
+		 if(createRow < 0) 
 			   return true; 
 		 else
 			 return false;
 	}
+	
+	public void RelieveCard(OTCardBD[] otCardbd, String accessRole) {
+		// TODO Auto-generated method stub	
+		//int updateRow=0;
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);	
+		String sSQL = "delete from SWIPE.DEPARTURE_CARD_INFO where enabled='Y' and CostId =? and D_CardId=?";
+		try {
+			if(otCardbd!=null) {
+				if(accessRole!=null&&!accessRole.equals("")){
+					if(!accessRole.equals("ALL")){
+						sSQL+=" and bu = '"+accessRole+"' "; 
+					}
+				}
+				jdbcTemplate.batchUpdate(sSQL,new BatchPreparedStatementSetter() {
+					
+					@Override
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						// TODO Auto-generated method stub
+						ps.setString(1, otCardbd[i].getCostId());
+						ps.setString(2, otCardbd[i].getD_CardID());
+						
+					}
+					
+					@Override
+					public int getBatchSize() {
+						// TODO Auto-generated method stub
+						return otCardbd.length;
+					}
+				});
+				transactionManager.commit(txStatus);
+			}	
+			//System.out.println(sSQL);
+		}
+		catch(Exception ex) {
+			logger.error("delete BdOTCard is failed",ex);
+			transactionManager.rollback(txStatus);
+		}			
+//			if(updateRow == 0) 
+//				   return true; 
+//				else
+//				   return false;
+	}
+	
 
 	public boolean checkEmpIdExistence(String EmpId, String userDataCostId) {
 		// TODO Auto-generated method stub
@@ -303,6 +354,7 @@ public class OTCardbdPersonDAO extends DAO<Emp> {
 	public boolean RelieveOTCard(OTCardBD[] otCardbd, String updateUser,String accessRole) {
 		// TODO Auto-generated method stub	
 		int updateRow=0;
+		//System.out.println(456);
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);		
 		String sSQL = "delete from SWIPE.DEPARTURE_CARD_INFO where enabled='Y' and CostId =? and D_CardId=?";
