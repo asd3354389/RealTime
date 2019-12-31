@@ -100,7 +100,7 @@ public class QueryRecordByIdDAO extends DAO<QueryRecordByIdDAO>{
 	    public List<QueryInfoByIdList> selectSwipeInfoListById(String startDate,String endDate,String UserId) {
 	    	List<QueryInfoByIdList> swipeInfoList = null;
 	    	//INSERT_DATETIME TO_CHAR(INSERT_DATETIME,'yyyy-MM-dd hh24:mi:ss')
-			String numSql = "SELECT DEPID,DEPNAME,USERID,USERNAME,TO_CHAR(SWIPEDATETIME,'yyyy-MM-dd hh24:mi:ss') SWIPEDATETIME,SWIPEDOOR,TO_CHAR(INSERT_DATETIME,'yyyy-MM-dd hh24:mi:ss')" + 
+			String numSql = "SELECT DEPID,DEPNAME,USERID,USERNAME,TO_CHAR(SWIPEDATETIME,'yyyy-MM-dd hh24:mi:ss') SWIPEDATETIME,SWIPEDOOR,TO_CHAR(INSERT_DATETIME,'yyyy-MM-dd hh24:mi:ss') INSERT_DATETIME" + 
 					" FROM SWIPE_INFO" + 
 					" WHERE TO_CHAR(SWIPEDATETIME,'YYYY-MM-DD') >=? AND TO_CHAR(SWIPEDATETIME,'YYYY-MM-DD') <=?" + 
 					" AND USERID = ?";
