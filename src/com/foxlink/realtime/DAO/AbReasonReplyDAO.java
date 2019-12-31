@@ -17,7 +17,7 @@ public class AbReasonReplyDAO extends DAO<QueryByIdList>{
 	public List<QueryByIdList> searchABReasonList(String bu, String costid, String sDate, String eDate) {
 		// TODO Auto-generated method stub
 		List<QueryByIdList> ABReasonList = null;
-		String sSQl = "SELECT rowid as id,costid,userid,username,depid,exception_date,shift,exception_interval,exception_time,exception_reason FROM SWIPE.SWIPE_TIMEOUT_CACHE where Exception_Date >= to_date('"+sDate+"','yyyy-MM-dd') and Exception_Date< to_date('"+eDate+"','yyyy-MM-dd')";
+		String sSQl = "SELECT rowid as id,costid,userid,username,depid,exception_date,shift,exception_interval,exception_time,exception_reason FROM SWIPE.SWIPE_TIMEOUT_CACHE where Exception_Date >= to_date('"+sDate+"','yyyy-MM-dd') and Exception_Date<= to_date('"+eDate+"','yyyy-MM-dd')";
 		try {
 			if(bu.equals("AllBU")) {
 				sSQl+="";
@@ -127,7 +127,7 @@ public class AbReasonReplyDAO extends DAO<QueryByIdList>{
 	public List<QueryByIdList> searchABReasonByDepid(String depid, String sDate, String eDate) {
 		// TODO Auto-generated method stub
 		List<QueryByIdList> ABReasonList = null;
-		String sSQl = "SELECT rowid as id,costid,userid,username,depid,exception_date,shift,exception_interval,exception_time,exception_reason FROM SWIPE.SWIPE_TIMEOUT_CACHE where Exception_Date >= to_date('"+sDate+"','yyyy-MM-dd') and Exception_Date< to_date('"+eDate+"','yyyy-MM-dd')";
+		String sSQl = "SELECT rowid as id,costid,userid,username,depid,exception_date,shift,exception_interval,exception_time,exception_reason FROM SWIPE.SWIPE_TIMEOUT_CACHE where Exception_Date >= to_date('"+sDate+"','yyyy-MM-dd') and Exception_Date<=to_date('"+eDate+"','yyyy-MM-dd')";
 		try {
 			sSQl+=" and depid='"+depid+"' ORDER BY depid";
 			//System.out.println(sSQl);
