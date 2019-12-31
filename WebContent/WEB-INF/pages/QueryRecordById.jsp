@@ -84,7 +84,7 @@
 								<th style="width: 5%; text-align:center;">工號</th>
 								<th style="width: 5%; text-align:center;">姓名</th>			
 								<th style="width: 21%; text-align:center;">部門代碼</th>
-								<th style="width: 22%; text-align:center;">刷卡日期日期</th>
+								<th style="width: 22%; text-align:center;">刷卡日期</th>
 								<th style="width: 21%; text-align:center;">上刷時間</th>
 								<th style="width: 21%; text-align:center;">下刷時間</th>
 								<th style="width: 5%; text-align:center;">班別</th>
