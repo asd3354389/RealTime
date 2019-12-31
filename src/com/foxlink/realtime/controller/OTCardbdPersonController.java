@@ -3,6 +3,7 @@ package com.foxlink.realtime.controller;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.hibernate.dialect.function.VarArgsSQLFunction;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -142,15 +143,20 @@ public class OTCardbdPersonController {
 	
 	@RequestMapping(value="/AddOTCardBdPerson.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 	@ResponseBody 
-	public String OTCardbdPerson(HttpSession session,@RequestBody OTCardBD otCardbd){
+	public String OTCardbdPerson(HttpSession session,@RequestBody OTCardBD[] otCardbd){
+		/*for(int i = 0;i<otCardbd.length;i++) {
+			System.out.println(otCardbd[i].getCostId());
+			System.out.println(otCardbd[i].getD_CardID());
+			System.out.println(otCardbd[i].getDefault_WorkShop());
+		}*/
 		JsonObject AddResult=new JsonObject();		
 		try{
 			String updateUser=(String) session.getAttribute("username");
-			otCardbd.setUpdate_UserId(updateUser);
+			//otCardbd.setUpdate_UserId(updateUser);
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			oTCardbdPersonService = (OTCardbdPersonService) context.getBean("oTCardbdPersonService");
 			String accessRole=(String) session.getAttribute("accessRole");
-			if(oTCardbdPersonService.OTCardbd(otCardbd,accessRole)){
+			if(oTCardbdPersonService.OTCardbd(otCardbd,accessRole,updateUser)){
 				AddResult.addProperty("StatusCode", "200");
 				AddResult.addProperty("Message", "離崗卡與費用代碼綁定成功");
 			}
