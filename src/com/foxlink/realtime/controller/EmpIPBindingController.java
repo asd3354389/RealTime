@@ -112,6 +112,7 @@ public class EmpIPBindingController {
 	@ResponseBody
 	public String DeleteWorkShopNoRest(HttpSession session,@RequestBody EmpIpBinding[] empIpBindings){
 		JsonObject DisableResult=new JsonObject();
+		
 		try{
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			empIPBindingService = (EmpIPBindingService) context.getBean("empIPBindingService");

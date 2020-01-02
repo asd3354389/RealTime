@@ -53,6 +53,7 @@ $(document).ready(function(){
 			if(results==true){
 				$.ajax({
 					type:'POST',
+					contentType: 'application/json;charset=UTF-8',
 					url:'../EmpIPBinding/deleteEmpIPBinding.do',
 					data:JSON.stringify(relist),
 					dataType:'json',
