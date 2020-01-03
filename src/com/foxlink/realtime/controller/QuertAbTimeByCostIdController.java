@@ -58,7 +58,7 @@ public class QuertAbTimeByCostIdController {
 			String accessRole = (String) session.getAttribute("accessRole");
 			if(accessRole.equals("ROLE_VIC_LineLeader")) {
 				result = quertAbTimeByCostIdService.ShowABTimeByDepid(depid,SDate,EDate);
-			}else if(accessRole.equals("ROLE_VIC_ADMIN")||accessRole.equals("ROLE_VIC_ASSISTANT")||accessRole.equals("ALL")) {
+			}else if(accessRole.equals("ROLE_VIC_ADMIN")||accessRole.equals("ROLE_VIC_ASSISTANT")||accessRole.equals("ROLE_VIC_ASSISTANT_O")||accessRole.equals("ALL")) {
 				result = quertAbTimeByCostIdService.ShowABTimeByCostid(Bu,costid,depid,SDate,EDate);
 			}
 			return result;
