@@ -79,7 +79,7 @@ $(document).ready(function(){
 		var Bu ="";
 		var costid=""; 
 		var depid=""; 
-		if(Role=='ROLE_VIC_ADMIN'||Role=='ROLE_VIC_ASSISTANT'||Role=='ALL'){
+		if(Role=='ROLE_VIC_ADMIN'||Role=='ROLE_VIC_ASSISTANT'||Role=='ROLE_VIC_ASSISTANT_O'||Role=='ALL'){
 			 Bu = $('#BU').val();
 			 costid=$('#costid').val(); 
 			 depid=$('#depid').val(); 
@@ -145,7 +145,7 @@ $(document).ready(function(){
 			success:function(data){
 				//console.log(data);
 				Role=data;
-				if(Role=='ROLE_VIC_ADMIN'||Role=='ROLE_VIC_ASSISTANT'||Role=='ALL'){
+				if(Role=='ROLE_VIC_ADMIN'||Role=='ROLE_VIC_ASSISTANT'||Role=='ROLE_VIC_ASSISTANT_O'||Role=='ALL'){
 					
 					$('.Admin_Depid').css('display','inline-block');
 					$('.Assistant_Depid').css('display','none');

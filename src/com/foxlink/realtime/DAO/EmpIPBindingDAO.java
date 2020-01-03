@@ -214,6 +214,7 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 
 	public boolean DeleteEmpIPBinding(EmpIpBinding[] empIpBindings, String updateUser) {
 		// TODO Auto-generated method stub
+		//System.out.println(123);
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
 		String sSQL="update DEVICE_EMP_BINDING t set t.enabled = 'N',t.update_userid=?,update_time=sysdate where t.deviceip = ? and t.emp_id = ? and t.enabled = 'Y'";
@@ -236,6 +237,7 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 						return empIpBindings.length;
 					}
 				});
+					//System.out.println(sSQL);
 				transactionManager.commit(txStatus);
 			}
 		}

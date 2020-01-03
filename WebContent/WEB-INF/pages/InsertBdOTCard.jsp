@@ -23,7 +23,8 @@
     						<option value=" "></option>
     					</select>  			 -->
     			<div class="controls">
-      				<input type="text" id="CostNo" name="CostNo" class="required nameCheck form-control" placeholder="费用代码">
+    				<input type="text" class="form-control" placeholder="费用代码" id="CostNo" onkeyup="this.value =this.value.replace(/\s/g,'').replace(/[^\d]/g,'').replace(/(\d{4})(?=\d)/g,'$1,');">
+      				<%-- <input type="text" id="CostNo" name="CostNo" class="required nameCheck form-control" placeholder="费用代码" onkeyup="this.value =this.value.replace(/\s/g,'').replace(/[^\d]/g,'').replace(/(\d{4})(?=\d)/g,'$1,');> --%>
     			</div>
     					
     		</div>
