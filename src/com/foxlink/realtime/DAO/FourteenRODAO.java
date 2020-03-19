@@ -132,7 +132,7 @@ public class FourteenRODAO extends DAO<FourteenRO>{
 		txDef = new DefaultTransactionDefinition();
 		txStatus = transactionManager.getTransaction(txDef);
 		//String DSQL = "update CSR_14R1_COSTID t set t.enabled = 'N' where t.costid = ? and t.enabled = 'Y'";
-		String ISQL="insert into CSR_14R1_COSTID values(?,?,?,?,sysdate,'Y')";
+		String ISQL="insert into CSR_14R1_COSTID values(trim(?),?,?,?,sysdate,'Y')";
 		try {
 			if(fourteenRO!=null) {
 				/*

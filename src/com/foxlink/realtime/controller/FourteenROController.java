@@ -101,17 +101,17 @@ public class FourteenROController {
 			String updateUser=(String) session.getAttribute("username");
 			if(fourteenROService.UpdateRecord(fourteenRO,updateUser)){
 				UpdateResult.addProperty("StatusCode", "200");
-				UpdateResult.addProperty("Message", "更新保密車間臨時權限成功");
+				UpdateResult.addProperty("Message", "更新十四休一設置成功");
 			}
 			else{
 				UpdateResult.addProperty("StatusCode", "500");
-				UpdateResult.addProperty("Message", "更新保密車間臨時權限失敗");
+				UpdateResult.addProperty("Message", "更新十四休一設置失敗");
 			}
 		}
 		catch(Exception ex){
 			logger.error("Updating the Account info is failed, due to: ",ex);
 			UpdateResult.addProperty("StatusCode", "500");
-			UpdateResult.addProperty("Message", "更新保密車間臨時權限發生錯誤，原因："+ex.toString());
+			UpdateResult.addProperty("Message", "更新十四休一設置發生錯誤，原因："+ex.toString());
 		}
 		return UpdateResult.toString();
 	}
@@ -128,17 +128,17 @@ public class FourteenROController {
 			System.out.println("費用代碼========="+Costid);
 			if(fourteenROService.DeleteFourteenRO(Costid, updateUser,startDate,endDate)){
 				DisableResult.addProperty("StatusCode", "200");
-				DisableResult.addProperty("Message", "保密車間進出臨時權限已失效");
+				DisableResult.addProperty("Message", "十四休一設置已失效");
 			}
 			else{
 				DisableResult.addProperty("StatusCode", "500");
-				DisableResult.addProperty("Message", "保密車間進出臨時權限發生錯誤");
+				DisableResult.addProperty("Message", "十四休一設置發生錯誤");
 			}
 		}
 		catch(Exception ex){
 			logger.error("Disable the IOCardMaIP info is failed, due to:",ex);
 			DisableResult.addProperty("StatusCode", "500");
-			DisableResult.addProperty("Message", "保密車間進出臨時權限發生錯誤，原因:"+ex.toString());
+			DisableResult.addProperty("Message", "十四休一設置發生錯誤，原因:"+ex.toString());
 		}		
 		return DisableResult.toString();
 	}

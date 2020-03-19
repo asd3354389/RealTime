@@ -66,6 +66,11 @@
 				"menuname" : "員工對應的實時卡機設定",
 				"icon" : "icon-nav",
 				"url" : "EmpIPBinding/ShowEmpIPBinding"
+			},{
+				"menuname" : "十四休一個人設定維護",
+				"icon" : "icon-nav",
+				"url" : "FourteenROP/ShowFourteenROP"
+
 			}]
 		},{
 			"menuid" : "55",
