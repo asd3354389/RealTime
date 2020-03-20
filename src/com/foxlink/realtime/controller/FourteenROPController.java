@@ -118,4 +118,23 @@ public class FourteenROPController {
 		return AddResult.toString();
 	}
 	
+	@RequestMapping(value="/getPerson.do",method=RequestMethod.GET,produces="application/json;charset=utf-8")
+	@ResponseBody
+	public String GetPersonById(HttpSession session,@RequestParam("costId")String costId){
+		String PersonResult=null;
+		try{
+			String updateUser=(String) session.getAttribute("username");
+			System.out.println("費用代碼========="+costId);
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			PersonResult = gson.toJson(fourteenROPService.GetPersonById(costId));
+		}
+		catch(Exception ex){
+			logger.error(ex);
+			JsonObject exception=new JsonObject();
+			exception.addProperty("StatusCode", "500");
+			exception.addProperty("ErrorMessage", "取得員工號失敗，原因："+ex.toString());
+			PersonResult=exception.toString();
+		}		
+		return PersonResult.toString();
+	}
 }

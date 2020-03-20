@@ -11,9 +11,12 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.foxlink.realtime.model.Emp;
 import com.foxlink.realtime.model.FourteenROP;
 import com.foxlink.realtime.model.Page;
+import com.foxlink.realtime.model.objectMapper.EmpInfoMapper;
 import com.foxlink.realtime.model.objectMapper.FourteenROPMapper;
+import com.foxlink.realtime.model.objectMapper.PersonByCostId;
 
 @Repository
 public class FourteenROPDAO extends DAO<FourteenROP>{
@@ -206,6 +209,19 @@ public class FourteenROPDAO extends DAO<FourteenROP>{
 		} else {
 			 return false;
 	}
+	}
+
+	public List<Emp> GetPersonById(String costId) {
+		// TODO Auto-generated method stub
+		List<Emp> PersonList = null;
+		String sSQL = "select * from (select id,name,depid,costid from SWIPE.CSR_EMPLOYEE where costid='"+costId+"')";
+		try {
+		    PersonList = jdbcTemplate.query(sSQL, new PersonByCostId());	
+    	  } catch (Exception ex) {
+    		  logger.error("Find PersonById TotalRecord are failed ",ex);
+    		  ex.printStackTrace();
+    		  }
+		return PersonList;
 	}
 
 }
