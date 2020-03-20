@@ -65,7 +65,6 @@ public class AdminActionController {
 			exception.addProperty("ErrorMessage", "取得員工信息列表失敗，原因："+ex.toString());
 			DisableResult=exception.toString();
 		}		
-		System.out.println(DisableResult);
 		return DisableResult;
 	}
 	
@@ -96,7 +95,6 @@ public class AdminActionController {
 			exception.addProperty("ErrorMessage", "取得法定節假日或補休信息列表失敗，原因："+ex.toString());
 			DisableResult=exception.toString();
 		}		
-		System.out.println(DisableResult);
 		return DisableResult;
 	}
 	
@@ -128,7 +126,6 @@ public class AdminActionController {
 			exception.addProperty("ErrorMessage", "取得法定節假日或補休信息列表失敗，原因："+ex.toString());
 			DisableResult=exception.toString();
 		}		
-		System.out.println(DisableResult);
 		return DisableResult;
 	}
 	
@@ -162,7 +159,6 @@ public class AdminActionController {
 			exception.addProperty("ErrorMessage", "刪除節假日或補休失敗，原因："+ex.toString());
 			DisableResult=exception.toString();
 		}		
-		System.out.println(DisableResult);
 		return DisableResult;
 	}
 	
@@ -206,7 +202,6 @@ public class AdminActionController {
 			exception.addProperty("ErrorMessage", "新增節假日或補休失敗，原因："+ex.toString());
 			DisableResult=exception.toString();
 		}		
-		System.out.println(DisableResult);
 		return DisableResult;
 	}
 	
@@ -258,7 +253,6 @@ public class AdminActionController {
 			exception.addProperty("ErrorMessage", "取得卡機綁定可刷卡費用代碼列表失敗，原因："+ex.toString());
 			DisableResult=exception.toString();
 		}		
-		System.out.println(DisableResult);
 		return DisableResult;
 	}
 	
@@ -278,7 +272,6 @@ public class AdminActionController {
 			AddResult.addProperty("StatusCode", "500");
 			AddResult.addProperty("Message", "新增卡機綁定可刷卡費用代碼發生錯誤，原因："+ex.toString());
 		}
-		System.out.println(AddResult.toString());
 		return AddResult.toString();
 	}
 	
@@ -307,7 +300,6 @@ public class AdminActionController {
 			exception.addProperty("ErrorMessage", "刪除卡機綁定可刷卡費用代碼失敗，原因："+ex.toString());
 			DisableResult=exception.toString();
 		}		
-		System.out.println(DisableResult);
 		return DisableResult;
 	}
 	
@@ -348,7 +340,6 @@ public class AdminActionController {
 			exception.addProperty("ErrorMessage", "取得實時卡機ip管控列表失敗，原因："+ex.toString());
 			DisableResult=exception.toString();
 		}		
-		System.out.println(DisableResult);
 		return DisableResult;
 	}
 	
@@ -377,7 +368,6 @@ public class AdminActionController {
 			exception.addProperty("ErrorMessage", "刪除實時卡機ip管控信息失敗，原因："+ex.toString());
 			DisableResult=exception.toString();
 		}		
-		System.out.println(DisableResult);
 		return DisableResult;
 	}
 	
@@ -397,7 +387,6 @@ public class AdminActionController {
 			AddResult.addProperty("StatusCode", "500");
 			AddResult.addProperty("Message", "新增實時卡機ip管控信息發生錯誤，原因："+ex.toString());
 		}
-		System.out.println(AddResult.toString());
 		return AddResult.toString();
 	}
 	

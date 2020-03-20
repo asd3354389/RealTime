@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -14,7 +15,9 @@ import com.foxlink.realtime.model.User;
 
 public abstract class DAO<T> {
 
+	@Autowired
 	protected DataSourceTransactionManager  transactionManager;
+	@Autowired
 	protected JdbcTemplate jdbcTemplate;
 	protected TransactionDefinition txDef;
 	TransactionStatus txStatus;

@@ -78,7 +78,7 @@ public class QueryRecordByIdDAO extends DAO<QueryRecordByIdDAO>{
 					" t.SWIPE_DATE>= ? " + 
 					" AND t.SWIPE_DATE<= ? " + 
 					" AND t.EMP_ID = ?" + 
-					" AND t.EMP_ID = e.ID";
+					" AND t.EMP_ID = e.ID ORDER BY t.EMP_ID,e.DEPID,SWIPE_DATE ASC";
 			System.out.println("實時門禁數據庫語句======="+numSql);
 					try {
 			    		List <Object> queryList=new  ArrayList<Object>();
@@ -99,11 +99,11 @@ public class QueryRecordByIdDAO extends DAO<QueryRecordByIdDAO>{
 		//查詢大門門禁 selectSwipeInfoListById  swipeInfoList
 	    public List<QueryInfoByIdList> selectSwipeInfoListById(String startDate,String endDate,String UserId) {
 	    	List<QueryInfoByIdList> swipeInfoList = null;
-	    	
-			String numSql = "SELECT DEPID,DEPNAME,USERID,USERNAME,TO_CHAR(SWIPEDATETIME,'yyyy-MM-dd hh24:mi:ss') SWIPEDATETIME,SWIPEDOOR,INSERT_DATETIME" + 
+	    	//INSERT_DATETIME TO_CHAR(INSERT_DATETIME,'yyyy-MM-dd hh24:mi:ss')
+			String numSql = "SELECT DEPID,DEPNAME,USERID,USERNAME,TO_CHAR(SWIPEDATETIME,'yyyy-MM-dd hh24:mi:ss') SWIPEDATETIME,SWIPEDOOR,TO_CHAR(INSERT_DATETIME,'yyyy-MM-dd hh24:mi:ss') INSERT_DATETIME" + 
 					" FROM SWIPE_INFO" + 
 					" WHERE TO_CHAR(SWIPEDATETIME,'YYYY-MM-DD') >=? AND TO_CHAR(SWIPEDATETIME,'YYYY-MM-DD') <=?" + 
-					" AND USERID = ?";
+					" AND USERID = ? ORDER BY USERID,DEPID,SWIPEDATETIME ASC";
 			System.out.println("大門門禁數據庫語句======="+numSql);
 					try {
 			    		List <Object> queryList=new  ArrayList<Object>();

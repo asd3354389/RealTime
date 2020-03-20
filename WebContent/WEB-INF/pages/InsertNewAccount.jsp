@@ -63,6 +63,7 @@
       				<option value="ROLE_LineLeader">ROLE_LineLeader</option>
       				<option value="ROLE_TXADLOW">ROLE_TXADLOW</option>
       				<option value="ROLE_ZJADLOW">ROLE_ZJADLOW</option>
+      				<option value="ROLE_14R1ZJADLOW">ROLE_14R1ZJADLOW</option>
       				<option value="ROLE_VIC_ADMIN">ROLE_VIC_ADMIN</option>
       				<option value="ROLE_VIC_ASSISTANT">ROLE_VIC_ASSISTANT</option>
       				<option value="ROLE_VIC_ASSISTANT_O">ROLE_VIC_ASSISTANT_O</option>
