@@ -58,10 +58,10 @@
 			</div>
 			<div>
 					<h4 style="position: relative;">十四休一列表信息：</h4>
-			        <a id="addNewFourteenROP" role="button" href="#insertFourteenROP"class="btn btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 300px;font-size: 14px;"><i class="glyphicon glyphicon-plus"></i>創建十四休一信息</a>
+			        <!-- <a id="addNewFourteenROP" role="button" href="#insertFourteenROP"class="btn btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 300px;font-size: 14px;"><i class="glyphicon glyphicon-plus"></i>創建十四休一信息</a> -->
 			</div>
 			<div class="middle">
-				<div class="left" style="width:90%;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+				<div class="left" style="width:60%;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
 					<table id="FourteenROPable" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
 						<thead>
 							<tr>
@@ -77,9 +77,55 @@
 					<div id="FourteenROPListPagination" align="right" style="height: 20;position:absolute; bottom: -20px;right: 0px;">
 					</div>
 				</div>
+				
+				<div class="right" style="width:30%;height:700px;float:right;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+					<h2>十四休一權限設置</h2>
+					<div class="control-group">
+			    		<label class="control-label" for="costId">費用代碼</label>
+			    		<div class="controls">
+			      			<input type="text" id="costId" name="costId" class="required form-control" placeholder="費用代碼">
+			    		</div>
+			  		</div>
+			  		<div class="control-group" style="height: 60%;overflow: auto">
+			  		<label class="control-label">員工號</label>
+				  		<table id="PersonByCostId" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
+							<thead>
+								<tr>
+									<th><input type="checkbox" id="AllCheck">全選</th>
+									<th>工號</th>
+									<th>姓名</th>
+								</tr>
+							</thead>
+							<tbody class='spTable'>
+							</tbody>
+						</table>
+					</div>
+			  		<div class="control-group">
+			    		<label class="control-label" for="dpick1">生效起始日期</label>
+			    		<div class="controls">
+			      			 <input
+									id="dpick1" class="Wdate" type="text" name="OVERTIMEDATE"
+									onfocus="WdatePicker({dateFmt:'yyyy/MM/dd',minDate:'%y-\#{%M-2}-01',maxDate:'#F{$dp.$D(\'dpick2\')}'})" autocomplete="off" />  
+			  			</div>		
+			  		</div> 
+			  		
+			  		<div class="control-group">
+			    		<label class="control-label" for="dpick2">生效結束日期</label>
+			    		<div class="controls">
+			    			
+								<input id="dpick2" class="Wdate" type="text" name="OVERTIMEDATEEnd"
+									onfocus="WdatePicker({dateFmt:'yyyy/MM/dd',minDate:'#F{$dp.$D(\'dpick1\')}'})" autocomplete="off" />
+			  		</div>
+			 		
+				
+			        <br>
+			  		<button type="submit" id="setFourteenROP" class="btn btn-primary">設置</button>
+			  		<button type="reset" id="resetSubmit" class="btn">清除</button>
+						</div>	
+				</div>
 			</div>
 			
-			<jsp:include page="InsertFourteenROP.jsp" />
+			<%-- <jsp:include page="InsertFourteenROP.jsp" /> --%>
 		</div>
 	</div>
 </div>	

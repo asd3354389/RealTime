@@ -13,6 +13,38 @@ $(document).ready(function(){
              setTimeout(function () { CLICKTAG = 0 ; pElement.disabled=false;}, 2000);  
          }
      }
+    
+    $('#AllCheck').click(function(){
+		 var checkALL = document.getElementById("AllCheck");
+	      var items = $("#PersonByCostId .spTable").find('input');
+	      checkAllBox(checkALL,items); 
+	}) 
+     
+    $('#costId').blur(function(){
+    	var costId = $('#costId').val()
+    	$.ajax({
+    		type:'get',
+    		url:'../FourteenROP/getPerson.do',
+    		data:{
+    			costId:costId
+    		},
+    		success:function(data){
+    			$('#PersonByCostId tbody').empty()
+    			var executeResult = data;
+    			for(var i=0;i<executeResult.length;i++){
+    				var	tableContents='<tr><td><input type="checkbox" value='+executeResult[i]["EmpNo"]+' style="width:100%; height:15px"></td>'+
+    						'<td>'+executeResult[i]["EmpNo"]+'</td>'+
+    						'<td>'+executeResult[i]["EmpName"]+'</td>'
+    					tableContents+='</tr>';
+    						/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
+    						$('#PersonByCostId tbody').append(tableContents);
+    			}
+    		},
+    		error:function(e){
+    			console.log(456)
+    		}
+    	})
+    })
 	
 	$('#resetSubmit').click(function(){
  	    $('#inputUserName').val('');
@@ -55,43 +87,26 @@ $(document).ready(function(){
 		var End =$('#dpick2').val().replace(/\//g,'-');
 //		console.log(Start,End);+
 		var errorMessage='',list=[],WorkShopNoStr;
-
-		var id=$('#inputId').val();
-		
-		var arr= id.split(",");
-		
-		if(id==null || id=="")
-			errorMessage+='工號未填寫\n';
 		
 		if(Start==null || Start=="")
-			errorMessage+='為選擇生效起始日期\n';
+			errorMessage+='未選擇生效起始日期\n';
 		
 		if(End==null || End=="")
-			errorMessage+='為選擇生效結束日期\n';
-		if (arr.length >0) {
-			if (isRepeat(arr)) {
-				errorMessage+='工號不能重複\n';
-			}
-			for (var i = 0; i < arr.length; i++) {
-				if (arr[i]==null||arr[i]==""||arr[i]=='') {
-					errorMessage+='未正確填寫工號\n';
-				}else{
-								    var ioWsPw={};
-								    ioWsPw["id"] = arr[i];
-						  			ioWsPw["Start_date"]= Start;
-						  			ioWsPw["End_date"]= End;
-						  			list.push(ioWsPw)
-						  			console.log(ioWsPw);
-						  			//checkEmpidDuplicate(arr[i],ioWsPw["WorkShopNo"]);
-						  			//alert(isUserNameValid);
-//						  			if (!isUserNameValid) {
-//						  				empmessage+='工號'+arr[i]+'不存在\n';
-//									}
-				}
-				
-			}
+			errorMessage+='未選擇生效結束日期\n';
+		$("#PersonByCostId .spTable").find('input:checked').each(function (index, item) {
+		     $(this).each(function () {
+			      var empNo = $(this).val();
+			      //td里的内容
+			      var ioWsPw={};
+			      ioWsPw["id"] = $(this).val();;
+		  		  ioWsPw["Start_date"]= Start;
+		  		  ioWsPw["End_date"]= End;
+		  		  list.push(ioWsPw)
+		     })
+		})
+		if(!list.length>0){
+			errorMessage+='未選擇員工號\n'
 		}
-		
 		if(errorMessage=='' && empmessage=='' ){
 			//alert("進入方法");
 			//新增綁定賬號
@@ -105,12 +120,12 @@ $(document).ready(function(){
 					$('#setFourteenROP').prop("disabled",false);
 					 if(data!=null && data!=''){
 						 if(data.StatusCode=="200"){
-							 $('#inputUserName').val('');
-							 $('#workShop').val('');
+							 $('#PersonByCostId tbody').empty()
+							 $('#costId').val('');
 							 $('#dpick1').val('');
 							 $('#dpick2').val('');
-							 $('#workShop').selectpicker('val',['noneSelectedText']);
-							 $("#workShop").selectpicker('refresh');
+//							 $('#workShop').selectpicker('val',['noneSelectedText']);
+//							 $("#workShop").selectpicker('refresh');
 							 alert(data.Message);
 							 ShowAllFourteenROP();
 							// $("#setFourteenROP").attr("enabled", "enabled");
@@ -560,5 +575,23 @@ $(document).ready(function(){
 	        hash[arr[i].toUpperCase()] = true;
 	    }
 	    return false;
+	}
+	
+	function checkAllBox(checkALL,items){
+		 if(checkALL.checked==true){
+	            //checked判断是否选中
+	            for(var i=0;i<items.length;i++)
+	            {
+	                var box=items.get(i);
+	                box.checked=true;
+	                
+	            }
+		 }else{
+			 for(var i=0;i<items.length;i++)
+	            {
+	                var box=items.get(i);
+	                box.checked=false;
+	            }
+		 }
 	}
 })
