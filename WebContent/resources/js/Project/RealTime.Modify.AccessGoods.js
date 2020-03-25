@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	var curPage=1,queryCritirea=null,queryParam=null,isUserNameValid=false,isCardIdValid=false,empmessage='';
 	var reg = new RegExp("^[0-9]{10}$");
-	ShowAllFourteenROP();
+	ShowAllAccessGoods();
 	ShowWorkShop();
 	
 	 var CLICKTAG = 0;
@@ -13,14 +13,8 @@ $(document).ready(function(){
              setTimeout(function () { CLICKTAG = 0 ; pElement.disabled=false;}, 2000);  
          }
      }
-    
-    $('#AllCheck').click(function(){
-		 var checkALL = document.getElementById("AllCheck");
-	      var items = $("#PersonByCostId .spTable").find('input');
-	      checkAllBox(checkALL,items); 
-	}) 
      
-    $('#costId').blur(function(){
+    /*$('#costId').blur(function(){
     	var costId = $('#costId').val()
     	$.ajax({
     		type:'get',
@@ -36,7 +30,7 @@ $(document).ready(function(){
     						'<td>'+executeResult[i]["EmpNo"]+'</td>'+
     						'<td>'+executeResult[i]["EmpName"]+'</td>'
     					tableContents+='</tr>';
-    						/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
+    						tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';
     						$('#PersonByCostId tbody').append(tableContents);
     			}
     		},
@@ -44,13 +38,17 @@ $(document).ready(function(){
     			console.log(456)
     		}
     	})
-    })
+    })*/
 	
 	$('#resetSubmit').click(function(){
-		$('#costId').val('');
-     	$('#PersonByCostId .spTable').empty();
+ 	    $('#userId').val('');
+ 	    $('#cardId').val('');
      	$('#dpick1').val('');
      	$('#dpick2').val('');
+     	$('#workShopNo').selectpicker('val',['noneSelectedText']);
+		$("#workShopNo").selectpicker('refresh');
+		$('#GoodsList').selectpicker('val',['noneSelectedText']);
+		$("#GoodsList").selectpicker('refresh');
 	});
 	//resetSubmitOther
 	$('#resetSubmitOther').click(function(){
@@ -64,33 +62,79 @@ $(document).ready(function(){
 		 $("#workShopOther").selectpicker('refresh');
      
 	});
-	$('#searchFourteenROP').click(function(){
+	$('#searchAccessGoods').click(function(){
 		var queryCritirea=$('#queryCritirea option:selected').val();
 		var queryParam=$('#queryParam').val();
 		if(queryParam==""){
-			ShowAllFourteenROP();
+			ShowAllAccessGoods();
 		}else{
 			getPersonList(curPage,queryCritirea,queryParam)	
 		}
 	});
 	
-	//設置員工十四休一權限
-	$('#setFourteenROP').click(function(){
+
+	$('#setAccessGoods').click(function(){
 		
-		 $("#setFourteenROP").attr("disabled", "disabled");
-		 setTimeout(function(){ $("#setFourteenROP").attr("disabled",false); }, 100);
+		 $("#setAccessGoods").attr("disabled", "disabled");
+		 setTimeout(function(){ $("#setAccessGoods").attr("disabled",false); }, 100);
 //		button_onclick($('#setFourteenROP')[0]);
 		var Start =$('#dpick1').val().replace(/\//g,'-');
 		var End =$('#dpick2').val().replace(/\//g,'-');
+		var WorkShopNo=$('#workShopNo').val();
+		var GoodsList = $('#GoodsList').val();
+		var Udisk ="N";
+		var Computer ="N"
+		var MobilePhone ="N"
+		//console.log(WorkShopNo)
+		var UserId = $('#userId').val();
+		var CardId = $('#cardId').val();
 //		console.log(Start,End);+
 		var errorMessage='',list=[],WorkShopNoStr;
+		
+		if(UserId==null || UserId==""){
+			if(CardId==null || CardId==""){
+				errorMessage+='卡號不能爲空\n';
+			}
+		}else{
+			CardId=""
+		}
+		
+				
+		if(WorkShopNo==null||WorkShopNo.length==0){
+			errorMessage+='車間不能为空\n';
+		}else{
+			for(var z=0;z<WorkShopNo.length;z++){
+				if(WorkShopNo[z]=='ALL'){
+					WorkShopNo.length=0
+					WorkShopNo.push('ALL')
+					break;
+				}else{
+					
+				}
+			}
+		}
+
+		if(GoodsList==null||GoodsList.length==0){
+			errorMessage+='物品不能为空\n';
+		}else{
+			for(var j=0;j<GoodsList.length;j++){
+				if(GoodsList[j]=='U盤'){
+					Udisk='Y'
+				}else if(GoodsList[j]=='電腦'){
+					Computer='Y'
+				}else if(GoodsList[j]=='手機'){
+					MobilePhone='Y'
+				}
+			}
+		}
+
 		
 		if(Start==null || Start=="")
 			errorMessage+='未選擇生效起始日期\n';
 		
 		if(End==null || End=="")
 			errorMessage+='未選擇生效結束日期\n';
-		$("#PersonByCostId .spTable").find('input:checked').each(function (index, item) {
+		/*$("#PersonByCostId .spTable").find('input:checked').each(function (index, item) {
 		     $(this).each(function () {
 			      var empNo = $(this).val();
 			      //td里的内容
@@ -100,53 +144,74 @@ $(document).ready(function(){
 		  		  ioWsPw["End_date"]= End;
 		  		  list.push(ioWsPw)
 		     })
-		})
-		if(!list.length>0){
-			errorMessage+='未選擇員工號\n'
-		}
+		})*/
+		
 		if(errorMessage=='' && empmessage=='' ){
+			for(var i=0;i<WorkShopNo.length;i++){
+				if(WorkShopNo[i]=='ALL'){
+					var Ags={};
+					Ags.UserId=UserId;
+					Ags.CardId=CardId;
+					Ags.WorkShopNo=WorkShopNo[i];
+					Ags.Udisk=Udisk;
+					Ags.Computer=Computer;
+					Ags.MobilePhone=MobilePhone;
+					Ags.Start_date=Start;
+					Ags.End_date=End;
+					list.length=0
+					list.push(Ags)
+					break;
+				}else{
+					var Ags={};
+					Ags.UserId=UserId;
+					Ags.CardId=CardId;
+					Ags.WorkShopNo=WorkShopNo[i];
+					Ags.Udisk=Udisk;
+					Ags.Computer=Computer;
+					Ags.MobilePhone=MobilePhone;
+					Ags.Start_date=Start;
+					Ags.End_date=End;
+					list.push(Ags)
+				}
+			}
+			//console.log(list)
 			//alert("進入方法");
 			//新增綁定賬號
 			$.ajax({
 				type:'POST',
 				contentType: "application/json",
-				url:'../FourteenROP/AddFourteenROP.do',
+				url:'../AccessGoods/AddAccessGoods.do',
 				data:JSON.stringify(list),
 				dataType:'json',
 				success:function(data){
-					$('#setFourteenROP').prop("disabled",false);
+					$('#setAccessGoods').prop("disabled",false);
 					 if(data!=null && data!=''){
 						 if(data.StatusCode=="200"){
-							 $('#PersonByCostId tbody').empty()
-							 $('#costId').val('');
+							 $('#userId').val('');
+							 $('#cardId').val('');
+							 $('#WorkShopCost').val('');
+							 $('#workShopNo').selectpicker('val',['noneSelectedText'])
+							 $("#workShopNo").selectpicker('refresh');
+							 $('#GoodsList').val('');
+							 $('#GoodsList').selectpicker('val',['noneSelectedText'])
+							 $("#GoodsList").selectpicker('refresh');
 							 $('#dpick1').val('');
-							 $('#dpick2').val('');
-//							 $('#workShop').selectpicker('val',['noneSelectedText']);
-//							 $("#workShop").selectpicker('refresh');
+							 $('#dpick2').val('')
 							 alert(data.Message);
-							 ShowAllFourteenROP();
-							// $("#setFourteenROP").attr("enabled", "enabled");
-							/* alert(data.Message);			
-							 $('#inputUserName').val('');
-							 $('#inputChineseName').val('');
-							 $('#inputDepID').val('');
-							 $('#inputCostID').val(null);
-							 $("#inputAssistantId").val('');
-							 $('#inputPhoneTel').val('');
-							 $('#inputRole').val('');
-							 $('#insertAccountDialog').modal('hide');
-							 ShowAllAccountList();*/						 
+							 //ShowAllFourteenROP();
+							 
 						 }
 						 else{
 							 alert(data.Message);
 							// $("#setFourteenROP").attr("enabled", "enabled");
 						 }
 					 }else{
-						 alert('設置十四休一設置權限失敗!');
+						 alert('設置員工進入車間携帶物品權限失敗!');
 					 }
+					
 				},
 				error:function(e){
-					alert('設置十四休一設置權限發生錯誤');
+					alert('設置員工進入車間携帶物品權限錯誤');
 				}
 			});
 		}else{
@@ -229,10 +294,10 @@ $(document).ready(function(){
 			});
 		}
 	}
-	function ShowAllFourteenROP(){
+	function ShowAllAccessGoods(){
 		$.ajax({
 			type:'POST',
-			url:'../FourteenROP/ShowAllFourteenROP',
+			url:'../AccessGoods/ShowAllAccessGoods',
 			data:{curPage:curPage,queryCritirea:queryCritirea,queryParam:queryParam},
 			error:function(e){
 //				alert('找不到資料');
@@ -248,10 +313,11 @@ $(document).ready(function(){
 					else{
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0)	
-							ShowAllFourteenROPTable(rawData);
+							//console.log(rawData)
+							ShowAllAccessGoodsTable(rawData);
 						else{
 							/*$('.left').css('height','727px');*/
-							alert('暫無十四休一資料');
+							alert('暫無員工進入車間携帶物品資料');
 						}
 					}
 				}
@@ -259,15 +325,25 @@ $(document).ready(function(){
 		});	
 	}
 	
-	function ShowAllFourteenROPTable(rawData){
-		$('#FourteenROPable tbody').empty();
+	function ShowAllAccessGoodsTable(rawData){
+		$('#AccessGoodsTable tbody').empty();
 		var currentPage=rawData.currentPage;
 		var totalRecord=rawData.totalRecord;
 		var totalPage=rawData.totalPage;
 		var pageSize=rawData.pageSize;
 		var executeResult=rawData["list"];
 		for(var i=0;i<executeResult.length;i++){
-			var	tableContents='<tr><td>'+executeResult[i]["id"]+'</td>'+
+			var Id = executeResult[i]["UserId"]==null?'':executeResult[i]["UserId"]
+			var Card = executeResult[i]["CardId"]==null?'':executeResult[i]["CardId"]
+			var Udisk = executeResult[i]["Udisk"]=='Y'?'允許':'不允許'
+			var Computer = executeResult[i]["Computer"]=='Y'?'允許':'不允許'
+			var MobilePhone = executeResult[i]["MobilePhone"]=='Y'?'允許':'不允許'
+			var	tableContents='<tr><td>'+Id+'</td>'+
+					'<td>'+Card+'</td>'+
+					'<td>'+executeResult[i]["WorkShopNo"]+'</td>'+
+					'<td>'+Udisk+'</td>'+
+					'<td>'+Computer+'</td>'+
+					'<td>'+MobilePhone+'</td>'+
 					'<td>'+executeResult[i]["Start_date"]+'</td>'+
 					'<td>'+executeResult[i]["End_date"]+'</td>'+
 //					'<td>'+executeResult[i]["Direction"]+'</td>'
@@ -275,7 +351,7 @@ $(document).ready(function(){
 					'<td><input type="button" value="刪除" class="deleteBtn btn btn-xs btn-link"></td>';
 				tableContents+='</tr>';
 					/*tableContents+='<td><input type="button" value="編輯" class="editBtn btn btn-xs btn-link">';*/
-					$('#FourteenROPable tbody').append(tableContents);
+					$('#AccessGoodsTable tbody').append(tableContents);
 		}
 		refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize);
 	/*	console.log(currentPage);
@@ -363,15 +439,17 @@ $(document).ready(function(){
 		$('.deleteBtn').click(function(){
 			var parentElement=$(this).parent().parent();
 			var id=$(parentElement).find('td').eq(0).text();
-			var startDate=$(parentElement).find('td').eq(1).text();
-			var endDate=$(parentElement).find('td').eq(2).text();
+			var cardId=$(parentElement).find('td').eq(1).text();
+			var workShopNo=$(parentElement).find('td').eq(2).text();
+			var startDate=$(parentElement).find('td').eq(6).text();
+			var endDate=$(parentElement).find('td').eq(7).text();
 			//alert("卡号"+deleteCardId);
 			var results=confirm("確定刪除此條數據?");
 			if(results==true){
 				$.ajax({
 					type:'GET',
-					url:'../FourteenROP/deleteFourteenROP.do',
-					data:{id:id,startDate:startDate,endDate:endDate},
+					url:'../AccessGoods/deleteAccessGoods.do',
+					data:{id:id,cardId:cardId,workShopNo:workShopNo,startDate:startDate,endDate:endDate},
 					error:function(e){
 						alert(e);
 					},
@@ -379,12 +457,12 @@ $(document).ready(function(){
 						 if(data!=null && data!=''){
 							 if(data.StatusCode=="200"){
 								 alert(data.Message);
-								 /*
+								 
 								var parentElement=$(this).parent().parent();
 								//刪除，所以將此列從畫面移除
 								parentElement.remove();
-								  */
-								 ShowAllFourteenROP();
+								  
+								ShowAllAccessGoods();
 							 }
 							 else{
 								 alert(data.Message);
@@ -401,7 +479,7 @@ $(document).ready(function(){
 	
 	
 	function refreshUserInfoPagination(currentPage,totalRecord,totalPage,pageSize){
-		$('#FourteenROPListPagination').empty();
+		$('#AccessGoodsListPagination').empty();
 		var paginationElement='頁次：'+currentPage+'/'+totalPage +'&nbsp;每页:&nbsp;'+pageSize+'&nbsp;共&nbsp;'+totalRecord+'&nbsp;條&nbsp;';
 		if(currentPage==1)
 			paginationElement+='<a href ="javascript:return false;">首页</a>';		  
@@ -421,7 +499,7 @@ $(document).ready(function(){
 		else
 			paginationElement+='<a href ="javascript:return false;">下一頁</a>';
 		
-		$('#FourteenROPListPagination').append(paginationElement);
+		$('#AccessGoodsListPagination').append(paginationElement);
 		
 		$('.firstPage').click(function(){
 			curPage=1;
@@ -472,7 +550,7 @@ $(document).ready(function(){
 	function getPersonList(curPage,queryCritirea,queryParam){
 		$.ajax({
 			type:'POST',
-			url:'../FourteenROP/ShowAllFourteenROP',
+			url:'../AccessGoods/ShowAllAccessGoods',
 			data:{curPage:curPage,queryCritirea:queryCritirea,queryParam:queryParam},
 			error:function(e){
 				alert('找不到資料');
@@ -487,7 +565,7 @@ $(document).ready(function(){
 					else{
 						var numOfRecords=executeResult.length;
 						if(numOfRecords>0){
-							ShowAllFourteenROPTable(rawData);
+							ShowAllAccessGoodsTable(rawData);
 							//$('#queryParam').val('');
 						}
 						else{
@@ -512,7 +590,7 @@ $(document).ready(function(){
 	function ShowWorkShop(){
 		$.ajax({
 			type:'GET',
-			url:'../Utils/WorkshopNo.show',
+			url:'../AccessGoods/WorkshopNo.show',
 			data:{},
 			async:false,
 			success:function(data){
@@ -522,15 +600,14 @@ $(document).ready(function(){
 					for(var i=0;i<data.length;i++){
 						htmlAppender+='<option value="'+data[i]+'">'+data[i]+'</option>';
 					}
-					 $('#workShop').append(htmlAppender);
-					 $('#workShopOther').append(htmlAppender);
+					 $('#workShopNo').append(htmlAppender);
 				/*	 $('#ChangeWorkShop').append(htmlAppender);*/
 				}
 				else{
-					alert('無車間資料');
+					
 				}
 			 }else{
-				alert('無車間資料');
+				
 			 }
 			}
 		});   
