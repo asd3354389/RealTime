@@ -124,6 +124,11 @@
 				"icon" : "icon-nav",
 				"url" : "ClassNoRest/ShowClassNoRestInfo"
 
+			},{
+				"menuname" : "車間員工携帶物品權限",
+				"icon" : "icon-nav",
+				"url" : "AccessGoods/ShowAccessGoods"
+
 			}]
 		},{
 
