@@ -27,6 +27,11 @@ public class AccessGoodsService {
 
 	public boolean addAccessGoods(AccessGoods[] accessGoods, String updateUser, String accessRole) {
 		// TODO Auto-generated method stub
+		//System.out.print(accessGoods.length);
+		int i =0;
+		for(int j=0;j<accessGoods.length;j++) {
+			i=i+accessGoodsDAO.Delete(accessGoods[j].getUserId(), accessGoods[j].getCardId(), updateUser, accessRole,accessGoods[j].getWorkShopNo());
+		}
 		return accessGoodsDAO.addAccessGoods(accessGoods,updateUser,accessRole);
 	}
 
@@ -58,5 +63,10 @@ public class AccessGoodsService {
 		// TODO Auto-generated method stub
 		return accessGoodsDAO.DeleteAccessGoods(id,cardId,workShopNo,updateUser,startDate,endDate);
 	}
+
+	/*public boolean checkAccessGoods(AccessGoods[] accessGoods, String accessRole) {
+		// TODO Auto-generated method stub
+		return accessGoodsDAO.checkAccessGoods(accessGoods,accessRole);
+	}*/
 
 }

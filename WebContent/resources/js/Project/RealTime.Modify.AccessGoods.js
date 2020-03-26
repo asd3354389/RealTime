@@ -145,35 +145,36 @@ $(document).ready(function(){
 		  		  list.push(ioWsPw)
 		     })
 		})*/
-		
-		if(errorMessage=='' && empmessage=='' ){
-			for(var i=0;i<WorkShopNo.length;i++){
-				if(WorkShopNo[i]=='ALL'){
-					var Ags={};
-					Ags.UserId=UserId;
-					Ags.CardId=CardId;
-					Ags.WorkShopNo=WorkShopNo[i];
-					Ags.Udisk=Udisk;
-					Ags.Computer=Computer;
-					Ags.MobilePhone=MobilePhone;
-					Ags.Start_date=Start;
-					Ags.End_date=End;
-					list.length=0
-					list.push(Ags)
-					break;
-				}else{
-					var Ags={};
-					Ags.UserId=UserId;
-					Ags.CardId=CardId;
-					Ags.WorkShopNo=WorkShopNo[i];
-					Ags.Udisk=Udisk;
-					Ags.Computer=Computer;
-					Ags.MobilePhone=MobilePhone;
-					Ags.Start_date=Start;
-					Ags.End_date=End;
-					list.push(Ags)
-				}
+		for(var i=0;i<WorkShopNo.length;i++){
+			if(WorkShopNo[i]=='ALL'){
+				var Ags={};
+				Ags.UserId=UserId;
+				Ags.CardId=CardId;
+				Ags.WorkShopNo=WorkShopNo[i];
+				Ags.Udisk=Udisk;
+				Ags.Computer=Computer;
+				Ags.MobilePhone=MobilePhone;
+				Ags.Start_date=Start;
+				Ags.End_date=End;
+				list.length=0
+				list.push(Ags)
+				break;
+			}else{
+				var Ags={};
+				Ags.UserId=UserId;
+				Ags.CardId=CardId;
+				Ags.WorkShopNo=WorkShopNo[i];
+				Ags.Udisk=Udisk;
+				Ags.Computer=Computer;
+				Ags.MobilePhone=MobilePhone;
+				Ags.Start_date=Start;
+				Ags.End_date=End;
+				list.push(Ags)
 			}
+		}
+		//checkAccessGoods(list)
+		if(errorMessage=='' && empmessage=='' ){
+			
 			//console.log(list)
 			//alert("進入方法");
 			//新增綁定賬號
@@ -199,7 +200,7 @@ $(document).ready(function(){
 							 $('#dpick2').val('')
 							 alert(data.Message);
 							 //ShowAllFourteenROP();
-							 
+							 ShowAllAccessGoods();
 						 }
 						 else{
 							 alert(data.Message);
@@ -651,21 +652,32 @@ $(document).ready(function(){
 	    return false;
 	}
 	
-	function checkAllBox(checkALL,items){
-		 if(checkALL.checked==true){
-	            //checked判断是否选中
-	            for(var i=0;i<items.length;i++)
-	            {
-	                var box=items.get(i);
-	                box.checked=true;
-	                
-	            }
-		 }else{
-			 for(var i=0;i<items.length;i++)
-	            {
-	                var box=items.get(i);
-	                box.checked=false;
-	            }
-		 }
-	}
+	function checkAccessGoods(list){
+			if(list.length!=0){
+				$.ajax({
+					type:'POST',
+					url:'../AccessGoods/checkAccessGoods.do',
+					data:JSON.stringify(list),
+					async:false,
+					dataType:'json',
+					error:function(e){
+						alert(e);
+					},
+					success:function(data){	
+						 if(data!=null && data!=''){
+							 if(data.StatusCode==200){
+//								 alert(data.Message);
+								 isUserNameValid=true;
+							 }
+							 else
+								 isUserNameValid=false;
+						 }else{
+							 isUserNameValid=false;
+						 }
+					}
+				});
+			}
+		}
+	
+	
 })

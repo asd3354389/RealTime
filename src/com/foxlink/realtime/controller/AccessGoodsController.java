@@ -17,6 +17,7 @@ import com.foxlink.realtime.model.AccessGoods;
 import com.foxlink.realtime.model.FourteenROP;
 import com.foxlink.realtime.model.Page;
 import com.foxlink.realtime.service.AccessGoodsService;
+import com.foxlink.realtime.service.ExceptionCostService;
 import com.foxlink.realtime.service.WorkShopService;
 import com.foxlink.realtime.util.NullStringToEmptyAdapterFactory;
 import com.google.gson.Gson;
@@ -148,4 +149,29 @@ public class AccessGoodsController {
 		}		
 		return DisableResult.toString();
 	}
+	
+	/*@RequestMapping(value="/checkAccessGoods.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+	@ResponseBody 
+	public String checkAccessGoods(HttpSession session,@RequestBody AccessGoods[] accessGoods){
+		JsonObject checkResult=new JsonObject();	
+		
+		try{
+			String accessRole=(String) session.getAttribute("accessRole");
+			if(accessGoodsService.checkAccessGoods(accessGoods,accessRole)){
+				checkResult.addProperty("StatusCode", "200");
+				checkResult.addProperty("Message", "此资料存在！");
+			}
+			else{
+				checkResult.addProperty("StatusCode", "500");
+				checkResult.addProperty("Message", "沒有此资料");
+			}
+		}
+		catch(Exception ex){
+			logger.error("Check new Account info is failed, due to: ",ex);
+			checkResult.addProperty("StatusCode", "500");
+			checkResult.addProperty("Message", "檢查是否存在此资料發生錯誤，原因："+ex.toString());
+		}
+		System.out.println(checkResult.toString());
+		return checkResult.toString();
+	}*/
 }
