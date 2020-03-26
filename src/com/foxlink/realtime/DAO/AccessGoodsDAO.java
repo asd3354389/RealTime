@@ -17,6 +17,8 @@ import com.foxlink.realtime.model.Page;
 import com.foxlink.realtime.model.objectMapper.AccessGoodsMapper;
 import com.foxlink.realtime.model.objectMapper.FourteenROPMapper;
 
+import oracle.net.aso.i;
+
 @Repository
 public class AccessGoodsDAO extends DAO<AccessGoods> {
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -102,7 +104,7 @@ public class AccessGoodsDAO extends DAO<AccessGoods> {
 					@Override
 					public void setValues(PreparedStatement ps, int i) throws SQLException {
 						// TODO Auto-generated method stub
-
+						
 						ps.setString(1, accessGoods[i].getUserId()==""?"":accessGoods[i].getUserId());
 						ps.setString(2, accessGoods[i].getWorkShopNo());
 						ps.setString(3, accessGoods[i].getUdisk());
@@ -230,5 +232,70 @@ public class AccessGoodsDAO extends DAO<AccessGoods> {
 			   return true; 
 		 else
 			 return false;
+	}
+
+//	public boolean checkAccessGoods(AccessGoods[] accessGoods, String accessRole) {
+//		// TODO Auto-generated method stub
+//		int totalRecord=-1;
+//    	String sSQL = "select count(*) FROM SWIPE.DEPT_RELATION where CostId=? ";
+//    	try {    	    
+//    		
+//    		totalRecord = jdbcTemplate.queryForObject(sSQL, new Object[] { CostId },Integer.class);	   	
+//    	  } catch (Exception ex) {
+//    		  ex.printStackTrace();
+//    		  }
+//    	/*System.out.println(sSQL);*/
+//    	 if(totalRecord > 0) 
+//			   return true; 
+//		 else
+//			 return false;
+//	}
+	
+	public int Delete(String id, String cardId, String updateUser, String accessRole, String workShopNo) {
+		// TODO Auto-generated method stub
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);
+		String sSQL="update SWIPE.RT_ACCESS_GOODS t set t.enabled = 'N',t.update_userid = ?,t.update_time = sysdate "
+				+ " where t.enabled = 'Y' and t.Bu = ?";
+		if(id.equals("")) {
+			sSQL+= " and t.cardId = ?";
+		}else if(cardId.equals("")) {
+			sSQL+= " and t.id = ?";
+		}
+		
+		if(workShopNo.equals("ALL")) {
+			sSQL+= "";
+		}else {
+			sSQL+=" and t.WorkShopNo=?";
+		}
+		int num = 0;
+		System.out.println(sSQL);
+		try {
+			num=jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement arg0) throws SQLException {
+						// TODO Auto-generated method stub
+						arg0.setString(1, updateUser);
+						arg0.setString(2, accessRole);
+						if(id.equals("")) {
+							arg0.setString(3, cardId);
+						}else if(cardId.equals("")) {
+							arg0.setString(3, id);
+						}
+						if(workShopNo.equals("ALL")) {
+							
+						}else {
+							arg0.setString(4, workShopNo);
+						}
+						
+					}	
+				});
+			transactionManager.commit(txStatus);
+		}
+		catch(Exception ex) {
+			logger.error("Disable AccessGoods is failed",ex);
+			transactionManager.rollback(txStatus);
+		}
+		return num;
 	}
 }
