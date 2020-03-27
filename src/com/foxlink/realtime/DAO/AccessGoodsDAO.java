@@ -26,7 +26,7 @@ public class AccessGoodsDAO extends DAO<AccessGoods> {
 	public List<String> FindWorkShopNo() {
 		// TODO Auto-generated method stub
 		List<String> AllWorkShops = null;
-		String sSQL = "SELECT distinct(WORKSHOPNO) FROM SWIPE.RT_DEVICE_INFO WHERE WorkshopNo is not null  and ENABLED='Y' and Is_Special='Y' GROUP BY WorkshopNo order by WorkshopNo asc";
+		String sSQL = "SELECT distinct(WORKSHOPNO) FROM SWIPE.RT_DEVICE_INFO WHERE WorkshopNo is not null  and ENABLED='Y' GROUP BY WorkshopNo order by WorkshopNo asc";
 		try {	
 			AllWorkShops = jdbcTemplate.queryForList(sSQL, String.class);			
 		} catch (Exception ex) {
