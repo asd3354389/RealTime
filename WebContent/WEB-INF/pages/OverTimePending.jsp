@@ -51,7 +51,7 @@
         		<option value="2">加班2</option>
         		<option value="3">加班3</option>
 			</select>
-			<label>工作內容：</label>				
+			<label>工作內容：</label>				<!--value=value.replace(/[^\a-\z\A-\Z0-9\.\,\-\_\;\$]/g,'')  -->
 			<input type="text" id="workcontent" class="input-sm" />
 			<label style="color:red">(加班單內容不宜過長，請保持在70字以內)</label>					
 		</div>

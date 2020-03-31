@@ -3,6 +3,7 @@
  */
 $(document).ready(function(){
 	var OverTimeType,OverTimeType1,OverTimeCal,ItemNumber,SelectedEmps;//加班類型,時間
+	var pattern = new RegExp("[`~!#$^&*()=|{}':;'\\[\\].<>/?~！#￥……&*（）——|{}【】’‘；：”“'。，、？]"); 
 	var selectedOTEmpIDs=new Array();//報加班的員工id
 	var WorkContent;//工作內容
 	var HolidayType = "N";//假日類型,默認正常類型
@@ -20,6 +21,11 @@ $(document).ready(function(){
 	init();
 	GetHoliday();
 	
+//	$('#workcontent').bind('keyup', function(){
+//        var a =$('#workcontent').val().replace(/[^\a-\z\A-\Z0-9\.\,\-\_\;\$]/g,'');
+//        console.log(123)
+//        console.log(a)
+//      })
 	
 	$(document).ajaxSend(function(event, request, settings) {
 	    $('#ajaxLoader').show();
@@ -282,11 +288,20 @@ $(document).ready(function(){
 		OverTimeType=$('#overtimeType').find('option:selected').val();
 		OverTimeType1=$('#overtimeCal').find('option:selected').val();
 		WorkContent=$('#workcontent').val().trim();
+		var judge = true;
+		if(WorkContent != "" && WorkContent != null){  
+	        if(pattern.test(WorkContent)){  
+	            alert("内容存在非法字符！");  
+	            $("#workcontent").focus();  
+	            judge = false;  
+	        }  
+	    }  
 		OverTimeCal=$('#overtimeCal').find('option:selected').val();
 		selectedOTEmpIDs=GetOTSubmitEmps();//取得選取的人員id數組
 		var newHour = [];
 	    //SelectedEmps=GetOTSubmitEmps(); //取得選取的人員
-		if(CheckConditionValid()){
+		if(CheckConditionValid()&&judge){
+//			console.log(123)
 			if (confirm("你确定提交當前選擇人員名單吗？")) {
 				var OTBoolean = true;
 				var OTResult;
@@ -338,11 +353,11 @@ $(document).ready(function(){
 				}else{
 					alert(OTResult);
 				}
-				/*var OTConfirmInfo=new OThourConfirmInfo(ClassNo,RCNO,WorkshopNo,LineNo,OverTimeDate,0,null,null,
+				var OTConfirmInfo=new OThourConfirmInfo(ClassNo,RCNO,WorkshopNo,LineNo,OverTimeDate,0,null,null,
 						OverTimeType,OverTimeType1,ItemNumber,SelectedEmps,IsAbnormal,WorkContent);
-				SubmitEmployeeOverTimeInfo2Server(IsAbnormal,OTConfirmInfo);*/
+				SubmitEmployeeOverTimeInfo2Server(IsAbnormal,OTConfirmInfo);
 				
-		/*		$('#OTPendingEmpTable tbody tr').find('input:checked').each(function(){
+				$('#OTPendingEmpTable tbody tr').find('input:checked').each(function(){
 					$(this).each(function(){
 						var xhr =$(this).parent().nextAll('td');
 						var title = xhr.eq(11).text();
@@ -356,7 +371,7 @@ $(document).ready(function(){
 						}
 					})
 				})
-				UpdateBonus(newHour);*/
+				UpdateBonus(newHour);
 			}
 					
 		}
