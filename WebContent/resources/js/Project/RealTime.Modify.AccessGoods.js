@@ -86,8 +86,8 @@ $(document).ready(function(){
 		var Computer ="N"
 		var MobilePhone ="N"
 		//console.log(WorkShopNo)
-		var UserId = $('#userId').val();
-		var CardId = $('#cardId').val();
+		var UserId = $('#userId').val().split(',');
+		var CardId = $('#cardId').val().split(',');
 //		console.log(Start,End);+
 		var errorMessage='',list=[],WorkShopNoStr;
 		
@@ -147,29 +147,73 @@ $(document).ready(function(){
 		})*/
 		for(var i=0;i<WorkShopNo.length;i++){
 			if(WorkShopNo[i]=='ALL'){
-				var Ags={};
-				Ags.UserId=UserId;
-				Ags.CardId=CardId;
-				Ags.WorkShopNo=WorkShopNo[i];
-				Ags.Udisk=Udisk;
-				Ags.Computer=Computer;
-				Ags.MobilePhone=MobilePhone;
-				Ags.Start_date=Start;
-				Ags.End_date=End;
 				list.length=0
-				list.push(Ags)
+				if(UserId!=null){
+					for(var j=0;j<UserId.length;j++){
+						var Ags={};
+						Ags.UserId=UserId[j];
+						Ags.CardId=CardId;
+						Ags.WorkShopNo=WorkShopNo[i];
+						Ags.Udisk=Udisk;
+						Ags.Computer=Computer;
+						Ags.MobilePhone=MobilePhone;
+						Ags.Start_date=Start;
+						Ags.End_date=End;
+						list.push(Ags)
+					}
+				}else{
+					for(var j=0;j<CardId.length;j++){
+						var Ags={};
+						Ags.UserId=UserId;
+						Ags.CardId=CardId[j];
+						Ags.WorkShopNo=WorkShopNo[i];
+						Ags.Udisk=Udisk;
+						Ags.Computer=Computer;
+						Ags.MobilePhone=MobilePhone;
+						Ags.Start_date=Start;
+						Ags.End_date=End;
+						list.push(Ags)
+					}
+				}
+//				var Ags={};
+//				Ags.UserId=UserId;
+//				Ags.CardId=CardId;
+//				Ags.WorkShopNo=WorkShopNo[i];
+//				Ags.Udisk=Udisk;
+//				Ags.Computer=Computer;
+//				Ags.MobilePhone=MobilePhone;
+//				Ags.Start_date=Start;
+//				Ags.End_date=End;
+//				list.push(Ags)
 				break;
 			}else{
-				var Ags={};
-				Ags.UserId=UserId;
-				Ags.CardId=CardId;
-				Ags.WorkShopNo=WorkShopNo[i];
-				Ags.Udisk=Udisk;
-				Ags.Computer=Computer;
-				Ags.MobilePhone=MobilePhone;
-				Ags.Start_date=Start;
-				Ags.End_date=End;
-				list.push(Ags)
+				if(UserId!=null){
+					for(var j=0;j<UserId.length;j++){
+						var Ags={};
+						Ags.UserId=UserId[j];
+						Ags.CardId=CardId;
+						Ags.WorkShopNo=WorkShopNo[i];
+						Ags.Udisk=Udisk;
+						Ags.Computer=Computer;
+						Ags.MobilePhone=MobilePhone;
+						Ags.Start_date=Start;
+						Ags.End_date=End;
+						list.push(Ags)
+					}
+				}else{
+					for(var j=0;j<CardId.length;j++){
+						var Ags={};
+						Ags.UserId=UserId;
+						Ags.CardId=CardId[j];
+						Ags.WorkShopNo=WorkShopNo[i];
+						Ags.Udisk=Udisk;
+						Ags.Computer=Computer;
+						Ags.MobilePhone=MobilePhone;
+						Ags.Start_date=Start;
+						Ags.End_date=End;
+						list.push(Ags)
+					}
+				}
 			}
 		}
 		//checkAccessGoods(list)
