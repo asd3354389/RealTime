@@ -58,8 +58,9 @@ public class AccessGoodsController {
 	@ResponseBody 
 	public String ADDAccessGoods(HttpSession session,@RequestBody AccessGoods[] accessGoods){
 		JsonObject AddResult=new JsonObject();	
-	/*	System.out.println(accessGoods[0].getUserId());
+		/*System.out.println(accessGoods[0].getUserId());
 		System.out.println(accessGoods[0].getCardId());
+		System.out.println(accessGoods[0].getName());
 		System.out.println(accessGoods[0].getWorkShopNo());
 		System.out.println(accessGoods[0].getUdisk());
 		System.out.println(accessGoods[0].getComputer());

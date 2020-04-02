@@ -145,9 +145,9 @@ public class AccessGoodsDAO extends DAO<AccessGoods> {
     	try {
     		List <Object> queryList=new  ArrayList<Object>();
 			if(queryCritirea.equals("userId")){
-				sSQL+=" and id = ? ";  
+				sSQL+=" and t.id = ? ";  
 			}else if(queryCritirea.equals("cardId")){
-				sSQL+=" and cardid = ? ";  
+				sSQL+=" and t.cardid = ? ";  
 			}
 				
 			
@@ -168,14 +168,14 @@ public class AccessGoodsDAO extends DAO<AccessGoods> {
 		// TODO Auto-generated method stub
 		List<AccessGoods> AccessGood = null;
 		String sSQL = "select * from (select b.*,rownum rn from "
-				+ "(select t.id,t.WorkShopNo,t.Udisk,t.Computer,t.MobilePhone,t.start_date,t.end_date,t.CardId from SWIPE.RT_ACCESS_GOODS t "
-				+ " where t.enabled = 'Y' ";
+				+ "(select t.id,c.name,t.WorkShopNo,t.Udisk,t.Computer,t.MobilePhone,t.start_date,t.end_date,t.CardId from SWIPE.RT_ACCESS_GOODS t left join  SWIPE.CSR_EMPLOYEE c"
+				+ " on t.id = c.id where t.enabled = 'Y'";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
 			if(queryCritirea.equals("userId")){
-				sSQL+=" and id = ?";  
+				sSQL+=" and t.id = ?";  
 			}else if(queryCritirea.equals("cardId")){
-				sSQL+=" and cardid = ? ";  
+				sSQL+=" and t.cardid = ? ";  
 			}
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
@@ -259,8 +259,10 @@ public class AccessGoodsDAO extends DAO<AccessGoods> {
 				+ " where t.enabled = 'Y' and t.Bu = ?";
 		if(id.equals("")) {
 			sSQL+= " and t.cardId = ?";
+			//System.out.println("132");
 		}else if(cardId.equals("")) {
 			sSQL+= " and t.id = ?";
+			//System.out.println("456");
 		}
 		
 		if(workShopNo.equals("ALL")) {

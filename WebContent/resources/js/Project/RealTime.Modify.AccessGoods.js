@@ -90,8 +90,11 @@ $(document).ready(function(){
 		var CardId = $('#cardId').val().split(',');
 //		console.log(Start,End);+
 		var errorMessage='',list=[],WorkShopNoStr;
-		
+		console.log(UserId)
+		console.log(CardId)
 		if(UserId==null || UserId==""){
+			UserId=""
+			//console.log(ccc)
 			if(CardId==null || CardId==""){
 				errorMessage+='卡號不能爲空\n';
 			}
@@ -145,81 +148,89 @@ $(document).ready(function(){
 		  		  list.push(ioWsPw)
 		     })
 		})*/
-		for(var i=0;i<WorkShopNo.length;i++){
-			if(WorkShopNo[i]=='ALL'){
-				list.length=0
-				if(UserId!=null){
-					for(var j=0;j<UserId.length;j++){
-						var Ags={};
-						Ags.UserId=UserId[j];
-						Ags.CardId=CardId;
-						Ags.WorkShopNo=WorkShopNo[i];
-						Ags.Udisk=Udisk;
-						Ags.Computer=Computer;
-						Ags.MobilePhone=MobilePhone;
-						Ags.Start_date=Start;
-						Ags.End_date=End;
-						list.push(Ags)
+		
+		//checkAccessGoods(list)
+		if(errorMessage=='' && empmessage=='' ){
+			for(var i=0;i<WorkShopNo.length;i++){
+				if(WorkShopNo[i]=='ALL'){
+					list.length=0
+					if(UserId!=""){
+						console.log('123'+CardId)
+						for(var j=0;j<UserId.length;j++){
+							var Ags={};
+							Ags.UserId=UserId[j];
+							Ags.CardId=CardId;
+							Ags.Name='',
+							Ags.WorkShopNo=WorkShopNo[i];
+							Ags.Udisk=Udisk;
+							Ags.Computer=Computer;
+							Ags.MobilePhone=MobilePhone;
+							Ags.Start_date=Start;
+							Ags.End_date=End;
+							list.push(Ags)
+						}
+					}else{
+						console.log('456'+CardId)
+						for(var j=0;j<CardId.length;j++){
+							var Ags={};
+							Ags.UserId=UserId;
+							Ags.CardId=CardId[j];
+							Ags.Name='',
+							Ags.WorkShopNo=WorkShopNo[i];
+							Ags.Udisk=Udisk;
+							Ags.Computer=Computer;
+							Ags.MobilePhone=MobilePhone;
+							Ags.Start_date=Start;
+							Ags.End_date=End;
+							list.push(Ags)
+						}
 					}
+//					var Ags={};
+//					Ags.UserId=UserId;
+//					Ags.CardId=CardId;
+//					Ags.WorkShopNo=WorkShopNo[i];
+//					Ags.Udisk=Udisk;
+//					Ags.Computer=Computer;
+//					Ags.MobilePhone=MobilePhone;
+//					Ags.Start_date=Start;
+//					Ags.End_date=End;
+//					list.push(Ags)
+					break;
 				}else{
-					for(var j=0;j<CardId.length;j++){
-						var Ags={};
-						Ags.UserId=UserId;
-						Ags.CardId=CardId[j];
-						Ags.WorkShopNo=WorkShopNo[i];
-						Ags.Udisk=Udisk;
-						Ags.Computer=Computer;
-						Ags.MobilePhone=MobilePhone;
-						Ags.Start_date=Start;
-						Ags.End_date=End;
-						list.push(Ags)
-					}
-				}
-//				var Ags={};
-//				Ags.UserId=UserId;
-//				Ags.CardId=CardId;
-//				Ags.WorkShopNo=WorkShopNo[i];
-//				Ags.Udisk=Udisk;
-//				Ags.Computer=Computer;
-//				Ags.MobilePhone=MobilePhone;
-//				Ags.Start_date=Start;
-//				Ags.End_date=End;
-//				list.push(Ags)
-				break;
-			}else{
-				if(UserId!=null){
-					for(var j=0;j<UserId.length;j++){
-						var Ags={};
-						Ags.UserId=UserId[j];
-						Ags.CardId=CardId;
-						Ags.WorkShopNo=WorkShopNo[i];
-						Ags.Udisk=Udisk;
-						Ags.Computer=Computer;
-						Ags.MobilePhone=MobilePhone;
-						Ags.Start_date=Start;
-						Ags.End_date=End;
-						list.push(Ags)
-					}
-				}else{
-					for(var j=0;j<CardId.length;j++){
-						var Ags={};
-						Ags.UserId=UserId;
-						Ags.CardId=CardId[j];
-						Ags.WorkShopNo=WorkShopNo[i];
-						Ags.Udisk=Udisk;
-						Ags.Computer=Computer;
-						Ags.MobilePhone=MobilePhone;
-						Ags.Start_date=Start;
-						Ags.End_date=End;
-						list.push(Ags)
+					if(UserId!=""){
+						console.log('789'+CardId)
+						for(var j=0;j<UserId.length;j++){
+							var Ags={};
+							Ags.UserId=UserId[j];
+							Ags.CardId=CardId;
+							Ags.Name='',
+							Ags.WorkShopNo=WorkShopNo[i];
+							Ags.Udisk=Udisk;
+							Ags.Computer=Computer;
+							Ags.MobilePhone=MobilePhone;
+							Ags.Start_date=Start;
+							Ags.End_date=End;
+							list.push(Ags)
+						}
+					}else{
+						console.log('147'+CardId)
+						for(var j=0;j<CardId.length;j++){
+							var Ags={};
+							Ags.UserId=UserId;
+							Ags.CardId=CardId[j];
+							Ags.Name='',
+							Ags.WorkShopNo=WorkShopNo[i];
+							Ags.Udisk=Udisk;
+							Ags.Computer=Computer;
+							Ags.MobilePhone=MobilePhone;
+							Ags.Start_date=Start;
+							Ags.End_date=End;
+							list.push(Ags)
+						}
 					}
 				}
 			}
-		}
-		//checkAccessGoods(list)
-		if(errorMessage=='' && empmessage=='' ){
-			
-			//console.log(list)
+			console.log(JSON.stringify(list))
 			//alert("進入方法");
 			//新增綁定賬號
 			$.ajax({
@@ -227,7 +238,7 @@ $(document).ready(function(){
 				contentType: "application/json",
 				url:'../AccessGoods/AddAccessGoods.do',
 				data:JSON.stringify(list),
-				dataType:'json',
+				contentType:'application/json',
 				success:function(data){
 					$('#setAccessGoods').prop("disabled",false);
 					 if(data!=null && data!=''){
@@ -380,11 +391,13 @@ $(document).ready(function(){
 		for(var i=0;i<executeResult.length;i++){
 			var Id = executeResult[i]["UserId"]==null?'':executeResult[i]["UserId"]
 			var Card = executeResult[i]["CardId"]==null?'':executeResult[i]["CardId"]
+			var Name = executeResult[i]["Name"] == null ?'':executeResult[i]["Name"]
 			var Udisk = executeResult[i]["Udisk"]=='Y'?'允許':'不允許'
 			var Computer = executeResult[i]["Computer"]=='Y'?'允許':'不允許'
 			var MobilePhone = executeResult[i]["MobilePhone"]=='Y'?'允許':'不允許'
 			var	tableContents='<tr><td>'+Id+'</td>'+
 					'<td>'+Card+'</td>'+
+					'<td>'+Name+'</td>'+
 					'<td>'+executeResult[i]["WorkShopNo"]+'</td>'+
 					'<td>'+Udisk+'</td>'+
 					'<td>'+Computer+'</td>'+
