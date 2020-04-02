@@ -5,7 +5,7 @@ $(document).ready(function(){
 	var OverTimeType,OverTimeType1,OverTimeCal,ItemNumber,SelectedEmps;//加班類型,時間
 	var selectedOTEmpIDs=new Array();//報加班的員工id
 	var WorkContent;//工作內容
-	var pattern = new RegExp("[`~!#$^&*()=|{}':;'\\[\\].<>/?~！#￥……&*（）——|{}【】’‘；：”“'。，、？]");
+	var pattern = new RegExp("[;']");
 	var HolidayType = "N";//假日類型,默認正常類型
 	var ClassNo,WorkshopNo,LineNo,RCNO,AssistantAccount,
 		OverTimeDate,IsIdentified,IsAbnormal,OverTimeTypeText='';
@@ -250,7 +250,7 @@ $(document).ready(function(){
 		var judge = true;
 		if(WorkContent != "" && WorkContent != null){  
 	        if(pattern.test(WorkContent)){  
-	            alert("内容存在非法字符！");  
+	            alert("内容存在非法字符;'請勿輸入以上字符");  
 	            $("#workcontent").focus();  
 	            judge = false;  
 	        }  

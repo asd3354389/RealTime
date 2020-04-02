@@ -114,7 +114,7 @@
 			    		</div>
 			  		</div>
 			  		<div class="control-group">
-			    		<label class="control-label" for="cardId">卡號</label><label style="color:red;font-size: 10px">(多條數據添加時請使用英文逗號(,)分隔)</label>
+			    		<label class="control-label" for="cardId">卡號</label><label style="color:red;font-size: 10px">(此卡號指進出車間臨時權限設置的供應商或台籍人員卡號,多條數據添加時請使用英文逗號(,)分隔)</label>
 			    		<div class="controls">
 			      			<input type="text" id="cardId" name="cardId" class="required form-control" placeholder="卡號">
 			    		</div>
