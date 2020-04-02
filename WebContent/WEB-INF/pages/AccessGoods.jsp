@@ -62,12 +62,13 @@
 			        <!-- <a id="addNewFourteenROP" role="button" href="#insertFourteenROP"class="btn btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 300px;font-size: 14px;"><i class="glyphicon glyphicon-plus"></i>創建十四休一信息</a> -->
 			</div>
 			<div class="middle">
-				<div class="left" style="width:60%;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+				<div class="left" style="width:70%;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
 					<table id="AccessGoodsTable" class="table table-hover" style="border:2px solid #f3f5f6;table-layout:fixed;">
 						<thead>
 							<tr>
 								<th>工號</th>
 								<th>卡號</th>
+								<th>姓名</th>
 								<th>車間號</th>
 								<th>U盤</th>
 								<th>電腦</th>
@@ -84,7 +85,7 @@
 					</div>
 				</div>
 				
-				<div class="right" style="width:30%;height:700px;float:right;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
+				<div class="right" style="width:25%;height:700px;float:right;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
 					<h2>設置員工携帶物品權限</h2>
 				<!-- 	<div class="control-group">
 			    		<label class="control-label" for="costId">費用代碼</label>
@@ -107,13 +108,13 @@
 						</table>
 					</div> -->
 					<div class="control-group">
-			    		<label class="control-label" for="costId">員工號</label>
+			    		<label class="control-label" for="costId">員工號</label><label style="color:red;font-size: 10px">(多條數據添加時請使用英文逗號(,)分隔)</label>
 			    		<div class="controls">
 			      			<input type="text" id="userId" name="userId" class="required form-control" placeholder="員工號">
 			    		</div>
 			  		</div>
 			  		<div class="control-group">
-			    		<label class="control-label" for="cardId">卡號</label>
+			    		<label class="control-label" for="cardId">卡號</label><label style="color:red;font-size: 10px">(多條數據添加時請使用英文逗號(,)分隔)</label>
 			    		<div class="controls">
 			      			<input type="text" id="cardId" name="cardId" class="required form-control" placeholder="卡號">
 			    		</div>

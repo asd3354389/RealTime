@@ -15,6 +15,7 @@ public class AccessGoodsMapper implements RowMapper<AccessGoods> {
 		// TODO Auto-generated method stub
 		AccessGoods accessGoods = new AccessGoods();
 		accessGoods.setUserId(rs.getString("id"));
+		accessGoods.setName(rs.getString("Name"));
 		accessGoods.setWorkShopNo(rs.getString("WorkShopNo"));
 		accessGoods.setUdisk(rs.getString("Udisk"));
 		accessGoods.setComputer(rs.getString("Computer"));

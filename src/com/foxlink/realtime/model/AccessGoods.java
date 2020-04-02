@@ -2,6 +2,7 @@ package com.foxlink.realtime.model;
 
 public class AccessGoods {
 	private String UserId;
+	private String Name;
 	private String CardId;
 	private String WorkShopNo;
 	private String Udisk;
@@ -15,6 +16,12 @@ public class AccessGoods {
 	}
 	public void setUserId(String userId) {
 		UserId = userId;
+	}
+	public String getName() {
+		return Name;
+	}
+	public void setName(String name) {
+		Name = name;
 	}
 	public String getCardId() {
 		return CardId;
