@@ -498,9 +498,9 @@ $(document).ready(function(){
 			var parentElement=$(this).parent().parent();
 			var id=$(parentElement).find('td').eq(0).text();
 			var cardId=$(parentElement).find('td').eq(1).text();
-			var workShopNo=$(parentElement).find('td').eq(2).text();
-			var startDate=$(parentElement).find('td').eq(6).text();
-			var endDate=$(parentElement).find('td').eq(7).text();
+			var workShopNo=$(parentElement).find('td').eq(3).text();
+			var startDate=$(parentElement).find('td').eq(7).text();
+			var endDate=$(parentElement).find('td').eq(8).text();
 			//alert("卡号"+deleteCardId);
 			var results=confirm("確定刪除此條數據?");
 			if(results==true){
