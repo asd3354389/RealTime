@@ -127,12 +127,12 @@ public class AccessGoodsController {
 		JsonObject DisableResult=new JsonObject();
 		try{
 			String updateUser=(String) session.getAttribute("username");
-			System.out.println("費用代碼========="+id);
-			System.out.println(id);
-			System.out.println(cardId);
-			System.out.println(workShopNo);
-			System.out.println(startDate);
-			System.out.println(endDate);
+//			System.out.println("費用代碼========="+id);
+//			System.out.println(id);
+//			System.out.println(cardId);
+//			System.out.println(workShopNo);
+//			System.out.println(startDate);
+//			System.out.println(endDate);
 			
 			if(accessGoodsService.DeleteAccessGoods(id,cardId,workShopNo,updateUser,startDate,endDate)){
 				DisableResult.addProperty("StatusCode", "200");
