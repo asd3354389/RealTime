@@ -44,7 +44,7 @@ public class QueryByIdList {
 			d = formatter.parse(eXCEPTION_DATE);
 			SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
 			date = format.format(d);
-			System.out.println("date==="+date);
+//			System.out.println("date==="+date);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

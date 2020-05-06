@@ -1,5 +1,6 @@
 package com.foxlink.realtime.controller;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -44,9 +45,10 @@ public class AbReasonReplyController {
 	}
 	
 	@RequestMapping(value="/ReplyReason", method=RequestMethod.POST,produces="Application/json;charset=utf-8")
-	public @ResponseBody String replyReason(@RequestBody QueryByIdList[] Emp) {
+	public @ResponseBody String replyReason(HttpSession session,@RequestBody QueryByIdList[] Emp) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 		abReasonReplyService = (AbReasonReplyService) context.getBean("abReasonReplyService");
-		return abReasonReplyService.replyReason(Emp);		
+		String updateUser=(String) session.getAttribute("username");
+		return abReasonReplyService.replyReason(Emp,updateUser);		
 	}
 }

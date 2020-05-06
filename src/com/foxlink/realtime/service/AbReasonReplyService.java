@@ -85,10 +85,10 @@ public class AbReasonReplyService extends Service<QueryByIdList> {
 		return null;
 	}
 
-	public String replyReason(QueryByIdList[] emp) {
+	public String replyReason(QueryByIdList[] emp, String updateUser) {
 		// TODO Auto-generated method stub
 		JsonObject resultJson = new JsonObject();
-		int result = abReasonReplyDAO.replyReason(emp);
+		int result = abReasonReplyDAO.replyReason(emp,updateUser);
 		if (emp!=null) {
 			if(result==0){
 				resultJson.addProperty("StatusCode", "200");
@@ -101,7 +101,7 @@ public class AbReasonReplyService extends Service<QueryByIdList> {
 			resultJson.addProperty("StatusCode", "500");
 			resultJson.addProperty("Message", "異常原因回復發生錯誤");
 		}
-		System.out.println(resultJson.toString());
+//		System.out.println(resultJson.toString());
 		return resultJson.toString();
 	}
 
