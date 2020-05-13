@@ -16,6 +16,7 @@
       				<option value="ROLE_ASSISTANT">ROLE_ASSISTANT</option>
       				<option value="ROLE_LineLeader">ROLE_LineLeader</option>
       				<option value="ROLE_TXADLOW">ROLE_TXADLOW</option>
+      				<option value="ROLE_TXACCESSRECORD">ROLE_TXACCESSRECORD</option>
       				<option value="ROLE_ZJADLOW">ROLE_ZJADLOW</option>
       				<option value="ROLE_14R1ZJADLOW">ROLE_14R1ZJADLOW</option>
       				<option value="ROLE_VIC_ADMIN">ROLE_VIC_ADMIN</option>

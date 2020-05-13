@@ -129,11 +129,6 @@
 				"icon" : "icon-nav",
 				"url" : "AccessGoods/ShowAccessGoods"
 
-			},{
-				"menuname" : "綫體綁定綫組別",
-				"icon" : "icon-nav",
-				"url" : "LineNoByDepid/ShowLineNoByDepid"
-
 			}]
 		},{
 
@@ -154,6 +149,11 @@
 				"menuname" : "產綫維護",
 				"icon" : "icon-nav",
 				"url" : "WSListStatus/ShowWSListStatus"
+
+			},{
+				"menuname" : "綫體綁定綫組別",
+				"icon" : "icon-nav",
+				"url" : "LineNoByDepid/ShowLineNoByDepid"
 
 			}]
 		},{

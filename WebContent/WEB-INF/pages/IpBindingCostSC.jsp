@@ -59,7 +59,7 @@
 			</div>
 			<div>
 					<h4 style="position: relative;">卡機綁定可刷卡費用代碼信息：</h4>
-					<a id="addNewIOCardMaIP" role="button" href="#insertIpBindingCostSC"class="btn btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 500px;font-size: 14px;"><i class="glyphicon glyphicon-plus"></i>創建新車間休息時間段</a>
+					<a id="addNewIOCardMaIP" role="button" href="#insertIpBindingCostSC"class="btn btn-sm" data-toggle="modal" style="position: absolute;top: 50px;right: 500px;font-size: 14px;"><i class="glyphicon glyphicon-plus"></i>創建卡機可刷卡費用代碼</a>
 			</div>
 			<div class="middle">
 				<div class="left" style="width:80%;height:730px;float:left;border:1px solid #f3f5f6;padding:10px 10px;position: relative;" >
