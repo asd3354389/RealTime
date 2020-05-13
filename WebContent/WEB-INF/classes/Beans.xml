@@ -358,6 +358,13 @@
 		<property name="noCheckOvertimeDAO" ref="noCheckOvertimeDAO" />
 	</bean> 
 	
+	<bean id="threeMergeOneDAO" class="com.foxlink.realtime.DAO.ThreeMergeOneDAO"
+		parent="dAO">
+	</bean>
+	<bean id="threeMergeOneService" class="com.foxlink.realtime.service.ThreeMergeOneService">
+		<property name="threeMergeOneDAO" ref="threeMergeOneDAO" />
+	</bean>
+	
 	<!-- <bean id="fourteenROPDAO" class="com.foxlink.realtime.DAO.FourteenROPDAO"
 		parent="dAO">
 	</bean> -->

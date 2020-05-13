@@ -201,6 +201,10 @@
 				"icon" : "icon-nav",
 				"url" : "QueryRecordById/ShowQueryRecordById"
 			},{
+				"menuname" : "三合一刷卡數據查詢",
+				"icon" : "icon-nav",
+				"url" : "ThreeMergeOne/ShowThreeMergeOne"
+			},{
 				"menuname" : "異常原因回復",
 				"icon" : "icon-nav",
 				"url" : "AbReasonReply/ShowAbReasonReply"

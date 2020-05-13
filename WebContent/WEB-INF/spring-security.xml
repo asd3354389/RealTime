@@ -54,6 +54,7 @@
 		<intercept-url pattern="/QueryById/ShowQueryById" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN','ROLE_VIC_ASSISTANT','ROLE_VIC_ASSISTANT_O','ROLE_VIC_LineLeader')" />
 		<intercept-url pattern="/QueryRecordById/ShowQueryRecordById" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN','ROLE_VIC_ASSISTANT','ROLE_VIC_ASSISTANT_O','ROLE_VIC_LineLeader')" />
 		<intercept-url pattern="/AbReasonReply/ShowAbReasonReply" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN','ROLE_VIC_ASSISTANT','ROLE_VIC_ASSISTANT_O','ROLE_VIC_LineLeader')" />	
+		<intercept-url pattern="/ThreeMergeOne/ShowThreeMergeOne" access="hasAnyRole('ROLE_ADMIN','ROLE_VIC_ADMIN','ROLE_VIC_ASSISTANT','ROLE_VIC_ASSISTANT_O','ROLE_VIC_LineLeader')" />	
 		
 		<intercept-url pattern="/AdminActioin/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/AdminBonusDepid/ShowAdminBonusDepid" access="hasRole('ROLE_ADMIN')" />
