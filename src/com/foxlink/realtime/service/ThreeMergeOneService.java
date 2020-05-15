@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class ThreeMergeOneService {
 		else if(type.equals("costid")) {
 			name+="依費用代碼"+data;
 		}
-		String fileName = "D:/刷卡數據/三合一刷卡記錄"+name+"("+startDate.replace(":", "_")+"-"+endDate.replace(":", "_")+").xls";
+		String fileName = "三合一刷卡記錄"+name+"("+startDate.replace(":", "_")+"-"+endDate.replace(":", "_")+").xls";
 //		System.out.println("456");
 		List<ThreeMergeOne> result = threeMergeOneDAO.searchData(startDate,endDate,type,data);
 		if(result.size()>0) {
@@ -65,12 +66,13 @@ public class ThreeMergeOneService {
 //			System.out.println(result.size());
 			HSSFWorkbook wb = new HSSFWorkbook();
 			for(int k=0;k<num;k++) {
-				String sheetName = dataNum.get(k).getName();
+//				String sheetName = String.valueOf(k)+dataNum.get(k).getName();
+				String sheetName =dataNum.get(k).getEMP_ID();
 //				System.out.println(sheetName);
 				int c =0;
 				List temp = new ArrayList();
 				for(int z = 0;z<result.size();z++) {
-					if(result.get(z).getName().equals(sheetName)) {		
+					if(result.get(z).getName().equals(dataNum.get(k).getName())) {		
 						c++;
 						temp.add(result.get(z));			
 					}
@@ -90,12 +92,12 @@ public class ThreeMergeOneService {
 				getHSSFWorkbook(sheetName, title, content, wb);
 			}
 			try {
-//				setResponseHeader(response, fileName);
-				File targetFile = new File("D:/刷卡數據");
-				if (!targetFile.exists()) {
-					targetFile.mkdirs();
-				}
-				OutputStream os = new FileOutputStream(fileName);
+				setResponseHeader(response, fileName);
+//				File targetFile = new File("D:/RecordData");
+//				if (!targetFile.exists()) {
+//					targetFile.mkdirs();
+//				}
+				OutputStream os = response.getOutputStream();
 				wb.write(os);
 //				os.flush();
 				os.close();
@@ -159,19 +161,31 @@ public class ThreeMergeOneService {
     }
     
     public void setResponseHeader(HttpServletResponse response, String fileName) {
+//    	System.out.print(123);
         try {
-            try {
-                fileName = new String(fileName.getBytes(),"ISO8859-1");
-            } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+//            try {
+//                fileName = new String(fileName,"GBK");
+//            } catch (UnsupportedEncodingException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
             response.setContentType("application/octet-stream;charset=ISO8859-1");
-            response.setHeader("Content-Disposition", "attachment;filename="+ fileName);
+            response.setHeader("Content-Disposition", "attachment;filename="+new String( fileName.getBytes("UTF-8"), "ISO8859-1"));
             response.addHeader("Pargam", "no-cache");
             response.addHeader("Cache-Control", "no-cache");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
+	public boolean judgeDownload(String startDate, String endDate, String type, String data) {
+		// TODO Auto-generated method stub
+		List<ThreeMergeOne> result = threeMergeOneDAO.searchData(startDate,endDate,type,data);
+		if (result.size()>0) {
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
 }

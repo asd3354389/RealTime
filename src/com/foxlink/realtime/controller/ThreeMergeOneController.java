@@ -30,24 +30,51 @@ public class ThreeMergeOneController {
 	}
 	
 	@RequestMapping(value="/outPutExcel",method=RequestMethod.GET,produces="Application/json;charset=utf-8")
-	public @ResponseBody String outPutExcel(HttpServletResponse response,@RequestParam("StartDate")String StartDate,@RequestParam("EndDate")String EndDate,@RequestParam("Type")String Type,@RequestParam("Data")String Data) {
+	public void outPutExcel(HttpServletResponse response,@RequestParam("StartDate")String StartDate,@RequestParam("EndDate")String EndDate,@RequestParam("Type")String Type,@RequestParam("Data")String Data) {
+//		@ResponseBody String
+//		JsonObject Result=new JsonObject();
+		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+		threeMergeOneService = (ThreeMergeOneService) context.getBean("threeMergeOneService");
+		threeMergeOneService.export(StartDate,EndDate,Type,Data,response);
+//		try {
+//			if(threeMergeOneService.export(StartDate,EndDate,Type,Data,response)){
+//				System.out.println(123465);
+//				Result.addProperty("StatusCode", "200");
+//				Result.addProperty("Message", "導出Excel文檔成功");
+//			}else{
+//				Result.addProperty("StatusCode", "500");
+//				Result.addProperty("Message", "導出Excel文檔失敗");
+//			}
+//		} catch (Exception ex) {
+//			// TODO: handle exception
+//			logger.error("Disable the export info is failed, due to:",ex);
+//			Result.addProperty("StatusCode", "500");
+//			Result.addProperty("Message", "十導出Excel文檔發生錯誤，原因:"+ex.toString());
+//		}
+		
+        
+//		return Result.toString();
+	}
+	
+	@RequestMapping(value="/judgeDownload",method=RequestMethod.GET,produces="Application/json;charset=utf-8")
+	public @ResponseBody String judgeDownload(@RequestParam("StartDate")String StartDate,@RequestParam("EndDate")String EndDate,@RequestParam("Type")String Type,@RequestParam("Data")String Data) {
 
 		JsonObject Result=new JsonObject();
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 		threeMergeOneService = (ThreeMergeOneService) context.getBean("threeMergeOneService");
 		try {
-			if(threeMergeOneService.export(StartDate,EndDate,Type,Data,response)){
+			if(threeMergeOneService.judgeDownload(StartDate,EndDate,Type,Data)){
 				Result.addProperty("StatusCode", "200");
 				Result.addProperty("Message", "導出Excel文檔成功");
 			}else{
 				Result.addProperty("StatusCode", "500");
-				Result.addProperty("Message", "導出Excel文檔失敗");
+				Result.addProperty("Message", "查詢不到相應數據,導出Excel文檔失敗");
 			}
 		} catch (Exception ex) {
 			// TODO: handle exception
 			logger.error("Disable the export info is failed, due to:",ex);
 			Result.addProperty("StatusCode", "500");
-			Result.addProperty("Message", "十導出Excel文檔發生錯誤，原因:"+ex.toString());
+			Result.addProperty("Message", "導出Excel文檔發生錯誤，原因:"+ex.toString());
 		}
 		
         
