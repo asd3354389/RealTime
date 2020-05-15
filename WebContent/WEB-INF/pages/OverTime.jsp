@@ -45,7 +45,7 @@
 					<label>開始日期:</label>
 					<input id="dpick1" class="Wdate" type="text" onClick="WdatePicker({maxDate:'%y-%M-{%d-1}',minDate:'%y-\#{%M-2}-01'})" autocomplete="off">
 					<label>結束日期:</label>
-					<input id="dpick2" class="Wdate" type="text" onClick="WdatePicker({minDate:'#F{$dp.$D(\'dpick1\')}',maxDate:'%y-%M-{%d-1}'})" autocomplete="off">	
+					<input id="dpick2" class="Wdate" type="text" onClick="WdatePicker({maxDate:'%y-%M-{%d-1}',minDate:'#F{$dp.$D(\'dpick1\')}'})" autocomplete="off">	
 					<label>按車間或線號查詢:</label>
 					<select id="byWorkShopOrLineNo">
 						<option value="byWorkShop">只按車間</option>

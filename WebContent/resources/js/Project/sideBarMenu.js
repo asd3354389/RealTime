@@ -66,6 +66,11 @@
 				"menuname" : "員工對應的實時卡機設定",
 				"icon" : "icon-nav",
 				"url" : "EmpIPBinding/ShowEmpIPBinding"
+			},{
+				"menuname" : "十四休一個人設定維護",
+				"icon" : "icon-nav",
+				"url" : "FourteenROP/ShowFourteenROP"
+
 			}]
 		},{
 			"menuid" : "55",
@@ -119,6 +124,11 @@
 				"icon" : "icon-nav",
 				"url" : "ClassNoRest/ShowClassNoRestInfo"
 
+			},{
+				"menuname" : "車間員工携帶物品權限",
+				"icon" : "icon-nav",
+				"url" : "AccessGoods/ShowAccessGoods"
+
 			}]
 		},{
 
@@ -139,6 +149,11 @@
 				"menuname" : "產綫維護",
 				"icon" : "icon-nav",
 				"url" : "WSListStatus/ShowWSListStatus"
+
+			},{
+				"menuname" : "綫體綁定綫組別",
+				"icon" : "icon-nav",
+				"url" : "LineNoByDepid/ShowLineNoByDepid"
 
 			}]
 		},{
@@ -185,6 +200,10 @@
 				"menuname" : "實時及門禁刷卡查詢依工號",
 				"icon" : "icon-nav",
 				"url" : "QueryRecordById/ShowQueryRecordById"
+			},{
+				"menuname" : "三合一刷卡數據查詢",
+				"icon" : "icon-nav",
+				"url" : "ThreeMergeOne/ShowThreeMergeOne"
 			},{
 				"menuname" : "異常原因回復",
 				"icon" : "icon-nav",

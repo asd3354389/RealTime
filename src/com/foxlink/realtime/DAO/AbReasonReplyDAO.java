@@ -31,7 +31,7 @@ public class AbReasonReplyDAO extends DAO<QueryByIdList>{
 			sSQl+=" ORDER BY depid";
 			//System.out.println(sSQl);
 			ABReasonList = jdbcTemplate.query(sSQl,new QueryABReason());
-			System.out.println(sSQl);
+//			System.out.println(sSQl);
 		} catch (Exception e) {
 			// TODO: handle exception
 			  logger.error("Find ABReasonList TotalRecord are failed ",e);
@@ -95,9 +95,9 @@ public class AbReasonReplyDAO extends DAO<QueryByIdList>{
 		return 0;
 	}
 
-	public int replyReason(QueryByIdList[] emp) {
+	public int replyReason(QueryByIdList[] emp, String updateUser) {
 		// TODO Auto-generated method stub
-		String sSQL="update SWIPE.SWIPE_TIMEOUT_CACHE set exception_reason = ? where ROWID=?";
+		String sSQL="update SWIPE.SWIPE_TIMEOUT_CACHE set exception_reason = ? , update_userid=? , update_time=sysdate where ROWID=?";
 		int result = 0;
 		try {
 			jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
@@ -106,7 +106,8 @@ public class AbReasonReplyDAO extends DAO<QueryByIdList>{
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					// TODO Auto-generated method stub
 					ps.setString(1, emp[i].getEXCEPTION_REASON());
-					ps.setString(2, emp[i].getROWID());
+					ps.setString(2, updateUser);
+					ps.setString(3, emp[i].getROWID());
 				}
 				
 				@Override
@@ -132,7 +133,7 @@ public class AbReasonReplyDAO extends DAO<QueryByIdList>{
 			sSQl+=" and depid='"+depid+"' ORDER BY depid";
 			//System.out.println(sSQl);
 			ABReasonList = jdbcTemplate.query(sSQl,new QueryABReason());
-			System.out.println(sSQl);
+//			System.out.println(sSQl);
 		} catch (Exception e) {
 			// TODO: handle exception
 			  logger.error("Find ABReasonByDepid TotalRecord are failed ",e);

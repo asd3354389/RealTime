@@ -54,11 +54,12 @@ private QueryScService queryScService;
 			page.setList(queryScService.FindQueryRecord(userDataCostId,currentPage,querySwipeCard));
 			jsonResults = gson.toJson(page);
 			//jsonResults = gson.toJson(queryScService.FindQueryRecords(querySwipeCard));
-		}else{
+			}else{
 			JsonObject costIdJson=new JsonObject();
 			costIdJson.addProperty("ErrorMessage", "该賬號沒有查詢原始刷卡記錄列表的權限！");
 			jsonResults=costIdJson.toString();
-		}} catch (Exception ex) {
+			}
+		} catch (Exception ex) {
 			logger.error("FindEmpOTStatus falid", ex);
 			JsonObject error = new JsonObject();
 			error.addProperty("ErrorCode", 500);

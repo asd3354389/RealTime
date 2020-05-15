@@ -10,8 +10,11 @@
 					http://www.springframework.org/schema/context/spring-context-4.0.xsd"
 	default-autowire="byName">
 
+	<context:component-scan base-package="com.foxlink.realtime.*" >
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
 	<context:property-placeholder location="classpath:db.properties"/>
-<!--    <context:component-scan base-package="com.foxlink.realtime.*" /> -->
+    
    <!-- 實時工時連線資訊 -->   
    <!-- Oracle DB 連線資訊 -->
 	<bean id="OracleDataSource" class = "org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -354,5 +357,19 @@
 	<bean id="noCheckOvertimeService" class="com.foxlink.realtime.service.NoCheckOvertimeService">
 		<property name="noCheckOvertimeDAO" ref="noCheckOvertimeDAO" />
 	</bean> 
+	
+	<bean id="threeMergeOneDAO" class="com.foxlink.realtime.DAO.ThreeMergeOneDAO"
+		parent="dAO">
+	</bean>
+	<bean id="threeMergeOneService" class="com.foxlink.realtime.service.ThreeMergeOneService">
+		<property name="threeMergeOneDAO" ref="threeMergeOneDAO" />
+	</bean>
+	
+	<!-- <bean id="fourteenROPDAO" class="com.foxlink.realtime.DAO.FourteenROPDAO"
+		parent="dAO">
+	</bean> -->
+	<!-- <bean id="fourteenROPService" class="com.foxlink.realtime.service.FourteenROPService">
+		<property name="fourteenROPDAO" ref="fourteenROPDAO" />
+	</bean>  -->
 	
 </beans>

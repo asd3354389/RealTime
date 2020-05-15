@@ -5,6 +5,7 @@ $(document).ready(function(){
 	var OverTimeType,OverTimeType1,OverTimeCal,ItemNumber,SelectedEmps;//加班類型,時間
 	var selectedOTEmpIDs=new Array();//報加班的員工id
 	var WorkContent;//工作內容
+	var pattern = new RegExp("[;']");
 	var HolidayType = "N";//假日類型,默認正常類型
 	var ClassNo,WorkshopNo,LineNo,RCNO,AssistantAccount,
 		OverTimeDate,IsIdentified,IsAbnormal,OverTimeTypeText='';
@@ -246,11 +247,19 @@ $(document).ready(function(){
 		OverTimeType=$('#overtimeType').find('option:selected').val();
 		OverTimeType1=$('#overtimeCal').find('option:selected').val();
 		WorkContent=$('#workcontent').val().trim();
+		var judge = true;
+		if(WorkContent != "" && WorkContent != null){  
+	        if(pattern.test(WorkContent)){  
+	            alert("内容存在非法字符;'請勿輸入以上字符");  
+	            $("#workcontent").focus();  
+	            judge = false;  
+	        }  
+	    }  
 		OverTimeCal=$('#overtimeCal').find('option:selected').val();
 		selectedOTEmpIDs=GetOTSubmitEmps();//取得選取的人員id數組
 		var newHour = [];
 	    //SelectedEmps=GetOTSubmitEmps(); //取得選取的人員
-		if(CheckConditionValid()){
+		if(CheckConditionValid()&&judge){
 			if (confirm("你确定提交當前選擇人員名單吗？")) {
 				var OTBoolean = true;
 				var OTResult;
