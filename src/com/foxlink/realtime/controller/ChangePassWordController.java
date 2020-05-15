@@ -96,6 +96,30 @@ public class ChangePassWordController implements ServletContextAware {
 				}
 				else{
 					UpdateResult.addProperty("StatusCode", "500");
+					UpdateResult.addProperty("Message", "更新賬號密码失敗,賬號或密碼錯誤");
+				}
+			}
+			catch(Exception ex){
+				logger.error("Updating the Account PassWord is failed, due to: ",ex);
+				UpdateResult.addProperty("StatusCode", "500");
+				UpdateResult.addProperty("Message", "更新賬號密码發生錯誤，原因："+ex.toString());
+			}
+			return UpdateResult.toString();
+		}
+	 
+	 @RequestMapping(value="/updateAccountPassWordNew.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+		@ResponseBody
+		public  String UpdateAccountPassWordNew(@RequestParam("username")String username,@RequestParam("oldPassword")String oldPassword,@RequestParam("newPassword")String newPassword){
+			JsonObject UpdateResult=new JsonObject();		
+			try{
+				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+				accountService = (AccountService) context.getBean("accountService");
+				if(accountService.UpdateAccountPassWord1(username,oldPassword,newPassword)){
+					UpdateResult.addProperty("StatusCode", "200");
+					UpdateResult.addProperty("Message", "更新賬號密码成功，请用新密码进行登录");
+				}
+				else{
+					UpdateResult.addProperty("StatusCode", "500");
 					UpdateResult.addProperty("Message", "更新賬號密码失敗");
 				}
 			}

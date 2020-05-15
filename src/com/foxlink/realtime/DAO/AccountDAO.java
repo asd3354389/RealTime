@@ -448,6 +448,35 @@ public class AccountDAO extends DAO<User> {
 		 else
 			 return true;
 	}
+	public boolean UpdateAccountPassWord1(String username, String oldPassword, String newPassword) {
+		// TODO Auto-generated method stub
+		int updateRow=-1;
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);
+		String sSQL="UPDATE SWIPE.USER_DATA SET password=?,CHPASS_TIME=sysdate WHERE UserName=? "
+				+ "and password = ? and ENABLED=1";
+		try {
+				updateRow = jdbcTemplate.update(sSQL,new PreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement arg0) throws SQLException {
+						// TODO Auto-generated method stub
+						arg0.setString(1, newPassword);
+						arg0.setString(2, username);
+						arg0.setString(3, oldPassword);
+					}	
+				});
+				transactionManager.commit(txStatus);
+		}
+		catch(Exception ex) {
+			logger.error("Update Account Password is failed",ex);
+			transactionManager.rollback(txStatus);
+		}
+		 if(updateRow > 0) 
+			   return true; 
+		 else
+			 return false;
+
+	}
 	
 
 }

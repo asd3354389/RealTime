@@ -116,6 +116,72 @@ $(document).ready(function(){
 			}
 		}
 	  
+	  $('#resetPassword1').click(function(){
+			var errorMessage='';
+			var username =$('#chagePasswordByOldPwUsername').val();
+			var oldPassword=$('#oldPassword').val();
+			
+			var newPassword=$('#newPassword1').val();
+			var confirmPassword=$('#confirmPassword1').val();
+			
+			if(username==="null" || username=='')
+				errorMessage+='帳號未填寫\n';
+			
+			checkUserNameDuplicate(username);
+			
+			//checkChineseNameDuplicate(user);
+			
+			
+			//checkUserDepIdDuplicate(user);
+			
+			
+			//checkUserAssistantIdDuplicate(user);
+			
+			if(newPassword!=confirmPassword)
+				errorMessage+='两次输入密码不同，请重新输入!\n';
+			
+		if(errorMessage=='' && isUserNameValid){
+				//修改賬號密码
+				$.ajax({
+					type:'POST',
+					url:'ChangePassWord/updateAccountPassWordNew.do',
+					data:{
+						username:username,
+						oldPassword:oldPassword,
+						newPassword:newPassword
+					},
+					async:false,
+					success:function(data){
+						$('#resetPassword1').prop("disabled",false);
+						if (data != null && data != "") {
+							if(data.StatusCode=="200"){
+								alert(data.Message);			
+								$('#chagePasswordByOldPwUsername').val('');
+								$('#oldPassword').val('');
+								$("#newPassword1 ").val('');
+								$('#confirmPassword1').val('');
+							}
+							else{
+								alert(data.Message);
+							}
+						}else{
+							alert('操作失敗!');
+						}
+					},
+					error:function(e){
+						alert('修改賬號密码發生錯誤');
+					}
+				});
+			}
+		    else{
+		    	if(errorMessage.length>0 ||errorMessage!='' ){
+			    alert(errorMessage);		
+				event.preventDefault(); //preventDefault() 方法阻止元素发生默认的行为（例如，当点击提交按钮时阻止对表单的提交）。
+			}
+		}
+		
+		});
+	  
 	  
 	  function checkChangePassWordUserInfo(changePasswordUser){
 				$.ajax({

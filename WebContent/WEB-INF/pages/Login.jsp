@@ -78,6 +78,9 @@
                     <li class="">
                         <a href="#chagePassword" data-toggle="tab">忘記密碼?</a>
                     </li>
+                    <li class="">
+                        <a href="#chagePasswordByOldPw" data-toggle="tab">修改密碼</a>
+                    </li>
                 </ul>
                 <div id="myTabContent" class="tab-content bn">
                     <div class="tab-pane fade active in" id="log-in">                     
@@ -155,6 +158,39 @@
                             <div class="form-group">
                                 <div class="col-lg-12">
                                     <button type="button" id="resetPassword" class="btn btn-success btn-block">重設密碼</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="chagePasswordByOldPw">
+                        <form class="form-horizontal mt20" role="form"> 
+                           <div class="form-group">
+                                <div class="col-lg-12">                                 
+                                    <input id="chagePasswordByOldPwUsername" name="chagePasswordByOldPwUsername" type="username" class="form-control left-icon" placeholder="用戶名">
+                                    <i class="ec-user s16 left-input-icon"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-lg-12">                                 
+                                    <input id="oldPassword" name="oldPassword" type="password" class="form-control left-icon" placeholder="原密碼">
+                                    <i class="ec-user s16 left-input-icon"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <input type="password" class="form-control left-icon" id="newPassword1" name="password1" placeholder="輸入新密碼">
+                                    <i class="ec-locked s16 left-input-icon"></i> 
+                                </div>
+                                <div class="col-lg-12 mt15">
+                                    <input type="password" class="form-control left-icon" id="confirmPassword1" name="confirmPassword1" placeholder="確認新密碼">
+                                    <i class="ec-locked s16 left-input-icon"></i> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <button type="button" id="resetPassword1" class="btn btn-success btn-block">重設密碼</button>
                                 </div>
                             </div>
                         </form>
