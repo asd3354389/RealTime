@@ -59,7 +59,7 @@ public class ThreeMergeOneDAO extends DAO<ThreeMergeOne>{
 							"                 AND dates <=" + 
 							"                        TO_DATE (?," + 
 							"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
-							"   WHERE ce.id = tio.emp_id ORDER BY emp_id";
+							"   WHERE ce.id = tio.emp_id ORDER BY emp_id,swipecardtime";
 				}else if(type.equals("depid")) {
 					sSQl+=  "           WHERE record_status IN ('0', '3', '4', '5', '6', '7')" + 
 							"                 AND swipecardtime >=" + 
@@ -88,7 +88,7 @@ public class ThreeMergeOneDAO extends DAO<ThreeMergeOne>{
 							"                 AND dates <=" + 
 							"                        TO_DATE (?," + 
 							"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
-							"   WHERE ce.id = tio.emp_id and ce.isonwork=0 and ce.depid=? ORDER BY emp_id";
+							"   WHERE ce.id = tio.emp_id and ce.isonwork=0 and ce.depid=? ORDER BY emp_id,swipecardtime";
 				}else if(type.equals("costid")) {
 					sSQl+=  	 "           WHERE record_status IN ('0', '3', '4', '5', '6', '7')" + 
 								"                 AND swipecardtime >=" + 
@@ -117,7 +117,7 @@ public class ThreeMergeOneDAO extends DAO<ThreeMergeOne>{
 								"                 AND dates <=" + 
 								"                        TO_DATE (?," + 
 								"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
-								"   WHERE ce.id = tio.emp_id and ce.isonwork=0 and ce.costid=? ORDER BY emp_id";
+								"   WHERE ce.id = tio.emp_id and ce.isonwork=0 and ce.costid=? ORDER BY emp_id,swipecardtime";
 				}
 				 
 		try {

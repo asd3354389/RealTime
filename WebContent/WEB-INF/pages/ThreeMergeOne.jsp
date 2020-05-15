@@ -60,7 +60,7 @@
 		</div>
 
        <div style="position: absolute; top: 55px; margin-left: 10px">
-       		<h1 style="color:red;">根據人資規定，所有刷卡記錄只允許查詢近三個月的記錄</h1>
+       			<h1 style="color:red;">根據人資規定，所有刷卡記錄只允許查詢近三個月的記錄</h1>
 			<div class="panel-body" style="border: 1px solid #e1e3e6;">
 			        			 <label for="startDate">開始日期:</label> 
 								<input id="startDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'%y-\#{%M-2}-01',maxDate:'#F{$dp.$D(\'endDate\')}'})" autocomplete="off" />
@@ -69,11 +69,11 @@
 								<input type="radio" name="changeType" checked id="empid" value="empid"><label for="empid">員工工號</label>
 								<input type="radio" name="changeType" id="depid" value="depid"><label for="depid">部門代碼</label>
 								<input type="radio" name="changeType" id="costid" value="costid"><label for="costid">費用代碼</label>
-						        <input id="data"  class="inputGray btn1-sm btn1-brown" style="text-align:center;background-color:#e0e0e0;">
+						        <input id="data"  class="inputGray btn1-sm btn1-brown" style="text-align:center;background-color:#e0e0e0;" autocomplete="off">
 						<input type="hidden" id='depid' value="" />
 						<input id="outputExcel" class="btn btn-primary" type="button"
-							 value="导出Excel文档" />
-			</div>				
+							 value="导出Excel文档" / >
+			</div>			
  	  </div>
 
 </body>
