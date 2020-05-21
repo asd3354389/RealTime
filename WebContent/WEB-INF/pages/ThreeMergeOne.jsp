@@ -69,8 +69,8 @@
 								<input type="radio" name="changeType" checked id="empid" value="empid"><label for="empid">員工工號</label>
 								<input type="radio" name="changeType" id="depid" value="depid"><label for="depid">部門代碼</label>
 								<input type="radio" name="changeType" id="costid" value="costid"><label for="costid">費用代碼</label>
-						        <input id="data"  class="inputGray btn1-sm btn1-brown" style="text-align:center;background-color:#e0e0e0;" autocomplete="off">
-						<input type="hidden" id='depid' value="" />
+						        <input id="data"   class="inputdata inputGray btn1-sm btn1-brown" style="text-align:center;background-color:#e0e0e0;" autocomplete="off">
+						        <!-- <select id="data" class="selected " autocomplete="off" style="visibility: hidden"></select> -->
 						<input id="outputExcel" class="btn btn-primary" type="button"
 							 value="导出Excel文档" / >
 			</div>			

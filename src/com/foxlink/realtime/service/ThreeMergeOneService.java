@@ -24,6 +24,7 @@ import com.foxlink.realtime.model.ThreeMergeOne;
 import com.foxlink.realtime.model.ThreeMergeOneGetNum;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 
 public class ThreeMergeOneService {
 
@@ -187,5 +188,17 @@ public class ThreeMergeOneService {
 			return false;
 		}
 		
+	}
+
+	public List<String>  FindDepidRecords(String userDataCostId) {
+		// TODO Auto-generated method stub
+		List<String> allStatus=null;
+		try {
+			allStatus=threeMergeOneDAO.FindDepidRecords(userDataCostId);
+		} catch (Exception ex) {
+			logger.error("query error" + ex);
+		}
+
+		return allStatus;
 	}
 }
