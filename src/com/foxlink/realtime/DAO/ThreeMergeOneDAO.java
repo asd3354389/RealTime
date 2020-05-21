@@ -356,4 +356,27 @@ public class ThreeMergeOneDAO extends DAO<ThreeMergeOne>{
 		}
 		return result;
 	}
+
+	public List<String> FindDepidRecords(String userDataCostId) {
+		// TODO Auto-generated method stub
+		List<String> getDepids=null;
+		String sSQL="select depid from swipe.Dept_Relation where ";
+		try { 
+				String strIdArray[] = userDataCostId.split("\\*");
+				StringBuffer idsStr = new StringBuffer();
+				for (int i = 0; i < strIdArray.length; i++) {
+					if (i > 0) {
+						idsStr.append(",");
+					}
+					idsStr.append("'").append(strIdArray[i]).append("'");
+				}
+				sSQL+=" Costid in("+idsStr+")";				
+				getDepids=jdbcTemplate.queryForList(sSQL,String.class);
+		} catch (Exception ex) {
+			// TODO: handle exception
+			ex.printStackTrace();
+			logger.error("Search Depid Record is failed",ex);
+		}
+		return getDepids;
+	}
 }
