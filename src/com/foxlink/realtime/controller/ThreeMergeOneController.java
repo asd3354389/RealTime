@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.hibernate.dialect.function.VarArgsSQLFunction;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -111,5 +112,27 @@ public class ThreeMergeOneController {
 		String userDataCostId=(String) session.getAttribute("userDataCostId");
 		String strIdArray[] = userDataCostId.split("\\*");
 		return strIdArray ;
+	}
+	
+	@RequestMapping(value = "/contractCostId.show", method = RequestMethod.GET, produces = "Application/json;charset=utf-8")
+    @ResponseBody
+	public boolean contractCostId(HttpSession session,@RequestParam("Data")String Data) {
+		String jsonResults = null;
+		boolean result = false;
+		String userDataCostId=(String) session.getAttribute("userDataCostId");
+		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+		threeMergeOneService = (ThreeMergeOneService) context.getBean("threeMergeOneService");
+		jsonResults=threeMergeOneService.contractCostId(Data);
+		if(userDataCostId.equals("ALL")) {
+			result=true;
+		}else {
+			String strIdArray[] = userDataCostId.split("\\*");
+			for(int i=0;i<strIdArray.length;i++) {
+				if(strIdArray[i].equals(jsonResults)) {
+					result=true;
+				}
+			}
+		}
+		return result ;
 	}
 }

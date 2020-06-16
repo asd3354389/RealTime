@@ -365,6 +365,13 @@
 		<property name="threeMergeOneDAO" ref="threeMergeOneDAO" />
 	</bean>
 	
+	<bean id="searchWorkDayCountDao" class="com.foxlink.realtime.DAO.SearchWorkDayCountDao"
+		parent="dAO">
+	</bean>
+	<bean id="searchWorkDayCountService" class="com.foxlink.realtime.service.SearchWorkDayCountService">
+		<property name="searchWorkDayCountDao" ref="searchWorkDayCountDao" />
+	</bean>
+	
 	<!-- <bean id="fourteenROPDAO" class="com.foxlink.realtime.DAO.FourteenROPDAO"
 		parent="dAO">
 	</bean> -->

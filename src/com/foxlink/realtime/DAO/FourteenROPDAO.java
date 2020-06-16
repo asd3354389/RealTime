@@ -214,7 +214,7 @@ public class FourteenROPDAO extends DAO<FourteenROP>{
 	public List<Emp> GetPersonById(String costId) {
 		// TODO Auto-generated method stub
 		List<Emp> PersonList = null;
-		String sSQL = "select * from (select id,name,depid,costid from SWIPE.CSR_EMPLOYEE where costid='"+costId+"')";
+		String sSQL = "select * from (select id,name,depid,costid from SWIPE.CSR_EMPLOYEE where isonwork=0 and costid='"+costId+"')";
 		try {
 		    PersonList = jdbcTemplate.query(sSQL, new PersonByCostId());	
     	  } catch (Exception ex) {

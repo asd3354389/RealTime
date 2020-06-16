@@ -51,6 +51,10 @@
 				"menuname" : "未提報加班人員查詢",
 				"icon" : "icon-nav",
 				"url" : "NoCheckOvertime/ShowNoCheckOvertime"
+			},{
+				"menuname" : "連續上班天數查詢",
+				"icon" : "icon-nav",
+				"url" : "SearchWorkDayCount/ShowSearchWorkDayCount"
 			}]
 		},{
 
@@ -201,7 +205,7 @@
 				"icon" : "icon-nav",
 				"url" : "QueryRecordById/ShowQueryRecordById"
 			},{
-				"menuname" : "三合一刷卡數據查詢",
+				"menuname" : "二合一刷卡數據查詢",
 				"icon" : "icon-nav",
 				"url" : "ThreeMergeOne/ShowThreeMergeOne"
 			},{

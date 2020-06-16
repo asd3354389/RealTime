@@ -49,7 +49,7 @@ public class ThreeMergeOneService {
 		else if(type.equals("costid")) {
 			name+="依費用代碼"+data;
 		}
-		String fileName = "三合一刷卡記錄"+name+"("+startDate.replace(":", "_")+"-"+endDate.replace(":", "_")+").xls";
+		String fileName = "二合一刷卡記錄"+name+"("+startDate.replace(":", "_")+"-"+endDate.replace(":", "_")+").xls";
 //		System.out.println("456");
 		List<ThreeMergeOne> result = threeMergeOneDAO.searchData(startDate,endDate,type,data);
 		if(result.size()>0) {
@@ -200,5 +200,11 @@ public class ThreeMergeOneService {
 		}
 
 		return allStatus;
+	}
+
+	public String contractCostId(String data) {
+		// TODO Auto-generated method stub
+		String result = threeMergeOneDAO.contractCostId(data);
+		return result;
 	}
 }
