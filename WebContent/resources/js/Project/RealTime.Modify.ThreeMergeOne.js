@@ -1,6 +1,7 @@
 $(document).ready(function(){
 //	ShowDepid()
 //	
+	var errorMessage='';
 	$('input:radio[name="changeType"]').click(function(){
 		var type = $('input:radio[name="changeType"]:checked').val();
 		if(type=="empid"){
@@ -8,6 +9,7 @@ $(document).ready(function(){
 //			$('.inputdata').attr('disabled',false)
 //			$('.selected').attr('disabled',true)
 //			$('.selected').css('visibility','hidden')
+			$('.inputdata').remove()
 			$('.selected').remove()
 			$('#outputExcel').before("<input id='data'   class='inputdata inputGray btn1-sm btn1-brown' style='text-align:center;background-color:#e0e0e0;' autocomplete='off'>")
 		}else if(type=="depid"){
@@ -37,13 +39,14 @@ $(document).ready(function(){
 		var endDate = $('#endDate').val();
 		var data = $('#data').val();
 		if(type=="empid"){
-			var data= $('.inputdata').val();
+			 data= $('.inputdata').val();
+			 ContractCostId(data)
 		}else if(type=="depid"){	
-			var data= $('.selected').val();
+			 data= $('.selected').val();
 		}else if(type=="costid"){
-			var data= $('.selected').val();
+			 data= $('.selected').val();
 		}
-		var errorMessage=''
+		
 	    if(startDate==null || startDate=="")
 			errorMessage+='未選擇生效起始日期\n';
 		if(endDate==null || endDate=="")
@@ -158,6 +161,23 @@ $(document).ready(function(){
 			 }else{
 				alert('無部門代碼資料');
 			 }
+			}
+		});   
+	}
+	
+	function ContractCostId(data){
+		$.ajax({
+			type:'GET',
+			url:'../ThreeMergeOne/contractCostId.show',
+			data:{
+				Data:data
+			},
+			async:false,
+			success:function(data){
+//			var b = data.split('*')
+				if(!data){
+					errorMessage+="沒有此工號導出數據權限";
+				}
 			}
 		});   
 	}

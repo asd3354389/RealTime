@@ -48,17 +48,17 @@ public class ThreeMergeOneDAO extends DAO<ThreeMergeOne>{
 							"                                 'yyyy-mm-dd hh24:mi:ss')" + 
 							"                 AND swipedatetime <=" + 
 							"                        TO_DATE (?," + 
-							"                                 'yyyy-mm-dd hh24:mi:ss')" + 
-							"          UNION" + 
-							"          SELECT ygbh emp_id, dates swipecardtime, '臉模' record_type" + 
-							"            FROM kq_record" + 
-							"           WHERE ygbh = ?" + 
-							"                 AND dates >=" + 
-							"                        TO_DATE (?," + 
-							"                                 'yyyy-mm-dd hh24:mi:ss')" + 
-							"                 AND dates <=" + 
-							"                        TO_DATE (?," + 
 							"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
+//							"          UNION" + 
+//							"          SELECT ygbh emp_id, dates swipecardtime, '臉模' record_type" + 
+//							"            FROM kq_record" + 
+//							"           WHERE ygbh = ?" + 
+//							"                 AND dates >=" + 
+//							"                        TO_DATE (?," + 
+//							"                                 'yyyy-mm-dd hh24:mi:ss')" + 
+//							"                 AND dates <=" + 
+//							"                        TO_DATE (?," + 
+//							"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
 							"   WHERE ce.id = tio.emp_id ORDER BY emp_id,swipecardtime";
 				}else if(type.equals("depid")) {
 					sSQl+=  "           WHERE record_status IN ('0', '3', '4', '5', '6', '7')" + 
@@ -78,16 +78,16 @@ public class ThreeMergeOneDAO extends DAO<ThreeMergeOne>{
 							"                                 'yyyy-mm-dd hh24:mi:ss')" + 
 							"                 AND swipedatetime <=" + 
 							"                        TO_DATE (?," + 
-							"                                 'yyyy-mm-dd hh24:mi:ss')" + 
-							"          UNION" + 
-							"          SELECT ygbh emp_id, dates swipecardtime, '臉模' record_type" + 
-							"            FROM kq_record" + 
-							"           WHERE dates >=" + 
-							"                        TO_DATE (?," + 
-							"                                 'yyyy-mm-dd hh24:mi:ss')" + 
-							"                 AND dates <=" + 
-							"                        TO_DATE (?," + 
 							"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
+//							"          UNION" + 
+//							"          SELECT ygbh emp_id, dates swipecardtime, '臉模' record_type" + 
+//							"            FROM kq_record" + 
+//							"           WHERE dates >=" + 
+//							"                        TO_DATE (?," + 
+//							"                                 'yyyy-mm-dd hh24:mi:ss')" + 
+//							"                 AND dates <=" + 
+//							"                        TO_DATE (?," + 
+//							"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
 							"   WHERE ce.id = tio.emp_id and ce.isonwork=0 and ce.depid=? ORDER BY emp_id,swipecardtime";
 				}else if(type.equals("costid")) {
 					sSQl+=  	 "           WHERE record_status IN ('0', '3', '4', '5', '6', '7')" + 
@@ -107,16 +107,16 @@ public class ThreeMergeOneDAO extends DAO<ThreeMergeOne>{
 								"                                 'yyyy-mm-dd hh24:mi:ss')" + 
 								"                 AND swipedatetime <=" + 
 								"                        TO_DATE (?," + 
-								"                                 'yyyy-mm-dd hh24:mi:ss')" + 
-								"          UNION" + 
-								"          SELECT ygbh emp_id, dates swipecardtime, '臉模' record_type" + 
-								"            FROM kq_record" + 
-								"           WHERE dates >=" + 
-								"                        TO_DATE (?," + 
-								"                                 'yyyy-mm-dd hh24:mi:ss')" + 
-								"                 AND dates <=" + 
-								"                        TO_DATE (?," + 
 								"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
+//								"          UNION" + 
+//								"          SELECT ygbh emp_id, dates swipecardtime, '臉模' record_type" + 
+//								"            FROM kq_record" + 
+//								"           WHERE dates >=" + 
+//								"                        TO_DATE (?," + 
+//								"                                 'yyyy-mm-dd hh24:mi:ss')" + 
+//								"                 AND dates <=" + 
+//								"                        TO_DATE (?," + 
+//								"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
 								"   WHERE ce.id = tio.emp_id and ce.isonwork=0 and ce.costid=? ORDER BY emp_id,swipecardtime";
 				}
 				 
@@ -132,25 +132,25 @@ public class ThreeMergeOneDAO extends DAO<ThreeMergeOne>{
 						ps.setString(4, data);
 						ps.setString(5, startDate);
 						ps.setString(6, endDate);
-						ps.setString(7, data);
-						ps.setString(8, startDate);
-						ps.setString(9, endDate);
+//						ps.setString(7, data);
+//						ps.setString(8, startDate);
+//						ps.setString(9, endDate);
 					}else if(type.equals("depid")) {
 						ps.setString(1, startDate);
 						ps.setString(2, endDate);
 						ps.setString(3, startDate);
 						ps.setString(4, endDate);
-						ps.setString(5, startDate);
-						ps.setString(6, endDate);
-						ps.setString(7, data);
+//						ps.setString(5, startDate);
+//						ps.setString(6, endDate);
+						ps.setString(5, data);
 					}else if(type.equals("costid")) {
 						ps.setString(1, startDate);
 						ps.setString(2, endDate);
 						ps.setString(3, startDate);
 						ps.setString(4, endDate);
-						ps.setString(5, startDate);
-						ps.setString(6, endDate);
-						ps.setString(7, data);
+//						ps.setString(5, startDate);
+//						ps.setString(6, endDate);
+						ps.setString(5, data);
 					}
 				}
 			},new QueryMergeData());
@@ -244,17 +244,17 @@ public class ThreeMergeOneDAO extends DAO<ThreeMergeOne>{
 					"                                 'yyyy-mm-dd hh24:mi:ss')" + 
 					"                 AND swipedatetime <=" + 
 					"                        TO_DATE (?," + 
-					"                                 'yyyy-mm-dd hh24:mi:ss')" + 
-					"          UNION" + 
-					"          SELECT ygbh emp_id, dates swipecardtime, '臉模' record_type" + 
-					"            FROM kq_record" + 
-					"           WHERE ygbh = ?" + 
-					"                 AND dates >=" + 
-					"                        TO_DATE (?," + 
-					"                                 'yyyy-mm-dd hh24:mi:ss')" + 
-					"                 AND dates <=" + 
-					"                        TO_DATE (?," + 
 					"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
+//					"          UNION" + 
+//					"          SELECT ygbh emp_id, dates swipecardtime, '臉模' record_type" + 
+//					"            FROM kq_record" + 
+//					"           WHERE ygbh = ?" + 
+//					"                 AND dates >=" + 
+//					"                        TO_DATE (?," + 
+//					"                                 'yyyy-mm-dd hh24:mi:ss')" + 
+//					"                 AND dates <=" + 
+//					"                        TO_DATE (?," + 
+//					"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
 					"   WHERE ce.id = tio.emp_id ORDER BY emp_id";
 		}else if(type.equals("depid")) {
 			sSQL+=  "           WHERE record_status IN ('0', '3', '4', '5', '6', '7')" + 
@@ -274,16 +274,16 @@ public class ThreeMergeOneDAO extends DAO<ThreeMergeOne>{
 					"                                 'yyyy-mm-dd hh24:mi:ss')" + 
 					"                 AND swipedatetime <=" + 
 					"                        TO_DATE (?," + 
-					"                                 'yyyy-mm-dd hh24:mi:ss')" + 
-					"          UNION" + 
-					"          SELECT ygbh emp_id, dates swipecardtime, '臉模' record_type" + 
-					"            FROM kq_record" + 
-					"           WHERE dates >=" + 
-					"                        TO_DATE (?," + 
-					"                                 'yyyy-mm-dd hh24:mi:ss')" + 
-					"                 AND dates <=" + 
-					"                        TO_DATE (?," + 
 					"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
+//					"          UNION" + 
+//					"          SELECT ygbh emp_id, dates swipecardtime, '臉模' record_type" + 
+//					"            FROM kq_record" + 
+//					"           WHERE dates >=" + 
+//					"                        TO_DATE (?," + 
+//					"                                 'yyyy-mm-dd hh24:mi:ss')" + 
+//					"                 AND dates <=" + 
+//					"                        TO_DATE (?," + 
+//					"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
 					"   WHERE ce.id = tio.emp_id and ce.isonwork=0 and ce.depid=? ORDER BY emp_id";
 		}else if(type.equals("costid")) {
 			sSQL+=  	 "           WHERE record_status IN ('0', '3', '4', '5', '6', '7')" + 
@@ -303,16 +303,16 @@ public class ThreeMergeOneDAO extends DAO<ThreeMergeOne>{
 						"                                 'yyyy-mm-dd hh24:mi:ss')" + 
 						"                 AND swipedatetime <=" + 
 						"                        TO_DATE (?," + 
-						"                                 'yyyy-mm-dd hh24:mi:ss')" + 
-						"          UNION" + 
-						"          SELECT ygbh emp_id, dates swipecardtime, '臉模' record_type" + 
-						"            FROM kq_record" + 
-						"           WHERE dates >=" + 
-						"                        TO_DATE (?," + 
-						"                                 'yyyy-mm-dd hh24:mi:ss')" + 
-						"                 AND dates <=" + 
-						"                        TO_DATE (?," + 
 						"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
+//						"          UNION" + 
+//						"          SELECT ygbh emp_id, dates swipecardtime, '臉模' record_type" + 
+//						"            FROM kq_record" + 
+//						"           WHERE dates >=" + 
+//						"                        TO_DATE (?," + 
+//						"                                 'yyyy-mm-dd hh24:mi:ss')" + 
+//						"                 AND dates <=" + 
+//						"                        TO_DATE (?," + 
+//						"                                 'yyyy-mm-dd hh24:mi:ss')) tio" + 
 						"   WHERE ce.id = tio.emp_id and ce.isonwork=0 and ce.costid=? ORDER BY emp_id";
 		}
 		try {
@@ -327,25 +327,25 @@ public class ThreeMergeOneDAO extends DAO<ThreeMergeOne>{
 						ps.setString(4, data);
 						ps.setString(5, startDate);
 						ps.setString(6, endDate);
-						ps.setString(7, data);
-						ps.setString(8, startDate);
-						ps.setString(9, endDate);
+//						ps.setString(7, data);
+//						ps.setString(8, startDate);
+//						ps.setString(9, endDate);
 					}else if(type.equals("depid")) {
 						ps.setString(1, startDate);
 						ps.setString(2, endDate);
 						ps.setString(3, startDate);
 						ps.setString(4, endDate);
-						ps.setString(5, startDate);
-						ps.setString(6, endDate);
-						ps.setString(7, data);
+//						ps.setString(5, startDate);
+//						ps.setString(6, endDate);
+						ps.setString(5, data);
 					}else if(type.equals("costid")) {
 						ps.setString(1, startDate);
 						ps.setString(2, endDate);
 						ps.setString(3, startDate);
 						ps.setString(4, endDate);
-						ps.setString(5, startDate);
-						ps.setString(6, endDate);
-						ps.setString(7, data);
+//						ps.setString(5, startDate);
+//						ps.setString(6, endDate);
+						ps.setString(5, data);
 					}
 				}
 			},new QueryMergeDataGetNum());
@@ -378,5 +378,19 @@ public class ThreeMergeOneDAO extends DAO<ThreeMergeOne>{
 			logger.error("Search Depid Record is failed",ex);
 		}
 		return getDepids;
+	}
+
+	public String contractCostId(String data) {
+		// TODO Auto-generated method stub
+		String result = null;
+		String sSQL="select costid from swipe.csr_employee where id='"+data+"'";
+		try {
+			result = jdbcTemplate.queryForObject(sSQL,String.class);
+		} catch (Exception ex) {
+			// TODO: handle exception
+			ex.printStackTrace();
+			logger.error("Search Costid Record is failed",ex);
+		}
+		return result;
 	}
 }
