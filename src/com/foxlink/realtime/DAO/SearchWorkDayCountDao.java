@@ -30,7 +30,7 @@ public class SearchWorkDayCountDao extends DAO<QueryWorkDayCount> {
 					sSql += " and a.costid = '"+data+"' ";
 				}
 			}
-			sSql += " and b.CONTINUOUS_DAYS > 5";
+			sSql += " and b.CONTINUOUS_DAYS >= 5";
 			
 			if (userDataCostId != null && userDataCostId != "") {
 				if (!userDataCostId.equals("ALL")) {
@@ -127,7 +127,7 @@ public class SearchWorkDayCountDao extends DAO<QueryWorkDayCount> {
 					sql += " and a.costid = ? ";
 				}
 			}
-			sql += " and b.CONTINUOUS_DAYS > 5 ";
+			sql += " and b.CONTINUOUS_DAYS >= 5 ";
 			
 			if (userDataCostId != null && userDataCostId != "") {
 				if (!userDataCostId.equals("ALL")) {
@@ -193,7 +193,7 @@ public class SearchWorkDayCountDao extends DAO<QueryWorkDayCount> {
 					sql += " and a.costid = ? ";
 				}
 			}
-			sql += " and b.CONTINUOUS_DAYS > 5 ";
+			sql += " and b.CONTINUOUS_DAYS >= 5 ";
 			
 			if (userDataCostId != null && userDataCostId != "") {
 				if (!userDataCostId.equals("ALL")) {

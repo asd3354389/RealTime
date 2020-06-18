@@ -60,7 +60,7 @@
 		</div>
 
        <div style="position: absolute; top: 55px; margin-left: 10px">
-       		<h1 style="color:red;">根據人資規定，所有刷卡記錄只允許查詢近三個月的記錄</h1>
+       		<h1 style="color:red;">查詢只顯示連續上班大於或等於5天的記錄</h1>
 			<div class="panel-body" style="border: 1px solid #e1e3e6;">
 <!-- 			        			 <label for="startDate">開始日期:</label> 
 								<input id="startDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd',minDate:'%y-\#{%M-2}-01',maxDate:'#F{$dp.$D(\'endDate\')}'})" autocomplete="off" />
