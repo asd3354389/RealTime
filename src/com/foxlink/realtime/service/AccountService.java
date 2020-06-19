@@ -162,4 +162,9 @@ public class AccountService extends Service<User> {
 		return accountDAO.checkRole(userName,role);
 	}
 
+	public boolean UpdateAccountPassWord1(String username, String oldPassword, String newPassword) {
+		// TODO Auto-generated method stub
+		return accountDAO.UpdateAccountPassWord1(username,oldPassword,newPassword);
+	}
+
 }

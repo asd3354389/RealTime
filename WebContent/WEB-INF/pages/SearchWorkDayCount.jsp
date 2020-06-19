@@ -23,7 +23,7 @@
 <c:url value="/resources/assets/js/jquery-1.8.3.min.js"
 	var="assetsJqueryJS" />
 <c:url value="/resources/assets/My97DatePicker/WdatePicker.js" var="wdatePickerJS" />
-<c:url value="/resources/js/Project/RealTime.Modify.ThreeMergeOne.js?version=${resourceVersion}" var="modifyThreeMergeOneJS" />
+<c:url value="/resources/js/Project/RealTime.Modify.SearchWorkDayCount.js?version=${resourceVersion}" var="modifySearchWorkDayCountJS" />
 <c:url value="/resources/js/Project/untils_date.js?version=${resourceVersion}" var="modifyUntilsJS" />
 <c:url value="/resources/js/jquery/jquery-1.11.3.min.js" var="JqueryJS" />
 <c:url value="/resources/js/bootstrap/bootstrap.min.js" var="bootstrapJS" />
@@ -40,13 +40,13 @@
 <script src="${Common}" type="text/javascript"></script>
 <script src="${tableExportJS}" type="text/javascript"></script>
 <script type="text/javascript" src='${AjaxCheckSessionJS}'></script>
-<script src="${modifyThreeMergeOneJS}" type="text/javascript"></script>
+<script src="${modifySearchWorkDayCountJS}" type="text/javascript"></script>
 <script src="${modifyUntilsJS}" type="text/javascript"></script>
 <script src="${tableToExcel}" type="text/javascript"></script>
 <script src="${testTableExcel}" type="text/javascript"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>三合一刷卡數據查詢</title>
+<title>連續上班時數查詢</title>
 </head>
 <body style="position:relative;">
 		<div id="header" class="header-fixed">
@@ -60,21 +60,47 @@
 		</div>
 
        <div style="position: absolute; top: 55px; margin-left: 10px">
-       			<h1 style="color:red;">根據人資規定，所有刷卡記錄只允許查詢近三個月的記錄</h1>
+       		<h1 style="color:red;">查詢只顯示連續上班大於或等於5天的記錄</h1>
 			<div class="panel-body" style="border: 1px solid #e1e3e6;">
-			        			 <label for="startDate">開始日期:</label> 
-								<input id="startDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'%y-\#{%M-2}-01',maxDate:'#F{$dp.$D(\'endDate\')}'})" autocomplete="off" />
+<!-- 			        			 <label for="startDate">開始日期:</label> 
+								<input id="startDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd',minDate:'%y-\#{%M-2}-01',maxDate:'#F{$dp.$D(\'endDate\')}'})" autocomplete="off" />
 								<label for="startDate">結束日期:</label> 
-								<input id="endDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'startDate\')}'})" autocomplete="off" />
+								<input id="endDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')}'})" autocomplete="off" /> -->
 								<input type="radio" name="changeType" checked id="empid" value="empid"><label for="empid">員工工號</label>
 								<input type="radio" name="changeType" id="depid" value="depid"><label for="depid">部門代碼</label>
 								<input type="radio" name="changeType" id="costid" value="costid"><label for="costid">費用代碼</label>
 						        <input id="data"   class="inputdata inputGray btn1-sm btn1-brown" style="text-align:center;background-color:#e0e0e0;" autocomplete="off">
 						        <!-- <select id="data" class="selected " autocomplete="off" style="visibility: hidden"></select> -->
 						<input id="outputExcel" class="btn btn-primary" type="button"
-							 value="导出Excel文档" / >
-			</div>			
+							 value="查詢" / >
+						<input type="button"
+						class="btn btn-primary" value="顯示全部" " id="showAll"/>
+					    <input type="button" class="btn btn-primary" id="dateOut"
+						value="導出" />
+			</div>		
+			<div
+			style="margin-top: 10px; margin-left: 0px; border: 1px solid #C0C0C0; overflow: auto;height: 680px;position: relative;">
+			<table id="SwipeCardRecords"
+				class="table table-hover "  >
+				<thead>
+					<tr>
+						<th>員工號</th>
+						<th>姓名</th>
+						<th>部門代碼</th>
+						<th>費用代碼</th>
+						<th>連續上班開始日期</th>
+						<th>連續上班結束日期</th>
+						<th>連續上班天數</th>
+					</tr>
+				</thead>
+				<tbody class='spTable'></tbody>
+			</table>
+		</div>	
+		<div id="swipeCardInfoPagination" style="height: 20;position:absolute; bottom: -20px;left: 0px;"></div>
+		
  	  </div>
+ 	  
+ 	 
 
 </body>
 
