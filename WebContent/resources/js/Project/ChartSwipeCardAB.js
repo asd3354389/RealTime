@@ -4,6 +4,8 @@ $(document).ready(function(){
 		var varCostID=$('#CostID').val();
 		var varStartTime=$('#id-StartTimeValue').val();
 		var varEndTime=$('#id-EndTimeValue').val();
+		if(varStartTime==="null" || varStartTime==''){alert("請選擇開始時間！");return;}
+		if(varEndTime==="null" || varEndTime==''){alert("請選擇結束時間！");return;}
 		$('#id-query2').attr("disabled",true);
 		$.ajax({
 			   url:"../EChartss/getChartSwipeCardAB", 
@@ -29,8 +31,6 @@ $(document).ready(function(){
 			   } 
 		}) 
 	});
-})
-	
 	function creatChart(i,result){
 		$('#idEcharts').append("   <div >"+i+" </div> <div id='main"+i+"' style=\"height:300px;width:90%\"> ");
 		
@@ -170,7 +170,10 @@ $(document).ready(function(){
 
 	    })
 
-	}
+	};
+});
+	
+	
 	
 	
 	

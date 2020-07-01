@@ -24,7 +24,7 @@ import net.sf.json.JSONObject;
 @Controller
 @RequestMapping("/EChartss")
 public class EChartssController {
-	private static Logger logger=Logger.getLogger(DGsubsidyController.class);
+	private static Logger logger=Logger.getLogger(EChartssController.class);
 	private EChartssService echartssService;
 	
 	@RequestMapping(value = "/ShowChartSwipeCardABPage", method = RequestMethod.GET)

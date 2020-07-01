@@ -14,19 +14,19 @@
 <link href="${pluginsCSS}" rel="stylesheet">
 <link href="${mainCSS}" rel="stylesheet">
 
-<c:url value="/resources/assets/js/jquery-1.8.3.min.js" var="assetsJqueryJS" />
+
+<c:url value="/resources/js/jquery/jquery-1.11.3.min.js" var="JqueryJS" />
 <c:url value="/resources/js/bootstrap/bootstrap.min.js" var="bootstrapJS" />
 <c:url value="/resources/assets/My97DatePicker/WdatePicker.js" var="wdatePickerJS" />
 <c:url value="/resources/js/echarts.min.js" var="echartsJS" />
 <c:url value="/resources/js/Project/AjaxCheckSession.js?version=${resourceVersion}" var="AjaxCheckSessionJS"/> 
 <c:url value="/resources/js/Project/ChartSwipeCardAB.js?version=${resourceVersion}" var="ChartSwipeCardABJS" />
 
-<script src="${assetsJqueryJS}" type="text/javascript"></script>
+<script src="${JqueryJS}" type="text/javascript"></script>
 <script src="${bootstrapJS}" type="text/javascript"></script>
 <script src="${wdatePickerJS}" language="javascript" type="text/javascript"></script>
 <script src="${echartsJS}" type="text/javascript"></script>
-<script type="text/javascript" src='${AjaxCheckSessionJS}'></script>
-<script src="/resources/js/echarts.min.js"></script>
+<script src="${AjaxCheckSessionJS}" type="text/javascript"></script>
 <script src="${ChartSwipeCardABJS}" type="text/javascript"></script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
