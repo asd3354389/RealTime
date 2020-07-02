@@ -371,6 +371,7 @@
 	<bean id="searchWorkDayCountService" class="com.foxlink.realtime.service.SearchWorkDayCountService">
 		<property name="searchWorkDayCountDao" ref="searchWorkDayCountDao" />
 	</bean>
+	<bean id="echartssService" class="com.foxlink.realtime.service.EChartssService"/>
 	
 	<!-- <bean id="fourteenROPDAO" class="com.foxlink.realtime.DAO.FourteenROPDAO"
 		parent="dAO">

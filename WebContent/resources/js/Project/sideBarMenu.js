@@ -55,6 +55,10 @@
 				"menuname" : "連續上班天數查詢",
 				"icon" : "icon-nav",
 				"url" : "SearchWorkDayCount/ShowSearchWorkDayCount"
+			},{
+				"menuname" : "刷卡異常曲綫圖查詢",
+				"icon" : "icon-nav",
+				"url" : "EChartss/ShowChartSwipeCardABPage"
 			}]
 		},{
 
