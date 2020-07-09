@@ -41,20 +41,23 @@ public class EChartssService {
 		 JsonObject jsonb =new JsonObject();
 		    String strSQL1="  SELECT DISTINCT CE.COSTID\r\n" + 
 		    		"    FROM swipe.ALERT_SWIPECARD_AB_WECHAT asaw, SWIPE.CSR_EMPLOYEE ce\r\n" + 
-		    		"   WHERE     asaw.id = CE.ID\r\n" + 
+		    		"   WHERE     asaw.id = CE.ID \r\n" + 
 		    		"         AND ASAW.SWIPE_DATE >= '"+varStartTime+"'\r\n" + 
 		    		"         AND ASAW.SWIPE_DATE <= '"+varEndTime+"'\r\n" + 
+		    		"         AND  CE.DEPTID IN (SELECT DISTINCT DEPTID FROM swipe.WECHAT_USER WHERE ENABLED=1)\r\n" +
 		    		"ORDER BY ce.costid";
 			String strSQL = "  SELECT ASAW.SWIPE_DATE,\r\n" + 
 					"         ASAW.STATUS,\r\n" + 
 					"         CE.COSTID,\r\n" + 
 					"         COUNT (ASAW.ID) SUM \r\n" + 
 					"    FROM swipe.ALERT_SWIPECARD_AB_WECHAT asaw, SWIPE.CSR_EMPLOYEE ce\r\n" + 
-					"   WHERE     asaw.id = CE.ID\r\n" + 
+					"   WHERE     asaw.id = CE.ID \r\n" + 
 					"         AND ASAW.SWIPE_DATE >= '"+varStartTime+"'\r\n" + 
 					"         AND ASAW.SWIPE_DATE <= '"+varEndTime+"'\r\n" + 
+					"         AND  CE.DEPTID IN (SELECT DISTINCT DEPTID FROM swipe.WECHAT_USER WHERE ENABLED=1)\r\n" +
 					"GROUP BY ASAW.SWIPE_DATE, ASAW.STATUS, CE.COSTID\r\n" + 
-					"ORDER BY ASAW.SWIPE_DATE, ASAW.STATUS, CE.COSTID";			
+					"ORDER BY ASAW.SWIPE_DATE, ASAW.STATUS, CE.COSTID";		
+			System.out.println( strSQL );
 			try {
 				listCostID=jdbcTemplate.queryForList(strSQL1);
 				//System.out.println(listCostID);
@@ -175,5 +178,37 @@ public class EChartssService {
 				logger.info(e);
 			}
 			return jsonb ;
+	 }
+	 
+	 public List<Map<String, Object>> getCSCABByID(String varStartTime,String varEndTime){
+		 List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();
+		 String strSQL = "SELECT CE.ID,\r\n" + 
+		 		"         CE.NAME,\r\n" + 
+		 		"         CE.DEPID,\r\n" + 
+		 		"         CE.DEPTID,\r\n" +
+		 		"         CE.COSTID,\r\n" + 
+		 		"         ASAW.STATUS,\r\n" + 
+		 		"         COUNT (ASAW.ID) SUM\r\n" + 
+		 		"    FROM SWIPE.CSR_EMPLOYEE CE, SWIPE.ALERT_SWIPECARD_AB_WECHAT ASAW\r\n" + 
+		 		"   WHERE     CE.ID = ASAW.ID\r\n" + 
+		 		"         AND ASAW.SWIPE_DATE >= '"+varStartTime+"'\r\n" + 
+		 		"         AND ASAW.SWIPE_DATE <= '"+varEndTime+"'\r\n" + 
+		 		"         AND  CE.DEPTID IN (SELECT DISTINCT DEPTID FROM swipe.WECHAT_USER WHERE ENABLED=1)\r\n" + 
+		 		"GROUP BY CE.ID,\r\n" + 
+		 		"         CE.NAME,\r\n" + 
+		 		"         CE.DEPID,\r\n" +
+		 		"         CE.DEPTID,\r\n" +
+		 		"         CE.COSTID,\r\n" + 
+		 		"         ASAW.STATUS\r\n" + 
+		 		"ORDER BY CE.COSTID, CE.DEPID, SUM DESC";
+		try {
+			logger.info(strSQL);
+			listMap = (List<Map<String, Object>>) jdbcTemplate.queryForList(strSQL);
+
+		} catch (Exception e) {
+			logger.info(e);
+		}
+		return listMap;
+		 
 	 }
 }

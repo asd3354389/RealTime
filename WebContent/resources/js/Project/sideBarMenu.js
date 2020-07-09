@@ -59,6 +59,10 @@
 				"menuname" : "刷卡異常曲綫圖查詢",
 				"icon" : "icon-nav",
 				"url" : "EChartss/ShowChartSwipeCardABPage"
+			},{
+				"menuname" : "刷卡異常統計查詢",
+				"icon" : "icon-nav",
+				"url" : "EChartss/ShowID"
 			}]
 		},{
 

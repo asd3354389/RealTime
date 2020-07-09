@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.foxlink.realtime.model.QueryWorkDayCount;
 import com.foxlink.realtime.service.EChartssService;
 import com.google.gson.JsonObject;
 
@@ -31,6 +31,10 @@ public class EChartssController {
 	public String ShowChartSwipeCardABPage() {
 		return "ChartSwipeCardAB";
 	}
+	@RequestMapping(value = "/ShowID", method = RequestMethod.GET)
+	public String ShowID() {
+		return "ChartSwipeCardABByID";
+	}	
 
 	@RequestMapping("/getChartSwipeCardAB")
 	@ResponseBody
@@ -46,6 +50,22 @@ public class EChartssController {
 			logger.info(e);
 		}
 		return jsonb;
+	}
+	
+	@RequestMapping("/getChartSwipeCardABByID")
+	@ResponseBody
+	public List<Map<String, Object>> getChartSwipeCardABByID(@RequestParam(value = "varStartTime") String varStartTime,
+			@RequestParam(value = "varEndTime") String varEndTime) {
+		List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();		
+		try {
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			echartssService = (EChartssService) context.getBean("echartssService");
+		listMap = echartssService.getCSCABByID(varStartTime, varEndTime);
+		System.out.print(listMap);
+		} catch (Exception e) {
+			logger.info(e);
+		}
+		return listMap;
 	}
 	
 	
