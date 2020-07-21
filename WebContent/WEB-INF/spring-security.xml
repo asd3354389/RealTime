@@ -37,6 +37,7 @@
 		<intercept-url pattern="/IOWorkShop/ShowIOWorkShopRecord" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT','ROLE_ZJADLOW','ROLE_LJADLOW','ROLE_TXACCESSRECORD')" />
 		<intercept-url pattern="/ExceptionCost/ShowExceptionCost" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW','ROLE_ZJADLOW','ROLE_LJADLOW')" />
 		<intercept-url pattern="/FourteenRO/**" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
+		<intercept-url pattern="/FourteenROPTX/**" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
 		<intercept-url pattern="/FourteenROP/**" access="hasAnyRole('ROLE_ADMIN','ROLE_14R1ZJADLOW')" />
 		<intercept-url pattern="/ClassNoRest/ShowClassNoRestInfo" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW','ROLE_ZJADLOW','ROLE_LJADLOW')" />
 		<intercept-url pattern="/WorkShopStatus/ShowWorkShopStatus" access="hasAnyRole('ROLE_ADMIN','ROLE_ZJADLOW','ROLE_LJADLOW')" />
