@@ -79,9 +79,19 @@
 				"icon" : "icon-nav",
 				"url" : "EmpIPBinding/ShowEmpIPBinding"
 			},{
-				"menuname" : "十四休一個人設定維護",
+				"menuname" : "十四休一個人設定維護-零組件",
 				"icon" : "icon-nav",
 				"url" : "FourteenROP/ShowFourteenROP"
+
+			},{
+				"menuname" : "十四休一個人設定維護-通訊",
+				"icon" : "icon-nav",
+				"url" : "FourteenROPTX/ShowFourteenROPTX"
+
+			},{
+				"menuname" : "十四休一維護-通訊",
+				"icon" : "icon-nav",
+				"url" : "FourteenRO/ShowFourteenRO"
 
 			}]
 		},{
@@ -125,11 +135,6 @@
 				"menuname" : "車間例外費用代碼維護",
 				"icon" : "icon-nav",
 				"url" : "ExceptionCost/ShowExceptionCost"
-
-			},{
-				"menuname" : "十四休一維護",
-				"icon" : "icon-nav",
-				"url" : "FourteenRO/ShowFourteenRO"
 
 			},{
 				"menuname" : "班別加班休息時間維護",

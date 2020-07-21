@@ -16,32 +16,32 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.foxlink.realtime.model.FourteenRO;
 import com.foxlink.realtime.model.FourteenROP;
 import com.foxlink.realtime.model.Page;
-import com.foxlink.realtime.service.FourteenROPService;
+import com.foxlink.realtime.service.FourteenROPTXService;
 import com.foxlink.realtime.service.FourteenROService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 /**
- * 組件14休一個人设定
+ * 通訊14休一個人设定
  * @author 129548
  *
  */
 @Controller
-@RequestMapping("/FourteenROP")
-public class FourteenROPController {
+@RequestMapping("/FourteenROPTX")
+public class FourteenROPTXController {
 
 	private Logger logger = Logger.getLogger(this.getClass());
 	
 	@Autowired
-	private FourteenROPService fourteenROPService;
+	private FourteenROPTXService fourteenROPService;
 	
-	@RequestMapping(value="/ShowFourteenROP",method=RequestMethod.GET)
+	@RequestMapping(value="/ShowFourteenROPTX",method=RequestMethod.GET)
 	public String ShowWorkShopNoRestInfo(){
-		return "FourteenROP";
+		return "FourteenROPTX";
 	}
 
-	@RequestMapping(value="/ShowAllFourteenROP",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+	@RequestMapping(value="/ShowAllFourteenROPTX",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ResponseBody
 	public String ShowAllIOSpecialWSEmp(HttpSession session,@RequestParam("curPage")String curPage,@RequestParam("queryCritirea")String queryCritirea,@RequestParam("queryParam")String queryParam){
 		String DisableResult=null;
@@ -56,7 +56,7 @@ public class FourteenROPController {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			String updateUser=(String) session.getAttribute("username");
 			String userDataCostId=(String) session.getAttribute("userDataCostId");
-			//fourteenROPService = (FourteenROPService) context.getBean("fourteenROPService");
+			//fourteenROPService = (FourteenROPTXService) context.getBean("fourteenROPService");
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			Page page = fourteenROPService.getFourteenROPPage(currentPage,queryCritirea, queryParam,updateUser,userDataCostId);
 			page.setList(fourteenROPService.FindQueryRecord(updateUser, currentPage, queryCritirea,queryParam,userDataCostId));
@@ -72,7 +72,7 @@ public class FourteenROPController {
 		return DisableResult;
 	}
 	
-	@RequestMapping(value="/deleteFourteenROP.do",method=RequestMethod.GET,produces="application/json;charset=utf-8")
+	@RequestMapping(value="/deleteFourteenROPTX.do",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 	@ResponseBody
 	public String DeleteIOSpecialWSEmp(HttpSession session,@RequestParam("id")String id
 			,@RequestParam("startDate")String startDate,@RequestParam("endDate")String endDate){
@@ -97,7 +97,7 @@ public class FourteenROPController {
 		return DisableResult.toString();
 	}
 	
-	@RequestMapping(value="/AddFourteenROP.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
+	@RequestMapping(value="/AddFourteenROPTX.do",method=RequestMethod.POST,produces="Application/json;charset=utf-8")
 	@ResponseBody 
 	public String ADDIOSpecialWSEmp(HttpSession session,@RequestBody FourteenROP[] fourteenROP){
 		JsonObject AddResult=new JsonObject();	
