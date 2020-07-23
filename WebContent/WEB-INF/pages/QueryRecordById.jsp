@@ -59,11 +59,11 @@
 		<!-- Start .header-inner -->
 	</div>
 
-       <div style="position: absolute; top: 55px; margin-left: 10px">
+       <div style="position: absolute; top: 55px; margin-left: 10px;width: 50%">
 
 
 
-<div class="panel-body" style="border: 1px solid #e1e3e6;width: 834px;">
+<div class="panel-body" style="border: 1px solid #e1e3e6;width: 100%;">
          <label for="startDate">開始日期:</label> 
 					<input id="startDate" class="Wdate" type="text" onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd',minDate:'%y-\#{%M-2}-01',maxDate:'#F{$dp.$D(\'endDate\')}'})" autocomplete="off" />
 					<label for="startDate">結束日期:</label> 
@@ -73,8 +73,8 @@
 			<input id="searchById" class="btn btn-primary" type="button"
 				 value="查詢" />
 					</div>
-								<div class="panel-body"  style="padding-top: 0px;padding-bottom: 0px;">
- <div class="row" style="border: 1px solid #e1e3e6;width: 50%;display: none;" id="queryRecordByIdTable" >
+								<div class="panel-body"  style="padding-top: 0px;padding-bottom: 0px;width: 100%;padding-left: 0px;padding-right: 0px;">
+ <div class="panel-body" style="border: 1px solid #e1e3e6;width: 100%%;display: none;" id="queryRecordByIdTable" >
  <center><p style="font-size: 28px;"><b>系統查詢畫面-依工號</b></p></center>
 <div class="col-md-12">
 <table id="queryRecordById" class="table table-bordered" style="border:2px solid #f3f5f6;table-layout:fixed;">
@@ -102,8 +102,8 @@
  </div>
 
 </div> 
-<div class="panel-body"  style="padding-top: 0px;">
- <div class="row"   style="border: 1px solid #e1e3e6;width: 50%;display: none;" id="queryInfoByIdTable" >
+<div class="panel-body"  style="padding-top: 0px;width: 100%;padding-left: 0px;padding-right: 0px;">
+ <div class="panel-body"   style="border: 1px solid #e1e3e6;width: 100%;display: none;" id="queryInfoByIdTable" >
  
 <div class="col-md-12">
 <table id="queryInfoById" class="table table-bordered" style="border:2px solid #f3f5f6;table-layout:fixed;">

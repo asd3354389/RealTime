@@ -371,9 +371,17 @@
 	<bean id="searchWorkDayCountService" class="com.foxlink.realtime.service.SearchWorkDayCountService">
 		<property name="searchWorkDayCountDao" ref="searchWorkDayCountDao" />
 	</bean>
-	<bean id="echartssService" class="com.foxlink.realtime.service.EChartssService"/>
+	 <bean id="echartssService" class="com.foxlink.realtime.service.EChartssService"/> 
+	<!-- <bean id="dgsubsidyStatusService" class="com.foxlink.realtime.service.DGsubsidyStatusService"/>  -->
+     <bean id="dGsubsidyStatusDAO" class="com.foxlink.realtime.DAO.DGsubsidyStatusDAO"
+		parent="dAO">
+	</bean>
+	<bean id="dGsubsidyStatusService" class="com.foxlink.realtime.service.DGsubsidyStatusService">
+		<property name="dGsubsidyStatusDAO" ref="dGsubsidyStatusDAO" />
+	</bean>  
 	
-	<!-- <bean id="fourteenROPDAO" class="com.foxlink.realtime.DAO.FourteenROPDAO"
+	
+		<!-- <bean id="fourteenROPDAO" class="com.foxlink.realtime.DAO.FourteenROPDAO"
 		parent="dAO">
 	</bean> -->
 	<!-- <bean id="fourteenROPService" class="com.foxlink.realtime.service.FourteenROPService">
