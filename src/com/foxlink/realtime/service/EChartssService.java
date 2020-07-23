@@ -39,24 +39,25 @@ public class EChartssService {
 		 List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();
 		 List<Map<String, Object>> listCostID= new ArrayList<Map<String, Object>>();
 		 JsonObject jsonb =new JsonObject();
-		    String strSQL1="  SELECT DISTINCT CE.COSTID\r\n" + 
+		    String strSQL1="  SELECT DISTINCT CE.COSTID,CE.DEPTID,CE.DEPNAME \r\n" + 
 		    		"    FROM swipe.ALERT_SWIPECARD_AB_WECHAT asaw, SWIPE.CSR_EMPLOYEE ce\r\n" + 
 		    		"   WHERE     asaw.id = CE.ID \r\n" + 
 		    		"         AND ASAW.SWIPE_DATE >= '"+varStartTime+"'\r\n" + 
 		    		"         AND ASAW.SWIPE_DATE <= '"+varEndTime+"'\r\n" + 
 		    		"         AND  CE.DEPTID IN (SELECT DISTINCT DEPTID FROM swipe.WECHAT_USER WHERE ENABLED=1)\r\n" +
-		    		"ORDER BY ce.costid";
+		    		"ORDER BY ce.costid,ce.DEPTID";
 			String strSQL = "  SELECT ASAW.SWIPE_DATE,\r\n" + 
 					"         ASAW.STATUS,\r\n" + 
 					"         CE.COSTID,\r\n" + 
+					"         CE.DEPTID,\r\n" + 
 					"         COUNT (ASAW.ID) SUM \r\n" + 
 					"    FROM swipe.ALERT_SWIPECARD_AB_WECHAT asaw, SWIPE.CSR_EMPLOYEE ce\r\n" + 
 					"   WHERE     asaw.id = CE.ID \r\n" + 
 					"         AND ASAW.SWIPE_DATE >= '"+varStartTime+"'\r\n" + 
 					"         AND ASAW.SWIPE_DATE <= '"+varEndTime+"'\r\n" + 
 					"         AND  CE.DEPTID IN (SELECT DISTINCT DEPTID FROM swipe.WECHAT_USER WHERE ENABLED=1)\r\n" +
-					"GROUP BY ASAW.SWIPE_DATE, ASAW.STATUS, CE.COSTID\r\n" + 
-					"ORDER BY ASAW.SWIPE_DATE, ASAW.STATUS, CE.COSTID";		
+					"GROUP BY ASAW.SWIPE_DATE, ASAW.STATUS, CE.COSTID,CE.DEPTID\r\n" + 
+					"ORDER BY ASAW.SWIPE_DATE, ASAW.STATUS, CE.COSTID,CE.DEPTID";		
 			System.out.println( strSQL );
 			try {
 				listCostID=jdbcTemplate.queryForList(strSQL1);
@@ -91,7 +92,9 @@ public class EChartssService {
 			}
 			// 循环costid
 			for (Map<String, Object> LCID : listCostID) {
-				String strLCIDCostID = LCID.get("COSTID") == null ? "0000" : LCID.get("COSTID").toString();
+				String strLCIDCostID = LCID.get("DEPTID") == null ? "0000" : LCID.get("DEPTID").toString();
+				String strLCIDCostID2 = LCID.get("COSTID") == null ? "0000" : LCID.get("COSTID").toString();
+				String strLCIDDeptName = LCID.get("DEPNAME") == null ? "0000" : LCID.get("DEPNAME").toString();
 				JsonArray arrayPlayer = new JsonArray();
 				lCostID.add(strLCIDCostID);
 				JsonObject jbplayer = new JsonObject();
@@ -110,7 +113,7 @@ public class EChartssService {
 				
 						for (Map<String, Object> LM : listMap) {
 							String strSwipe_date = LM.get("SWIPE_DATE").toString();
-							String strLMCOSTID = LM.get("COSTID") == null ? "0000" : LM.get("COSTID").toString();
+							String strLMCOSTID = LM.get("DEPTID") == null ? "0000" : LM.get("DEPTID").toString();
 							String strSTATUS = LM.get("STATUS").toString();
 							int iSUM = Integer.parseInt(LM.get("SUM").toString());
 							// 如果listmap中存在日期；费用代码；异常状态，值保存到数组中。
@@ -158,8 +161,9 @@ public class EChartssService {
 
 				} // 4
 				jbplayer.addProperty("xdate", lDate.toString());
+				jbplayer.addProperty("deptName", LCID.get("DEPNAME").toString());
 				arrayPlayer.add(jbplayer);
-				jsonb.add(strLCIDCostID, arrayPlayer);
+				jsonb.add(strLCIDCostID2+"-"+strLCIDCostID, arrayPlayer);
 				
 			}
 			System.out.println(jsonb);
