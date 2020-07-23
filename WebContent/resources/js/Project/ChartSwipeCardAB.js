@@ -31,10 +31,8 @@ $(document).ready(function(){
 			   } 
 		}) 
 	});
-	function creatChart(i,result){
-		$('#idEcharts').append("   <div >"+i+" </div> <div id='main"+i+"' style=\"height:300px;width:90%\"> ");
-		
-		var myChart = echarts.init(document.getElementById('main'+i));
+	function creatChart(i,result){		
+				
 		var DataOne=result['0']['1'];
 		DataOne=DataOne.substr(1,DataOne.length-2).split(",");
 		var DataTwo=result['0']['2'];
@@ -45,7 +43,11 @@ $(document).ready(function(){
 		DataFour=DataFour.substr(1,DataFour.length-2).split(",");
 		var xdate=result['0']['xdate'];
 		xdate=xdate.substr(1,xdate.length-2).split(",");
+		var varDeptName=result['0']['deptName'];
 		
+		var varTitle=i+"-"+varDeptName;
+		$('#idEcharts').append("   <div >"+varTitle+" </div> <div id='main"+i+"' style=\"height:300px;width:90%\"> ");
+		var myChart = echarts.init(document.getElementById('main'+i));
 
 		option = {
 				color:['#458FE3', '#48C964', '#FB8989', '#FFA500'],
