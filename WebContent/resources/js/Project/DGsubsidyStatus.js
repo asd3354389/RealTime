@@ -75,7 +75,7 @@ $(document)
 										$
 												.ajax({
 													type : "post",
-													url : 'CheckOverTimeStatusJsonAll.show',
+													url : 'DGsubsidyStatusJsonAll.show',
 													// dataType:"json",
 													async : false,
 													// data :
@@ -459,7 +459,7 @@ $(document)
 						//console.log(data1);
 						$.ajax({
 							type : "post",
-							url : 'CheckOverTimeStatusJson.show',
+							url : 'DGsubsidyStatusJson.show',
 							// dataType:"json",
 							async : false,
 							// data : {curPage:curPage,$("#form1").serialize()},

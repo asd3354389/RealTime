@@ -63,6 +63,10 @@
 				"menuname" : "刷卡異常統計查詢",
 				"icon" : "icon-nav",
 				"url" : "EChartss/ShowID"
+			},{
+				"menuname" : "崗位津貼狀態查詢",
+				"icon" : "icon-nav",
+				"url" : "ShowDGsubsidyStatus"
 			}]
 		},{
 
