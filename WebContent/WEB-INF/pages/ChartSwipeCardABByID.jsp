@@ -78,10 +78,14 @@ background: #DCDCDC;
 					<tr style="color: #1a608f;" bgcolor="#75B9E6">
 						<th style="text-align:center;">工號</th>
 						<th style="text-align:center;">姓名</th>
-						<th style="text-align:center;">綫別代碼</th>
-						<th style="text-align:center;">組別代碼</th>
 						<th style="text-align:center;">費用代碼</th>
-						<th style="text-align:center;">異常類型</th>
+						<th style="text-align:center;">組別代碼</th>
+						<th style="text-align:center;">綫別代碼</th>
+						<th style="text-align:center;">部門名稱</th>
+						<th style="text-align:center;">上班超時15分鐘刷卡</th>
+						<th style="text-align:center;">下班超時15分鐘刷卡</th>
+						<th style="text-align:center;">超7休1</th>
+						<th style="text-align:center;">下班超15分鐘未刷卡</th>
 						<th style="text-align:center;">異常合計</th>
 					</tr>
 				</thead>
