@@ -31,32 +31,22 @@ $(document).ready(function(){
 		 
 		 var tableData="";		 
 		 for(var i=0;i<data.length;i++){
-			 var varStatus=data[i]['STATUS'];
-			 switch (varStatus) {
-			case '1':
-				varStatus = '上班超時15分鐘刷卡';
-				break;
-			case '2':
-				varStatus = '下班超時15分鐘刷卡';
-				break;
-			case '3':
-				varStatus = '超7休1';
-				break;
-			case '4':
-				varStatus = '下班超15分鐘未刷卡';
-				break;
-			}
+
 		  tableData+='<tr style="text-align:center;">';
 		  tableData+='<td>'+data[i]['ID']+'</td>';
 		  tableData+="<td>"+data[i]['NAME']+"</td>";
-		  tableData+="<td>"+data[i]['DEPID']+"</td>";
-		  tableData+="<td>"+data[i]['DEPTID']+"</td>";
 		  tableData+="<td>"+data[i]['COSTID']+"</td>";
-		  tableData+="<td>"+varStatus+"</td>";
-		  tableData+="<td>"+data[i]['SUM']+"</td>";
-		  tableData+="</tr>"
+		  tableData+="<td>"+data[i]['DEPTID']+"</td>";
+		  tableData+="<td>"+data[i]['DEPID']+"</td>";
+		  tableData+="<td>"+data[i]['DEPNAME']+"</td>";
+		  tableData+="<td>"+data[i]['S1']+"</td>";
+		  tableData+="<td>"+data[i]['S2']+"</td>";
+		  tableData+="<td>"+data[i]['S3']+"</td>";
+		  tableData+="<td>"+data[i]['S4']+"</td>";
+		  tableData+="<td>"+data[i]['SSUM']+"</td>";
+		  tableData+="</tr>";
 		 }		 
 		 
-		 $("#tbody1").html(tableData)
+		 $("#tbody1").html(tableData);
 		}
 });

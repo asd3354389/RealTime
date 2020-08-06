@@ -56,11 +56,11 @@
 				"icon" : "icon-nav",
 				"url" : "SearchWorkDayCount/ShowSearchWorkDayCount"
 			},{
-				"menuname" : "刷卡異常曲綫圖查詢",
+				"menuname" : "異常刷卡趨勢圖查詢",
 				"icon" : "icon-nav",
 				"url" : "EChartss/ShowChartSwipeCardABPage"
 			},{
-				"menuname" : "刷卡異常統計查詢",
+				"menuname" : "異常刷卡統計查詢",
 				"icon" : "icon-nav",
 				"url" : "EChartss/ShowID"
 			}]
