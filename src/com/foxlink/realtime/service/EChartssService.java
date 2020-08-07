@@ -619,15 +619,16 @@ public class EChartssService {
 			        for (Map<String, Object> ToID : listMapTo) {
 			        	StrTO=StrTO+ToID.get("WECHAT_ID").toString()+"@foxlink.com.tw,";
 			        }
-			        StrTO=StrTO.substring(0, StrTO.length()-1);
+			        if(!StrTO.isEmpty()) StrTO=StrTO.substring(0, StrTO.length()-1);
 			        System.out.println(StrTO);
 			     // 设置多个抄送地址  
 			        String StrCC = "";
 			        for (Map<String, Object> CCID : listMapCC) {
 			        	StrCC=StrCC+CCID.get("WECHAT_ID").toString()+"@foxlink.com.tw,";
 			        }
-			        StrCC=StrCC.substring(0, StrCC.length()-1);System.out.println(StrCC);	
+			        if(!StrCC.isEmpty()) StrCC=StrCC.substring(0, StrCC.length()-1);
 			        System.out.println(StrCC);
+			        if(StrCC.isEmpty()&&StrTO.isEmpty()) return;
 				
 				//郵箱服務器地址
 				 String smtpServer="dp-notes.foxlink.com.tw";
@@ -659,14 +660,16 @@ public class EChartssService {
 					        msg.setFrom(fromAddress);
 					     // 设置邮件接收方的地址
 					        // 设置多个收件人地址  
-				        
-					        InternetAddress[] ToAddress = InternetAddress.parse(StrTO);
-					        // 设置邮件接收方
-					        msg.setRecipients(RecipientType.TO, ToAddress);
-					        // 设置多个抄送地址  
-		
-				        	InternetAddress[] CCAddress = InternetAddress.parse(StrTO);
-				        	msg.setRecipients(RecipientType.CC, CCAddress);
+					        if(!StrTO.isEmpty()) {
+					           InternetAddress[] ToAddress = InternetAddress.parse(StrTO);
+					           // 设置邮件接收方
+					           msg.setRecipients(RecipientType.TO, ToAddress);
+					        }
+					        if(!StrCC.isEmpty()) {
+					           // 设置多个抄送地址  		
+				        	   InternetAddress[] CCAddress = InternetAddress.parse(StrCC);
+				        	   msg.setRecipients(RecipientType.CC, CCAddress);
+					        }
 					        
 					        
 					        // 设置邮件标题
