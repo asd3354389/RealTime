@@ -599,7 +599,7 @@ public class EChartssService {
 			// 将输出写入excel文件
 			String sST = varStartTime.replace("-", "");
 			String sSE = varEndTime.replace("-", "");
-			String sName = strFactory + "異常刷卡趨勢圖" + sST + "-" + sSE;
+			String sName = strFactory  + sST + "-" + sSE;
 			File file =new File("C:\\ExcelBak");
 			//如果文件夹不存在则创建    
 			if  (!file .exists()  && !file .isDirectory())      
@@ -628,8 +628,7 @@ public class EChartssService {
 			        }
 			        if(!StrCC.isEmpty()) StrCC=StrCC.substring(0, StrCC.length()-1);
 			        System.out.println(StrCC);
-			        if(StrCC.isEmpty()&&StrTO.isEmpty()) return;
-				
+			        if(StrCC.isEmpty()&&StrTO.isEmpty()) return;			       
 				//郵箱服務器地址
 				 String smtpServer="dp-notes.foxlink.com.tw";
 				//發件人
@@ -688,10 +687,10 @@ public class EChartssService {
 					        String strContent="各位長官好：<BR>附件爲"+strWeekorMonth+strFactory+"員工"+sST + "-" + sSE+"異常刷卡趨勢圖，<BR>請查閲，謝謝。";
 					        text.setContent(strContent,"text/html;charset=UTF-8");
 					        //创建xsl附件节点
-					        MimeBodyPart file2 = new MimeBodyPart();
+					        MimeBodyPart file2 = new MimeBodyPart();					        
 					        DataHandler dataHandler3 = new DataHandler(new FileDataSource(filename));
 					        file2.setDataHandler(dataHandler3);
-					        file2.setFileName(MimeUtility.encodeText(dataHandler3.getName()));
+					        file2.setFileName(MimeUtility.encodeWord(dataHandler3.getName()));
 					      //将文本和图片添加到multipart
 					        multipart.addBodyPart(text);
 					        multipart.addBodyPart(file2);
