@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -29,6 +31,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
+import javax.mail.util.ByteArrayDataSource;
 import javax.persistence.criteria.From;
 
 import org.apache.log4j.Logger;
@@ -58,12 +61,16 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 
 import com.foxlink.realtime.model.QueryWorkDayCount;
+import com.foxlink.realtime.model.SwipecardAB;
 import com.foxlink.realtime.model.objectMapper.QueryEmpIPBindingMapper;
 import com.foxlink.realtime.model.objectMapper.QueryWorkDayCountMapper;
+import com.foxlink.realtime.model.objectMapper.SwipecardABMapper;
+import com.foxlink.realtime.util.SwipecardABExcelUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -317,11 +324,14 @@ public class EChartssService {
 		 Date date=new Date(); 
 		 SimpleDateFormat sdf=new SimpleDateFormat("yyy-MM-dd hh:mm:ss"); 
 		 logger.info("-----------------------------EchartFQ3QToMail-Start"+sdf.format(date));
-		 
+		 SwipecardABExcelUtils swipeABUtil = new SwipecardABExcelUtils();
+		 List<SwipecardAB> swipecardABList = new ArrayList<SwipecardAB>();
+		 String sheetName1 = strFactory+varStartTime.replace("-", "")+"-"+varEndTime.replace("-", "")+"員工異常刷卡次數報表";
 		 List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();
 		 List<Map<String, Object>> listCostID= new ArrayList<Map<String, Object>>();
 		 List<Map<String, Object>> listMapTo = new ArrayList<Map<String, Object>>();
 		 List<Map<String, Object>> listMapCC= new ArrayList<Map<String, Object>>();
+		 
 /*		    String strSQL1="  SELECT DISTINCT CE.COSTID,CE.DEPTID,CE.DEPNAME \r\n" + 
 		    		"    FROM swipe.ALERT_SWIPECARD_AB_WECHAT asaw, SWIPE.CSR_EMPLOYEE ce\r\n" + 
 		    		"   WHERE     asaw.id = CE.ID \r\n" + 
@@ -348,8 +358,17 @@ public class EChartssService {
 			    String strSQLTo="SELECT DISTINCT WECHAT_ID FROM swipe.WECHAT_USER WHERE ENABLED=1 AND FACTORY='"+strFactory+"'";
 				String strSQLCC = "SELECT DISTINCT WECHAT_ID FROM swipe.WECHAT_USER WHERE ENABLED=1 AND deptid in ('ALL','"+strFactory+"')";	
 			System.out.println( strSQL );
+			
+			String sstrSQL = "select b.id,b.name,b.costid,b.deptid,b.depid,b.depname,sum(case when a.status = 2 then 1 else 0 end) OVERTIME15,sum(case when a.status = 3 then 1 else 0 end) MORETHEN7,sum(case when a.status = 4 then 1 else 0 end) OUTWORK15,count(*) count "
+					+ " from ALERT_SWIPECARD_AB_WECHAT a,csr_employee b where a.id = b.id and "
+					+ " a.swipe_date >= '"+varStartTime+"' and a.swipe_date <= '"+varEndTime+"' and a.status != 1 and b.deptid in "
+							+ " (select distinct(deptid) from wechat_user where enabled = '1' and factory = '"+strFactory+"') group by b.id,b.name,b.costid,b.depid,b.deptid,b.depname order by b.costid,b.depid,b.deptid,b.id";
+			
+			
 		try {
-
+			swipecardABList = jdbcTemplate.query(sstrSQL, new SwipecardABMapper());
+			InputStream swipeABExcelIS = swipeABUtil.creatExcel(swipecardABList, sheetName1);
+			
 			listCostID = jdbcTemplate.queryForList(strSQL1);
 			// System.out.println(listCostID);
 			listMap = jdbcTemplate.queryForList(strSQL);
@@ -626,6 +645,7 @@ public class EChartssService {
 			        for (Map<String, Object> CCID : listMapCC) {
 			        	StrCC=StrCC+CCID.get("WECHAT_ID").toString()+"@foxlink.com.tw,";
 			        }
+			        //StrCC=StrCC+"DONGPING_LIN"+"@foxlink.com.tw,";
 			        if(!StrCC.isEmpty()) StrCC=StrCC.substring(0, StrCC.length()-1);
 			        System.out.println(StrCC);
 			        if(StrCC.isEmpty()&&StrTO.isEmpty()) return;			       
@@ -672,7 +692,7 @@ public class EChartssService {
 					        
 					        
 					        // 设置邮件标题
-				        	String strject=strWeekorMonth+strFactory+"員工異常刷卡趨勢圖";
+				        	String strject=strWeekorMonth+strFactory+"員工異常刷卡趨勢圖和次數報表";
 					        msg.setSubject(strject, "utf-8");
 					        
 					       
@@ -684,7 +704,7 @@ public class EChartssService {
 					        MimeMultipart multipart = new MimeMultipart();
 					      //创建文本节点
 					        MimeBodyPart text = new MimeBodyPart();
-					        String strContent="各位長官好：<BR>附件爲"+strWeekorMonth+strFactory+"員工"+sST + "-" + sSE+"異常刷卡趨勢圖，<BR>請查閲，謝謝。";
+					        String strContent="各位長官好：<BR>附件爲"+strWeekorMonth+strFactory+"員工"+sST + "-" + sSE+"異常刷卡趨勢圖和次數報表，<BR>請查閲，謝謝。";
 					        text.setContent(strContent,"text/html;charset=UTF-8");
 					        //创建xsl附件节点
 					        MimeBodyPart file2 = new MimeBodyPart();					        
@@ -692,8 +712,16 @@ public class EChartssService {
 					        file2.setDataHandler(dataHandler3);
 					        file2.setFileName(MimeUtility.encodeWord(dataHandler3.getName()));
 					      //将文本和图片添加到multipart
+					        /*添加附件*/
+			                MimeBodyPart fileBody = new MimeBodyPart();
+			                DataSource source = new ByteArrayDataSource(swipeABExcelIS, "application/msexcel;charset=UTF-8");
+			                fileBody.setDataHandler(new DataHandler(source));
+			                String fileName  = sheetName1+".xlsx";
+			                // 中文乱码问题
+			                fileBody.setFileName(MimeUtility.encodeWord(fileName,"UTF-8",null));
 					        multipart.addBodyPart(text);
 					        multipart.addBodyPart(file2);
+					        multipart.addBodyPart(fileBody);
 					        multipart.setSubType("mixed");//混合关系
 					        
 					        msg.setContent(multipart);
@@ -706,6 +734,8 @@ public class EChartssService {
 					catch(Exception ex){
 						logger.info(ex);
 						
+					}finally {
+						swipeABExcelIS.close();
 					}
 
 		} catch (Exception e) {
