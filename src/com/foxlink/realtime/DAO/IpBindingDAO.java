@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.util.HSSFColor.TURQUOISE;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -79,16 +78,18 @@ public class IpBindingDAO extends DAO<IpBinding>{
 			String[] Destring = ipString.split("\\."); 
 		  	String one = Destring[0] + "." +Destring[1] + "." +Destring[2];
 			//返回的ip地址  
-		  	
-		  	if (one.equals("10.64.82")  ||one.equals("10.64.83")  ||one.equals("10.64.117") ||one.equals("10.64.119")) {
-					//String Ipreturn = SelectAppIp(DeviceIp);
-		  			Ipreturn = one;
-		  			
-				}else {
-					
-					 Ipreturn = SelectAppIp(ipString);
-					
-				}
+		  	Ipreturn = one;
+			/*
+			 * if (one.equals("10.64.82") ||one.equals("10.64.83") ||one.equals("10.64.117")
+			 * ||one.equals("10.64.119")) { //String Ipreturn = SelectAppIp(DeviceIp);
+			 * Ipreturn = one;
+			 * 
+			 * }else {
+			 * 
+			 * Ipreturn = SelectAppIp(ipString);
+			 * 
+			 * }
+			 */
 			
 		}
 	  

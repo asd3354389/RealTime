@@ -20,6 +20,7 @@ public class QueryIOWSRecord implements RowMapper<IOWSRecord>{
 		iowsRecord.setDirection(rs.getString("Direction"));
 		iowsRecord.setName(rs.getString("Name"));
 		iowsRecord.setDepId(rs.getString("Depid"));
+		iowsRecord.setDeptId(rs.getString("Deptid"));
 		iowsRecord.setCostId(rs.getString("Costid"));
 		return iowsRecord;
 	}

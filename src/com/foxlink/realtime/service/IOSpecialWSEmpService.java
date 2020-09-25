@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.util.HSSFColor.TURQUOISE;
-
 import com.foxlink.realtime.DAO.IOSpecialWSEmpDAO;
 import com.foxlink.realtime.model.IOWorkShopPW;
 import com.foxlink.realtime.model.Page;

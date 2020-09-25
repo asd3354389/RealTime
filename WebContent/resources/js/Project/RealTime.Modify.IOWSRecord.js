@@ -372,8 +372,9 @@ $(document).ready(function(){
 					'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["name"]+'</td>'+
 					'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["D_Cardid"]+'</td>'+
 					'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["WorkShopNo"]+'</td>'+
-					'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["deptId"]+'</td>'+
 					'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["costId"]+'</td>'+
+					'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["deptId"]+'</td>'+
+					'<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">'+executeResult[i]["depId"]+'</td>'+
 					'<td>'+executeResult[i]["SwipeCardTime"]+'</td>'
 					if(executeResult[i]["Direction"]=='I'){
 						tableContents+='<td style="mso-number-format:\'\@\';" ng-bind="data.paySerialNo">進</td></tr>';
