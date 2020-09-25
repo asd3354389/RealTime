@@ -380,6 +380,13 @@
 		<property name="dGsubsidyStatusDAO" ref="dGsubsidyStatusDAO" />
 	</bean>  
 	
+	 <bean id="departurePersonDAO" class="com.foxlink.realtime.DAO.DeparturePersonDAO"
+		parent="dAO">
+	</bean>
+	<bean id="departurePersonService" class="com.foxlink.realtime.service.DeparturePersonService">
+		<property name="departurePersonDAO" ref="departurePersonDAO" />
+	</bean>  
+	
 	
 		<!-- <bean id="fourteenROPDAO" class="com.foxlink.realtime.DAO.FourteenROPDAO"
 		parent="dAO">

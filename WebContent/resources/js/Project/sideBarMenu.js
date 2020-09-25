@@ -150,6 +150,11 @@
 				"icon" : "icon-nav",
 				"url" : "AccessGoods/ShowAccessGoods"
 
+			},{
+				"menuname" : "離崗超15分鐘例外人員",
+				"icon" : "icon-nav",
+				"url" : "DeparturePerson/ShowDeparturePerson"
+
 			}]
 		},{
 
