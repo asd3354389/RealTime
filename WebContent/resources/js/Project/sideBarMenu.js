@@ -155,6 +155,11 @@
 				"icon" : "icon-nav",
 				"url" : "DeparturePerson/ShowDeparturePerson"
 
+			},{
+				"menuname" : "車間門禁超15分鐘員工休息時間設定",
+				"icon" : "icon-nav",
+				"url" : "WorkShopEmpRest/ShowWorkshopEmpRestInfo"
+
 			}]
 		},{
 
