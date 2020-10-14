@@ -387,6 +387,19 @@
 		<property name="departurePersonDAO" ref="departurePersonDAO" />
 	</bean>  
 	
+	 <!--  <bean id="workshopEmpRestDAO" class="com.foxlink.realtime.DAO.WorkshopEmpRestDao"
+		parent="dAO">
+	</bean>
+	<bean id="workshopEmpRestService" class="com.foxlink.realtime.service.WorkshopEmpRestService">
+		<property name="workshopEmpRestDAO" ref="workshopEmpRestDAO" />
+	</bean>    -->
+	
+		<bean id="workshopEmpRestDao" class="com.foxlink.realtime.DAO.WorkshopEmpRestDao"
+		parent="dAO">
+	</bean>
+	<bean id="workshopEmpRestService" class="com.foxlink.realtime.service.WorkshopEmpRestService">
+		<property name="workshopEmpRestDao" ref="workshopEmpRestDao" />
+	</bean>
 	
 		<!-- <bean id="fourteenROPDAO" class="com.foxlink.realtime.DAO.FourteenROPDAO"
 		parent="dAO">
