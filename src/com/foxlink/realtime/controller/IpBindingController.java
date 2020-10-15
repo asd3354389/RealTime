@@ -162,10 +162,10 @@ public class IpBindingController {
 		//顯示部門代碼
 		@RequestMapping(value = "/ShowDeptNo", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	    @ResponseBody
-	    public String ShowDeptNo(@RequestParam("CostId") String CostId) {
+	    public String ShowDeptNo(@RequestParam("CostId") String CostId,@RequestParam("queryCritirea") String queryCritirea) {
 			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 			ipBindingService = (IpBindingService) context.getBean("ipBindingService");
-	        return ipBindingService.ShowDeptNo(CostId);
+	        return ipBindingService.ShowDeptNo(CostId,queryCritirea);
 	    }
 		
 		@RequestMapping(value="/RelieveDeviceIP",method=RequestMethod.POST,produces="application/json;charset=utf-8")
@@ -182,6 +182,32 @@ public class IpBindingController {
 				}else{
 						DisableResult.addProperty("StatusCode", "500");
 						DisableResult.addProperty("Message", "解除卡機IP綁定綫組別代碼發生錯誤");
+				}
+				
+		}
+		catch(Exception ex){
+			logger.error("Disable the ExceptionCost info is failed, due to:",ex);
+			DisableResult.addProperty("StatusCode", "500");
+			DisableResult.addProperty("Message", "解除卡機IP綁定綫組別代碼已發生錯誤，原因:"+ex.toString());
+		}		
+		return DisableResult.toString();
+		}
+		
+		@RequestMapping(value="/DeleteIpList",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		@ResponseBody
+		public String DeleteExceCost(HttpSession session,@RequestParam("deleteCritirea") String deleteCritirea
+				,@RequestParam("deleteParam") String deleteParam) {
+			JsonObject DisableResult=new JsonObject();
+			try {
+				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+				String updateUser = (String)session.getAttribute("username");
+				ipBindingService = (IpBindingService) context.getBean("ipBindingService");
+				if(ipBindingService.DeleteDeviceIP(deleteCritirea,deleteParam, updateUser)){
+						DisableResult.addProperty("StatusCode", "200");
+						DisableResult.addProperty("Message", "卡機IP綁定代碼已失效");
+				}else{
+						DisableResult.addProperty("StatusCode", "500");
+						DisableResult.addProperty("Message", "解除卡機IP綁定代碼發生錯誤");
 				}
 				
 		}

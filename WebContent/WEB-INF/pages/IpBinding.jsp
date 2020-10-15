@@ -48,16 +48,31 @@
 	<div class="container-fluid"  style="margin: 50px 10% 0 0;">
 	<div style="top: 55px; margin-left: 10px">
 		<div class="panel-body" style="border: 1px solid #e1e3e6;">
-			<div align="right">
+			<div align="left" style="width:40%;top:15px">
+				刪除綁定卡機：<select id="deleteCritirea" class="input-small">
+				   <!--  <option value="UPDATE_USERID">工號</option>	 -->
+				    <option value="COSTID">費用代碼</option>
+				    <option value="DEPTID">組級代碼</option>
+				    <option value="DEPID">線別代碼</option>
+				    <option value="DEVICEIP">電腦Ip</option>						
+				</select> <input type="text" id="deleteParam" name="deleteParam"
+					class="input-sm"> <input type="button"
+					id="deleteIpListBtn" name="deletePersonListBtn"
+					class="btn btn-sm btn-primary" value="刪除綁定">
+			</div>
+			<div style="width:30%;float:right;position: absolute;right: 10%;top:15px">
 				查詢條件：<select id="queryCritirea" class="input-small">
 				   <!--  <option value="UPDATE_USERID">工號</option>	 -->
-				    <option value="DEPTID">費用代碼</option>
+				    <option value="COSTID">費用代碼</option>
+				    <option value="DEPTID">組級代碼</option>
+				    <option value="DEPID">線別代碼</option>
 				    <option value="DEVICEIP">電腦Ip</option>						
 				</select> <input type="text" id="queryParam" name="queryParam"
 					class="input-sm"> <input type="button"
 					id="searchIpListBtn" name="searchPersonListBtn"
 					class="btn btn-sm btn-primary" value="Search">
 			</div>
+			
 			<div style="float: left;margin-top:2%">
 					<h4>電腦Ip綁定線組別代碼列表：</h4>
 					

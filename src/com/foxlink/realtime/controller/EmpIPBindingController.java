@@ -171,4 +171,30 @@ public class EmpIPBindingController {
 		}
 		return JsonResult;
 	}
+	
+	@RequestMapping(value="/DeleteIpList",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+	@ResponseBody
+	public String DeleteIpList(HttpSession session,@RequestParam("deleteParam") String deleteParam){
+		JsonObject DisableResult=new JsonObject();
+		
+		try{
+			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			empIPBindingService = (EmpIPBindingService) context.getBean("empIPBindingService");
+			String updateUser=(String) session.getAttribute("username");		
+			if(empIPBindingService.DeleteIpList(deleteParam, updateUser)){
+				DisableResult.addProperty("StatusCode", "200");
+				DisableResult.addProperty("Message", "員工綁定卡機ip已失效");
+			}
+			else{
+				DisableResult.addProperty("StatusCode", "500");
+				DisableResult.addProperty("Message", "刪除員工綁定卡機ip發生錯誤");
+			}
+		}
+		catch(Exception ex){
+			logger.error("Disable the WorkShopNoRest info is failed, due to:",ex);
+			DisableResult.addProperty("StatusCode", "500");
+			DisableResult.addProperty("Message", "刪除員工綁定卡機ip發生錯誤，原因:"+ex.toString());
+		}		
+		return DisableResult.toString();
+	}
 }

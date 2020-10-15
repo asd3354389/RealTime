@@ -45,6 +45,7 @@
 		<intercept-url pattern="/EmpPrivilege/ShowEmpPrivilege" access="hasAnyRole('ROLE_ADMIN','ROLE_ZJADLOW','ROLE_LJADLOW')" />
 		<intercept-url pattern="/WSListStatus/ShowWSListStatus" access="hasAnyRole('ROLE_ADMIN','ROLE_ZJADLOW','ROLE_LJADLOW')" />
 		<intercept-url pattern="/AccessGoods/ShowAccessGoods" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
+		<intercept-url pattern="/DeparturePerson/**" access="hasAnyRole('ROLE_ADMIN','ROLE_TXADLOW')" />
 		<intercept-url pattern="/LineNoByDepid/ShowLineNoByDepid" access="hasAnyRole('ROLE_ADMIN','ROLE_ZJADLOW')" />
 		<intercept-url pattern="/SearchWorkDayCount/ShowSearchWorkDayCount" access="hasAnyRole('ROLE_ADMIN','ROLE_ASSISTANT')" />
 		

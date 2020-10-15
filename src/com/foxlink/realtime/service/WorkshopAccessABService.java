@@ -45,7 +45,7 @@ public class WorkshopAccessABService {
 	}
 	
 	public void sendWorkshopNoAccessAB(String strDate) {
-		String sql = "select b.id,b.name,b.costid,b.deptid,b.depid,b.depname,a.exception_interval,a.exception_time from RT_ACCESS_AB a,csr_employee b where a.emp_id = b.id and b.line_personnel = 'Y' and a.swipe_date = '"+strDate+"' and b.isonwork = '0' order by b.costid,b.deptid,b.depid,b.id";
+		String sql = "select b.id,b.name,b.costid,b.deptid,b.depid,b.depname,a.exception_interval,a.exception_time from RT_ACCESS_AB a,csr_employee b where a.emp_id = b.id and a.emp_id not in (select t.emp_id from DEPARTURE_EXCEPTION_EMP t where t.enable = 'Y') and b.line_personnel = 'Y' and a.swipe_date = '"+strDate+"' and b.isonwork = '0' order by b.costid,b.deptid,b.depid,b.id";
 		
 		List<AccessAB> abList = jdbcTemplate.query(sql, new AccessABMapper());
 		
@@ -182,7 +182,7 @@ public class WorkshopAccessABService {
 		        if(isAnyAB) {
 		        	//创建文本节点
 			        MimeBodyPart text = new MimeBodyPart();
-			        String strContent="各位長官好：<BR>附件爲"+strDate+"上班時間出車間超15分鐘報表，此報表計算出來的時間已減去系統設置的車間休息時間和人資班別設定的休息時間"+"，<BR>請查閲，謝謝。";
+			        String strContent="各位長官好：<BR>附件爲"+strDate+"上班時間出車間超15分鐘報表"+"，<BR>請查閲，謝謝。";
 			        text.setContent(strContent,"text/html;charset=UTF-8");
 			      //将文本和图片添加到multipart
 			        /*添加附件*/

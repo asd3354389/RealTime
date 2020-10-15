@@ -154,10 +154,10 @@ public class IpBindingService extends Service<IpBinding> {
 	}
 
 	//顯示部門代碼
-	public String ShowDeptNo(String CostId) {
+	public String ShowDeptNo(String CostId, String queryCritirea) {
 		// TODO Auto-generated method stub
 		    JsonObject result = new JsonObject();
-	        List<GetDepid> list_dcResult = ipBindingDAO.ShowDeptNo(CostId);
+	        List<GetDepid> list_dcResult = ipBindingDAO.ShowDeptNo(CostId,queryCritirea);
 	        Gson gson = new GsonBuilder().serializeNulls().create();
 	        if (list_dcResult.size() == 0 || list_dcResult == null) {
 	            result.addProperty("StatusCode", "500");
@@ -175,5 +175,12 @@ public class IpBindingService extends Service<IpBinding> {
 	public boolean RelieveDeviceIP(IpBinding[] ipBinding, String updateUser) {
 		// TODO Auto-generated method stub
 		return ipBindingDAO.RelieveDeviceIP(ipBinding,updateUser);
+	}
+
+
+
+	public boolean DeleteDeviceIP(String deleteCritirea, String deleteParam, String updateUser) {
+		// TODO Auto-generated method stub
+		return ipBindingDAO.DeleteDeviceIP(deleteCritirea,deleteParam,updateUser);
 	}
 }

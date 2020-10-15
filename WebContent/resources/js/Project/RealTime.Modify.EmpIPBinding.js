@@ -527,4 +527,57 @@ $(document).ready(function(){
 				});
 			}
 		}
+	 
+	 $('#deleteEmpIPBinding').click(function(){
+			
+			//輸入的信息
+			var deleteParam=$('#deleteParam').val();
+			
+			if(queryParam==""){
+				//ShowAllIpList();
+			}else{
+				//
+				
+				deleteIpList(deleteParam);
+				
+			}
+			
+			
+		});
+	 
+	 function deleteIpList(deleteParam){
+
+			
+			$.ajax({
+				type:'POST',
+				url:'../EmpIPBinding/DeleteIpList',
+				data:{deleteParam:deleteParam},
+				error:function(e){
+					alert('無綁定資料');
+				},
+				success:function(data){
+				if(data!=null && data!=''){
+					 if(data!=null && data!=''){
+						 if(data.StatusCode=="200"){
+							 alert(data.Message);
+							 /*
+							var parentElement=$(this).parent().parent();
+							//刪除，所以將此列從畫面移除
+							parentElement.remove();
+							  */
+							 ShowAllEmpIPBinding();
+							 $('#deleteParam').empty();
+						 }
+						 else{
+							 alert(data.Message);
+						 }
+					 }else{
+						 alert('操作失敗!')
+					 }
+				}else{
+					 alert('操作失敗!')
+				 }}
+			});
+			
+		}
 })

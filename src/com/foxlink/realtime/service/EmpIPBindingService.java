@@ -157,6 +157,12 @@ public class EmpIPBindingService {
 		// Page page = accountDAO.getPage(pageNum, User.class, totalRecord);
 		return page;
 	}
+
+	public boolean DeleteIpList(String deleteParam, String updateUser) {
+		// TODO Auto-generated method stub
+		String[] empids = deleteParam.split(",");
+		return empIPBindingDAO.DeleteIpList(empids, updateUser);
+	}
 	
 	
 }

@@ -716,7 +716,7 @@ public class EChartssService {
 			                MimeBodyPart fileBody = new MimeBodyPart();
 			                DataSource source = new ByteArrayDataSource(swipeABExcelIS, "application/msexcel;charset=UTF-8");
 			                fileBody.setDataHandler(new DataHandler(source));
-			                String fileName  = sheetName1+".xlsx";
+			                String fileName  = sheetName1+".xls";
 			                // 中文乱码问题
 			                fileBody.setFileName(MimeUtility.encodeWord(fileName,"UTF-8",null));
 					        multipart.addBodyPart(text);
@@ -728,12 +728,13 @@ public class EChartssService {
 					       // msg.setContent("Test","text/html;charset=UTF-8");
 					        msg.saveChanges();
 					        Transport.send(msg);
+					        System.out.println("SendMailOK");
 					        logger.info("------------------------------------SendMailOK "+sdf.format(date));
 						
 					}
 					catch(Exception ex){
 						logger.info(ex);
-						
+						ex.printStackTrace();
 					}finally {
 						swipeABExcelIS.close();
 					}
@@ -741,6 +742,7 @@ public class EChartssService {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.info(e);
+			e.printStackTrace();
 		}	
 		
 			

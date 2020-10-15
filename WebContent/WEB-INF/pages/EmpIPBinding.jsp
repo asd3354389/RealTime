@@ -48,7 +48,13 @@
 <div class="container-fluid"  style="margin: 50px 10% 0 0;">
 	<div style="top: 55px; margin-left: 10px">
 		<div class="panel-body" style="border: 1px solid #e1e3e6;">
-			<div align="right">
+			<div align="left" style="width:30%;top:15px">
+				依工號刪除(多個用,隔開)：<input type="text" id="deleteParam" name="deleteParam"
+					class="input-sm"> <input type="button"
+					id="deleteEmpIPBinding" name="deleteEmpIPBinding"
+					class="btn btn-sm btn-primary" value="刪除綁定">
+			</div>
+			<div style="width:30%;float:right;position: absolute;right: 10%;top:15px">
 				查詢條件：<select id="queryCritirea" class="input-small">
 					<option value="deviceIP">卡機ip</option>
 					<option value="emp_id">工號</option>

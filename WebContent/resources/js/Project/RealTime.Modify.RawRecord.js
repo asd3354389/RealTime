@@ -233,6 +233,8 @@ $(document).ready(function(){
 				   record_status = "換線刷卡記錄";
 			   }else if(executeResult[i]["record_status"]==10){
 				   record_status = "非指定地點刷卡";
+			   }else if(executeResult[i]["record_status"]==11){
+				   record_status = "排外非隨線刷臉摸卡";
 			   }else{
 				   record_status = "未知刷卡類型";
 			   }

@@ -115,6 +115,7 @@
 					<input type="checkbox" name="recordStatus" value="7" checked="checked">無網絡記錄回寫
 					<input type="checkbox" name="recordStatus" value="8" checked="checked">換線刷卡記錄
 					<input type="checkbox" name="recordStatus" value="10" checked="checked">非指定地點刷卡
+					<input type="checkbox" name="recordStatus" value="11" checked="checked">排外非隨線人員刷卡
 					<input type="checkbox" name="recordStatus" value="15" checked="checked">非本事業處卡機刷卡
 				</div>
 				<div class="col-sm-12 col-sm-12" style="margin: 5px;">				   

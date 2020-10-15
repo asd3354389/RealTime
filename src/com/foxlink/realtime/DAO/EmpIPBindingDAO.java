@@ -323,4 +323,40 @@ public class EmpIPBindingDAO extends DAO<EmpIpBinding>{
 		return true;
 	}
 
+	public boolean DeleteIpList(String[] empids, String updateUser) {
+		// TODO Auto-generated method stub
+		//System.out.println(123);
+		txDef = new DefaultTransactionDefinition();
+		txStatus = transactionManager.getTransaction(txDef);
+		String sSQL="update DEVICE_EMP_BINDING t set t.enabled = 'N',t.update_userid=?,update_time=sysdate where t.emp_id = ? and t.enabled = 'Y'";
+		int disableRow=0;
+		try {
+					jdbcTemplate.batchUpdate(sSQL, new BatchPreparedStatementSetter() {
+					
+					@Override
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						// TODO Auto-generated method stub
+						ps.setString(1, updateUser);
+						ps.setString(2, empids[i]);
+					}
+					
+					@Override
+					public int getBatchSize() {
+						// TODO Auto-generated method stub
+						return empids.length;
+					}
+				});
+					//System.out.println(sSQL);
+				transactionManager.commit(txStatus);
+		}
+		catch(Exception ex) {
+			logger.error("Disable WorkshopNoRestInfo is failed",ex);
+			transactionManager.rollback(txStatus);
+		}
+		 if(disableRow == 0) 
+			   return true; 
+		 else
+			 return false;
+	}
+
 }
