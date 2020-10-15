@@ -159,6 +159,7 @@ $(document).ready(function(){
 			REST_START2
 			REST_END2*/
 			var	tableContents='<tr><td>'+executeResult[i]["EMP_ID"]+'</td>'+
+			        '<td>'+executeResult[i]["NAME"]+'</td>'+
 					'<td>'+executeResult[i]["CLASS_NO"]+'</td>'+
 					'<td>'+executeResult[i]["REST_START1"]+'</td>'+
 					'<td>'+executeResult[i]["REST_END1"]+'</td>'+
@@ -188,16 +189,17 @@ $(document).ready(function(){
 		$(".editBtn").click(function(){
 			var parentElement = $(this).parent().parent();
 			var Emp_id=$(parentElement).find('td').eq(0).text();
-			var Class_No = $(parentElement).find('td').eq(1).text();
-			var rest_start1=$(parentElement).find('td').eq(2).text();
-			$(parentElement).find('td').eq(2).html('<input id="rest_start1" class="Wdate" type="text" value = "'+rest_start1+'" style="width:60px" onClick="WdatePicker({lang:\'zh-cn\',dateFmt:\'HHmm\'})" autocomplete="off" />');
-			var rest_end1=$(parentElement).find('td').eq(3).text();
-			$(parentElement).find('td').eq(3).html('<input id="rest_end1" class="Wdate" type="text" value = "'+rest_end1+'" style="width:60px" onClick="WdatePicker({lang:\'zh-cn\',dateFmt:\'HHmm\'})" autocomplete="off" />');
+			var NAME = $(parentElement).find('td').eq(1).text();
+			var Class_No = $(parentElement).find('td').eq(2).text();
+			var rest_start1=$(parentElement).find('td').eq(3).text();
+			$(parentElement).find('td').eq(3).html('<input id="rest_start1" class="Wdate" type="text" value = "'+rest_start1+'" style="width:60px" onClick="WdatePicker({lang:\'zh-cn\',dateFmt:\'HHmm\'})" autocomplete="off" />');
+			var rest_end1=$(parentElement).find('td').eq(4).text();
+			$(parentElement).find('td').eq(4).html('<input id="rest_end1" class="Wdate" type="text" value = "'+rest_end1+'" style="width:60px" onClick="WdatePicker({lang:\'zh-cn\',dateFmt:\'HHmm\'})" autocomplete="off" />');
 			
-			var rest_start2=$(parentElement).find('td').eq(4).text();
-			$(parentElement).find('td').eq(4).html('<input id="rest_start2" class="Wdate" type="text" value = "'+rest_start2+'" style="width:60px" onClick="WdatePicker({lang:\'zh-cn\',dateFmt:\'HHmm\'})" autocomplete="off" />');
-			var rest_end2=$(parentElement).find('td').eq(5).text();
-			$(parentElement).find('td').eq(5).html('<input id="rest_end2" class="Wdate" type="text" value = "'+rest_end2+'" style="width:60px" onClick="WdatePicker({lang:\'zh-cn\',dateFmt:\'HHmm\'})" autocomplete="off" />');
+			var rest_start2=$(parentElement).find('td').eq(5).text();
+			$(parentElement).find('td').eq(5).html('<input id="rest_start2" class="Wdate" type="text" value = "'+rest_start2+'" style="width:60px" onClick="WdatePicker({lang:\'zh-cn\',dateFmt:\'HHmm\'})" autocomplete="off" />');
+			var rest_end2=$(parentElement).find('td').eq(6).text();
+			$(parentElement).find('td').eq(6).html('<input id="rest_end2" class="Wdate" type="text" value = "'+rest_end2+'" style="width:60px" onClick="WdatePicker({lang:\'zh-cn\',dateFmt:\'HHmm\'})" autocomplete="off" />');
 
 			/*var rest_start3=$(parentElement).find('td').eq(5).text();
 			$(parentElement).find('td').eq(5).html('<input id="rest_start3" class="Wdate" type="text" value = "'+rest_start3+'" style="width:60px" onClick="WdatePicker({lang:\'zh-cn\',dateFmt:\'HHmm\'})" autocomplete="off" />');
@@ -210,7 +212,7 @@ $(document).ready(function(){
 			$(parentElement).find('td').eq(8).html('<input id="rest_end4" class="Wdate" type="text" value = "'+rest_end4+'" style="width:60px" onClick="WdatePicker({lang:\'zh-cn\',dateFmt:\'HHmm\'})" autocomplete="off" />');
 */
 //			$(parentElement).children().find('.editBtn .deleteBtn').hide();
-			$(parentElement).find('td').eq(6).append('<a class="confirmBtn btn btn-xs btn-link" role="button">確認</a>'+
+			$(parentElement).find('td').eq(7).append('<a class="confirmBtn btn btn-xs btn-link" role="button">確認</a>'+
 	        		'<a class="cancelBtn btn btn-xs btn-link" role="button">取消</a>');
 			$(parentElement).find('.editBtn,.deleteBtn').hide();
 			$('.confirmBtn').click(function(){
@@ -218,11 +220,12 @@ $(document).ready(function(){
 				var WorkshopNoRestInfo=new Object(),errorMessage='';
 				var Direction=$(parentElement).find('.changeStatus option:selected').eq(0).text();
 				WorkshopNoRestInfo.EMP_ID=Emp_id;		
+				WorkshopNoRestInfo.NAME=NAME;
 				WorkshopNoRestInfo.CLASS_NO=Class_No;
-				WorkshopNoRestInfo.REST_START1=$(parentElement).find('td').eq(2).find('input').val();
-				WorkshopNoRestInfo.REST_END1=$(parentElement).find('td').eq(3).find('input').val();
-				WorkshopNoRestInfo.REST_START2=$(parentElement).find('td').eq(4).find('input').val();
-				WorkshopNoRestInfo.REST_END2=$(parentElement).find('td').eq(5).find('input').val();
+				WorkshopNoRestInfo.REST_START1=$(parentElement).find('td').eq(3).find('input').val();
+				WorkshopNoRestInfo.REST_END1=$(parentElement).find('td').eq(4).find('input').val();
+				WorkshopNoRestInfo.REST_START2=$(parentElement).find('td').eq(5).find('input').val();
+				WorkshopNoRestInfo.REST_END2=$(parentElement).find('td').eq(6).find('input').val();
 			
 				
 
@@ -252,10 +255,10 @@ $(document).ready(function(){
 								  if(data.StatusCode=="200"){
 									  alert(data.Message);
 									  $(parentElement).find('.editBtn,.deleteBtn').show();
-									  $(parentElement).find('td').eq(2).html(WorkshopNoRestInfo.REST_START1);
-									  $(parentElement).find('td').eq(3).html(WorkshopNoRestInfo.REST_END1);
-									  $(parentElement).find('td').eq(4).html(WorkshopNoRestInfo.REST_START2);
-									  $(parentElement).find('td').eq(5).html(WorkshopNoRestInfo.REST_END2);
+									  $(parentElement).find('td').eq(3).html(WorkshopNoRestInfo.REST_START1);
+									  $(parentElement).find('td').eq(4).html(WorkshopNoRestInfo.REST_END1);
+									  $(parentElement).find('td').eq(5).html(WorkshopNoRestInfo.REST_START2);
+									  $(parentElement).find('td').eq(6).html(WorkshopNoRestInfo.REST_END2);
 									  $(parentElement).find('.confirmBtn,.cancelBtn').remove();
 								  }
 								  else{
@@ -278,10 +281,10 @@ $(document).ready(function(){
 			$('.cancelBtn').click(function(){
 				var parentElement=$(this).parent().parent();
 				$(parentElement).find('.editBtn,.deleteBtn').show();
-				$(parentElement).find('td').eq(2).html(rest_start1);
-				$(parentElement).find('td').eq(3).html(rest_end1);
-				$(parentElement).find('td').eq(4).html(rest_start2);
-				$(parentElement).find('td').eq(5).html(rest_end2);
+				$(parentElement).find('td').eq(3).html(rest_start1);
+				$(parentElement).find('td').eq(4).html(rest_end1);
+				$(parentElement).find('td').eq(5).html(rest_start2);
+				$(parentElement).find('td').eq(6).html(rest_end2);
 				/*$(parentElement).find('td').eq(7).html(rest_start3);
 				$(parentElement).find('td').eq(8).html(rest_end3);
 				$(parentElement).find('td').eq(9).html(rest_start4);
@@ -293,7 +296,7 @@ $(document).ready(function(){
 		$('.deleteBtn').click(function(){
 			var parentElement=$(this).parent().parent();
 			var empId=$(parentElement).find('td').eq(0).text();
-			var classNo=$(parentElement).find('td').eq(1).text();
+			var classNo=$(parentElement).find('td').eq(2).text();
 			var results=confirm("確定刪除員工為 "+empId+ "班別為"+ classNo +"的訊息 ?");
 			if(results==true){
 				$.ajax({

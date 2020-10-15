@@ -102,7 +102,7 @@ public class WorkshopEmpRestDao extends DAO<WorkshopEmpRestInfo>{
 		List<WorkshopEmpRestInfo> workshopNoRestInfo = null;
 		// TODO Auto-generated method stub
 		String sSQL = "select * from (select b.*,rownum rn from "
-				+ "(select t.EMP_ID,t.CLASS_NO,t.REST_START1,t.REST_END1,t.REST_START2,t.REST_END2 from SWIPE.WORKSHOP_EMP_OVERTIME15_REST t "
+				+ "(select t.EMP_ID,c.NAME,t.CLASS_NO,t.REST_START1,t.REST_END1,t.REST_START2,t.REST_END2 from SWIPE.WORKSHOP_EMP_OVERTIME15_REST t,SWIPE.CSR_EMPLOYEE c "
 				+ " where t.ENABLE = 'Y' ";
 		try {
 			List <Object> queryList=new  ArrayList<Object>();
@@ -116,8 +116,8 @@ public class WorkshopEmpRestDao extends DAO<WorkshopEmpRestInfo>{
 			}*/
     		Page page = new Page(currentPage, totalRecord);	  
 			int endIndex=page.getStartIndex() + page.getPageSize();
-		    sSQL += "order by  t.EMP_ID)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+" " ;
-		    
+		    sSQL += "AND t.EMP_ID = c.ID order by  t.EMP_ID)b) where rn>"+page.getStartIndex()+" and rn<="+endIndex+" " ;
+		    System.out.println("數據庫語句============"+sSQL);
 		    if (!queryCritirea.equals("")){
 		    	queryList.add(queryParam);
 		    }

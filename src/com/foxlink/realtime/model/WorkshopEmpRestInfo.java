@@ -2,6 +2,7 @@ package com.foxlink.realtime.model;
 
 public class WorkshopEmpRestInfo {
 	private String EMP_ID;
+	private String NAME;
 	private String CLASS_NO;
 	private String REST_START1;
 	private String REST_END1;
@@ -20,7 +21,15 @@ public class WorkshopEmpRestInfo {
 		EMP_ID = eMP_ID;
 	}
 
+	public String getNAME() {
+		return NAME;
+	}
 
+
+
+	public void setNAME(String nAME) {
+		NAME = nAME;
+	}
 
 	public String getCLASS_NO() {
 		return CLASS_NO;
@@ -84,7 +93,7 @@ public class WorkshopEmpRestInfo {
 
 	@Override
 	public String toString() {
-		return "WorkshopEmpRestInfo [EMP_ID=" + EMP_ID + ", CLASS_NO=" + CLASS_NO + ", REST_START1=" + REST_START1
+		return "WorkshopEmpRestInfo [EMP_ID=" + EMP_ID + ",NAME=" + NAME + ", CLASS_NO=" + CLASS_NO + ", REST_START1=" + REST_START1
 				+ ", REST_END1=" + REST_END1 + ", REST_START2=" + REST_START2 + ", REST_END2=" + REST_END2 + "]";
 	}
 

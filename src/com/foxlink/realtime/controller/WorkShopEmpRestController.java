@@ -58,7 +58,7 @@ public class WorkShopEmpRestController {
 			exception.addProperty("ErrorMessage", "取得員工休息時間列表失敗，原因："+ex.toString());
 			DisableResult=exception.toString();
 		}		
-		System.out.println(DisableResult);
+		System.out.println("顯示數據====="+DisableResult);
 		return DisableResult;
 	}
 	
