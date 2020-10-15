@@ -13,6 +13,7 @@ public class QueryWEmpRestInfoMapper implements RowMapper<WorkshopEmpRestInfo>{
 		// TODO Auto-generated method stub
 		WorkshopEmpRestInfo workshopNoRestInfo = new WorkshopEmpRestInfo();
 		workshopNoRestInfo.setEMP_ID(rs.getString("EMP_ID"));
+		workshopNoRestInfo.setNAME(rs.getString("NAME"));
 		workshopNoRestInfo.setCLASS_NO(rs.getString("CLASS_NO"));
 		workshopNoRestInfo.setREST_START1(rs.getString("REST_START1"));
 		workshopNoRestInfo.setREST_END1(rs.getString("REST_END1"));
