@@ -73,6 +73,10 @@
 					class="btn btn-sm btn-primary" value="Search">
 			</div>
 			
+			<div style="width:30%;float:right;position: absolute;right: 10%;top:60px">
+				輸入新增代碼：<input type="text" id="MorechangebdText"><button type="submit" id="MorechangebdOTText" class="btn btn-primary">綁定</button>
+			</div>
+			
 			<div style="float: left;margin-top:2%">
 					<h4>電腦Ip綁定線組別代碼列表：</h4>
 					

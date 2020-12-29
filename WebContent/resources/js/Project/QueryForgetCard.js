@@ -1,6 +1,9 @@
 $(document).ready(function () {
 	//獲取session中的費用代碼放入select下拉框中
 	var sessionCostid = $("#hideCostid").val().split("*");
+	sessionCostid = sessionCostid.sort(function(a,b){
+		return a-b;
+		});
 	for(var i=0;i<sessionCostid.length;i++){
         $("#costid").append("<option value='"+sessionCostid[i]+"'>"+sessionCostid[i]+"</option>");
 

@@ -72,11 +72,11 @@ $(document).ready(function(){
 					 if(data!=null && data!=''){
 						 if(data.StatusCode=="200"){
 							 $('#empId').val('');
-							 $('#classNo').val('');
+							/* $('#classNo').val('');
 							 $('#insert_rest_start1').val('');
 						     $('#insert_rest_end1').val('');
 						     $('#insert_rest_start2').val('');
-						     $('#insert_rest_end2').val('');
+						     $('#insert_rest_end2').val('');*/
 						 /*    $('#insert_rest_start3').val('');
 						     $('#insert_rest_end3').val('');
 						     $('#insert_rest_start4').val('');

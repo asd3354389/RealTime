@@ -23,6 +23,7 @@
       				<option value="ROLE_VIC_ASSISTANT">ROLE_VIC_ASSISTANT</option>
       				<option value="ROLE_VIC_ASSISTANT_O">ROLE_VIC_ASSISTANT_O</option>
       				<option value="ROLE_VIC_LineLeader">ROLE_VIC_LineLeader</option>
+      				<option value="ROLE_TX15WSREST">ROLE_TX15WSREST</option>
       			</select>
     		</div>
   		</div>

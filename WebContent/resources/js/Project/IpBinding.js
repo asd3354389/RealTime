@@ -106,6 +106,71 @@ $(function(){
 			}
 		}
 	})
+	
+		//changebdOTMoreIp
+		//點擊綁定多個線組別代碼
+		$('#MorechangebdOTText').click(function(){	
+			
+			//獲取輸入ip的大小
+			var ipStr = $('#queryParamIp').val();
+			var arr= ipStr.split(",");
+//			console.log(arr);
+			
+			
+			if (ipStr == '') {
+				alert("你輸入的信息不完整,請重新輸入");
+			} else {
+				var Emp=[];
+				var deptidArr;
+				var deptidStr = $('#MorechangebdText').val();
+				console.log(deptidStr);	
+				var deptidArr1 = deptidStr.split(",");
+				
+				if(deptidArr1.length>0){
+					for(var i = 0;i<deptidArr1.length;i++){
+						console.log(deptidArr1[i]);	
+						Emp.push(deptidArr1[i]);
+					    
+					}
+				}
+				deptidArr = Emp.join('*');
+				console.log(deptidArr);
+				/*$("#DeptNobinding .spTable").find('input:checked').each(function (index, item) {
+				     $(this).each(function () {
+					      var depid = $(this).val();
+					      //td里的内容
+					     //depid=depid.join('*');
+					      var Empid = new Object();
+					      Empid.depid = depid;
+					      Emp.push(depid);
+					      deptidArr = Emp.join('*');
+					      console.log(deptidArr);	
+					      
+					     
+				     })
+				})*/
+				if(Emp.length>0){
+					if (arr.length==1&&Emp.length>=1) {
+						//綁定多個部門代碼
+						MoreBindingIp(deptidArr,ipStr);
+					} else if(arr.length>=1&&Emp.length==1) {
+						//綁定多個Ip
+						BindingIpMore(deptidArr,ipStr);
+						
+					}else{
+						alert("多個部門不能同時綁定多個IP");
+					}
+				}else {
+					alert("未輸入需要綁定的部門代碼");
+				}	
+				
+			}
+			
+			//MoreBindingIp();
+							
+	});
+	
+	
 		
 		//changebdOTMoreIp
 		//點擊綁定多個線組別代碼
